@@ -2,13 +2,13 @@ name: deploy-static-files-to-s3
 
 on:
   pull_request:
-    types: [closed]
-    branches: 
-      - 'frontend-**'
+    types: [ labeled ]
 
 jobs:
   build:
+    if: ${{ github.event.label.name == 's3 Deployment' }}
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v2
       - name: Configure AWS Credentials
