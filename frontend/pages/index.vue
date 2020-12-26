@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      dw
+      Dashboard Page
     </v-card>
   </div>
 </template>
