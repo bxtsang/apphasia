@@ -16,6 +16,7 @@
           v-model="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
+          :rules="passwordRules"
           label="Password"
           required
           @click:append="showPassword = !showPassword"
@@ -33,7 +34,14 @@ export default {
   data () {
     return {
       email: '',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      ],
       password: '',
+      passwordRules: [
+        v => !!v || 'Password is required'
+      ],
       showPassword: false
     }
   },
