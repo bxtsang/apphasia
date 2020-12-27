@@ -132,7 +132,7 @@ def updateCore():
     phone = data['phone']
     password = data['password']
     newEmail = data['newEmail']
-    
+
     if not data or not name or not email or not phone or not password:
         result["result"] = "failed"
         result["reason"] = "One or more fields are empty."

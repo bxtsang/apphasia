@@ -1,23 +1,36 @@
 import pytest
 import requests
 import json
+import time
 
+host = "http://localhost:5300"
 def test_retrieve_core():
-    url = "http://localhost:5300/core"
-    data = {"email": "cliffen123@gmail.com",
-            "password": "testtest"}
-    response = requests.post(url, json=json.dumps(data))
-
-    name = json.loads(response.text)['name']
+    url = f"{host}/core/1"
+    response = requests.get(url)
+    name = json.loads(response.text)['user']['name']
 
     assert name == "Cliffen Lee Jun Yi"
 
 def test_retrieve_all_core():
-    url = "http://localhost:5300/core"
+    url = f"{host}/core"
 
-    response = requests.get(url).text
+    response = requests.get(url)
+    users = json.loads(response.text)['users']
 
-    assert response == json.dumps([{"name": "Cliffen Lee Jun Yi", "email": "cliffen123@gmail.com", "phone": 69798999, "password": "testtest"},
-                                  {"name": "Glen See Saw", "email": "glenwaves@gmail.com", "phone": 99887766, "password": "test32"},
-                                  {"name": "Mary Had Little Lamb", "email": "marydonut@gmail.com", "phone": 98897667, "password": "test324"}])
-    
+    assert len(users) >= 3
+
+def test_add_core():
+    url = f"{host}/core"
+
+    getResponseBefore = requests.get(url)
+    countBefore = len(json.loads(getResponseBefore.text)['users'])
+
+    user = {"name": "billy tan", "email": "billytan@gmail.com", "phone": 98786787, "password": "billypass"}
+
+    response = requests.post(url, json=user)
+
+    getResponseAfter = requests.get(url)
+    countAfter = len(json.loads(getResponseAfter.text)['users'])
+
+
+    assert countAfter - countBefore == 1
