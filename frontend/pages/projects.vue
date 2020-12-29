@@ -44,9 +44,10 @@ export default {
   },
   methods: {
     getProjects () {
+      this.isLoading = true
       this.projects = [
-        { name: 'Chit-Chat', task: 2 },
-        { name: 'Aphasia Choir', task: 3 }
+        { id: 'uid1', name: 'Chit-Chat', task: 2 },
+        { id: 'uid2', name: 'Aphasia Choir', task: 3 }
       ]
       this.isLoading = false
     }
