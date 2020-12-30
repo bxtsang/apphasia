@@ -5,9 +5,8 @@ on:
     types: [ closed ]
 
 jobs:
-  run: echo "${{ github.event }}"
   build:
-    if: ${{ github.event.label.name == 's3 Deployment' }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 's3 Deployment') }}
     runs-on: ubuntu-latest
     
     steps:
