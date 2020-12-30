@@ -7,7 +7,7 @@
       </div>
       <v-card>
         <v-card-title class="headline">
-          Testing S3 Deployment workflow
+          Testing S3 Deployment workflow Final
         </v-card-title>
         <v-card-text>
           <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
