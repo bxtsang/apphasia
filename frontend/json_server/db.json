@@ -10,11 +10,51 @@
     "status": true,
     "user": {
       "id": 1,
-      "name": "Arix"
+      "name": "Admin"
     }
   },
   "projects": [
-    { "id": 1, "name": "Chit-Chat", "task": 2 },
-    { "id": 2, "name": "Aphasia Choir", "task": 3 }
+    { "id": 1,
+      "name": "Chit-Chat",
+      "description": "This is chit chat",
+      "assigned": [
+        { "id": 1, "name": "Evelyn" },
+        { "id": 2, "name": "Athena" },
+        { "id": 3, "name": "Eva" }
+      ],
+      "startDate": "",
+      "endData": ""
+    },
+    { "id": 2, "name": "Aphasia Choir", "description": "This is Aphasia choir", "assigned": [] }
+  ],
+  "tasks": [
+    { "id": 1,
+      "tasks": [
+        { "id": "1",
+          "description": "Submit edm for next meeting",
+          "created": "",
+          "assigned": ""
+        }
+      ]
+    }
+  ],
+  "resources": [
+    { "id": 1,
+      "resources": {
+        "directory": "/",
+        "folders": [
+          {
+            "directory": "/forms",
+            "folders": [],
+            "files": [
+              { "id": 1, "type": "pdf", "name": "someoneForm.pdf", "link": ""}
+            ]
+          }
+        ],
+        "files": [
+          { "id": 1, "type": "pdf", "name": "myfiles.pdf", "link": ""}
+        ]
+      }
+    }
   ]
 }
