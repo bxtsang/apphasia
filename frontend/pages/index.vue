@@ -24,9 +24,6 @@ export default {
     return {
       loading: false
     }
-  },
-  created () {
-    console.log(process.env.API_URL)
   }
 }
 </script>

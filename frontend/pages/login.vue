@@ -33,6 +33,7 @@ export default {
   layout: 'none',
   data () {
     return {
+      valid: true,
       email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -46,8 +47,19 @@ export default {
     }
   },
   methods: {
-    login () {
-      console.log('login')
+    async login () {
+      if (this.email === '' || this.password === '') { return }
+
+      const loginData = { email: this.email, password: this.password }
+      try {
+        await this.$auth.loginWith('local', { data: loginData })
+      } catch (error) {
+        // console.log(error.message);
+        // this.$store.commit('notification/newNotification', ["Login Error", "error"]);
+      } finally {
+        this.email = ''
+        this.password = ''
+      }
     }
   }
 }

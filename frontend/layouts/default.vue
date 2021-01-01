@@ -55,7 +55,7 @@
       </v-list>
       <template v-slot:append>
         <v-list dense nav>
-          <v-list-item link to="/login">
+          <v-list-item link @click="logout">
             <v-list-item-icon>
               <v-icon>{{ 'mdi-logout' }}</v-icon>
             </v-list-item-icon>
@@ -76,7 +76,7 @@
 
 <script>
 export default {
-  // middleware: ['isLoggedIn'],
+  middleware: ['isLoggedIn'],
   data () {
     return {
       items: [
@@ -118,6 +118,11 @@ export default {
   computed: {
     theme () {
       return (this.$vuetify.theme.dark) ? 'dark' : 'light'
+    }
+  },
+  methods: {
+    logout () {
+      this.$auth.logout()
     }
   }
 }
