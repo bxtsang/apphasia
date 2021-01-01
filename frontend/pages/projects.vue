@@ -17,10 +17,10 @@
                 :size="50"
                 color="primary"
                 indeterminate
-              ></v-progress-circular>
+              />
             </v-col>
-            <v-col v-else v-for="(project, index) in projects" :key="index" cols="6">
-              <Project :project="project"></Project>
+            <v-col v-for="(project, index) in projects" v-else :key="index" cols="6">
+              <Project :project="project" />
             </v-col>
           </v-row>
         </v-card>
@@ -40,16 +40,21 @@ export default {
     }
   },
   mounted () {
-    this.getProjects()
+    setTimeout(this.getProjects, 2000)
+    // this.getProjects()
   },
   methods: {
-    getProjects () {
+    async getProjects () {
+      this.projects = []
       this.isLoading = true
-      this.projects = [
-        { id: 'uid1', name: 'Chit-Chat', task: 2 },
-        { id: 'uid2', name: 'Aphasia Choir', task: 3 }
-      ]
-      this.isLoading = false
+      try {
+        const response = await this.$axios.get(`${process.env.BASE_API_URL}/projects`)
+        this.projects = response.data
+      } catch (error) {
+        this.projects = []
+      } finally {
+        this.isLoading = false
+      }
     }
   }
 }
