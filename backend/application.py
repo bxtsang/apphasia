@@ -9,11 +9,13 @@ import requests
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('dbURL')
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root@localhost:3306/user"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root@localhost:3306/aphasia"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 CORS(app)
+
+validChoices = ["intern", "volunteer", "core", ""]
 
 # request.args: the key/value pairs in the URL query string
 # request.form: the key/value pairs in the body, from a HTML post form, or JavaScript request that isn't JSON encoded
@@ -26,392 +28,165 @@ CORS(app)
 # request.form.get('name'): use get if the key might not exist
 # request.form.getlist('name'): use getlist if the key is sent multiple times and you want a list of values. get only returns the first value.
 
-class Core(db.Model):
-    __tablename__ = "core"
+class User(db.Model):
+    __tablename__ = "user"
 
     userID = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(32), nullable=False)
     email = db.Column(db.String(64), nullable=False)
     phone = db.Column(db.Integer())
     password = db.Column(db.String(128), nullable=False)
+    role = db.Column(db.String(128), nullable =False)
 
     def get_json(self):
-        return {'userID': self.userID, 'name': self.name, 'email': self.email, 'phone': self.phone, 'password': self.password}
+        return {'userID': self.userID, 'name': self.name, 'email': self.email, 'phone': self.phone, 'password': self.password, 'role': self.role}
 
-class Intern(db.Model):
-    __tablename__ = "intern"
-
-    userID = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(32), nullable=False)
-    email = db.Column(db.String(64), nullable=False)
-    phone = db.Column(db.Integer())
-    password = db.Column(db.String(128), nullable=False)
-
-    def get_json(self):
-        return {'userID': self.userID, 'name': self.name, 'email': self.email, 'phone': self.phone, 'password': self.password}
-
-class Volunteer(db.Model):
-    __tablename__ = "volunteer"
-
-    userID = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(32), nullable=False)
-    email = db.Column(db.String(64), nullable=False)
-    phone = db.Column(db.Integer())
-    password = db.Column(db.String(128), nullable=False)
-
-    def get_json(self):
-        return {'userID': self.userID, 'name': self.name, 'email': self.email, 'phone': self.phone, 'password': self.password}
-
-
-@app.route("/core/<userID>", methods=["GET"])
-def getCore(userID):
+@app.route("/user/<userID>", methods=["GET"])
+def getUser(userID):
     result = {}
 
-    core = Core.query.filter_by(userID = userID).first()
+    user = User.query.filter_by(userID = userID).first()
 
-    print(f"\nRetrieving data for core team member with userID: {userID}...\n")
+    print(f"\nRetrieving data for user team member with userID: {userID}...\n")
 
-    if not core:
-        result["result"] = "failed"
-        result["reason"] = "No such user exists"
+    if not user:
+        result["result"] = "Failed"
+        result["message"] = "No such user exists"
         return jsonify(result), 500
 
     result["result"] = "success"
-    result["user"] = core.get_json()
+    result["user"] = user.get_json()
 
     return jsonify(result)
 
-@app.route("/core", methods=["GET"])
-def getAllCore():
-    cores = Core.query.all()
-    coreList = []
+@app.route("/user", methods=["GET"])
+def getAllUser():
+    userList = []
     result = {}
+    data = request.get_json()
 
-    print(f"\nReturning all core members data...\n")
+    if "role" not in data or data["role"].strip(" ") == "":
+        role = ""
+    else:
+        role = data['role']
 
-    for core in cores:
-        coreList.append(core.get_json())
+    role = role.lower()
+
+    if role not in validChoices:
+        result['result'] = "Failed"
+        result['message'] = "Invalid role"
+        return jsonify(result), 500
+
+    if role != "":
+        users = User.query.filter_by(role=role).all()
+    else:
+        users = User.query.all()
+
+    print(f"\nReturning all users data...\n")
+
+    for user in users:
+        userList.append(user.get_json())
 
     result['result'] = "success"
-    result['users'] = coreList
+    result['users'] = userList
 
     return jsonify(result), 200
 
-@app.route("/core", methods=["POST"])
-def addCore():
+@app.route("/user", methods=["POST"])
+def addUser():
     result = {}
     data = request.get_json()
     name = data['name']
     email = data['email']
     phone = data['phone']
     password = data['password']
+    role = data['role']
 
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
+    if role == "":
+        result['result'] = "Failed"
+        result['message'] = "Role required"
         return jsonify(result), 500
 
-    core = Core(name = name, email = email, phone = phone, password = password)
+    if role not in validChoices:
+        result['result'] = "Failed"
+        result['message'] = "Invalid role"
+        return jsonify(result), 500
 
-    print(f"\nAdding new core member {name}...\n")
+    if not data or not name or not email or not phone or not password or not role:
+        result["result"] = "Failed"
+        result["message"] = "One or more fields are empty."
+        return jsonify(result), 500
 
-    db.session.add(core)
+    user = User(name = name, email = email, phone = phone, password = password, role=role)
+
+    print(f"\nAdding new user member {name}...\n")
+
+    db.session.add(user)
     db.session.commit()
 
     result["result"] = "success"
-    result["user"] = core.get_json()
+    result["user"] = user.get_json()
     return jsonify(result), 200
 
-@app.route("/core", methods=["DELETE"])
-def removeCore():
+@app.route("/user", methods=["DELETE"])
+def removeUser():
     result = {}
     data = request.get_json()
-    email = data['email']
+    userID = data['userID']
 
-    if not email:
-        result["result"] = "failed"
-        result["reason"] = "Email field is empty."
+    if not userID:
+        result["result"] = "Failed"
+        result["message"] = "UserID field is empty."
         return jsonify(result), 500
 
-    core = Core.query.filter_by(email = email).first()
+    user = User.query.filter_by(userID= userID).first()
 
-    print(f"\nDeleteing core member with email: {email}...\n")
+    print(f"\nDeleteing user member with userID: {userID}...\n")
 
-    if not core:
-        result["result"] = "failed"
-        result["reason"] = "User cannot be found."
-        return jsonify(result), 404
+    if not user:
+        result["result"] = "Failed"
+        result["message"] = "User cannot be found."
+        return jsonify(result), 500
 
-    Core.query.filter_by(email = email).delete()
-
+    User.query.filter_by(userID = userID).delete()
+    db.session.commit()
+    
     result["result"] = "success"
     return jsonify(result),200
 
-@app.route("/core", methods=["PUT"])
-def updateCore():
+@app.route("/user", methods=["PUT"])
+def updateUser():
     result = {}
     data = request.get_json()
     name = data['name']
     email = data['email']
     phone = data['phone']
     password = data['password']
+    role = data['role']
     newEmail = data['newEmail']
 
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
+    if not data or not name or not email or not phone or not password or not role:
+        result["result"] = "Failed"
+        result["message"] = "One or more fields are empty."
         return jsonify(result), 500
 
-    print(f"\nUpdating core member with email {email}...\n")
+    print(f"\nUpdating user member with email {email}...\n")
 
-    core = Core.query.filter_by(email = email).first()
+    user = User.query.filter_by(email = email).first()
 
-    if not core:
-        result["result"] = "failed"
+    if not user:
+        result["result"] = "Failed"
         return jsonify(result), 500
 
-    core.name = name
-    core.email = newEmail
-    core.phone = phone
-    core.password = password
+    user.name = name
+    user.email = newEmail
+    user.phone = phone
+    user.password = password
+    user.role = role
     db.session.commit()
 
     result["result"] = "success"
-    result["user"] = core.get_json()
-    return jsonify(result),200
-
-@app.route("/intern/<userID>", methods=["GET"])
-def getIntern(userID):
-    result = {}
-
-    intern = Intern.query.filter_by(userID = userID).first()
-
-    print(f"\nRetrieving data for intern with userID: {userID}...\n")
-
-    if not intern:
-        result["result"] = "failed"
-        result["reason"] = "No such user exists"
-        return jsonify(result), 500
-
-    result["result"] = "success"
-    result["user"] = intern.get_json()
-
-    return jsonify(result)
-
-@app.route("/intern", methods=["GET"])
-def getAllIntern():
-    interns = Intern.query.all()
-    internList = []
-    result = {}
-
-    print(f"\nReturning all intern data...\n")
-
-    for intern in interns:
-        internList.append(intern.get_json())
-
-    result['result'] = "success"
-    result['users'] = internList
-
-    return jsonify(result), 200
-
-@app.route("/intern", methods=["POST"])
-def addIntern():
-    result = {}
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    phone = data['phone']
-    password = data['password']
-
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
-        return jsonify(result), 500
-
-    intern = Intern(name = name, email = email, phone = phone, password = password)
-
-    print(f"\nAdding new intern member {name}...\n")
-
-    db.session.add(intern)
-    db.session.commit()
-
-    result["result"] = "success"
-    result["user"] = intern.get_json()
-    return jsonify(result), 200
-
-@app.route("/intern", methods=["DELETE"])
-def removeIntern():
-    result = {}
-    data = request.get_json()
-    email = data['email']
-
-    if not email:
-        result["result"] = "failed"
-        result["reason"] = "Email field is empty."
-        return jsonify(result), 500
-
-    intern = Intern.query.filter_by(email = email).first()
-
-    print(f"\nDeleteing intern member with email: {email}...\n")
-
-    if not intern:
-        result["result"] = "failed"
-        result["reason"] = "User does not exist."
-        return jsonify(result), 404
-
-    Intern.query.filter_by(email = email).delete()
-
-    result["result"] = "success"
-    return jsonify(result),200
-
-@app.route("/intern", methods=["PUT"])
-def updateIntern():
-    result = {}
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    phone = data['phone']
-    password = data['password']
-
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
-        return jsonify(result), 500
-
-    print(f"\nUpdating intern member with email {email}...\n")
-
-    intern = Intern.query.filter_by(email = email).first()
-
-    if not intern:
-        result["result"] = "failed"
-        result["reason"] = "User does not exist."
-        return jsonify(result), 500
-
-    intern.name = name
-    intern.email = email
-    intern.phone = phone
-    intern.password = password
-    db.session.commit()
-
-    result["result"] = "success"
-    result["user"] = intern.get_json()
-    return jsonify(result),200
-
-@app.route("/volunteer/<userID>", methods=["GET"])
-def getVolunteer(userID):
-    result = {}
-
-    volunteer = Volunteer.query.filter_by(userID = userID).first()
-
-    print(f"\nRetrieving data for volunteer with userID: {userID}...\n")
-
-    if not volunteer:
-        result["result"] = "failed"
-        result["reason"] = "No such user exists"
-        return jsonify(result), 500
-
-    result["result"] = "success"
-    result["user"] = volunteer.get_json()
-
-    return jsonify(result)
-
-@app.route("/volunteer", methods=["GET"])
-def getAllVolunteer():
-    volunteers = Volunteer.query.all()
-    volunteerList = []
-    result = {}
-
-    print(f"\nReturning all volunteer data...\n")
-
-    for volunteer in volunteers:
-        volunteerList.append(volunteer.get_json())
-
-    result['result'] = "success"
-    result['users'] = volunteerList
-
-    return jsonify(result), 200
-
-@app.route("/volunteer", methods=["POST"])
-def addVolunteer():
-    result = {}
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    phone = data['phone']
-    password = data['password']
-
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
-        return jsonify(result), 500
-
-    volunteer = Volunteer(name = name, email = email, phone = phone, password = password)
-
-    print(f"\nAdding new volunteer member {name}...\n")
-
-    db.session.add(volunteer)
-    db.session.commit()
-
-    result["result"] = "success"
-    result["user"] = volunteer.get_json()
-    return jsonify(result), 200
-
-@app.route("/volunteer", methods=["DELETE"])
-def removeVolunteer():
-    result = {}
-    data = request.get_json()
-    email = data['email']
-
-    if not email:
-        result["result"] = "failed"
-        result["reason"] = "Email field is empty."
-        return jsonify(result), 500
-
-    volunteer = Volunteer.query.filter_by(email = email).first()
-
-    print(f"\nDeleteing volunteer member with email: {email}...\n")
-
-    if not volunteer:
-        result["result"] = "failed"
-        result["reason"] = "User does not exist."
-        return jsonify(result), 404
-
-    Volunteer.query.filter_by(email = email).delete()
-
-    result["result"] = "success"
-    return jsonify(result),200
-
-@app.route("/volunteer", methods=["PUT"])
-def updateVolunteer():
-    result = {}
-    data = request.get_json()
-    name = data['name']
-    email = data['email']
-    phone = data['phone']
-    password = data['password']
-
-    if not data or not name or not email or not phone or not password:
-        result["result"] = "failed"
-        result["reason"] = "One or more fields are empty."
-        return jsonify(result), 500
-
-    print(f"\nUpdating volunteer with email {email}...\n")
-
-    volunteer = Volunteer.query.filter_by(email = email).first()
-
-    if not volunteer:
-        result["result"] = "failed"
-        result["reason"] = "User does not exist."
-        return jsonify(result), 500
-
-    volunteer.name = name
-    volunteer.email = email
-    volunteer.phone = phone
-    volunteer.password = password
-    db.session.commit()
-
-    result["result"] = "success"
-    result["user"] = volunteer.get_json()
+    result["user"] = user.get_json()
     return jsonify(result),200
 
 if __name__ == '__main__':
