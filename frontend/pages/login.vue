@@ -5,7 +5,7 @@
       <v-subheader class="justify-center font-weight-bold">
         Welcome Back!
       </v-subheader>
-      <v-form ref="form" v-model="valid">
+      <v-form ref="form" v-model="valid" @submit.prevent="login">
         <v-text-field
           v-model="email"
           :rules="emailRules"
@@ -21,7 +21,7 @@
           required
           @click:append="showPassword = !showPassword"
         />
-        <v-btn block color="primary" class="my-3" @click="login">
+        <v-btn block color="primary" class="my-3" type="submit">
           Login
         </v-btn>
       </v-form>
@@ -56,7 +56,6 @@ export default {
       } catch (error) {
         // console.log(error.message);
         // this.$store.commit('notification/newNotification', ["Login Error", "error"]);
-      } finally {
         this.email = ''
         this.password = ''
       }
