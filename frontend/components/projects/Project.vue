@@ -8,6 +8,7 @@
         text
         small
         color="primary"
+        :to="`/projects?id=${project.id}`"
       >
         <v-icon small>
           mdi-chevron-right
