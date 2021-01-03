@@ -1,0 +1,61 @@
+<template>
+  <div>
+    <v-row>
+      <v-col>
+        <v-btn color="primary">
+          Add New Project
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card class="px-6 py-3">
+          <h1 class="title">Projects</h1>
+          <v-row>
+            <v-col v-if="isLoading" class="d-flex justify-center">
+              <v-progress-circular
+                :size="50"
+                color="primary"
+                indeterminate
+              />
+            </v-col>
+            <v-col v-for="(project, index) in projects" v-else :key="index" cols="6">
+              <Project :project="project" />
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
+</template>
+<script>
+import Project from '../components/projects/Project.vue'
+
+export default {
+  components: { Project },
+  data () {
+    return {
+      isLoading: true,
+      projects: []
+    }
+  },
+  mounted () {
+    setTimeout(this.getProjects, 2000)
+    // this.getProjects()
+  },
+  methods: {
+    async getProjects () {
+      this.projects = []
+      this.isLoading = true
+      try {
+        const response = await this.$axios.get(`${process.env.BASE_API_URL}/projects`)
+        this.projects = response.data
+      } catch (error) {
+        this.projects = []
+      } finally {
+        this.isLoading = false
+      }
+    }
+  }
+}
+</script>
