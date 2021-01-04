@@ -52,7 +52,7 @@ def getUser(userID):
     if not user:
         result["result"] = "Failed"
         result["message"] = "No such user exists"
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     result["result"] = "success"
     result["user"] = user.get_json()
@@ -75,7 +75,7 @@ def getAllUser():
     if role not in validChoices:
         result['result'] = "Failed"
         result['message'] = "Invalid role"
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     if role != "":
         users = User.query.filter_by(role=role).all()
@@ -105,17 +105,17 @@ def addUser():
     if role == "":
         result['result'] = "Failed"
         result['message'] = "Role required"
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     if role not in validChoices:
         result['result'] = "Failed"
         result['message'] = "Invalid role"
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     if not data or not name or not email or not phone or not password or not role:
         result["result"] = "Failed"
         result["message"] = "One or more fields are empty."
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     user = User(name = name, email = email, phone = phone, password = password, role=role)
 
@@ -137,7 +137,7 @@ def removeUser():
     if not userID:
         result["result"] = "Failed"
         result["message"] = "UserID field is empty."
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     user = User.query.filter_by(userID= userID).first()
 
@@ -146,7 +146,7 @@ def removeUser():
     if not user:
         result["result"] = "Failed"
         result["message"] = "User cannot be found."
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     User.query.filter_by(userID = userID).delete()
     db.session.commit()
@@ -168,7 +168,7 @@ def updateUser():
     if not data or not name or not email or not phone or not password or not role:
         result["result"] = "Failed"
         result["message"] = "One or more fields are empty."
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     print(f"\nUpdating user member with email {email}...\n")
 
@@ -176,7 +176,7 @@ def updateUser():
 
     if not user:
         result["result"] = "Failed"
-        return jsonify(result), 500
+        return jsonify(result), 400
 
     user.name = name
     user.email = newEmail
