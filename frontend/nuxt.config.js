@@ -77,6 +77,8 @@ export default {
       themes: {
         light: {
           primary: colors.blue,
+          success: colors.green,
+          error: colors.red,
           background: '#FBFCFD'
         },
       },
