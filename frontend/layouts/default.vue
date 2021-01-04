@@ -1,7 +1,8 @@
 <template>
   <v-app :style="{background: $vuetify.theme.themes[theme].background}">
+    <Notification />
     <v-navigation-drawer fixed app permanent>
-      <v-img src="/asg.png"/>
+      <v-img src="/asg.png" />
       <v-list>
         <v-list-item>
           <v-list-item-content>
@@ -75,7 +76,10 @@
 </template>
 
 <script>
+import Notification from './../components/Notification'
+
 export default {
+  components: { Notification },
   middleware: ['isLoggedIn'],
   data () {
     return {
