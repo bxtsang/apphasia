@@ -4,9 +4,7 @@
     <v-container class="pa-0" v-else>
       <v-row>
         <v-col>
-          <v-btn color="primary">
-            Add New Project
-          </v-btn>
+          <NewProjectModal />
         </v-col>
       </v-row>
       <v-row>
@@ -34,9 +32,10 @@
 <script>
 import Project from '../components/projects/Project'
 import IndividualProjectView from '../components/projects/IndividualProjectView'
+import NewProjectModal from '../components/projects/modals/NewProjectModal'
 
 export default {
-  components: { Project, IndividualProjectView },
+  components: { Project, IndividualProjectView, NewProjectModal },
   data () {
     return {
       isLoading: true,
