@@ -54,7 +54,6 @@ export default {
       try {
         await this.$auth.loginWith('local', { data: loginData })
       } catch (error) {
-        console.log(error.message)
         this.$store.commit('notification/newNotification', ['Login Error', 'error'])
         this.email = ''
         this.password = ''
