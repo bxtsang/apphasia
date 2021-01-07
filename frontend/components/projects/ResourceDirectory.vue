@@ -16,8 +16,10 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item link v-for="options in BUTTON_OPTIONS" :key="options.title">
-                <v-icon left>{{ options.icon }}</v-icon>
+              <v-list-item v-for="options in BUTTON_OPTIONS" :key="options.title" link>
+                <v-icon left>
+                  {{ options.icon }}
+                </v-icon>
                 <v-list-item-title>{{ options.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -38,11 +40,11 @@
       <Empty />
     </v-row>
     <v-row v-else>
-      <v-container class="pa-0">
+      <v-container class="pa-0" fluid>
         <v-row v-if="foldersInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
-            <v-container class="d-flex flex-wrap pa-0">
+            <v-container class="d-flex flex-wrap pa-0" fluid>
               <ResourceFolder />
             </v-container>
           </v-col>
@@ -50,7 +52,7 @@
         <v-row v-if="filesInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
-            <v-container class="d-flex flex-wrap pa-0">
+            <v-container class="d-flex flex-wrap pa-0" fluid>
               <ResourceFile />
             </v-container>
           </v-col>

@@ -1,7 +1,9 @@
 <template>
   <v-col class="d-flex justify-center">
     <div class="circle">
-      <v-icon x-large color="#D4D4D4">mdi-folder-upload</v-icon>
+      <v-icon x-large color="#D4D4D4">
+        mdi-folder-upload
+      </v-icon>
       <span class="title">Drop files here</span>
       <span class="subtitle">or use the "New" Button</span>
     </div>

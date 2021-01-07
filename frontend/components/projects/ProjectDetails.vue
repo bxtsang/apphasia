@@ -22,8 +22,8 @@
         />
       </v-col>
       <v-col v-else>
-        <v-text-field :value="project.name" label="Project Name" readonly/>
-        <v-text-field :value="project.description" label="Project Description" readonly/>
+        <v-text-field :value="project.name" label="Project Name" readonly />
+        <v-text-field :value="project.description" label="Project Description" readonly />
         <v-autocomplete
           v-model="assignedMembers"
           :items="project.assigned"
@@ -33,12 +33,13 @@
           item-value="id"
           multiple
           readonly
-          >
+        >
           <template v-slot:selection="data">
             <v-chip
               class="my-2"
               v-bind="data.attrs"
-              :input-value="data.selected">
+              :input-value="data.selected"
+            >
               {{ data.item.name }}
             </v-chip>
           </template>

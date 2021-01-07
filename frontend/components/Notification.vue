@@ -1,6 +1,8 @@
 <template>
   <v-snackbar v-model="display" absolute :timeout="timeout">
-    <v-icon :color="color" small class="mr-3">{{ icon }}</v-icon>
+    <v-icon :color="color" small class="mr-3">
+      {{ icon }}
+    </v-icon>
     {{ message }}
     <template v-slot:action="{ attrs }">
       <v-btn text :color="color" v-bind="attrs" @click="display = false">
