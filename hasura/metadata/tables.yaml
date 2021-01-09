@@ -4,4 +4,7 @@
   is_enum: true
 - table:
     schema: public
+    name: roles
+- table:
+    schema: public
     name: users
