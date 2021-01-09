@@ -1,3 +1,7 @@
 - table:
     schema: public
+    name: languages
+  is_enum: true
+- table:
+    schema: public
     name: users
