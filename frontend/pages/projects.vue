@@ -1,7 +1,7 @@
 <template>
   <div>
     <IndividualProjectView v-if="projectId" />
-    <v-container v-else class="pa-0">
+    <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
           <NewProjectModal />
