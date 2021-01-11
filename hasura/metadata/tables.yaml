@@ -15,6 +15,41 @@
           name: users
 - table:
     schema: public
+    name: test
+  insert_permissions:
+  - role: ct
+    permission:
+      check: {}
+      columns:
+      - id
+      - name
+  select_permissions:
+  - role: ct
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+  - role: vol
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+  update_permissions:
+  - role: ct
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: ct
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: users
   object_relationships:
   - name: supervisor
