@@ -1,6 +1,7 @@
 version: 2
 endpoint: https://aphasia-hasura-dev.herokuapp.com/
 metadata_directory: metadata
+admin_secret: pwayismyhome12061997
 actions:
   kind: synchronous
   handler_webhook_baseurl: http://localhost:3000

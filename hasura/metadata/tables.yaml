@@ -17,6 +17,20 @@
     schema: public
     name: test
   insert_permissions:
+  - role: "1"
+    permission:
+      check: {}
+      columns:
+      - id
+      - name
+      backend_only: false
+  - role: core
+    permission:
+      check: {}
+      columns:
+      - id
+      - name
+      backend_only: false
   - role: ct
     permission:
       check: {}
@@ -24,6 +38,18 @@
       - id
       - name
   select_permissions:
+  - role: "1"
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+  - role: core
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
   - role: ct
     permission:
       columns:
@@ -37,6 +63,13 @@
       - name
       filter: {}
   update_permissions:
+  - role: "1"
+    permission:
+      columns:
+      - id
+      - name
+      filter: {}
+      check: null
   - role: ct
     permission:
       columns:
@@ -45,6 +78,9 @@
       filter: {}
       check: null
   delete_permissions:
+  - role: "1"
+    permission:
+      filter: {}
   - role: ct
     permission:
       filter: {}
