@@ -1,0 +1,8 @@
+query Test {
+    characters {
+        results {
+        id
+        name
+        }
+    }
+}
