@@ -45,6 +45,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@sirdiego/nuxt-auth-cognito-scheme',
     '@nuxtjs/auth',
     '@nuxtjs/apollo'
   ],
@@ -53,7 +54,9 @@ export default {
     clientConfigs: {
       default: {
         httpEndpoint: 'https://rickandmortyapi.com/graphql/',
-      }
+        tokenName: 'auth.CognitoIdentityServiceProvider.16ohol46005ovfeit19buciu4e.30a07e2b-18d9-4421-b8b0-8a717d2dd0c0.idToken'
+      },
+      
     }
   },
 
@@ -64,13 +67,16 @@ export default {
       home: '/',
     },
     strategies: {
-      local: {
-        endpoints: {
-          login: { url: `${process.env.BASE_API_URL || 'http://localhost:8000'}/login`, method: 'post', propertyName: 'accessToken' },
-          logout: false,
-          user: { url: `${process.env.BASE_API_URL || 'http://localhost:8000'}/me`, method: 'get', propertyName: 'user' }
-        },
-        tokenType: ''
+      cognito: {
+        tokenType: "Bearer",
+        globalToken: true,
+        tokenRequired: true,
+        tokenName: "Authorization",
+        autoFetchUser: true,
+        userPoolId: 'ap-southeast-1_Q99DJNNPZ',
+        clientId: '16ohol46005ovfeit19buciu4e',
+        refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
+        fetchUserCallback: false // Can be used to put more information into the user object
       }
     }
   },

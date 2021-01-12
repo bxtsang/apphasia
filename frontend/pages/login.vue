@@ -49,10 +49,9 @@ export default {
   methods: {
     async login () {
       if (this.email === '' || this.password === '') { return }
-
-      const loginData = { email: this.email, password: this.password }
+      const loginData = { username: this.email, password: this.password }
       try {
-        await this.$auth.loginWith('local', { data: loginData })
+        await this.$auth.loginWith('cognito', { data: loginData })
       } catch (error) {
         this.$store.commit('notification/newNotification', ['Login Error', 'error'])
         this.email = ''
