@@ -17,31 +17,38 @@
 
       <!-- Result -->
       <div v-else-if="data">
-        <v-text-field
-          v-model="search"
-          label="Search"
-          append-icon="mdi-magnify"
-          filled
-          rounded
-        ></v-text-field>
         <v-data-table
           :headers="getHeaders"
-          :items="testData"
+          :items="filteredDataByType"
           item-key="id"
           class="elevation-1"
           :search="search"
-          :custom-filter="filterOnlyCapsText"
         >
           <template v-slot:top>
-            <v-container fluid>
+            <v-container class="py-0" fluid>
+              <v-row>
+                <v-col>
+                  <h1 class="title pt-3 px-3">Manage Staff</h1>
+                </v-col>
+              </v-row>
               <v-row>
                 <v-col>
                   <v-tabs>
-                    <v-tab>Core Team</v-tab>
-                    <v-tab>Interns</v-tab>
-                    <v-tab>Core Volunteers</v-tab>
+                    <v-tab @click="staffTypeFilter = 'coreteam'">Core Team</v-tab>
+                    <v-tab @click="staffTypeFilter = 'intern'">Interns</v-tab>
+                    <v-tab @click="staffTypeFilter = 'corevolunteer'">Core Volunteers</v-tab>
                   </v-tabs>
                 </v-col>
+              </v-row>
+              <v-row>
+                <v-text-field
+                  v-model="search"
+                  label="Search"
+                  append-icon="mdi-magnify"
+                  solo
+                  dense
+                  class="mx-3"
+                ></v-text-field>
               </v-row>
             </v-container>
           </template>
@@ -57,11 +64,48 @@
 export default {
   data () {
     return {
-      staffTypeFilter: null,
+      search: '',
+      staffTypeFilter: 'coreteam',
       testData: [
         {
+          id: 1,
           name: 'Person 1',
-          id: 1
+          date_joined: '02/03/2010',
+          role: 'Manager',
+          profession: 'Therapist',
+          status: 'Active',
+          projects: 'Chit Chat, Befriender, Craft Night',
+          type: 'coreteam'
+        },
+        {
+          id: 2,
+          name: 'Person 2',
+          date_joined: '02/03/2010',
+          role: 'Manager',
+          profession: 'Therapist',
+          status: 'Active',
+          projects: 'Chit Chat, Befriender, Craft Night',
+          type: 'intern'
+        },
+        {
+          id: 3,
+          name: 'Person 3',
+          date_joined: '02/03/2010',
+          role: 'Manager',
+          profession: 'Therapist',
+          status: 'Active',
+          projects: 'Chit Chat, Befriender, Craft Night',
+          type: 'corevolunteer'
+        },
+        {
+          id: 4,
+          name: 'Person 4',
+          date_joined: '02/03/2010',
+          role: 'Regular Staff',
+          profession: 'Helper',
+          status: 'Active',
+          projects: 'Chit Chat, Befriender, Craft Night',
+          type: 'coreteam'
         }
       ]
     }
@@ -69,9 +113,24 @@ export default {
   computed: {
     getHeaders () {
       return [
-        { text: 'Id', value: 'id' },
-        { text: 'Name', value: 'name' }
+        { text: 'Name', value: 'name' },
+        { text: 'Date Joined', value: 'date_joined' },
+        { text: 'Role', value: 'role' },
+        { text: 'Profession', value: 'profession' },
+        { text: 'Status', value: 'status' },
+        { text: 'Projects Involved', value: 'projects' }
       ]
+    },
+    filteredDataByType () {
+      return this.testData.filter(item => item.type === this.staffTypeFilter)
+    }
+  },
+  methods: {
+    filterOnlyCapsText (value, search, item) {
+      return value != null &&
+        search != null &&
+        typeof value === 'string' &&
+        value.toString().toLocaleLowerCase().includes(search.toLocaleLowerCase()) !== -1
     }
   }
 }
