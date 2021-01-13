@@ -90,14 +90,19 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-calendar-check',
-          title: 'Projects',
-          to: '/projects'
-        },
-        {
           icon: 'mdi-clipboard-account',
           title: 'Manage PWAs',
           to: '/pwa'
+        },
+        {
+          icon: 'mdi-hand-heart',
+          title: 'Manage Volunteers',
+          to: '/volunteer'
+        },
+        {
+          icon: 'mdi-calendar-check',
+          title: 'Projects',
+          to: '/projects'
         },
         {
           icon: 'mdi-account-group',
