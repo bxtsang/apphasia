@@ -1,6 +1,11 @@
-actions: []
+actions:
+- name: createUser
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:5000/hello
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+  - name: CreateUserResponse
   scalars: []
