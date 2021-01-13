@@ -2,7 +2,7 @@ actions:
 - name: createUser
   definition:
     kind: synchronous
-    handler: http://host.docker.internal:5000/hello
+    handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
 custom_types:
   enums: []
   input_objects: []
