@@ -21,7 +21,7 @@
           required
           @click:append="showPassword = !showPassword"
         />
-        <v-btn block color="primary" class="my-3" type="submit">
+        <v-btn block color="primary" class="my-3" type="submit" :loading="isLoggingIn">
           Login
         </v-btn>
       </v-form>
@@ -33,6 +33,7 @@ export default {
   layout: 'none',
   data () {
     return {
+      isLoggingIn: false,
       valid: true,
       email: '',
       emailRules: [
@@ -49,13 +50,16 @@ export default {
   methods: {
     async login () {
       if (this.email === '' || this.password === '') { return }
+      this.isLoggingIn = true
       const loginData = { username: this.email, password: this.password }
       try {
         await this.$auth.loginWith('cognito', { data: loginData })
       } catch (error) {
-        this.$store.commit('notification/newNotification', ['Login Error', 'error'])
+        this.$store.commit('notification/newNotification', [error.message, 'error'])
         this.email = ''
         this.password = ''
+      } finally {
+        this.isLoggingIn = false
       }
     }
   }
