@@ -2,17 +2,71 @@
     schema: public
     name: languages
   is_enum: true
+  array_relationships:
+  - name: staffs
+    using:
+      foreign_key_constraint_on:
+        column: language
+        table:
+          schema: public
+          name: staff_languages
 - table:
     schema: public
     name: roles
+  is_enum: true
   array_relationships:
-  - name: users
+  - name: staffs
     using:
       foreign_key_constraint_on:
         column: role
         table:
           schema: public
-          name: users
+          name: staffs
+- table:
+    schema: public
+    name: staff_languages
+  object_relationships:
+  - name: name
+    using:
+      foreign_key_constraint_on: language
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+- table:
+    schema: public
+    name: staff_supervisors
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  - name: supervisor
+    using:
+      foreign_key_constraint_on: supervisor_id
+- table:
+    schema: public
+    name: staffs
+  array_relationships:
+  - name: languages
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: staff_languages
+  - name: supervising
+    using:
+      foreign_key_constraint_on:
+        column: supervisor_id
+        table:
+          schema: public
+          name: staff_supervisors
+  - name: supervisors
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: staff_supervisors
 - table:
     schema: public
     name: test
@@ -95,18 +149,3 @@
       interval_sec: 10
       timeout_sec: 60
     webhook: https://aphasia-hasura-dev.herokuapp.com/v1/graphql
-- table:
-    schema: public
-    name: users
-  object_relationships:
-  - name: supervisor
-    using:
-      foreign_key_constraint_on: supervisor_id
-  array_relationships:
-  - name: supervising
-    using:
-      foreign_key_constraint_on:
-        column: supervisor_id
-        table:
-          schema: public
-          name: users
