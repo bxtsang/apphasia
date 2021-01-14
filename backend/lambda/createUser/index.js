@@ -33,7 +33,7 @@ exports.handler = function (event, context, callback) {
       
       result = JSON.stringify(result)
         var response = {
-          statusCode: 200,
+          statusCode: 400,
           body: result,
           headers: {'Content-Type': 'application/json'}
       }
@@ -49,6 +49,15 @@ exports.handler = function (event, context, callback) {
           result['message'] = "user confirmation failed"
           result['error'] = err
 
+          result = JSON.stringify(result)
+
+          var response = {
+            statusCode: 400,
+            body: result,
+            headers: {'Content-Type': 'application/json'}
+          }
+
+          callback(null, response);
         } // an error occurred
         else {
           console.log(data);
