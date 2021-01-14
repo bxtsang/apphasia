@@ -6,22 +6,24 @@ var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ ap
 
 exports.handler = function (event, context, callback) {
   var result = {}
-
+  var body = JSON.parse(event.body)
   var params = {
     UserAttributes: [ /* required */
       {
         Name: 'custom:role',
-        Value: event.role
-      },
-      {
-        Name: 'email',
-        Value: event.new_email
+        Value: body.input.role
       }
       /* more items */
     ],
     UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: event.email, /* required */
+    Username: body.input.email, /* required */
   };
+  if (body.input.hasOwnProperty('new_email')) {
+    params.UserAttributes.push({
+      Name: 'email',
+      Value: body.input.new_email
+    })
+  }
   cognitoidentityserviceprovider.adminUpdateUserAttributes(params, function(err, data) {
     if (err) {
       console.log(err, err.stack); // an error occurred

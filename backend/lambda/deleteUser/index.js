@@ -6,10 +6,10 @@ var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ ap
 
 exports.handler = function (event, context, callback) {
   var result = {}
-
+  var body = JSON.parse(event.body)
   var params = {
     UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: event.email, /* required */
+    Username: body.input.email, /* required */
   };
 
   cognitoidentityserviceprovider.adminDeleteUser(params, function(err, data) {

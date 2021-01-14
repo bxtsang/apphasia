@@ -6,14 +6,15 @@ var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ ap
 
 exports.handler = function (event, context, callback) {
   var result = {}
+  var body = JSON.parse(event.body)
   var params = {
     ClientId: process.env.CLIENT_ID, /* required */
-    Password: event.password, /* required */
-    Username: event.email, /* required */
+    Password: body.input.password, /* required */
+    Username: body.input.email, /* required */
     UserAttributes: [
       {
         Name: 'custom:role', /* required */
-        Value: event.role
+        Value: body.input.role
       }
       /* more items */
     ],
@@ -21,7 +22,7 @@ exports.handler = function (event, context, callback) {
 
   var confirmParams = {
     UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: event.email, /* required */
+    Username: body.input.email, /* required */
   };
 
   cognitoidentityserviceprovider.signUp(params, function (err, data) {
