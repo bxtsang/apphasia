@@ -2,7 +2,7 @@ type Mutation {
   createUser (
     email: String!
     password: String!
-    role: Int!
+    role: String!
   ): CreateUserResponse
 }
 
