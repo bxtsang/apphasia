@@ -9,7 +9,7 @@ exports.handler = function (event, context, callback) {
   var params = {
     ClientId: process.env.CLIENT_ID, /* required */
     Password: event.password, /* required */
-    Username: event.username, /* required */
+    Username: event.email, /* required */
     UserAttributes: [
       {
         Name: 'custom:role', /* required */
@@ -21,7 +21,7 @@ exports.handler = function (event, context, callback) {
 
   var confirmParams = {
     UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: event.username, /* required */
+    Username: event.email, /* required */
   };
 
   cognitoidentityserviceprovider.signUp(params, function (err, data) {
