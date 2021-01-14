@@ -9,7 +9,7 @@ exports.handler = function (event, context, callback) {
 
   var params = {
     UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: event.username, /* required */
+    Username: event.email, /* required */
   };
 
   cognitoidentityserviceprovider.adminDeleteUser(params, function(err, data) {
@@ -30,7 +30,7 @@ exports.handler = function (event, context, callback) {
     else {
       console.log(data); 
           result['status'] = "success";   // successful response
-          result['message'] = "user created successfully!"
+          result['message'] = "user deleted successfully!"
         }   
         
         result = JSON.stringify(result)
