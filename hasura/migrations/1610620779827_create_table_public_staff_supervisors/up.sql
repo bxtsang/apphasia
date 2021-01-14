@@ -1,0 +1,1 @@
+CREATE TABLE "public"."staff_supervisors"("staff_id" integer NOT NULL, "supervisor_id" integer NOT NULL, PRIMARY KEY ("supervisor_id","staff_id") , FOREIGN KEY ("staff_id") REFERENCES "public"."staffs"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("supervisor_id") REFERENCES "public"."staffs"("id") ON UPDATE restrict ON DELETE restrict);
