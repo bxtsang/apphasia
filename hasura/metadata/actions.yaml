@@ -1,6 +1,11 @@
-actions: []
+actions:
+- name: createUser
+  definition:
+    kind: synchronous
+    handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+  - name: CreateUserResponse
   scalars: []
