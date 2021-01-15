@@ -71,9 +71,8 @@ export default {
           id: 1,
           name: 'Person 1',
           date_joined: '02/03/2010',
-          role: 'Manager',
           profession: 'Therapist',
-          status: 'Active',
+          speech_therapist: true,
           projects: 'Chit Chat, Befriender, Craft Night',
           type: 'coreteam'
         },
@@ -81,9 +80,8 @@ export default {
           id: 2,
           name: 'Person 2',
           date_joined: '02/03/2010',
-          role: 'Manager',
-          profession: 'Therapist',
-          status: 'Active',
+          profession: 'Student',
+          speech_therapist: false,
           projects: 'Chit Chat, Befriender, Craft Night',
           type: 'intern'
         },
@@ -91,9 +89,8 @@ export default {
           id: 3,
           name: 'Person 3',
           date_joined: '02/03/2010',
-          role: 'Manager',
           profession: 'Therapist',
-          status: 'Active',
+          speech_therapist: true,
           projects: 'Chit Chat, Befriender, Craft Night',
           type: 'corevolunteer'
         },
@@ -101,9 +98,8 @@ export default {
           id: 4,
           name: 'Person 4',
           date_joined: '02/03/2010',
-          role: 'Regular Staff',
           profession: 'Helper',
-          status: 'Active',
+          speech_therapist: true,
           projects: 'Chit Chat, Befriender, Craft Night',
           type: 'coreteam'
         }
@@ -115,9 +111,8 @@ export default {
       return [
         { text: 'Name', value: 'name' },
         { text: 'Date Joined', value: 'date_joined' },
-        { text: 'Role', value: 'role' },
         { text: 'Profession', value: 'profession' },
-        { text: 'Status', value: 'status' },
+        { text: 'Speech Therapist', value: 'speech_therapist' },
         { text: 'Projects Involved', value: 'projects' }
       ]
     },
