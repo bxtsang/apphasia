@@ -12,6 +12,13 @@
           name: staff_languages
 - table:
     schema: public
+    name: projects
+  object_relationships:
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+- table:
+    schema: public
     name: roles
   is_enum: true
   array_relationships:
@@ -53,6 +60,13 @@
         table:
           schema: public
           name: staff_languages
+  - name: projects_owned
+    using:
+      foreign_key_constraint_on:
+        column: owner_id
+        table:
+          schema: public
+          name: projects
   - name: supervising
     using:
       foreign_key_constraint_on:
