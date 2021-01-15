@@ -67,77 +67,30 @@
         table:
           schema: public
           name: staff_supervisors
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
 - table:
     schema: public
     name: test
-  insert_permissions:
-  - role: "1"
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-      backend_only: false
-  - role: core
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-      backend_only: false
-  - role: ct
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-  select_permissions:
-  - role: "1"
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: core
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: ct
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: vol
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  update_permissions:
-  - role: "1"
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-      check: null
-  - role: ct
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-      check: null
-  delete_permissions:
-  - role: "1"
-    permission:
-      filter: {}
-  - role: ct
-    permission:
-      filter: {}
   event_triggers:
   - name: test_trigger
     definition:
