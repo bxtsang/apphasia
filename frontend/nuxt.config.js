@@ -73,8 +73,8 @@ export default {
         tokenRequired: true,
         tokenName: "Authorization",
         autoFetchUser: true,
-        userPoolId: 'ap-southeast-1_Q99DJNNPZ',
-        clientId: '16ohol46005ovfeit19buciu4e',
+        userPoolId: 'ap-southeast-1_0wc22ewSD',
+        clientId: '7mi9isulls8458et869mca42sp',
         refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
         fetchUserCallback: false // Can be used to put more information into the user object
       }
