@@ -53,8 +53,8 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'https://rickandmortyapi.com/graphql/',
-        tokenName: 'auth.CognitoIdentityServiceProvider.16ohol46005ovfeit19buciu4e.30a07e2b-18d9-4421-b8b0-8a717d2dd0c0.idToken'
+        httpEndpoint: 'https://aphasia-hasura-dev.herokuapp.com/v1/graphql',
+        tokenName: 'apollo-token'
       },
       
     }
