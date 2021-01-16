@@ -53,11 +53,13 @@ export default {
       this.isLoggingIn = true
       const loginData = { username: this.email, password: this.password }
       try {
-        await this.$auth.loginWith('cognito', { data: loginData })
+        const response = await this.$auth.loginWith('cognito', { data: loginData })
+        this.$apolloHelpers.onLogin(response.idToken.jwtToken)
       } catch (error) {
         this.$store.commit('notification/newNotification', [error.message, 'error'])
         this.email = ''
         this.password = ''
+        this.$apolloHelpers.onLogout()
       } finally {
         this.isLoggingIn = false
       }
