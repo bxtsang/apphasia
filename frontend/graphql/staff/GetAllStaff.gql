@@ -15,5 +15,6 @@ query GetAllStaff {
     profession
     role
     ws_place
+    id
   }
 }
