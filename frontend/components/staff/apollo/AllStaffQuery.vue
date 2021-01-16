@@ -48,11 +48,11 @@
                   solo
                   dense
                   class="mx-3"
-                ></v-text-field>
+                />
               </v-row>
             </v-container>
           </template>
-          <template v-slot:[`item.is_speech_therapist`]="{ item }" >
+          <template v-slot:[`item.is_speech_therapist`]="{ item }">
             <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
             <v-chip v-else color="error">No</v-chip>
           </template>

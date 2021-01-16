@@ -4,8 +4,14 @@
     width="800"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" v-bind="attrs" v-on="on">
-        Add Staff
+      <v-btn
+        icon
+        v-bind="attrs"
+        v-on="on"
+      >
+        <v-icon>
+          mdi-pencil
+        </v-icon>
       </v-btn>
     </template>
     <StaffForm />
