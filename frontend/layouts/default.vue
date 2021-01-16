@@ -131,6 +131,7 @@ export default {
   },
   methods: {
     logout () {
+      this.$apolloHelpers.onLogout()
       this.$auth.logout()
     }
   }
