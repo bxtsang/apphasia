@@ -19,7 +19,7 @@
       <div v-else-if="data">
         <v-data-table
           :headers="getHeaders"
-          :items="filteredDataByType"
+          :items="filteredDataByRole(data.staffs)"
           item-key="id"
           class="elevation-1"
           :search="search"
@@ -34,9 +34,9 @@
               <v-row>
                 <v-col>
                   <v-tabs>
-                    <v-tab @click="staffTypeFilter = 'coreteam'">Core Team</v-tab>
-                    <v-tab @click="staffTypeFilter = 'intern'">Interns</v-tab>
-                    <v-tab @click="staffTypeFilter = 'corevolunteer'">Core Volunteers</v-tab>
+                    <v-tab @click="staffRoleFilter = 'core_team'">Core Team</v-tab>
+                    <v-tab @click="staffRoleFilter = 'intern'">Interns</v-tab>
+                    <v-tab @click="staffRoleFilter = 'core_volunteer'">Core Volunteers</v-tab>
                   </v-tabs>
                 </v-col>
               </v-row>
@@ -52,6 +52,18 @@
               </v-row>
             </v-container>
           </template>
+          <template v-slot:[`item.is_speech_therapist`]="{ item }" >
+            <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
+            <v-chip v-else color="error">No</v-chip>
+          </template>
+          <template v-slot:[`item.actions`]="{ item }">
+            <EditStaffModal :staff="item" />
+            <v-btn :to="`/staff?id=${item.id}`" icon>
+              <v-icon large>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+          </template>
         </v-data-table>
       </div>
 
@@ -61,75 +73,32 @@
   </ApolloQuery>
 </template>
 <script>
+import EditStaffModal from './../modals/EditStaffModal'
+
 export default {
+  components: { EditStaffModal },
   data () {
     return {
       search: '',
-      staffTypeFilter: 'coreteam',
-      testData: [
-        {
-          id: 1,
-          name: 'Person 1',
-          date_joined: '02/03/2010',
-          profession: 'Therapist',
-          speech_therapist: true,
-          projects: 'Chit Chat, Befriender, Craft Night',
-          type: 'coreteam'
-        },
-        {
-          id: 2,
-          name: 'Person 2',
-          date_joined: '02/03/2010',
-          profession: 'Student',
-          speech_therapist: false,
-          projects: 'Chit Chat, Befriender, Craft Night',
-          type: 'intern'
-        },
-        {
-          id: 3,
-          name: 'Person 3',
-          date_joined: '02/03/2010',
-          profession: 'Therapist',
-          speech_therapist: true,
-          projects: 'Chit Chat, Befriender, Craft Night',
-          type: 'corevolunteer'
-        },
-        {
-          id: 4,
-          name: 'Person 4',
-          date_joined: '02/03/2010',
-          profession: 'Helper',
-          speech_therapist: true,
-          projects: 'Chit Chat, Befriender, Craft Night',
-          type: 'coreteam'
-        }
-      ]
+      staffRoleFilter: 'core_team'
     }
   },
   computed: {
     getHeaders () {
       return [
-        { text: 'Name', value: 'name' },
+        { text: 'Name', value: 'name', align: 'start' },
         { text: 'Date Joined', value: 'date_joined' },
         { text: 'Profession', value: 'profession' },
-        { text: 'Speech Therapist', value: 'speech_therapist' },
-        { text: 'Projects Involved', value: 'projects' }
+        { text: 'Speech Therapist', value: 'is_speech_therapist' },
+        { text: 'Projects Involved', value: '' },
+        { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
       ]
-    },
-    filteredDataByType () {
-      return this.testData.filter(item => item.type === this.staffTypeFilter)
     }
   },
   methods: {
-    filterOnlyCapsText (value, search, item) {
-      return value != null &&
-        search != null &&
-        typeof value === 'string' &&
-        value.toString().toLocaleLowerCase().includes(search.toLocaleLowerCase()) !== -1
+    filteredDataByRole (data) {
+      return data.filter(item => item.role === this.staffRoleFilter)
     }
   }
 }
 </script>
-<style scoped>
-
-</style>
