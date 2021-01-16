@@ -1,0 +1,16 @@
+type Mutation {
+  createUser (
+    email: String!
+    password: String!
+    role: String!
+  ): CreateUserResponse
+}
+
+
+
+
+type CreateUserResponse {
+  status : String!
+  message : String!
+}
+
