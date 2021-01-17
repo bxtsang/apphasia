@@ -1,5 +1,5 @@
 actions:
-- name: createUser
+- name: createCognitoUser
   definition:
     kind: synchronous
     handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/

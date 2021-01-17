@@ -1,8 +1,9 @@
 type Mutation {
-  createUser (
+  createCognitoUser (
     email: String!
     password: String!
     role: String!
+    user_id: Int!
   ): CreateUserResponse
 }
 
