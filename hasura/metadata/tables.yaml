@@ -155,6 +155,29 @@
       - role
       - ws_place
       filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - nric
+      - bio
+      - role
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
   update_permissions:
   - role: core_team
     permission:
