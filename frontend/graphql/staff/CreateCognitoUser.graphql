@@ -1,0 +1,12 @@
+mutation {
+    createCognitoUser (
+        email: $email #string
+        password: $password #string
+        role: $role #string
+        user_id: $user_id #int
+    )
+    {
+        status
+        message
+    }
+}
