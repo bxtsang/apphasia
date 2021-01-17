@@ -10,6 +10,12 @@
         table:
           schema: public
           name: staff_languages
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - language
+      filter: {}
 - table:
     schema: public
     name: projects
