@@ -137,24 +137,23 @@
   - role: core_team
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - contact_num
-      - id
       - address
       - bio
-      - cognito_id
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - nric
       - profession
       - role
       - ws_place
-      - created_at
       filter: {}
   update_permissions:
   - role: core_team
