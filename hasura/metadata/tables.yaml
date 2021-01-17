@@ -18,11 +18,29 @@
       filter: {}
 - table:
     schema: public
+    name: project_staffs
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+- table:
+    schema: public
     name: projects
   object_relationships:
   - name: owner
     using:
       foreign_key_constraint_on: owner_id
+  array_relationships:
+  - name: staffs
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_staffs
 - table:
     schema: public
     name: roles
@@ -66,6 +84,13 @@
         table:
           schema: public
           name: staff_languages
+  - name: projects_in
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: project_staffs
   - name: projects_owned
     using:
       foreign_key_constraint_on:
