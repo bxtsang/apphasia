@@ -73,8 +73,8 @@ export default {
         tokenRequired: true,
         tokenName: "Authorization",
         autoFetchUser: true,
-        userPoolId: 'ap-southeast-1_0wc22ewSD',
-        clientId: '7mi9isulls8458et869mca42sp',
+        userPoolId: process.env.COGNITO_USER_POOL_ID || 'ap-southeast-1_0wc22ewSD',
+        clientId: process.env.COGNITO_CLIENT_ID || '7mi9isulls8458et869mca42sp',
         refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
         fetchUserCallback: false // Can be used to put more information into the user object
       }
