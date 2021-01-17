@@ -1,8 +1,38 @@
 'use strict'
 var AWS = require('aws-sdk');
+var { default: axios } = require('axios');
+var { resolve } = require('path');
+const { env } = require('process');
 AWS.config.update({ region: process.env.REGION });
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ apiVersion: '2016-04-18' });
-// ^ Hard to find that this is the way to import the library, but it was obvious in docs
+
+const hasuraQuery = async (qlQuery, result) => {
+  var body = {
+    'query': qlQuery
+  }
+
+  try {
+    const resp = await axios.post(process.env.HASURA_URI, JSON.stringify(body), {
+      headers: {
+        "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET,
+        "Content-Type": "application/json"
+      },
+    })
+    console.log(resp.data)
+    return {
+      status: "success",
+      message: "user successfully deleted from postgres db.",
+      response: resp.data
+    }
+  } catch (err) {
+    console.log(err)
+    return {
+      status: "failed",
+      message: "failed to delete user from postgres db.",
+      response: err
+    }
+  }
+}
 
 exports.handler = function (event, context, callback) {
   var result = {}
@@ -25,29 +55,54 @@ exports.handler = function (event, context, callback) {
     Username: body.input.email, /* required */
   };
 
-  cognitoidentityserviceprovider.signUp(params, function (err, data) {
+  cognitoidentityserviceprovider.signUp(params, async function (err, data) {
     if (err) {
       console.log(err, err.stack);
+      // result = JSON.parse(result);
       result['status'] = "failed";
-      result['message'] = "failed to create user."
+      result['message'] = `failed to create user.`
       result['error'] = err
-      
-      result = JSON.stringify(result)
-        var response = {
-          statusCode: 400,
-          body: result,
-          headers: {'Content-Type': 'application/json'}
-      }
-        callback(null, response);
 
-     }
+      if (err.message != "An account with the given email already exists.") {
+        var tempQuery = `mutation {
+          delete_staffs (
+            where: {
+              id: {
+                _eq: ${body.input.user_id}
+              }
+            }
+          ) {
+            affected_rows
+            returning {
+              id
+            }
+          }
+        }`
+
+        const resp = await hasuraQuery(tempQuery, result)
+        let message2 = resp.message
+        let response2 = resp.response
+        let status2 = resp.status
+        result['hasura_status'] = status2
+        result['hasura_message'] = message2
+        result['hasura_response'] = response2
+      }
+
+      result = JSON.stringify(result)
+      var response = {
+        statusCode: 400,
+        body: result,
+        headers: { 'Content-Type': 'application/json' }
+      }
+      callback(null, response);
+    }
     else {
-      console.log(data);   
-      cognitoidentityserviceprovider.adminConfirmSignUp(confirmParams, function(err, data) {
+      console.log(data);
+      cognitoidentityserviceprovider.adminConfirmSignUp(confirmParams, function (err, data) {
         if (err) {
           console.log(err, err.stack);
           result['status'] = 'failed';
-          result['message'] = "user confirmation failed"
+          result['message'] = "user confirmation failed."
           result['error'] = err
 
           result = JSON.stringify(result)
@@ -55,7 +110,7 @@ exports.handler = function (event, context, callback) {
           var response = {
             statusCode: 400,
             body: result,
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
           }
 
           callback(null, response);
@@ -64,14 +119,14 @@ exports.handler = function (event, context, callback) {
           console.log(data);
           result['status'] = "success";   // successful response
           result['message'] = "user created successfully!"
-        }   
-        
+        }
+
         result = JSON.stringify(result)
         var response = {
           statusCode: 200,
           body: result,
-          headers: {'Content-Type': 'application/json'}
-      }
+          headers: { 'Content-Type': 'application/json' }
+        }
         callback(null, response);
       });
     }

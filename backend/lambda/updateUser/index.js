@@ -24,6 +24,14 @@ exports.handler = function (event, context, callback) {
       Value: body.input.new_email
     })
   }
+
+  if (body.input.hasOwnProperty('user_id')) {
+    params.UserAttributes.push({
+      Name: 'custom:user_id',
+      Value: body.input.user_id
+    })
+  }
+
   cognitoidentityserviceprovider.adminUpdateUserAttributes(params, function(err, data) {
     if (err) {
       console.log(err, err.stack); // an error occurred
