@@ -321,7 +321,27 @@ export default {
             console.log('create cognito account')
           }
         }).then((data) => {
+          this.staffData = {
+            role: 'core_team',
+            name: '',
+            nickname: '',
+            nric: '',
+            dob: '',
+            contact_num: '',
+            gender: '',
+            email: '',
+            address: '',
+            bio: '',
+            projects_in: [],
+            languages: [],
+            ws_place: '',
+            profession: '',
+            is_speech_therapist: false,
+            date_joined: '',
+            supervisors: []
+          }
           this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })

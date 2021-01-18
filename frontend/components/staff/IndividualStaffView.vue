@@ -5,7 +5,7 @@
         <h1 class="title hover-underline">
           <NuxtLink to="/staff">
             Staff
-          </NuxtLink> / {{ project ? project.name : "" }}
+          </NuxtLink> / {{ staffId ? staffId : "" }}
         </h1>
         <v-row>
           Hello
