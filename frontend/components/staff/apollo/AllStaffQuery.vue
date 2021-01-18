@@ -1,6 +1,6 @@
 <template>
   <ApolloQuery
-    :query="require('./../../../graphql/staff/GetAllStaff.gql')"
+    :query="require('./../../../graphql/staff/GetAllStaff.graphql')"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
