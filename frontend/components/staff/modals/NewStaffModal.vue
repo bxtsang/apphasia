@@ -8,7 +8,7 @@
         Add Staff
       </v-btn>
     </template>
-    <StaffForm />
+    <StaffForm v-on:closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>

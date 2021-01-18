@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-8">
     <span class="section-title">Add Staff</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="submitProject">
+    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="submitStaff">
       <v-container class="pa-0">
         <v-row>
           <v-col col="12" class="py-0">
@@ -23,8 +23,8 @@
         <v-row>
           <v-col class="py-0">
             <v-text-field
-              v-model="staffData.fullname"
-              :rules="fullnameRules"
+              v-model="staffData.name"
+              :rules="nameRules"
               label="Full Name"
               required
             />
@@ -32,7 +32,6 @@
           <v-col class="py-0">
             <v-text-field
               v-model="staffData.nickname"
-              :rules="nicknameRules"
               label="Nickname / Alias"
               required
             />
@@ -51,6 +50,7 @@
             <v-menu
               transition="scale-transition"
               offset-y
+              :close-on-content-click="false"
               min-width="auto"
             >
               <template v-slot:activator="{ on, attrs }">
@@ -73,7 +73,7 @@
           </v-col>
           <v-col class="py-0">
             <v-text-field
-              v-model="staffData.contact_number"
+              v-model="staffData.contact_num"
               :rules="contactRules"
               label="Contact"
               required
@@ -99,7 +99,7 @@
           </v-col>
           <v-col cols="8">
             <v-text-field
-              v-model="staffData.home_address"
+              v-model="staffData.address"
               :rules="addressRules"
               label="Home Address"
               required
@@ -114,13 +114,13 @@
         <v-row>
           <v-col class="py-0">
             <v-text-field
-              v-model="additionalData.bio"
+              v-model="staffData.bio"
               label="Hobbies / Interests"
             />
           </v-col>
           <v-col class="py-0">
             <v-select
-              v-model="additionalData.projects"
+              v-model="staffData.projects_in"
               :items="projects"
               label="Projects Involved"
               multiple
@@ -130,7 +130,7 @@
         <v-row>
           <v-col class="py-0">
             <v-select
-              v-model="additionalData.languages"
+              v-model="staffData.languages"
               :items="languages"
               label="Languages understand and/or speak"
               multiple
@@ -138,7 +138,7 @@
           </v-col>
           <v-col class="py-0">
             <v-text-field
-              v-model="additionalData.work_location"
+              v-model="staffData.ws_place"
               label="Current Place of Work / Study"
             />
           </v-col>
@@ -146,13 +146,14 @@
         <v-row>
           <v-col class="py-0">
             <v-text-field
-              v-model="additionalData.profession"
+              v-model="staffData.profession"
+              :rules="professionRules"
               label="Profession"
             />
           </v-col>
           <v-col class="py-0">
             <v-switch
-              v-model="additionalData.isST"
+              v-model="staffData.is_speech_therapist"
               label="Speech Therapist?"
             />
           </v-col>
@@ -162,21 +163,23 @@
             <v-menu
               transition="scale-transition"
               offset-y
+              :close-on-content-click="false"
               min-width="auto"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  v-model="additionalData.date_joined"
+                  v-model="staffData.date_joined"
                   label="Date Joined"
                   v-bind="attrs"
                   readonly
                   required
+                  :rules="dateJoinedRules"
                   v-on="on"
                 />
               </template>
               <v-date-picker
                 ref="picker"
-                v-model="additionalData.date_joined"
+                v-model="staffData.date_joined"
               />
             </v-menu>
           </v-col>
@@ -189,7 +192,7 @@
         <v-row v-if="staffData.role != '' && staffData.role != 'core_team'">
           <v-col cols="6" class="py-0">
             <v-select
-              v-model="additionalData.supervisor"
+              v-model="staffData.supervisors"
               :items="supervisors"
               label="Tag Supervisor(s)"
               multiple
@@ -205,6 +208,8 @@
 </template>
 <script>
 import gql from 'graphql-tag'
+import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
+import CreateUser from './../../graphql/staff/CreateUser.graphql'
 
 export default {
   data () {
@@ -221,29 +226,26 @@ export default {
       projects: ['Project1', 'Project 2'],
       supervisors: ['person 1'],
       staffData: {
-        role: '',
-        fullname: '',
-        nickname: '',
-        nric: '',
-        dob: '',
-        contact_number: '',
-        gender: '',
-        email: '',
-        home_address: ''
-      },
-      additionalData: {
+        role: 'core_team',
+        name: 'Arix Phua Si Yu',
+        nickname: 'Arix',
+        nric: 'S9625151C',
+        dob: '1996-08-18',
+        contact_num: '91714378',
+        gender: 'M',
+        email: 'arixgg@gmail.com',
+        address: 'Blk 1 Beach Road',
         bio: '',
-        projects: [],
-        languages: [],
-        work_location: '',
-        profession: '',
-        isST: false,
-        data_joined: '',
-        supervisor: []
+        projects_in: [],
+        languages: ['English'],
+        ws_place: 'SMU',
+        profession: 'Student',
+        is_speech_therapist: false,
+        date_joined: '2021-01-10',
+        supervisors: []
       },
       roleRules: [v => !!v || 'Role is required'],
-      fullnameRules: [v => !!v || 'Fullname is required'],
-      nicknameRules: [v => !!v || 'Nickname is required'],
+      nameRules: [v => !!v || 'Fullname is required'],
       nricRules: [
         v => !!v || 'NRIC is required',
         v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
@@ -260,7 +262,9 @@ export default {
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
       ],
-      addressRules: [v => !!v || 'Home Address is required']
+      addressRules: [v => !!v || 'Home Address is required'],
+      professionRules: [v => !!v || 'Profession is required'],
+      dateJoinedRules: [v => !!v || 'Date Joined is required']
     }
   },
   apollo: {
@@ -273,11 +277,55 @@ export default {
         }`
       },
       update: data => data.languages.map(item => item.language)
+    },
+    supervisors: {
+      query () {
+        return gql`query getCoreTeamMembers {
+          staffs(where: {role: {_eq: core_team}}){
+            id
+            name
+          }
+        }`
+      },
+      update: data => data.staffs.map((item) => { return { text: item.name, value: item.id } })
     }
   },
   methods: {
-    submitProject () {
-      return this.$refs.form.validate()
+    submitStaff () {
+      if (this.$refs.form.validate()) {
+        this.$apollo.mutate({
+          mutation: CreateUser,
+          variables: {
+            address: this.staffData.address,
+            bio: this.staffData.bio,
+            contact_num: this.staffData.contact_num,
+            date_joined: this.staffData.date_joined,
+            dob: this.staffData.dob,
+            email: this.staffData.email,
+            gender: this.staffData.gender,
+            is_speech_therapist: this.staffData.is_speech_therapist,
+            name: this.staffData.name,
+            nickname: this.staffData.nickname,
+            nric: this.staffData.nric,
+            profession: this.staffData.profession,
+            role: this.staffData.role,
+            ws_place: this.staffData.ws_place
+            // languages: this.staffData.languages.map((item) => { return { language: item } }),
+            // supervisors: this.staffData.supervisors,
+            // projects_in: this.staffData.projects_in,
+          },
+          update: (store, { data: { insert_staffs_one: newStaff } }) => {
+            const data = store.readQuery({ query: GetAllStaff })
+            data.staffs.push(newStaff)
+            store.writeQuery({ query: GetAllStaff, data })
+            console.log('create cognito account')
+          }
+        }).then((data) => {
+          this.$emit('closeForm')
+        }).catch((error) => {
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
     }
   }
 }
