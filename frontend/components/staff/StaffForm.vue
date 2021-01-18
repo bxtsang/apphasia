@@ -89,7 +89,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
+          <v-col class="py-0" cols="4">
             <v-text-field
               v-model="staffData.email"
               :rules="emailRules"
@@ -97,7 +97,7 @@
               required
             />
           </v-col>
-          <v-col cols="8">
+          <v-col class="py-0" cols="8">
             <v-text-field
               v-model="staffData.address"
               :rules="addressRules"
@@ -210,19 +210,14 @@
 import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
+import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
   data () {
     return {
       valid: true,
-      ROLE_OPTIONS: [
-        { label: 'Core Team', value: 'core_team' },
-        { label: 'Intern', value: 'intern' },
-        { label: 'Core Volunteer', value: 'core_volunteer' }
-      ],
-      GENDER_OPTIONS: [
-        'M', 'F'
-      ],
+      ROLE_OPTIONS,
+      GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
       supervisors: ['person 1'],
       staffData: {
