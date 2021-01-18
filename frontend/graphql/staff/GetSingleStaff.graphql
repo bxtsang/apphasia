@@ -1,0 +1,20 @@
+query GetSingleStaff($id: Int!) {
+  staffs(where: {id: {_eq: $id}}) {
+    address
+    bio
+    contact_num
+    date_joined
+    dob
+    email
+    gender
+    is_speech_therapist
+    is_active
+    name
+    nickname
+    nric
+    profession
+    role
+    ws_place
+    id
+  }
+}
