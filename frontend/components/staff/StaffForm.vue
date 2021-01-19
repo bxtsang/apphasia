@@ -229,20 +229,20 @@ export default {
       GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
       staffData: {
-        role: this.staff ? this.staff.role : 'core_team',
-        name: this.staff ? this.staff.name : 'Arix Phua Si Yu',
-        nickname: this.staff ? this.staff.nickname : 'Arix',
-        nric: this.staff ? this.staff.nric : 'S9625151C',
-        dob: this.staff ? this.staff.dob : '1996-08-18',
-        contact_num: this.staff ? this.staff.contact_num : '91714378',
-        gender: this.staff ? this.staff.gender : 'M',
-        email: this.staff ? this.staff.email : 'arixgg@gmail.com',
-        address: this.staff ? this.staff.address : 'Blk 1 Beach Road',
+        role: this.staff ? this.staff.role : '',
+        name: this.staff ? this.staff.name : '',
+        nickname: this.staff ? this.staff.nickname : '',
+        nric: this.staff ? this.staff.nric : '',
+        dob: this.staff ? this.staff.dob : '',
+        contact_num: this.staff ? this.staff.contact_num : '',
+        gender: this.staff ? this.staff.gender : '',
+        email: this.staff ? this.staff.email : '',
+        address: this.staff ? this.staff.address : '',
         bio: this.staff ? this.staff.bio : '',
-        ws_place: this.staff ? this.staff.ws_place : 'SMU',
-        profession: this.staff ? this.staff.profession : 'Student',
+        ws_place: this.staff ? this.staff.ws_place : '',
+        profession: this.staff ? this.staff.profession : '',
         is_speech_therapist: this.staff ? this.staff.is_speech_therapist : false,
-        date_joined: this.staff ? this.staff.date_joined : '2021-01-10',
+        date_joined: this.staff ? this.staff.date_joined : '',
         projects_in: [],
         languages: this.staff ? this.staff.languages.map(item => item.language) : [],
         supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor_id) : []
@@ -379,6 +379,9 @@ export default {
       console.log('hi')
       console.log(this.staff.id)
       console.log(this.staff.supervisors)
+      // update hasura
+      // update GetSingleStaff
+      // update GetAllStaff
     }
   }
 }
