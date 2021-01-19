@@ -1,7 +1,8 @@
 <template>
   <v-card class="pa-8">
-    <span class="section-title">Add Staff</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="submitStaff">
+    <span v-if="staff" class="section-title">Edit Staff</span>
+    <span v-else class="section-title">Add Staff</span>
+    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col col="12" class="py-0">
@@ -201,7 +202,7 @@
         </v-row>
       </v-container>
       <v-btn color="primary" class="my-3" type="submit">
-        Save
+        {{ staff ? 'Edit' : 'Save' }}
       </v-btn>
     </v-form>
   </v-card>
@@ -213,30 +214,35 @@ import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
+  props: {
+    staff: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       valid: true,
       ROLE_OPTIONS,
       GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
-      supervisors: ['person 1'],
       staffData: {
-        role: 'core_team',
-        name: 'Arix Phua Si Yu',
-        nickname: 'Arix',
-        nric: 'S9625151C',
-        dob: '1996-08-18',
-        contact_num: '91714378',
-        gender: 'M',
-        email: 'arixgg@gmail.com',
-        address: 'Blk 1 Beach Road',
-        bio: '',
+        role: this.staff ? this.staff.role : 'core_team',
+        name: this.staff ? this.staff.name : 'Arix Phua Si Yu',
+        nickname: this.staff ? this.staff.nickname : 'Arix',
+        nric: this.staff ? this.staff.nric : 'S9625151C',
+        dob: this.staff ? this.staff.dob : '1996-08-18',
+        contact_num: this.staff ? this.staff.contact_num : '91714378',
+        gender: this.staff ? this.staff.gender : 'M',
+        email: this.staff ? this.staff.email : 'arixgg@gmail.com',
+        address: this.staff ? this.staff.address : 'Blk 1 Beach Road',
+        bio: this.staff ? this.staff.bio : '',
+        ws_place: this.staff ? this.staff.ws_place : 'SMU',
+        profession: this.staff ? this.staff.profession : 'Student',
+        is_speech_therapist: this.staff ? this.staff.is_speech_therapist : false,
+        date_joined: this.staff ? this.staff.date_joined : '2021-01-10',
         projects_in: [],
         languages: ['English'],
-        ws_place: 'SMU',
-        profession: 'Student',
-        is_speech_therapist: false,
-        date_joined: '2021-01-10',
         supervisors: []
       },
       roleRules: [v => !!v || 'Role is required'],
@@ -285,6 +291,15 @@ export default {
       update: data => data.staffs.map((item) => { return { text: item.name, value: item.id } })
     }
   },
+  computed: {
+    formSubmitMethod () {
+      if (this.staff) {
+        return this.editStaff
+      } else {
+        return this.submitStaff
+      }
+    }
+  },
   methods: {
     submitStaff () {
       if (this.$refs.form.validate()) {
@@ -304,8 +319,8 @@ export default {
             nric: this.staffData.nric,
             profession: this.staffData.profession,
             role: this.staffData.role,
-            ws_place: this.staffData.ws_place
-            // languages: this.staffData.languages.map((item) => { return { language: item } }),
+            ws_place: this.staffData.ws_place,
+            languages: this.staffData.languages.map((item) => { return { language: item } })
             // supervisors: this.staffData.supervisors,
             // projects_in: this.staffData.projects_in,
           },
@@ -338,9 +353,14 @@ export default {
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
+          console.log(error.message)
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
+    },
+    editStaff () {
+      // Change existing
+      console.log('hi')
     }
   }
 }
