@@ -1,74 +1,68 @@
-#input ProjectsInInput {
-#    project_id: Int!
-#}
-#
-#input SupervisorData {
-#    data: [SupervisorInput!]
-#}
-#
-#input SupervisorInput {
-#    supervisor_id : Int!
-#}
-
 mutation (
-  $address: String!,
-  $bio: String,
-  $contact_num: Int!,
-  $date_joined: date!,
-  $dob: date!,
-  $email: String!,
-  $gender: bpchar!,
-  $is_speech_therapist: Boolean!,
-  $languages: [staff_languages_insert_input!]!,
-  $name: String!,
-  $nickname: String,
-  $nric: String!,
-  $profession: String,
-  $projects_in: ProjectsInInput,
-  $role: roles_enum!,
-  $supervisors: SupervisorData,
-  $ws_place: String
+    $address: String!,
+    $bio: String,
+    $contact_num: Int!,
+    $date_joined: date!,
+    $dob: date!,
+    $email: String!,
+    $gender: bpchar!,
+    $is_speech_therapist: Boolean!,
+    $languages: staff_languages_arr_rel_insert_input!,
+    $name: String!,
+    $nickname: String,
+    $nric: String!,
+    $profession: String,
+    $role: roles_enum!,
+    $supervisors: staff_supervisors_arr_rel_insert_input!,
+    $ws_place: String
 ){
-  insert_staffs_one(object: {
-    address: $address,#string
-    bio: $bio,#string
-    contact_num: $contact_num #int,
-    date_joined: $date_joined,#string in date format YYYY-MM-DD
-    dob: $dob,#string in date format YYYY-MM-DD
-    email: $email,#string
-    gender: $gender #char, "M" or "F",
-    is_speech_therapist: $is_speech_therapist,
-    # languages: $languages,
-    name: $name,#string
-    nickname: $nickname,#string
-    nric: $nric,#string
-    profession: $profession,#string
-    # projects_in: {
-    #     data: [ #the whole list can be a variable with each project object inside, can be empty too
-    #         {
-    #         project_id: $project_id #int
-    #         }
-    #     ]
-    # },
-    role: $role, #string, one of ["core_team", "core_volunteer", "intern"]
-    ws_place: $ws_place #string
-  })
-  {
-    address
-    bio
-    contact_num
-    date_joined
-    dob
-    email
-    gender
-    is_speech_therapist
-    is_active
-    name
-    nickname
-    nric
-    profession
-    role
-    ws_place
-    id
-  }
+    insert_staffs_one(object: {
+        address: $address,#string
+        bio: $bio,#string
+        contact_num: $contact_num #int,
+        date_joined: $date_joined,#string in date format YYYY-MM-DD
+        dob: $dob,#string in date format YYYY-MM-DD
+        email: $email,#string
+        gender: $gender #char, "M" or "F",
+        is_speech_therapist: $is_speech_therapist,
+        languages: $languages,
+        name: $name,#string
+        nickname: $nickname,#string
+        nric: $nric,#string
+        profession: $profession,#string
+        # projects_in: {
+        #     data: [ #the whole list can be a variable with each project object inside, can be empty too
+        #         {
+        #         project_id: $project_id #int
+        #         }
+        #     ]
+        # },
+        role: $role, #string, one of ["core_team", "core_volunteer", "intern"]
+        ws_place: $ws_place, #string
+        supervisors: $supervisors
+    })
+    {
+        address
+        bio
+        contact_num
+        date_joined
+        dob
+        email
+        gender
+        is_speech_therapist
+        is_active
+        name
+        nickname
+        nric
+        profession
+        role
+        ws_place
+        id
+        supervisors {
+            supervisor {
+                id
+                name
+            }
+        }
+    }
 }
