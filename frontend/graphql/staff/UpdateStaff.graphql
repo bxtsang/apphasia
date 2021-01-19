@@ -12,17 +12,56 @@ mutation (
     $profession: String!,
     $role: roles_enum!,
     $ws_place: String,
-    $staff_id: Int!
+    $staff_id: Int!,
+    $supervisors_to_add: [staff_supervisors_insert_input!]!,
+    $supervisors_to_remove: [Int!]!,
+    $languages_to_add: [staff_languages_insert_input!]!,
+    $languages_to_remove: [languages_enum!],
+    $projects_to_add: [project_staffs_insert_input!]!,
+    $projects_to_remove: [Int!]
 ) {
-    insert_staff_supervisors(objects: []) {
+    insert_staff_supervisors(objects: $supervisors_to_add) {
         affected_rows
     }
 
-    delete_staff_supervisors(where: {}) {
+    delete_staff_supervisors(where: {
+        _and: [
+            {
+                supervisor_id: {_in: $supervisors_to_remove},
+                staff_id: { _eq: $staff_id}
+            }
+        ]
+    }) {
         affected_rows
     }
 
-    insert_staff_languages(objects:[]) {
+    insert_staff_languages(objects: $languages_to_add) {
+        affected_rows
+    }
+
+    delete_staff_languages(where: {
+        _and: [
+            {
+                staff_id: {_eq: $staff_id},
+                language: {_in: $languages_to_remove}
+            }
+        ]
+    }) {
+        affected_rows
+    }
+
+    insert_project_staffs(objects: $projects_to_add) {
+        affected_rows
+    }
+
+    delete_project_staffs(where: {
+        _and: [
+            {
+                staff_id: {_eq: $staff_id},
+                project_id: {_in: $projects_to_remove}
+            }
+        ]
+    }) {
         affected_rows
     }
 
@@ -54,6 +93,34 @@ mutation (
                 }
             }
             ws_place
+            projects_in {
+                project {
+                    title
+                }
+            }
         }
     }
 }
+
+#{
+#    "address": "4 Road road",
+#    "bio": "",
+#    "contact_num": 1,
+#    "dob": "1999-09-09",
+#    "gender": "M",
+#    "is_active": true,
+#    "is_speech_therapist": false,
+#    "name": "test4",
+#    "nickname": "",
+#    "nric": "213",
+#    "profession": "",
+#    "role": "core_volunteer",
+#    "ws_place": null,
+#    "staff_id": 60,
+#    "supervisors_to_add": [{"staff_id": 60, "supervisor_id": 2}],      #list of objects with staff_id and supervisor_id fields
+#    "supervisors_to_remove": [2],      #list of integers of supervisor_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "languages_to_add": [{"staff_id": 60, "language": "Chinese"}],     #list of objects with staff_id and language fields
+#    "languages_to_remove": ["Chinese"],        #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "projects_to_add": [{"staff_id": 60, "project_id": 1}],        #list of objects with staff_id and project_id fields
+#    "projects_to_remove": [1]     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#}

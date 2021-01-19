@@ -26,6 +26,25 @@
   - name: staff
     using:
       foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: projects
@@ -41,6 +60,14 @@
         table:
           schema: public
           name: project_staffs
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
 - table:
     schema: public
     name: roles
@@ -101,6 +128,10 @@
       check:
         staff_id:
           _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: staff_supervisors
