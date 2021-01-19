@@ -7,7 +7,9 @@ actions:
   - role: core_team
 custom_types:
   enums: []
-  input_objects: []
+  input_objects:
+  - name: SupervisorInput
+  - name: SupervisorData
   objects:
   - name: CreateUserResponse
   scalars: []

@@ -63,6 +63,14 @@
   - name: staff
     using:
       foreign_key_constraint_on: staff_id
+  update_permissions:
+  - role: intern
+    permission:
+      columns: []
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      check: null
 - table:
     schema: public
     name: staff_supervisors
@@ -73,6 +81,14 @@
   - name: supervisor
     using:
       foreign_key_constraint_on: supervisor_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
 - table:
     schema: public
     name: staffs
@@ -155,6 +171,27 @@
       - role
       - ws_place
       filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - nric
+      - bio
+      - role
+      filter: {}
   - role: intern
     permission:
       columns:
@@ -175,9 +212,7 @@
       - nric
       - bio
       - role
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -199,6 +234,24 @@
       - ws_place
       filter: {}
       check: {}
+  - role: core_volunteer
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  - role: intern
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: test
