@@ -26,7 +26,7 @@
         </v-icon>
       </v-btn>
     </template>
-    <StaffForm />
+    <StaffForm :staff="staff" />
   </v-dialog>
 </template>
 <script>
@@ -34,7 +34,13 @@ import StaffForm from './../StaffForm'
 
 export default {
   components: { StaffForm },
-  props: { text: Boolean, staff: Object },
+  props: {
+    text: Boolean,
+    staff: {
+      default: null,
+      type: Object
+    }
+  },
   data () {
     return {
       isOpen: false
