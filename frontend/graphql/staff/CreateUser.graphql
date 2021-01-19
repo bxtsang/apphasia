@@ -13,7 +13,7 @@ mutation (
     $nric: String!,
     $profession: String,
     $role: roles_enum!,
-    $supervisors: staff_supervisors_arr_rel_insert_input!,
+    $supervisors: staff_supervisors_arr_rel_insert_input,
     $ws_place: String
 ){
     insert_staffs_one(object: {

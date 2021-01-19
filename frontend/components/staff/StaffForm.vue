@@ -211,6 +211,7 @@
 import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
+import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
@@ -320,15 +321,28 @@ export default {
             profession: this.staffData.profession,
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
-            languages: this.staffData.languages.map((item) => { return { language: item } })
-            // supervisors: this.staffData.supervisors,
+            languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
+            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
             // projects_in: this.staffData.projects_in,
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
             const data = store.readQuery({ query: GetAllStaff })
             data.staffs.push(newStaff)
             store.writeQuery({ query: GetAllStaff, data })
-            console.log('create cognito account')
+            this.$apollo.mutate({
+              mutation: CreateCognitoUser,
+              variables: {
+                email: newStaff.email,
+                password: 'aphasiapassword',
+                role: newStaff.role,
+                user_id: newStaff.id
+              },
+              update: (store, response) => {
+                // Success
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.staffData = {
