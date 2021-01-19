@@ -1,0 +1,59 @@
+mutation (
+    $address: String!,
+    $bio: String,
+    $contact_num: Int!,
+    $dob: date!,
+    $gender: bpchar!,
+    $is_active: Boolean!,
+    $is_speech_therapist: Boolean!,
+    $name: String!,
+    $nickname: String!,
+    $nric: String!,
+    $profession: String!,
+    $role: roles_enum!,
+    $ws_place: String,
+    $staff_id: Int!
+) {
+    insert_staff_supervisors(objects: []) {
+        affected_rows
+    }
+
+    delete_staff_supervisors(where: {}) {
+        affected_rows
+    }
+
+    insert_staff_languages(objects:[]) {
+        affected_rows
+    }
+
+    update_staffs(_set: {address: $address, bio: $bio, contact_num: $contact_num, dob: $dob, gender: $gender, is_active: $is_active, is_speech_therapist: $is_speech_therapist, name: $name, nickname: $nickname, profession: $profession, nric: $nric, role: $role, ws_place: $ws_place}, where: {id: {_eq: $staff_id}}) {
+        affected_rows
+        returning {
+            address
+            bio
+            contact_num
+            created_at
+            date_joined
+            dob
+            email
+            gender
+            id
+            is_active
+            is_speech_therapist
+            languages {
+                language
+            }
+            name
+            nickname
+            nric
+            profession
+            role
+            supervisors {
+                supervisor {
+                    name
+                }
+            }
+            ws_place
+        }
+    }
+}
