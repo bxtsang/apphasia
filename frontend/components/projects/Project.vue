@@ -1,13 +1,16 @@
 <template>
   <v-card>
     <v-toolbar flat>
-      <h1 class="title">{{ project.name }}</h1>
+      <h1 class="title">
+        {{ project.name }}
+      </h1>
       <v-spacer />
       <v-btn
         fab
         text
         small
         color="primary"
+        :to="`/projects?id=${project.id}`"
       >
         <v-icon small>
           mdi-chevron-right

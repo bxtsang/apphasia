@@ -1,7 +1,8 @@
 <template>
   <v-app :style="{background: $vuetify.theme.themes[theme].background}">
+    <Notification />
     <v-navigation-drawer fixed app permanent>
-      <v-img src="/asg.png"/>
+      <v-img src="/asg.png" />
       <v-list>
         <v-list-item>
           <v-list-item-content>
@@ -75,7 +76,10 @@
 </template>
 
 <script>
+import Notification from './../components/Notification'
+
 export default {
+  components: { Notification },
   middleware: ['isLoggedIn'],
   data () {
     return {
@@ -86,14 +90,19 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-calendar-check',
-          title: 'Projects',
-          to: '/projects'
-        },
-        {
           icon: 'mdi-clipboard-account',
           title: 'Manage PWAs',
           to: '/pwa'
+        },
+        {
+          icon: 'mdi-hand-heart',
+          title: 'Manage Volunteers',
+          to: '/volunteer'
+        },
+        {
+          icon: 'mdi-calendar-check',
+          title: 'Projects',
+          to: '/projects'
         },
         {
           icon: 'mdi-account-group',
@@ -122,6 +131,7 @@ export default {
   },
   methods: {
     logout () {
+      this.$apolloHelpers.onLogout()
       this.$auth.logout()
     }
   }
