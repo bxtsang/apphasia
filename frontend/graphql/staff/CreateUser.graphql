@@ -58,11 +58,11 @@ mutation (
         role
         ws_place
         id
+        languages {
+            language
+        }
         supervisors {
-            supervisor {
-                id
-                name
-            }
+            supervisor_id
         }
     }
 }

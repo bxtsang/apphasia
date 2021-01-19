@@ -16,5 +16,11 @@ query GetSingleStaff($id: Int!) {
     role
     ws_place
     id
+    languages {
+      language
+    }
+    supervisors {
+      supervisor_id
+    }
   }
 }

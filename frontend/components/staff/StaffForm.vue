@@ -134,6 +134,7 @@
               v-model="staffData.languages"
               :items="languages"
               label="Languages understand and/or speak"
+              :rules="languagesRules"
               multiple
             />
           </v-col>
@@ -243,8 +244,8 @@ export default {
         is_speech_therapist: this.staff ? this.staff.is_speech_therapist : false,
         date_joined: this.staff ? this.staff.date_joined : '2021-01-10',
         projects_in: [],
-        languages: ['English'],
-        supervisors: []
+        languages: this.staff ? this.staff.languages.map(item => item.language) : [],
+        supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor_id) : []
       },
       roleRules: [v => !!v || 'Role is required'],
       nameRules: [v => !!v || 'Fullname is required'],
@@ -266,7 +267,8 @@ export default {
       ],
       addressRules: [v => !!v || 'Home Address is required'],
       professionRules: [v => !!v || 'Profession is required'],
-      dateJoinedRules: [v => !!v || 'Date Joined is required']
+      dateJoinedRules: [v => !!v || 'Date Joined is required'],
+      languagesRules: [v => v.length > 0 || 'Language is required']
     }
   },
   apollo: {
@@ -375,6 +377,8 @@ export default {
     editStaff () {
       // Change existing
       console.log('hi')
+      console.log(this.staff.id)
+      console.log(this.staff.supervisors)
     }
   }
 }
