@@ -10,6 +10,22 @@
         table:
           schema: public
           name: staff_languages
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - language
+      filter: {}
+- table:
+    schema: public
+    name: project_staffs
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
 - table:
     schema: public
     name: projects
@@ -17,6 +33,14 @@
   - name: owner
     using:
       foreign_key_constraint_on: owner_id
+  array_relationships:
+  - name: staffs
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_staffs
 - table:
     schema: public
     name: roles
@@ -39,6 +63,22 @@
   - name: staff
     using:
       foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - language
+      backend_only: false
+  update_permissions:
+  - role: intern
+    permission:
+      columns: []
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      check: null
 - table:
     schema: public
     name: staff_supervisors
@@ -49,6 +89,49 @@
   - name: supervisor
     using:
       foreign_key_constraint_on: supervisor_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: staffs
@@ -60,6 +143,13 @@
         table:
           schema: public
           name: staff_languages
+  - name: projects_in
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: project_staffs
   - name: projects_owned
     using:
       foreign_key_constraint_on:
@@ -106,24 +196,65 @@
   - role: core_team
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - contact_num
-      - id
       - address
       - bio
-      - cognito_id
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - nric
       - profession
       - role
       - ws_place
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - email
+      - name
       - created_at
+      - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - nric
+      - bio
+      - role
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - nric
+      - bio
+      - role
       filter: {}
   update_permissions:
   - role: core_team
@@ -146,6 +277,24 @@
       - ws_place
       filter: {}
       check: {}
+  - role: core_volunteer
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  - role: intern
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: test

@@ -60,3 +60,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.v-snack--absolute{
+  z-index: 1000;
+}
+</style>
