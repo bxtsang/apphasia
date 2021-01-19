@@ -71,14 +71,36 @@
       - staff_id
       - language
       backend_only: false
-  update_permissions:
-  - role: intern
+  select_permissions:
+  - role: core_team
     permission:
-      columns: []
+      columns:
+      - staff_id
+      - language
+      filter: {}
+  update_permissions:
+  - role: core_volunteer
+    permission:
+      columns:
+      - language
+      - staff_id
       filter:
         staff_id:
           _eq: X-Hasura-User-Id
-      check: null
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      columns:
+      - language
+      - staff_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: staff_supervisors
