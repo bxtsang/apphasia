@@ -91,7 +91,7 @@
         </v-row>
         <v-row>
           <!--  hide from edit -->
-          <v-col class="py-0" cols="4">
+          <v-col class="py-0" cols="4" v-if="!staff">
             <v-text-field
               v-model="staffData.email"
               :rules="emailRules"
@@ -161,7 +161,7 @@
             />
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="!staff">
           <!--  hide from edit -->
           <v-col cols="6" class="py-0">
             <v-menu
@@ -216,6 +216,7 @@ import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
+import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
@@ -248,7 +249,8 @@ export default {
         date_joined: this.staff ? this.staff.date_joined : '',
         projects_in: [],
         languages: this.staff ? this.staff.languages.map(item => item.language) : [],
-        supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor_id) : []
+        supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor.id) : [],
+        is_active: this.staff ? this.staff.is_active : true
       },
       roleRules: [v => !!v || 'Role is required'],
       nameRules: [v => !!v || 'Fullname is required'],
@@ -372,40 +374,91 @@ export default {
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
-          console.log(error.message)
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
     },
     editStaff () {
-      // Change existing
+      const languageChanges = this.findChangesInLanguages()
+      const supervisorChanges = this.findChangesInSupervisor()
       if (this.$refs.form.validate()) {
         this.$apollo.mutate({
-          query: UpdateStaff,
+          mutation: UpdateStaff,
           variables: {
+            staff_id: this.staff.id,
             address: this.staffData.address,
             bio: this.staffData.bio,
             contact_num: this.staffData.contact_num,
             dob: this.staffData.dob,
             gender: this.staffData.gender,
             is_speech_therapist: this.staffData.is_speech_therapist,
-            //  add is_active
+            is_active: this.staff.is_active,
             name: this.staffData.name,
             nickname: this.staffData.nickname,
             nric: this.staffData.nric,
             profession: this.staffData.profession,
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
-            languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
-            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
-            // projects_in: this.staffData.projects_in,
+            supervisors_to_add: supervisorChanges.added,
+            supervisors_to_remove: supervisorChanges.removed,
+            languages_to_add: languageChanges.added,
+            languages_to_remove: languageChanges.removed
+            // projects_to_add: ,
+            // projects_to_remove:
           },
-          update
+          update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
+            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id } })
+            try {
+              const dataAll = store.readQuery({ query: GetAllStaff })
+              dataAll.staffs = dataAll.staffs.filter(item => item.id !== this.staff.id)
+              dataAll.staffs.push(updatedStaff)
+              store.writeQuery({ query: GetAllStaff, dataAll })
+            } catch (error) {
+              // GetAllStaff Query not in store
+            }
+          }
+        }).then((data) => {
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
+        }).catch((error) => {
+          console.log(error.message)
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
-      // update hasura
-      // update GetSingleStaff
-      // update GetAllStaff
+    },
+    findChangesInLanguages () {
+      const originalArray = this.staff.languages.map(item => item.language)
+      const currentArray = this.staffData.languages
+      const added = []
+      const removed = []
+      for (const language of originalArray) {
+        if (!currentArray.find(item => item === language)) {
+          removed.push(language)
+        }
+      }
+      for (const language of currentArray) {
+        if (!originalArray.find(item => item === language)) {
+          added.push({ language, staff_id: this.staff.id })
+        }
+      }
+      return { added, removed }
+    },
+    findChangesInSupervisor () {
+      const originalArray = this.staff.supervisors.map(item => item.supervisor.id)
+      const currentArray = this.staffData.supervisors
+      const added = []
+      const removed = []
+      for (const supervisor of originalArray) {
+        if (!currentArray.find(item => item === supervisor)) {
+          removed.push(supervisor)
+        }
+      }
+      for (const supervisor of currentArray) {
+        if (!originalArray.find(item => item === supervisor)) {
+          added.push({ supervisor_id: supervisor, staff_id: this.staff.id })
+        }
+      }
+      return { added, removed }
     }
   }
 }
