@@ -71,7 +71,6 @@ mutation (
             address
             bio
             contact_num
-            created_at
             date_joined
             dob
             email
@@ -88,7 +87,10 @@ mutation (
             profession
             role
             supervisors {
-                supervisor_id
+                supervisor {
+                    id
+                    name
+                }
             }
             ws_place
             projects_in {

@@ -20,7 +20,15 @@ query GetAllStaff {
       language
     }
     supervisors {
-      supervisor_id
+      supervisor {
+        id
+        name
+      }
+    }
+    projects_in {
+      project {
+        title
+      }
     }
   }
 }
