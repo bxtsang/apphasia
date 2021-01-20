@@ -17,8 +17,8 @@ mutation (
     $supervisors_to_remove: [Int!]!,
     $languages_to_add: [staff_languages_insert_input!]!,
     $languages_to_remove: [languages_enum!],
-    $projects_to_add: [project_staffs_insert_input!]!,
-    $projects_to_remove: [Int!]
+    # $projects_to_add: [project_staffs_insert_input!]!,
+    # $projects_to_remove: [Int!]
 ) {
     insert_staff_supervisors(objects: $supervisors_to_add) {
         affected_rows
@@ -50,20 +50,20 @@ mutation (
         affected_rows
     }
 
-    insert_project_staffs(objects: $projects_to_add) {
-        affected_rows
-    }
+    # insert_project_staffs(objects: $projects_to_add) {
+    #     affected_rows
+    # }
 
-    delete_project_staffs(where: {
-        _and: [
-            {
-                staff_id: {_eq: $staff_id},
-                project_id: {_in: $projects_to_remove}
-            }
-        ]
-    }) {
-        affected_rows
-    }
+    # delete_project_staffs(where: {
+    #     _and: [
+    #         {
+    #             staff_id: {_eq: $staff_id},
+    #             project_id: {_in: $projects_to_remove}
+    #         }
+    #     ]
+    # }) {
+    #     affected_rows
+    # }
 
     update_staffs(_set: {address: $address, bio: $bio, contact_num: $contact_num, dob: $dob, gender: $gender, is_active: $is_active, is_speech_therapist: $is_speech_therapist, name: $name, nickname: $nickname, profession: $profession, nric: $nric, role: $role, ws_place: $ws_place}, where: {id: {_eq: $staff_id}}) {
         affected_rows
@@ -88,9 +88,7 @@ mutation (
             profession
             role
             supervisors {
-                supervisor {
-                    name
-                }
+                supervisor_id
             }
             ws_place
             projects_in {
