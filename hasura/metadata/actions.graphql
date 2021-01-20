@@ -13,7 +13,7 @@ type Mutation {
     email: String!
     user_id: Int!
     current_role: String!
-    new_role: Int!
+    new_role: String!
   ): UpdateUserResponse
 }
 
