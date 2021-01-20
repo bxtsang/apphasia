@@ -29,7 +29,7 @@ const hasuraQuery = async (qlQuery, result) => {
     return {
       status: "failed",
       message: "failed to delete user from postgres db.",
-      response: err
+      response: {"name": err.name, "message": err.message, "stack": err.stack}
     }
   }
 }
@@ -97,29 +97,9 @@ exports.handler = function (event, context, callback) {
       callback(null, response);
     }
     else {
-      console.log(data);
-      cognitoidentityserviceprovider.adminConfirmSignUp(confirmParams, function (err, data) {
-        if (err) {
-          console.log(err, err.stack);
-          result['status'] = 'failed';
-          result['message'] = "user confirmation failed."
-          result['error'] = err
-
-          result = JSON.stringify(result)
-
-          var response = {
-            statusCode: 400,
-            body: result,
-            headers: { 'Content-Type': 'application/json' }
-          }
-
-          callback(null, response);
-        } // an error occurred
-        else {
           console.log(data);
           result['status'] = "success";   // successful response
           result['message'] = "user created successfully!"
-        }
 
         result = JSON.stringify(result)
         var response = {
@@ -128,8 +108,7 @@ exports.handler = function (event, context, callback) {
           headers: { 'Content-Type': 'application/json' }
         }
         callback(null, response);
-      });
-    }
+      }
   });
 
 
