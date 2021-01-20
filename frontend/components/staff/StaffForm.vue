@@ -90,6 +90,7 @@
           </v-col>
         </v-row>
         <v-row>
+          <!--  hide from edit -->
           <v-col class="py-0" cols="4">
             <v-text-field
               v-model="staffData.email"
@@ -161,6 +162,7 @@
           </v-col>
         </v-row>
         <v-row>
+          <!--  hide from edit -->
           <v-col cols="6" class="py-0">
             <v-menu
               transition="scale-transition"
@@ -213,6 +215,7 @@ import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
+import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
@@ -376,9 +379,30 @@ export default {
     },
     editStaff () {
       // Change existing
-      console.log('hi')
-      console.log(this.staff.id)
-      console.log(this.staff.supervisors)
+      if (this.$refs.form.validate()) {
+        this.$apollo.mutate({
+          query: UpdateStaff,
+          variables: {
+            address: this.staffData.address,
+            bio: this.staffData.bio,
+            contact_num: this.staffData.contact_num,
+            dob: this.staffData.dob,
+            gender: this.staffData.gender,
+            is_speech_therapist: this.staffData.is_speech_therapist,
+            //  add is_active
+            name: this.staffData.name,
+            nickname: this.staffData.nickname,
+            nric: this.staffData.nric,
+            profession: this.staffData.profession,
+            role: this.staffData.role,
+            ws_place: this.staffData.ws_place,
+            languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
+            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
+            // projects_in: this.staffData.projects_in,
+          },
+          update
+        })
+      }
       // update hasura
       // update GetSingleStaff
       // update GetAllStaff
