@@ -1,8 +1,14 @@
 actions:
-- name: createCognitoUser
+- name: CreateCognitoUser
   definition:
     kind: synchronous
     handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
+  permissions:
+  - role: core_team
+- name: UpdateCognitoUser
+  definition:
+    kind: synchronous
+    handler: https://2tnogbimkc.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
 custom_types:
@@ -12,4 +18,5 @@ custom_types:
   - name: SupervisorData
   objects:
   - name: CreateUserResponse
+  - name: UpdateUserResponse
   scalars: []
