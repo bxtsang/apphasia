@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     print(event)
     result = {}
     statusCode = 500
-    access_token = event['access_token']
+    access_token = json.loads(event['body'])['access_token']
 
     try:
         response = client.get_user_attribute_verification_code(

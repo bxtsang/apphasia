@@ -20,15 +20,15 @@ const hasuraQuery = async (qlQuery, result) => {
     })
     console.log(resp.data)
     return {
-      status: "success",
-      message: "user successfully deleted from postgres db.",
+      status: "sent",
+      message: "query successfully sent to hasura. refer to hasura_result",
       response: resp.data
     }
   } catch (err) {
     console.log(err)
     return {
       status: "failed",
-      message: "failed to delete user from postgres db.",
+      message: "failed to send query to hasura",
       response: {"name": err.name, "message": err.message, "stack": err.stack}
     }
   }

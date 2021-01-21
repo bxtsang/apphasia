@@ -19,7 +19,7 @@ const hasuraQuery = async (qlQuery, result) => {
     console.log(resp.data)
     return {
       status: "sent",
-      message: "query successfully sent to hasura. refer to result2",
+      message: "query successfully sent to hasura. refer to hasura_result",
       response: resp.data
     }
   } catch (err) {
@@ -27,7 +27,7 @@ const hasuraQuery = async (qlQuery, result) => {
     return {
       status: "failed",
       message: "failed to send query to hasura",
-      response: err
+      response: {"name": err.name, "message": err.message, "stack": err.stack}
     }
   }
 }
@@ -81,7 +81,7 @@ exports.handler = function (event, context, callback) {
       let status2 = resp.status
       result['hasura_status'] = status2
       result['hasura_message'] = message2
-      result['hasura_response'] = response2
+      result['hasura_result'] = response2
 
 
       result = JSON.stringify(result)

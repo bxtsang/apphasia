@@ -67,7 +67,7 @@ def lambda_handler(event, context):
 
             if r.status_code == 200:
                 result['hasura_status'] = "sent"
-                result['hasura_message'] = "query successfully sent to hasura. refer to result2"
+                result['hasura_message'] = "query successfully sent to hasura. refer to hasura_result"
                 result['hasura_result'] = r.text
             else:
                 result['hasura_status'] = "failed"
