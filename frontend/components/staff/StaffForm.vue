@@ -197,24 +197,16 @@
           <v-col cols="6" class="py-0">
             <v-select
               v-model="staffData.supervisors"
-              :items="staff && supervisors ? supervisors.filter(item => item.value !== this.staff.id) : supervisors"
+              :items="supervisors"
               label="Tag Supervisor(s)"
               multiple
             />
           </v-col>
         </v-row>
       </v-container>
-      <v-container>
-        <v-row>
-          <v-btn v-if="staff" color="error" class="my-3" @click="() => {editStaff(true)}">
-            Archive
-          </v-btn>
-          <v-spacer />
-          <v-btn color="primary" class="my-3" type="submit">
-            {{ staff ? 'Edit' : 'Save' }}
-          </v-btn>
-        </v-row>
-      </v-container>
+      <v-btn color="primary" class="my-3" type="submit">
+        {{ staff ? 'Edit' : 'Save' }}
+      </v-btn>
     </v-form>
   </v-card>
 </template>
@@ -311,7 +303,7 @@ export default {
   computed: {
     formSubmitMethod () {
       if (this.staff) {
-        return () => { this.editStaff(false) }
+        return this.editStaff
       } else {
         return this.submitStaff
       }
@@ -387,7 +379,7 @@ export default {
         })
       }
     },
-    editStaff (archive) {
+    editStaff () {
       const languageChanges = this.findChangesInLanguages()
       const supervisorChanges = this.findChangesInSupervisor()
       if (this.$refs.form.validate()) {
@@ -401,7 +393,7 @@ export default {
             dob: this.staffData.dob,
             gender: this.staffData.gender,
             is_speech_therapist: this.staffData.is_speech_therapist,
-            is_active: !archive,
+            is_active: this.staff.is_active,
             name: this.staffData.name,
             nickname: this.staffData.nickname,
             nric: this.staffData.nric,
