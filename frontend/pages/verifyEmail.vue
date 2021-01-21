@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     async sendCode () {
-      console.log(this.$store)
       const postBody = {
         access_token: this.accessToken
       }
@@ -52,7 +51,7 @@ export default {
         'Access-Control-Allow-Origin': '*'
       }
       try {
-        const resp = await this.$axios.post('https://4ygth88tu2.execute-api.ap-southeast-1.amazonaws.com/dev', postBody, { postHeader })
+        const resp = await this.$axios.post('https://4ygth88tu2.execute-api.ap-southeast-1.amazonaws.com/dev', JSON.stringify(postBody), { postHeader })
         console.log(resp)
       } catch (e) {
         console.log(e)
