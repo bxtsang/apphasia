@@ -91,7 +91,7 @@
         </v-row>
         <v-row>
           <!--  hide from edit -->
-          <v-col class="py-0" cols="4" v-if="!staff">
+          <v-col v-if="!staff" class="py-0" cols="4">
             <v-text-field
               v-model="staffData.email"
               :rules="emailRules"
@@ -215,6 +215,7 @@ import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
+import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
@@ -415,6 +416,24 @@ export default {
               store.writeQuery({ query: GetAllStaff, dataAll })
             } catch (error) {
               // GetAllStaff Query not in store
+            }
+
+            // Call UpdateCognitoUser action
+            if (this.staffData.role !== this.staff.role) {
+              this.$apollo.mutate({
+                mutation: UpdateCognitoUser,
+                variables: {
+                  email: this.staff.email,
+                  user_id: this.staff.id,
+                  current_role: this.staff.role,
+                  new_role: this.staffData.role
+                },
+                update: (store, response) => {
+                  // Success
+                }
+              }).catch((error) => {
+                console.log(error)
+              })
             }
           }
         }).then((data) => {
