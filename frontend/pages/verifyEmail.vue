@@ -7,7 +7,7 @@
       Click on send verification code to receive your code. Once it is verified you will be able to receive notifications!
     </v-card-text>
     <v-card-text>
-      <CodeInput :loading="loading" class="input" @change="onChange" @complete="onComplete" />
+      <CodeInput :loading="loading" class="input" />
     </v-card-text>
     <v-card-text>
       <v-btn elevation="2" rounded color="secondary" @click="sendCode">
@@ -29,16 +29,19 @@ export default {
   data () {
     return {
       accessToken: '',
-      loading: false
+      loading: false,
+      email: ''
     }
   },
   mounted () {
     const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
     this.accessToken = accessToken
+    const email = this.$store.$auth.$state.user.email
+    this.email = email
   },
   methods: {
     async sendCode () {
-      //   console.log(this.$store.state.email_verified.isVerified)
+      console.log(this.$store)
       const postBody = {
         access_token: this.accessToken
       }
@@ -46,18 +49,6 @@ export default {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
-      //   this.$axios.post('https://4ygth88tu2.execute-api.ap-southeast-1.amazonaws.com/dev', {
-      //     body: postBody
-      //   }, {
-      //     headers: {
-      //       'Access-Control-Allow-Origin': '*'
-      //     }
-      //   })
-      //     .then(response => () => { console.log(response) })
-      //     .catch(e => () => {
-      //     // this.errors.push(e)
-      //       console.log(e)
-      //     })
       try {
         const resp = await this.$axios.post('https://4ygth88tu2.execute-api.ap-southeast-1.amazonaws.com/dev', postBody, { postHeader })
         console.log(resp)
@@ -65,18 +56,24 @@ export default {
         console.log(e)
       }
     },
-    verify () {
-      const body = {
+    async verify () {
+      const postBody = {
         access_token: this.accessToken,
-        code: this.code
+        code: this.code,
+        email: this.email
       }
-      console.log(body)
-    },
-    onChange (v) {
-      console.log('onChange ', v)
-    },
-    onComplete (v) {
-      console.log('onComplete ', v)
+      const postHeader = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+      try {
+        this.loading = true
+        const resp = await this.$axios.post('https://65vbyychn5.execute-api.ap-southeast-1.amazonaws.com/dev', postBody, { postHeader })
+        console.log(resp)
+      } catch (e) {
+        console.log(e)
+      }
+      this.loading = false
     }
   }
 }
