@@ -1,89 +1,466 @@
 - table:
     schema: public
-    name: languages
+    name: channels
   is_enum: true
 - table:
     schema: public
-    name: roles
+    name: languages
+  is_enum: true
   array_relationships:
-  - name: users
+  - name: staffs
+    using:
+      foreign_key_constraint_on:
+        column: language
+        table:
+          schema: public
+          name: staff_languages
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - language
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - language
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - language
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_staffs
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_vol
+- table:
+    schema: public
+    name: projects
+  object_relationships:
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
+  array_relationships:
+  - name: staffs
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_staffs
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
+- table:
+    schema: public
+    name: roles
+  is_enum: true
+  array_relationships:
+  - name: staffs
     using:
       foreign_key_constraint_on:
         column: role
         table:
           schema: public
-          name: users
+          name: staffs
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - role
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - role
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - role
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: staff_languages
+  object_relationships:
+  - name: name
+    using:
+      foreign_key_constraint_on: language
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - language
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      columns:
+      - language
+      - staff_id
+  - role: intern
+    permission:
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      columns:
+      - language
+      - staff_id
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - language
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - language
+      - staff_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      columns:
+      - language
+      - staff_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - language
+      filter: {}
+      check: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - language
+      - staff_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      columns:
+      - language
+      - staff_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+      check:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: core_volunteer
+    permission:
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: staff_supervisors
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  - name: supervisor
+    using:
+      foreign_key_constraint_on: supervisor_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  - role: intern
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - staff_id
+      - supervisor_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: staffs
+  array_relationships:
+  - name: languages
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: staff_languages
+  - name: projects_in
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: project_staffs
+  - name: projects_owned
+    using:
+      foreign_key_constraint_on:
+        column: owner_id
+        table:
+          schema: public
+          name: projects
+  - name: supervising
+    using:
+      foreign_key_constraint_on:
+        column: supervisor_id
+        table:
+          schema: public
+          name: staff_supervisors
+  - name: supervisors
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: staff_supervisors
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - address
+      - bio
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
+      - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - bio
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
+      - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - profession
+      - role
+      - ws_place
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - bio
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
+      - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - profession
+      - role
+      - ws_place
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      filter: {}
+      check: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - address
+      - bio
+      - contact_num
+      - email
+      - is_active
+      - nickname
+      - nric
+      - profession
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - address
+      - bio
+      - contact_num
+      - email
+      - is_active
+      - nickname
+      - nric
+      - profession
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: test
-  insert_permissions:
-  - role: "1"
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-      backend_only: false
-  - role: core
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-      backend_only: false
-  - role: ct
-    permission:
-      check: {}
-      columns:
-      - id
-      - name
-  select_permissions:
-  - role: "1"
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: core
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: ct
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  - role: vol
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-  update_permissions:
-  - role: "1"
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-      check: null
-  - role: ct
-    permission:
-      columns:
-      - id
-      - name
-      filter: {}
-      check: null
-  delete_permissions:
-  - role: "1"
-    permission:
-      filter: {}
-  - role: ct
-    permission:
-      filter: {}
   event_triggers:
   - name: test_trigger
     definition:
@@ -97,16 +474,81 @@
     webhook: https://aphasia-hasura-dev.herokuapp.com/v1/graphql
 - table:
     schema: public
-    name: users
+    name: vol_channels
+  object_relationships:
+  - name: channel
+    using:
+      foreign_key_constraint_on: channels
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: vol_languages
+  object_relationships:
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: vol_supervisors
   object_relationships:
   - name: supervisor
     using:
-      foreign_key_constraint_on: supervisor_id
+      foreign_key_constraint_on: staff_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: vol_voltypes
+  object_relationships:
+  - name: type
+    using:
+      foreign_key_constraint_on: voltype
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: voltypes
+  is_enum: true
+- table:
+    schema: public
+    name: volunteers
   array_relationships:
-  - name: supervising
+  - name: project_vols
     using:
       foreign_key_constraint_on:
-        column: supervisor_id
+        column: vol_id
         table:
           schema: public
-          name: users
+          name: project_vol
+  - name: vol_channels
+    using:
+      foreign_key_constraint_on:
+        column: vol_id
+        table:
+          schema: public
+          name: vol_channels
+  - name: vol_languages
+    using:
+      foreign_key_constraint_on:
+        column: vol_id
+        table:
+          schema: public
+          name: vol_languages
+  - name: vol_supervisors
+    using:
+      foreign_key_constraint_on:
+        column: vol_id
+        table:
+          schema: public
+          name: vol_supervisors
+  - name: vol_voltypes
+    using:
+      foreign_key_constraint_on:
+        column: vol_id
+        table:
+          schema: public
+          name: vol_voltypes
