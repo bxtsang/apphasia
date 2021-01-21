@@ -1,6 +1,6 @@
-query GetAllStaff {
+query GetAllStaff ($isCoreTeam: Boolean!){
   staffs {
-    address
+    address @include(if: $isCoreTeam)
     bio
     contact_num
     date_joined
@@ -11,7 +11,7 @@ query GetAllStaff {
     is_active
     name
     nickname
-    nric
+    nric @include(if: $isCoreTeam)
     profession
     role
     ws_place
