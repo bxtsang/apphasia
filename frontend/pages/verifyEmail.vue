@@ -7,7 +7,7 @@
       Click on send verification code to receive your code. Once it is verified you will be able to receive notifications!
     </v-card-text>
     <v-card-text>
-      <CodeInput :loading="loading" class="input" />
+      <CodeInput v-model="code" :loading="loading" class="input" @change="onChange" @complete="onComplete" />
     </v-card-text>
     <v-card-text>
       <v-btn elevation="2" rounded color="secondary" @click="sendCode">
@@ -30,7 +30,9 @@ export default {
     return {
       accessToken: '',
       loading: false,
-      email: ''
+      email: '',
+      code: '',
+      completed: false
     }
   },
   mounted () {
@@ -57,6 +59,10 @@ export default {
       }
     },
     async verify () {
+      if (!this.completed) {
+        console.log('incomplete code')
+        return
+      }
       const postBody = {
         access_token: this.accessToken,
         code: this.code,
@@ -68,12 +74,19 @@ export default {
       }
       try {
         this.loading = true
-        const resp = await this.$axios.post('https://65vbyychn5.execute-api.ap-southeast-1.amazonaws.com/dev', postBody, { postHeader })
+        const resp = await this.$axios.post('https://65vbyychn5.execute-api.ap-southeast-1.amazonaws.com/dev', JSON.stringify(postBody), { postHeader })
         console.log(resp)
       } catch (e) {
         console.log(e)
       }
       this.loading = false
+    },
+    onChange (v) {
+      this.completed = false
+    },
+    onComplete (v) {
+      this.completed = true
+      this.code = v
     }
   }
 }
