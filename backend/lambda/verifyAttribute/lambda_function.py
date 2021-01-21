@@ -9,8 +9,8 @@ def lambda_handler(event, context):
     )
     result = {}
     statusCode = 500
-    access_token = json.loads(event['body'])['input']['access_token']
-    code = json.loads(event['body'])['input']['code']
+    access_token = json.loads(event['body'])['access_token']
+    code = json.loads(event['body'])['code']
     try:
         response = client.verify_user_attribute(AccessToken= access_token,AttributeName= "email",Code= code)
         result['status'] = "success"
