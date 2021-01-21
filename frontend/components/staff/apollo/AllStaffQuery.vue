@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     filteredDataByRole (data) {
-      return data.filter(item => item.role === this.staffRoleFilter)
+      return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
     }
   }
 }
