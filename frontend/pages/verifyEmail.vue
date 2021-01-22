@@ -13,10 +13,10 @@
       <v-btn elevation="2" rounded color="secondary" @click="sendCode">
         Send verification code
       </v-btn>
-      <v-btn elevation="2" rounded color="primary" @click="verify">
-        Verify
-      </v-btn>
     </v-card-text>
+    <v-btn v-if="completed" elevation="2" rounded color="primary" @click="verify">
+      Verify
+    </v-btn>
   </v-card>
 </template>
 
