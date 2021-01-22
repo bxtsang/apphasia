@@ -4,7 +4,7 @@
       <v-card class="px-6 py-3">
         <ApolloQuery
           :query="require('./../../graphql/staff/GetSingleStaff.graphql')"
-          :variables="{ id: staffId }"
+          :variables="{ id: staffId , 'isCoreTeam': $auth.user['custom:role'] === 'core_team'}"
         >
           <template v-slot="{ result: { error, data }, isLoading }">
             <div v-if="isLoading" class="d-flex justify-center">
