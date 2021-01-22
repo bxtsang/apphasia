@@ -1,0 +1,1 @@
+CREATE TABLE "public"."vol_voltypes"("vol_id" integer NOT NULL, "voltype" text NOT NULL, PRIMARY KEY ("vol_id","voltype") , FOREIGN KEY ("vol_id") REFERENCES "public"."volunteers"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("voltype") REFERENCES "public"."voltypes"("type") ON UPDATE restrict ON DELETE restrict);
