@@ -368,6 +368,7 @@
   - role: core_volunteer
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -380,6 +381,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
@@ -387,6 +389,7 @@
   - role: intern
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -399,6 +402,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
