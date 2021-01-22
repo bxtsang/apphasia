@@ -26,12 +26,12 @@ def lambda_handler(event, context):
         result['error'] = str(e)
         statusCode = 400
         print("error:",e)
-
+        
     return {
         "statusCode": statusCode,
         "headers": {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin" : "*"
         },
         "body": json.dumps(result)
     }
