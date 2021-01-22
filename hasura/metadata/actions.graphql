@@ -28,14 +28,6 @@ input SupervisorData {
   data : SupervisorInput!
 }
 
-input SupervisorInput {
-  supervisor_id : Int!
-}
-
-input SupervisorData {
-  data : SupervisorInput!
-}
-
 type CreateUserResponse {
   status : String!
   message : String!

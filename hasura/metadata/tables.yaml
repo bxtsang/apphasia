@@ -503,16 +503,9 @@
     schema: public
     name: vol_voltypes
   object_relationships:
-  - name: type
-    using:
-      foreign_key_constraint_on: voltype
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
-- table:
-    schema: public
-    name: voltypes
-  is_enum: true
 - table:
     schema: public
     name: volunteers
