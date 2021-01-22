@@ -1,13 +1,22 @@
 type Mutation {
-  createUser (
+  createCognitoUser (
     email: String!
     password: String!
-    role: Int!
+    role: String!
+    user_id: Int!
   ): CreateUserResponse
 }
 
 
 
+
+input SupervisorInput {
+  supervisor_id : Int!
+}
+
+input SupervisorData {
+  data : SupervisorInput!
+}
 
 type CreateUserResponse {
   status : String!
