@@ -1,6 +1,9 @@
 <template>
   <ApolloQuery
     :query="require('./../../../graphql/staff/GetAllStaff.graphql')"
+    :variables="{
+      'isCoreTeam': $auth.user['custom:role'] === 'core_team'
+    }"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
