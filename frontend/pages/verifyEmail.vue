@@ -6,7 +6,7 @@
     <v-card-text>
       Click on send verification code to receive your code. Once it is verified you will be able to receive notifications!
     </v-card-text>
-    <v-card-text>
+    <v-card-text class="d-flex justify-center">
       <CodeInput v-model="code" :loading="loading" class="input" @change="onChange" @complete="onComplete" />
     </v-card-text>
     <v-card-text>
