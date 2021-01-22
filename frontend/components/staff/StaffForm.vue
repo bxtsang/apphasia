@@ -197,7 +197,7 @@
           <v-col cols="6" class="py-0">
             <v-select
               v-model="staffData.supervisors"
-              :items="staff && supervisors ? supervisors.filter(item => item.value !== this.staff.id) : supervisors"
+              :items="staff && supervisors ? supervisors.filter(item => item.value !== staff.id) : supervisors"
               label="Tag Supervisor(s)"
               multiple
             />
@@ -342,9 +342,9 @@ export default {
             // projects_in: this.staffData.projects_in,
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
-            const data = store.readQuery({ query: GetAllStaff })
+            const data = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             data.staffs.push(newStaff)
-            store.writeQuery({ query: GetAllStaff, data })
+            store.writeQuery({ query: GetAllStaff, data, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             this.$apollo.mutate({
               mutation: CreateCognitoUser,
               variables: {
@@ -416,12 +416,12 @@ export default {
             // projects_to_remove:
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
-            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id } })
+            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id, isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             try {
-              const dataAll = store.readQuery({ query: GetAllStaff })
+              const dataAll = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
               dataAll.staffs = dataAll.staffs.filter(item => item.id !== this.staff.id)
               dataAll.staffs.push(updatedStaff)
-              store.writeQuery({ query: GetAllStaff, dataAll })
+              store.writeQuery({ query: GetAllStaff, dataAll, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             } catch (error) {
               // GetAllStaff Query not in store
             }
