@@ -54,6 +54,7 @@ export default {
       const loginData = { username: this.email, password: this.password }
       try {
         const response = await this.$auth.loginWith('cognito', { data: loginData })
+        this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
         this.$apolloHelpers.onLogin(response.idToken.jwtToken)
       } catch (error) {
         this.$store.commit('notification/newNotification', [error.message, 'error'])

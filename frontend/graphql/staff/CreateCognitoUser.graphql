@@ -4,7 +4,7 @@ mutation (
   $role: String!,
   $user_id: Int!
 ){
-  createCognitoUser (
+  CreateCognitoUser (
     email: $email #string
     password: $password #string
     role: $role #string

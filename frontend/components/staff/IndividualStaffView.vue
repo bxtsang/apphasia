@@ -138,8 +138,8 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-select
-                      v-model="data.staffs[0].languages"
-                      :items="data.staffs[0].languages"
+                      :value="data.staffs[0].languages.map(item => item.language)"
+                      :items="data.staffs[0].languages.map(item => item.language)"
                       label="Languages understand and/or speak"
                       multiple
                       readonly
@@ -178,21 +178,22 @@
                     />
                   </v-col>
                 </v-row>
-                <!--<v-row v-if="staffData.role != '' && staffData.role != 'core_team'" class="mt-3">
+                <v-row v-if="data.staffs.role != '' && data.staffs.role != 'core_team'" class="mt-3">
                   <v-col col="12" class="py-0">
                     <span>Supervisor Details</span>
                   </v-col>
                 </v-row>
-                <v-row v-if="staffData.role != '' && staffData.role != 'core_team'">
+                <v-row v-if="data.staffs.role != '' && data.staffs.role != 'core_team'">
                   <v-col cols="6" class="py-0">
                     <v-select
-                      v-model="staffData.supervisors"
-                      :items="supervisors"
+                      :value="data.staffs[0].supervisors.map(item => item.supervisor.name)"
+                      :items="data.staffs[0].supervisors.map(item => item.supervisor.name)"
                       label="Tag Supervisor(s)"
                       multiple
+                      readonly
                     />
                   </v-col>
-                </v-row> -->
+                </v-row>
               </v-container>
             </div>
 

@@ -90,7 +90,8 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="py-0" cols="4">
+          <!--  hide from edit -->
+          <v-col class="py-0" cols="4" v-if="!staff">
             <v-text-field
               v-model="staffData.email"
               :rules="emailRules"
@@ -134,6 +135,7 @@
               v-model="staffData.languages"
               :items="languages"
               label="Languages understand and/or speak"
+              :rules="languagesRules"
               multiple
             />
           </v-col>
@@ -159,7 +161,8 @@
             />
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="!staff">
+          <!--  hide from edit -->
           <v-col cols="6" class="py-0">
             <v-menu
               transition="scale-transition"
@@ -212,6 +215,8 @@ import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
+import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
+import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 
 export default {
@@ -228,23 +233,24 @@ export default {
       GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
       staffData: {
-        role: this.staff ? this.staff.role : 'core_team',
-        name: this.staff ? this.staff.name : 'Arix Phua Si Yu',
-        nickname: this.staff ? this.staff.nickname : 'Arix',
-        nric: this.staff ? this.staff.nric : 'S9625151C',
-        dob: this.staff ? this.staff.dob : '1996-08-18',
-        contact_num: this.staff ? this.staff.contact_num : '91714378',
-        gender: this.staff ? this.staff.gender : 'M',
-        email: this.staff ? this.staff.email : 'arixgg@gmail.com',
-        address: this.staff ? this.staff.address : 'Blk 1 Beach Road',
+        role: this.staff ? this.staff.role : '',
+        name: this.staff ? this.staff.name : '',
+        nickname: this.staff ? this.staff.nickname : '',
+        nric: this.staff ? this.staff.nric : '',
+        dob: this.staff ? this.staff.dob : '',
+        contact_num: this.staff ? this.staff.contact_num : '',
+        gender: this.staff ? this.staff.gender : '',
+        email: this.staff ? this.staff.email : '',
+        address: this.staff ? this.staff.address : '',
         bio: this.staff ? this.staff.bio : '',
-        ws_place: this.staff ? this.staff.ws_place : 'SMU',
-        profession: this.staff ? this.staff.profession : 'Student',
+        ws_place: this.staff ? this.staff.ws_place : '',
+        profession: this.staff ? this.staff.profession : '',
         is_speech_therapist: this.staff ? this.staff.is_speech_therapist : false,
-        date_joined: this.staff ? this.staff.date_joined : '2021-01-10',
+        date_joined: this.staff ? this.staff.date_joined : '',
         projects_in: [],
-        languages: ['English'],
-        supervisors: []
+        languages: this.staff ? this.staff.languages.map(item => item.language) : [],
+        supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor.id) : [],
+        is_active: this.staff ? this.staff.is_active : true
       },
       roleRules: [v => !!v || 'Role is required'],
       nameRules: [v => !!v || 'Fullname is required'],
@@ -266,7 +272,8 @@ export default {
       ],
       addressRules: [v => !!v || 'Home Address is required'],
       professionRules: [v => !!v || 'Profession is required'],
-      dateJoinedRules: [v => !!v || 'Date Joined is required']
+      dateJoinedRules: [v => !!v || 'Date Joined is required'],
+      languagesRules: [v => v.length > 0 || 'Language is required']
     }
   },
   apollo: {
@@ -367,14 +374,91 @@ export default {
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
-          console.log(error.message)
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
     },
     editStaff () {
-      // Change existing
-      console.log('hi')
+      const languageChanges = this.findChangesInLanguages()
+      const supervisorChanges = this.findChangesInSupervisor()
+      if (this.$refs.form.validate()) {
+        this.$apollo.mutate({
+          mutation: UpdateStaff,
+          variables: {
+            staff_id: this.staff.id,
+            address: this.staffData.address,
+            bio: this.staffData.bio,
+            contact_num: this.staffData.contact_num,
+            dob: this.staffData.dob,
+            gender: this.staffData.gender,
+            is_speech_therapist: this.staffData.is_speech_therapist,
+            is_active: this.staff.is_active,
+            name: this.staffData.name,
+            nickname: this.staffData.nickname,
+            nric: this.staffData.nric,
+            profession: this.staffData.profession,
+            role: this.staffData.role,
+            ws_place: this.staffData.ws_place,
+            supervisors_to_add: supervisorChanges.added,
+            supervisors_to_remove: supervisorChanges.removed,
+            languages_to_add: languageChanges.added,
+            languages_to_remove: languageChanges.removed
+            // projects_to_add: ,
+            // projects_to_remove:
+          },
+          update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
+            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id } })
+            try {
+              const dataAll = store.readQuery({ query: GetAllStaff })
+              dataAll.staffs = dataAll.staffs.filter(item => item.id !== this.staff.id)
+              dataAll.staffs.push(updatedStaff)
+              store.writeQuery({ query: GetAllStaff, dataAll })
+            } catch (error) {
+              // GetAllStaff Query not in store
+            }
+          }
+        }).then((data) => {
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
+        }).catch((error) => {
+          console.log(error.message)
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+    findChangesInLanguages () {
+      const originalArray = this.staff.languages.map(item => item.language)
+      const currentArray = this.staffData.languages
+      const added = []
+      const removed = []
+      for (const language of originalArray) {
+        if (!currentArray.find(item => item === language)) {
+          removed.push(language)
+        }
+      }
+      for (const language of currentArray) {
+        if (!originalArray.find(item => item === language)) {
+          added.push({ language, staff_id: this.staff.id })
+        }
+      }
+      return { added, removed }
+    },
+    findChangesInSupervisor () {
+      const originalArray = this.staff.supervisors.map(item => item.supervisor.id)
+      const currentArray = this.staffData.supervisors
+      const added = []
+      const removed = []
+      for (const supervisor of originalArray) {
+        if (!currentArray.find(item => item === supervisor)) {
+          removed.push(supervisor)
+        }
+      }
+      for (const supervisor of currentArray) {
+        if (!originalArray.find(item => item === supervisor)) {
+          added.push({ supervisor_id: supervisor, staff_id: this.staff.id })
+        }
+      }
+      return { added, removed }
     }
   }
 }

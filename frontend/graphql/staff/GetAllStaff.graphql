@@ -16,5 +16,19 @@ query GetAllStaff {
     role
     ws_place
     id
+    languages {
+      language
+    }
+    supervisors {
+      supervisor {
+        id
+        name
+      }
+    }
+    projects_in {
+      project {
+        title
+      }
+    }
   }
 }
