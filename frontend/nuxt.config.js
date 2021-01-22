@@ -45,8 +45,20 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@sirdiego/nuxt-auth-cognito-scheme',
+    '@nuxtjs/auth',
+    '@nuxtjs/apollo'
   ],
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: 'https://aphasia-hasura-dev.herokuapp.com/v1/graphql',
+        tokenName: 'apollo-token'
+      },
+      
+    }
+  },
 
   auth: {
     redirect: {
@@ -55,13 +67,16 @@ export default {
       home: '/',
     },
     strategies: {
-      local: {
-        endpoints: {
-          login: { url: `${process.env.BASE_API_URL || 'http://localhost:8000'}/login`, method: 'post', propertyName: 'accessToken' },
-          logout: false,
-          user: { url: `${process.env.BASE_API_URL || 'http://localhost:8000'}/me`, method: 'get', propertyName: 'user' }
-        },
-        tokenType: ''
+      cognito: {
+        tokenType: "Bearer",
+        globalToken: true,
+        tokenRequired: true,
+        tokenName: "Authorization",
+        autoFetchUser: true,
+        userPoolId: process.env.COGNITO_USER_POOL_ID || 'ap-southeast-1_0wc22ewSD',
+        clientId: process.env.COGNITO_CLIENT_ID || '7mi9isulls8458et869mca42sp',
+        refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
+        fetchUserCallback: false // Can be used to put more information into the user object
       }
     }
   },
@@ -77,6 +92,8 @@ export default {
       themes: {
         light: {
           primary: colors.blue,
+          success: colors.green,
+          error: colors.red,
           background: '#FBFCFD'
         },
       },
