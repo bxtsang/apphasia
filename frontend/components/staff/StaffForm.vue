@@ -210,7 +210,7 @@
             Archive
           </v-btn>
           <v-spacer />
-          <v-btn color="primary" class="my-3" type="submit">
+          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Edit' : 'Save' }}
           </v-btn>
         </v-row>
@@ -238,6 +238,7 @@ export default {
   data () {
     return {
       valid: true,
+      isSubmitting: false,
       ROLE_OPTIONS,
       GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
@@ -320,6 +321,7 @@ export default {
   methods: {
     submitStaff () {
       if (this.$refs.form.validate()) {
+        this.isSubmitting = true
         this.$apollo.mutate({
           mutation: CreateUser,
           variables: {
@@ -361,6 +363,7 @@ export default {
             })
           }
         }).then((data) => {
+          this.isSubmitting = false
           this.staffData = {
             role: 'core_team',
             name: '',
@@ -388,9 +391,10 @@ export default {
       }
     },
     editStaff (archive) {
-      const languageChanges = this.findChangesInLanguages()
-      const supervisorChanges = this.findChangesInSupervisor()
       if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const languageChanges = this.findChangesInLanguages()
+        const supervisorChanges = this.findChangesInSupervisor()
         this.$apollo.mutate({
           mutation: UpdateStaff,
           variables: {
@@ -445,6 +449,7 @@ export default {
             }
           }
         }).then((data) => {
+          this.isSubmitting = true
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
         }).catch((error) => {
