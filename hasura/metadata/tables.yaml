@@ -27,6 +27,16 @@
       columns:
       - language
       filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - language
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - language
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -63,6 +73,18 @@
       - project_id
       - staff_id
       filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -92,6 +114,20 @@
       - id
       - title
       - owner_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - owner_id
+      - title
       filter: {}
 - table:
     schema: public
@@ -149,20 +185,18 @@
       backend_only: false
   - role: core_volunteer
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   - role: intern
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -175,17 +209,13 @@
       columns:
       - language
       - staff_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   - role: intern
     permission:
       columns:
       - language
       - staff_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -248,6 +278,20 @@
       - staff_id
       - supervisor_id
       backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -260,17 +304,13 @@
       columns:
       - staff_id
       - supervisor_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   - role: intern
     permission:
       columns:
       - staff_id
       - supervisor_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -283,6 +323,11 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: staffs
@@ -343,6 +388,46 @@
       - role
       - ws_place
       backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -368,6 +453,7 @@
   - role: core_volunteer
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -380,6 +466,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
@@ -387,6 +474,7 @@
   - role: intern
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -399,6 +487,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
@@ -430,11 +519,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -445,11 +541,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -461,6 +564,10 @@
 - table:
     schema: public
     name: test
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
   event_triggers:
   - name: test_trigger
     definition:
