@@ -1,4 +1,5 @@
 version: 2
+admin_secret: pwayismyhome12061997
 endpoint: https://aphasia-hasura-dev.herokuapp.com/
 metadata_directory: metadata
 actions:

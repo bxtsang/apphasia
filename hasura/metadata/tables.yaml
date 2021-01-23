@@ -185,20 +185,18 @@
       backend_only: false
   - role: core_volunteer
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   - role: intern
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -280,6 +278,20 @@
       - staff_id
       - supervisor_id
       backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -311,6 +323,11 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: staffs
@@ -502,11 +519,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -517,11 +541,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id

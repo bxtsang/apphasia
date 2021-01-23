@@ -1,6 +1,9 @@
 <template>
   <ApolloQuery
     :query="require('./../../../graphql/staff/GetAllStaff.graphql')"
+    :variables="{
+      'isCoreTeam': $auth.user['custom:role'] === 'core_team'
+    }"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -57,7 +60,7 @@
             <v-chip v-else color="error">No</v-chip>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <EditStaffModal :staff="item" :text="false" />
+            <EditStaffModal v-if="$auth.user['custom:role'] === 'core_team'" :staff="item" :text="false" />
             <v-btn :to="`/staff?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
@@ -97,7 +100,7 @@ export default {
   },
   methods: {
     filteredDataByRole (data) {
-      return data.filter(item => item.role === this.staffRoleFilter)
+      return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
     }
   }
 }

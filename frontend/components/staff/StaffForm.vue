@@ -91,7 +91,7 @@
         </v-row>
         <v-row>
           <!--  hide from edit -->
-          <v-col class="py-0" cols="4" v-if="!staff">
+          <v-col v-if="!staff" class="py-0" cols="4">
             <v-text-field
               v-model="staffData.email"
               :rules="emailRules"
@@ -197,16 +197,24 @@
           <v-col cols="6" class="py-0">
             <v-select
               v-model="staffData.supervisors"
-              :items="supervisors"
+              :items="staff && supervisors ? supervisors.filter(item => item.value !== staff.id) : supervisors"
               label="Tag Supervisor(s)"
               multiple
             />
           </v-col>
         </v-row>
       </v-container>
-      <v-btn color="primary" class="my-3" type="submit">
-        {{ staff ? 'Edit' : 'Save' }}
-      </v-btn>
+      <v-container>
+        <v-row>
+          <v-btn v-if="staff" color="error" class="my-3" @click="() => {editStaff(true)}">
+            Archive
+          </v-btn>
+          <v-spacer />
+          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+            {{ staff ? 'Edit' : 'Save' }}
+          </v-btn>
+        </v-row>
+      </v-container>
     </v-form>
   </v-card>
 </template>
@@ -215,6 +223,7 @@ import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
+import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
@@ -229,6 +238,7 @@ export default {
   data () {
     return {
       valid: true,
+      isSubmitting: false,
       ROLE_OPTIONS,
       GENDER_OPTIONS,
       projects: ['Project1', 'Project 2'],
@@ -302,7 +312,7 @@ export default {
   computed: {
     formSubmitMethod () {
       if (this.staff) {
-        return this.editStaff
+        return () => { this.editStaff(false) }
       } else {
         return this.submitStaff
       }
@@ -311,6 +321,7 @@ export default {
   methods: {
     submitStaff () {
       if (this.$refs.form.validate()) {
+        this.isSubmitting = true
         this.$apollo.mutate({
           mutation: CreateUser,
           variables: {
@@ -333,9 +344,9 @@ export default {
             // projects_in: this.staffData.projects_in,
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
-            const data = store.readQuery({ query: GetAllStaff })
+            const data = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             data.staffs.push(newStaff)
-            store.writeQuery({ query: GetAllStaff, data })
+            store.writeQuery({ query: GetAllStaff, data, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             this.$apollo.mutate({
               mutation: CreateCognitoUser,
               variables: {
@@ -352,6 +363,7 @@ export default {
             })
           }
         }).then((data) => {
+          this.isSubmitting = false
           this.staffData = {
             role: 'core_team',
             name: '',
@@ -378,10 +390,11 @@ export default {
         })
       }
     },
-    editStaff () {
-      const languageChanges = this.findChangesInLanguages()
-      const supervisorChanges = this.findChangesInSupervisor()
+    editStaff (archive) {
       if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const languageChanges = this.findChangesInLanguages()
+        const supervisorChanges = this.findChangesInSupervisor()
         this.$apollo.mutate({
           mutation: UpdateStaff,
           variables: {
@@ -392,7 +405,7 @@ export default {
             dob: this.staffData.dob,
             gender: this.staffData.gender,
             is_speech_therapist: this.staffData.is_speech_therapist,
-            is_active: this.staff.is_active,
+            is_active: !archive,
             name: this.staffData.name,
             nickname: this.staffData.nickname,
             nric: this.staffData.nric,
@@ -407,17 +420,36 @@ export default {
             // projects_to_remove:
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
-            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id } })
+            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id, isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             try {
-              const dataAll = store.readQuery({ query: GetAllStaff })
+              const dataAll = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
               dataAll.staffs = dataAll.staffs.filter(item => item.id !== this.staff.id)
               dataAll.staffs.push(updatedStaff)
-              store.writeQuery({ query: GetAllStaff, dataAll })
+              store.writeQuery({ query: GetAllStaff, dataAll, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
             } catch (error) {
               // GetAllStaff Query not in store
             }
+
+            // Call UpdateCognitoUser action
+            if (this.staffData.role !== this.staff.role) {
+              this.$apollo.mutate({
+                mutation: UpdateCognitoUser,
+                variables: {
+                  email: this.staff.email,
+                  user_id: this.staff.id,
+                  current_role: this.staff.role,
+                  new_role: this.staffData.role
+                },
+                update: (store, response) => {
+                  // Success
+                }
+              }).catch((error) => {
+                console.log(error)
+              })
+            }
           }
         }).then((data) => {
+          this.isSubmitting = true
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
         }).catch((error) => {
