@@ -16,7 +16,9 @@
             </div>
 
             <!-- Error -->
-            <div v-else-if="error">An error occurred</div>
+            <div v-else-if="error">
+              An error occurred
+            </div>
 
             <!-- Result -->
             <div v-else-if="data && data.staffs.length > 0">
@@ -24,12 +26,18 @@
                 <v-row>
                   <v-col>
                     <h1 class="title hover-underline">
-                      <NuxtLink to="/staff">Staff</NuxtLink>
+                      <NuxtLink to="/staff">
+                        Staff
+                      </NuxtLink>
                       <span>/ {{ data.staffs[0].name }}</span>
                     </h1>
                   </v-col>
                   <v-col class="d-flex justify-end">
-                    <EditStaffModal :staff="data.staffs[0]" :text="true" />
+                    <EditStaffModal
+                      v-if="$auth.user['custom:role'] === 'core_team'"
+                      :staff="data.staffs[0]"
+                      :text="true"
+                    />
                   </v-col>
                 </v-row>
                 <v-row>
@@ -39,7 +47,7 @@
                 </v-row>
                 <v-row>
                   <v-col class="py-0">
-                    <v-radio-group v-model="data.staffs[0].role" readonly row>
+                    <v-radio-group :value="data.staffs[0].role" readonly row>
                       <v-radio v-for="role in ROLE_OPTIONS.filter(item => item.value == data.staffs[0].role)" :key="role.value" :label="role.label" :value="role.value" />
                     </v-radio-group>
                   </v-col>
@@ -52,21 +60,21 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].name"
+                      :value="data.staffs[0].name"
                       label="Full Name"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].nickname"
+                      :value="data.staffs[0].nickname"
                       label="Nickname / Alias"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].nric"
+                      :value="data.staffs[0].nric || 'Not Available'"
                       label="NRIC"
                       readonly
                     />
@@ -75,21 +83,21 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].dob"
+                      :value="data.staffs[0].dob"
                       label="Date of Birth"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].contact_num"
+                      :value="data.staffs[0].contact_num"
                       label="Contact"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-select
-                      v-model="data.staffs[0].gender"
+                      :value="data.staffs[0].gender"
                       :items="GENDER_OPTIONS"
                       label="Gender"
                       readonly
@@ -99,14 +107,14 @@
                 <v-row>
                   <v-col class="py-0" cols="4">
                     <v-text-field
-                      v-model="data.staffs[0].email"
+                      :value="data.staffs[0].email"
                       label="Email Address"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0" cols="8">
                     <v-text-field
-                      v-model="data.staffs[0].address"
+                      :value="data.staffs[0].address || 'Not Available'"
                       label="Home Address"
                       readonly
                     />
@@ -120,14 +128,14 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].bio"
+                      :value="data.staffs[0].bio"
                       label="Hobbies / Interests"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-select
-                      v-model="data.staffs[0].projects_in"
+                      :value="data.staffs[0].projects_in"
                       :items="data.staffs[0].projects_in"
                       label="Projects Involved"
                       multiple
@@ -147,7 +155,7 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].ws_place"
+                      :value="data.staffs[0].ws_place"
                       label="Current Place of Work / Study"
                       readonly
                     />
@@ -156,14 +164,14 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].profession"
+                      :value="data.staffs[0].profession"
                       label="Profession"
                       readonly
                     />
                   </v-col>
                   <v-col class="py-0">
                     <v-switch
-                      v-model="data.staffs[0].is_speech_therapist"
+                      :value="data.staffs[0].is_speech_therapist"
                       label="Speech Therapist?"
                       readonly
                     />
@@ -172,7 +180,7 @@
                 <v-row>
                   <v-col cols="6" class="py-0">
                     <v-text-field
-                      v-model="data.staffs[0].date_joined"
+                      :value="data.staffs[0].date_joined"
                       label="Date Joined"
                       readonly
                     />
@@ -188,7 +196,7 @@
                     <v-select
                       :value="data.staffs[0].supervisors.map(item => item.supervisor.name)"
                       :items="data.staffs[0].supervisors.map(item => item.supervisor.name)"
-                      label="Tag Supervisor(s)"
+                      label="Supervisor(s)"
                       multiple
                       readonly
                     />
@@ -197,7 +205,9 @@
               </v-container>
             </div>
 
-            <div v-else>Staff Not Found</div>
+            <div v-else>
+              Staff Not Found
+            </div>
           </template>
         </ApolloQuery>
       </v-card>
