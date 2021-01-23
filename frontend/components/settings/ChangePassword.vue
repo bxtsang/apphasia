@@ -16,7 +16,7 @@
       label="New Password"
       @click:append="showNewPassword = !showNewPassword"
     />
-    <v-btn color="primary" class="my-3 align-self-end" type="submit">
+    <v-btn color="primary" class="my-3 align-self-end" type="submit" :loading="isSubmitting">
       Save
     </v-btn>
   </v-form>
@@ -25,6 +25,7 @@
 export default {
   data () {
     return {
+      isSubmitting: false,
       passwordFormValid: true,
       showCurrentPassword: false,
       showNewPassword: false,
@@ -38,6 +39,7 @@ export default {
   methods: {
     changePassword () {
       if (this.$refs.passwordform.validate()) {
+        this.isSubmitting = true
         const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
         const postBody = {
           access_token: accessToken,
@@ -57,6 +59,7 @@ export default {
           console.log('error: ' + error.response.data.error)
           this.$store.commit('notification/newNotification', [error.response.data.message, 'error'])
         }).then(() => {
+          this.isSubmitting = false
           this.$refs.passwordform.reset()
         })
       }
