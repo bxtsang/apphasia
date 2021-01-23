@@ -31,7 +31,27 @@
           <h1 class="title mb-3">
             Edit Profile
           </h1>
-          <EditProfile />
+          <ApolloQuery
+            :query="require('./../graphql/staff/GetSingleStaff.graphql')"
+            :variables="{
+              'isCoreTeam': true,
+              'id': $auth.user['custom:hasura_id']
+            }"
+          >
+            <template v-slot="{ result: { error, data }, isLoading }">
+              <div v-if="isLoading" class="d-flex justify-center">
+                <v-progress-circular
+                  :size="50"
+                  color="primary"
+                  indeterminate
+                />
+              </div>
+              <div v-if="error" class="d-flex justify-center">
+                Unable to Retrieve User Data
+              </div>
+              <EditProfile v-if="data" :profile="data.staffs[0]" />
+            </template>
+          </ApolloQuery>
         </div>
         <div v-else-if="active === 1" class="px-8 py-6" style="width:100%;max-width:500px;">
           <h1 class="title mb-3">
