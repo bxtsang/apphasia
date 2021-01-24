@@ -19,22 +19,6 @@
         Verify
       </v-btn>
     </v-card>
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="timeout"
-    >
-      {{ text }}
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          :color="color"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
 </template>
 
@@ -124,29 +108,26 @@ export default {
     },
     checkVerified () {
       if (this.$store.$auth.$state.user.email_verified === 'true') {
-        this.text = 'Email already verified!'
-        this.color = 'red'
-        this.snackbar = true
+        this.$store.commit('notification/newNotification', ['Email already verified!', 'success'])
         return true
       }
       this.snackbar = false
       return false
     },
     codeSent () {
-      this.text = 'Verification code sent to email'
-      this.color = 'blue'
-      this.snackbar = true
+      this.$store.commit('notification/newNotification', ['Verification code sent to email', 'success'])
     },
     emailVerified () {
-      this.text = 'Email successfully verified!'
-      this.color = 'blue'
-      this.snackbar = true
+      this.$store.commit('notification/newNotification', ['Email successfully verified!', 'success'])
     },
     reject () {
-      this.text = 'Something went wrong, please try again.'
-      this.color = 'red'
-      this.snackbar = true
+      this.$store.commit('notification/newNotification', ['Something went wrong, please try again.', 'error'])
     }
   }
 }
 </script>
+<style>
+div.react-code-input-container > div.react-code-input > input[type="tel"]{
+  font-family: 'Roboto', sans-serif;
+}
+</style>
