@@ -20,6 +20,7 @@ import NotificationList from './../components/dashboard/NotificationList'
 
 export default {
   components: { TimelineWidget, CalendarWidget, TaskList, NotificationList },
+  middleware: ['isEmailVerified'],
   data () {
     return {
       loading: false

@@ -7,7 +7,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">
-              Hello, {{ $auth.user.name }}
+              Hello, {{ fullname || 'User' }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import Notification from './../components/Notification'
 
 export default {
@@ -133,6 +134,24 @@ export default {
     logout () {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
+    }
+  },
+  apollo: {
+    fullname: {
+      query () {
+        return gql`query($email: String!) {
+          staffs(where: {email: {_eq: $email}}) {
+            id
+            name
+          }
+        }`
+      },
+      variables () {
+        return {
+          email: this.$auth.user.email
+        }
+      },
+      update: data => data.staffs[0].name
     }
   }
 }

@@ -26,7 +26,7 @@
         </v-icon>
       </v-btn>
     </template>
-    <StaffForm :staff="staff" />
+    <StaffForm :staff="staff" v-on:closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>

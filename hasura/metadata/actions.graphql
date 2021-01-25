@@ -1,10 +1,28 @@
 type Mutation {
-  createCognitoUser (
+  CreateCognitoUser (
     email: String!
     password: String!
     role: String!
     user_id: Int!
   ): CreateUserResponse
+}
+
+
+type Mutation {
+  deleteCognitoUser (
+    email: String!
+    user_id: Int!
+  ): DeleteUserResponse
+}
+
+
+type Mutation {
+  UpdateCognitoUser (
+    email: String!
+    user_id: Int!
+    current_role: String!
+    new_role: String!
+  ): UpdateUserResponse
 }
 
 
@@ -19,6 +37,16 @@ input SupervisorData {
 }
 
 type CreateUserResponse {
+  status : String!
+  message : String!
+}
+
+type UpdateUserResponse {
+  status : String!
+  message : String!
+}
+
+type DeleteUserResponse {
   status : String!
   message : String!
 }
