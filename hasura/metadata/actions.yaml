@@ -5,6 +5,10 @@ actions:
     handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
   permissions:
   - role: core_team
+- name: deleteCognitoUser
+  definition:
+    kind: synchronous
+    handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -19,4 +23,5 @@ custom_types:
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
+  - name: DeleteUserResponse
   scalars: []

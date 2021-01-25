@@ -9,6 +9,14 @@ type Mutation {
 
 
 type Mutation {
+  deleteCognitoUser (
+    email: String!
+    user_id: Int!
+  ): DeleteUserResponse
+}
+
+
+type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
@@ -34,6 +42,11 @@ type CreateUserResponse {
 }
 
 type UpdateUserResponse {
+  status : String!
+  message : String!
+}
+
+type DeleteUserResponse {
   status : String!
   message : String!
 }
