@@ -9,7 +9,7 @@ type Mutation {
 
 
 type Mutation {
-  deleteCognitoUser (
+  DeleteCognitoUser (
     email: String!
     user_id: Int!
   ): DeleteUserResponse

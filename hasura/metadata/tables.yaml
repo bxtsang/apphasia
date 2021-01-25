@@ -2,6 +2,13 @@
     schema: public
     name: channels
   is_enum: true
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - channel
+      backend_only: false
 - table:
     schema: public
     name: languages
