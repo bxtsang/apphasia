@@ -2,6 +2,14 @@
     schema: public
     name: channels
   is_enum: true
+  array_relationships:
+  - name: vol_channels
+    using:
+      foreign_key_constraint_on:
+        column: channels
+        table:
+          schema: public
+          name: vol_channels
 - table:
     schema: public
     name: languages
@@ -92,6 +100,13 @@
 - table:
     schema: public
     name: project_vol
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
 - table:
     schema: public
     name: projects
@@ -107,6 +122,13 @@
         table:
           schema: public
           name: project_staffs
+  - name: volunteers
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_vol
   select_permissions:
   - role: core_team
     permission:
@@ -367,6 +389,13 @@
         table:
           schema: public
           name: staff_supervisors
+  - name: vol_supervisors
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: vol_supervisors
   insert_permissions:
   - role: core_team
     permission:
@@ -593,6 +622,9 @@
     schema: public
     name: vol_languages
   object_relationships:
+  - name: languages
+    using:
+      foreign_key_constraint_on: language
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
@@ -610,9 +642,24 @@
     schema: public
     name: vol_voltypes
   object_relationships:
+  - name: voltypes
+    using:
+      foreign_key_constraint_on: voltype
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: voltypes
+  is_enum: true
+  array_relationships:
+  - name: volunteers
+    using:
+      foreign_key_constraint_on:
+        column: voltype
+        table:
+          schema: public
+          name: vol_voltypes
 - table:
     schema: public
     name: volunteers
