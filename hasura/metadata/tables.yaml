@@ -2,18 +2,44 @@
     schema: public
     name: channels
   is_enum: true
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - channel
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - channel
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: languages
   is_enum: true
-  array_relationships:
-  - name: staffs
-    using:
-      foreign_key_constraint_on:
-        column: language
-        table:
-          schema: public
-          name: staff_languages
   insert_permissions:
   - role: core_team
     permission:
@@ -23,6 +49,16 @@
       backend_only: false
   select_permissions:
   - role: core_team
+    permission:
+      columns:
+      - language
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - language
+      filter: {}
+  - role: intern
     permission:
       columns:
       - language
@@ -63,6 +99,18 @@
       - project_id
       - staff_id
       filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - staff_id
+      filter: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -70,6 +118,44 @@
 - table:
     schema: public
     name: project_vol
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: projects
@@ -85,6 +171,22 @@
         table:
           schema: public
           name: project_staffs
+  - name: volunteers
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_vol
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - title
+      - owner_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -93,18 +195,37 @@
       - title
       - owner_id
       filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - owner_id
+      - title
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: roles
   is_enum: true
-  array_relationships:
-  - name: staffs
-    using:
-      foreign_key_constraint_on:
-        column: role
-        table:
-          schema: public
-          name: staffs
   insert_permissions:
   - role: core_team
     permission:
@@ -149,20 +270,18 @@
       backend_only: false
   - role: core_volunteer
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   - role: intern
     permission:
-      check:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      check: {}
       columns:
-      - language
       - staff_id
+      - language
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -175,17 +294,13 @@
       columns:
       - language
       - staff_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   - role: intern
     permission:
       columns:
       - language
       - staff_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -248,6 +363,20 @@
       - staff_id
       - supervisor_id
       backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - staff_id
+      - supervisor_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -260,17 +389,13 @@
       columns:
       - staff_id
       - supervisor_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   - role: intern
     permission:
       columns:
       - staff_id
       - supervisor_id
-      filter:
-        staff_id:
-          _eq: X-Hasura-User-Id
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -283,6 +408,11 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter:
+        staff_id:
+          _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: staffs
@@ -322,8 +452,55 @@
         table:
           schema: public
           name: staff_supervisors
+  - name: vol_supervisors
+    using:
+      foreign_key_constraint_on:
+        column: staff_id
+        table:
+          schema: public
+          name: vol_supervisors
   insert_permissions:
   - role: core_team
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - contact_num
+      - date_joined
+      - dob
+      - email
+      - gender
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - nric
+      - profession
+      - role
+      - ws_place
+      backend_only: false
+  - role: intern
     permission:
       check: {}
       columns:
@@ -368,6 +545,7 @@
   - role: core_volunteer
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -380,6 +558,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
@@ -387,6 +566,7 @@
   - role: intern
     permission:
       columns:
+      - address
       - bio
       - contact_num
       - created_at
@@ -399,6 +579,7 @@
       - is_speech_therapist
       - name
       - nickname
+      - nric
       - profession
       - role
       - ws_place
@@ -430,11 +611,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -445,11 +633,18 @@
       - address
       - bio
       - contact_num
+      - date_joined
+      - dob
       - email
+      - gender
       - is_active
+      - is_speech_therapist
+      - name
       - nickname
       - nric
       - profession
+      - role
+      - ws_place
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -460,7 +655,49 @@
       filter: {}
 - table:
     schema: public
+    name: status
+  is_enum: true
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - status
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - status
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - status
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: test
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
   event_triggers:
   - name: test_trigger
     definition:
@@ -482,13 +719,92 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - channels
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - channels
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_languages
   object_relationships:
+  - name: languages
+    using:
+      foreign_key_constraint_on: language
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - language
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - language
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_supervisors
@@ -499,23 +815,137 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_voltypes
   object_relationships:
-  - name: type
+  - name: voltypes
     using:
       foreign_key_constraint_on: voltype
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - voltype
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - voltype
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: voltypes
   is_enum: true
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - type
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - type
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - type
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - type
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - type
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: volunteers
+  object_relationships:
+  - name: vol_status
+    using:
+      foreign_key_constraint_on: status
   array_relationships:
   - name: project_vols
     using:
@@ -552,3 +982,147 @@
         table:
           schema: public
           name: vol_voltypes
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}

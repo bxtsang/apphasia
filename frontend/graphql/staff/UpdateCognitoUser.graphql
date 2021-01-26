@@ -1,0 +1,16 @@
+mutation (
+  $email: String!,
+  $user_id: Int!,
+  $current_role: String!,
+  $new_role: String!
+) {
+  UpdateCognitoUser (
+    email: $email,
+    user_id: $user_id,
+    current_role: $current_role,
+    new_role: $new_role
+  ) {
+    status
+    message
+  }
+}

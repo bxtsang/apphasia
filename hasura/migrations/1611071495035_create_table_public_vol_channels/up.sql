@@ -1,0 +1,1 @@
+CREATE TABLE "public"."vol_channels"("vol_id" integer NOT NULL, "channels" text NOT NULL, PRIMARY KEY ("vol_id","channels") , FOREIGN KEY ("vol_id") REFERENCES "public"."volunteers"("id") ON UPDATE restrict ON DELETE cascade);

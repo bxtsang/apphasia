@@ -1,3 +1,5 @@
 credentials.json
 *.iml
 .idea
+node_modules/
+hasura/hasura.exe

@@ -1,0 +1,64 @@
+mutation (
+    $bio: String, 
+    $contact_num: Int!, 
+    $channels: vol_channels_arr_rel_insert_input!, 
+  	$consent: Boolean!,
+    $date_joined: date!,
+    $dob: date!,
+    $email: String!,
+    $gender: bpchar!,
+    $is_speech_therapist: Boolean!,
+    $languages: vol_languages_arr_rel_insert_input!,
+    $name: String!,
+    $nickname: String,
+    $profession: String,
+    $projects: project_vol_arr_rel_insert_input
+    $status: status_enum,
+    $ws_place: String
+) {
+  insert_volunteers_one(object: {
+    bio: $bio, #string 
+    contact_num: $contact_num, #int
+    consent: $consent, #boolean
+    date_joined: $date_joined, #string in date format YYYY-MM-DD
+    dob: $dob, #string in date format YYYY-MM-DD
+    email: $email, #string
+    gender: $gender, #char, "M" or "F"
+    is_speech_therapist: $is_speech_therapist, #boolean
+    vol_languages: $languages, #{data: [{language: Abkhaz, vol_id: 1}]}
+    name: $name, #string
+    nickname: $nickname, #string
+    project_vols: $projects, #{data: [{project_id: 1, vol_id: 1}]}
+    profession: $profession, #string
+    ws_place: $ws_place, #string
+    vol_channels: $channels, #{data: [{channels: facebook, vol_id: 1}]}
+    status: $status, #KIV,Approved,Pending_Approval,Rejected    NO " or '
+}) {
+    bio
+    contact_num
+  	consent
+    date_joined
+    dob
+    email
+    gender
+    is_speech_therapist
+    is_active
+    name
+    nickname
+    profession
+    ws_place
+    id
+    vol_languages {
+      language
+    }
+    project_vols {
+      project {
+        title
+      }
+    }
+    status
+    vol_channels {
+      channels
+    }
+  }
+}

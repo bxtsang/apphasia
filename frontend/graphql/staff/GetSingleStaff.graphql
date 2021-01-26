@@ -1,6 +1,6 @@
-query GetSingleStaff($id: Int!) {
+query GetSingleStaff($id: Int!, $isCoreTeam: Boolean!) {
   staffs(where: {id: {_eq: $id}}) {
-    address
+    address @include(if: $isCoreTeam)
     bio
     contact_num
     date_joined
@@ -11,10 +11,24 @@ query GetSingleStaff($id: Int!) {
     is_active
     name
     nickname
-    nric
+    nric @include(if: $isCoreTeam)
     profession
     role
     ws_place
     id
+    languages {
+      language
+    }
+    supervisors {
+      supervisor {
+        id
+        name
+      }
+    }
+    projects_in {
+      project {
+        title
+      }
+    }
   }
 }
