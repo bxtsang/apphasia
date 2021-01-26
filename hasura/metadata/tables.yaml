@@ -9,6 +9,33 @@
       columns:
       - channel
       backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - channel
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: languages
@@ -98,6 +125,37 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: projects
@@ -601,6 +659,47 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - channels
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - channels
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - channels
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_languages
@@ -611,6 +710,47 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - language
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - language
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - language
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_supervisors
@@ -621,6 +761,47 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - staff_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_voltypes
@@ -631,10 +812,85 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - voltype
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - vol_id
+      - voltype
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - vol_id
+      - voltype
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: voltypes
   is_enum: true
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - type
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - type
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - type
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - type
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - type
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: volunteers
@@ -674,3 +930,147 @@
         table:
           schema: public
           name: vol_voltypes
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
+      - status
+      - bio
+      - email
+      - name
+      - nickname
+      - profession
+      - ws_place
+      - created_at
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
