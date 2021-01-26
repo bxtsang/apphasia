@@ -17,7 +17,8 @@
               </v-col>
             </v-row>
           </v-card> -->
-          <AllStaffQuery />
+          <ListingQuery :resourceType="'staffs'"></ListingQuery>
+<!--          <AllStaffQuery />-->
         </v-col>
       </v-row>
     </v-container>
@@ -25,11 +26,12 @@
 </template>
 <script>
 import NewStaffModal from './../components/staff/modals/NewStaffModal'
-import AllStaffQuery from './../components/staff/apollo/AllStaffQuery'
+// import AllStaffQuery from './../components/staff/apollo/AllStaffQuery'
 import IndividualStaffView from './../components/staff/IndividualStaffView'
+import ListingQuery from './../components/common/ListingQuery'
 
 export default {
-  components: { NewStaffModal, AllStaffQuery, IndividualStaffView },
+  components: { ListingQuery, NewStaffModal, IndividualStaffView },
   data () {
     return {
       staffId: this.$route.query.id
