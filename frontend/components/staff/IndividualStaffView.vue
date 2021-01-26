@@ -26,7 +26,7 @@
                 <v-row>
                   <v-col>
                     <h1 class="title hover-underline">
-                      <NuxtLink to="/staff">
+                      <NuxtLink to="/staffs">
                         Staff
                       </NuxtLink>
                       <span>/ {{ data.staffs[0].name }}</span>
