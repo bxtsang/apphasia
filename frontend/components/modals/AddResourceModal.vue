@@ -5,7 +5,7 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="primary" v-bind="attrs" v-on="on">
-        Add {{ resourceType }}
+        Add {{ resource }}
       </v-btn>
     </template>
     <StaffForm v-if="resourceType === 'staffs'" v-on:closeForm="isOpen = false" />
@@ -26,6 +26,14 @@ export default {
   data () {
     return {
       isOpen: false
+    }
+  },
+  computed: {
+    resource () {
+      if (this.resourceType === 'staffs') {
+        return 'Staff'
+      }
+      return 'Resource'
     }
   }
 }
