@@ -1,6 +1,6 @@
 <template>
   <ApolloQuery
-    :query = "query"
+    :query="query"
     :variables="{
       'isCoreTeam': $auth.user['custom:role'] === 'core_team'
     }"
