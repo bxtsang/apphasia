@@ -942,10 +942,6 @@
 - table:
     schema: public
     name: volunteers
-  object_relationships:
-  - name: vol_status
-    using:
-      foreign_key_constraint_on: status
   array_relationships:
   - name: project_vols
     using:
@@ -1022,6 +1018,27 @@
       - profession
       - ws_place
       - created_at
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - bio
+      - status
+      - consent
       backend_only: false
   select_permissions:
   - role: core_team
