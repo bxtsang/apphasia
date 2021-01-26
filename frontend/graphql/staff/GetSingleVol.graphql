@@ -1,0 +1,40 @@
+query GetSingleVol($id: Int!) {
+  volunteers(where: {id: {_eq: $id}}) {
+    bio
+    consent
+    contact_num
+    date_joined
+    dob
+    email
+    gender
+    id
+    is_active
+    is_speech_therapist
+    name
+    nickname
+    profession
+    ws_place
+    project_vols {
+      project {
+        title
+        id
+      }
+    }
+    status
+    vol_channels {
+      channels
+    }
+    vol_languages {
+      language
+    }
+    vol_supervisors {
+      supervisor {
+        name
+        id
+      }
+    }
+    vol_voltypes {
+      voltype
+    }
+  }
+}

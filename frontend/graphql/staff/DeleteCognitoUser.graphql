@@ -1,0 +1,13 @@
+mutation (
+  $email: String!, 
+  $user_id: Int!
+) {
+  DeleteCognitoUser(
+    user_id: $user_id, 
+    email: $email
+  ) 
+  {
+    message
+    status
+  }
+}
