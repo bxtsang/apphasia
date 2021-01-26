@@ -1,6 +1,6 @@
 <template>
   <v-select
-    v-model="value"
+    v-model="data"
     :items="GENDER_OPTIONS"
     :rules="validation"
     label="Gender"
@@ -34,12 +34,13 @@ export default {
   data () {
     return {
       GENDER_OPTIONS,
+      data: this.value,
       validation: [INPUT_VALIDATION.gender.required]
     }
   },
 
   watch: {
-    value: {
+    data: {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)

@@ -1,40 +1,31 @@
 <template>
   <div>
-    <IndividualStaffView v-if="staffId" />
+    <IndividualStaffView v-if="staffId" :resourceType="resourceType"/>
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
-          <NewStaffModal />
+          <AddResourceModal :resourceType="resourceType"/>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <!-- <v-card class="px-6 py-3">
-            <h1 class="title">Manage Staff</h1>
-            <v-row>
-              <v-col>
-                <AllStaffQuery />
-              </v-col>
-            </v-row>
-          </v-card> -->
-          <ListingQuery :resourceType="'staffs'"></ListingQuery>
-<!--          <AllStaffQuery />-->
+          <ListingQuery :resourceType="resourceType"></ListingQuery>
         </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 <script>
-import NewStaffModal from './../components/staff/modals/NewStaffModal'
-// import AllStaffQuery from './../components/staff/apollo/AllStaffQuery'
+import AddResourceModal from './../components/modals/AddResourceModal'
 import IndividualStaffView from './../components/staff/IndividualStaffView'
 import ListingQuery from './../components/common/ListingQuery'
 
 export default {
-  components: { ListingQuery, NewStaffModal, IndividualStaffView },
+  components: { ListingQuery, IndividualStaffView, AddResourceModal },
   data () {
     return {
-      staffId: this.$route.query.id
+      staffId: this.$route.query.id,
+      resourceType: 'staffs'
     }
   },
   watch: {

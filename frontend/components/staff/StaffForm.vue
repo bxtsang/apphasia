@@ -11,9 +11,9 @@
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-radio-group v-model="staffData.role" :rules="roleRules" row>
-              <v-radio v-for="role in ROLE_OPTIONS" :key="role.value" :label="role.label" :value="role.value" />
-            </v-radio-group>
+            <RoleInput
+              v-model="staffData.role"
+            />
           </v-col>
         </v-row>
         <v-row class="mt-3">
@@ -111,37 +111,17 @@
             />
           </v-col>
           <v-col class="py-0">
-            <v-switch
+            <SpeechTherapistInput
               v-model="staffData.is_speech_therapist"
-              label="Speech Therapist?"
             />
           </v-col>
         </v-row>
         <v-row v-if="!staff">
-          <!--  hide from edit -->
           <v-col cols="6" class="py-0">
-            <v-menu
-              transition="scale-transition"
-              offset-y
-              :close-on-content-click="false"
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="staffData.date_joined"
-                  label="Date Joined"
-                  v-bind="attrs"
-                  readonly
-                  required
-                  :rules="dateJoinedRules"
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                ref="picker"
-                v-model="staffData.date_joined"
-              />
-            </v-menu>
+            <DateJoinedInput
+              v-model="staffData.date_joined"
+              :required="true"
+            />
           </v-col>
         </v-row>
         <v-row v-if="staffData.role != '' && staffData.role != 'core_team'" class="mt-3">
@@ -151,11 +131,8 @@
         </v-row>
         <v-row v-if="staffData.role != '' && staffData.role != 'core_team'">
           <v-col cols="6" class="py-0">
-            <v-select
+            <SupervisorInput
               v-model="staffData.supervisors"
-              :items="staff && supervisors ? supervisors.filter(item => item.value !== staff.id) : supervisors"
-              label="Tag Supervisor(s)"
-              multiple
             />
           </v-col>
         </v-row>
@@ -175,17 +152,14 @@
   </v-card>
 </template>
 <script>
-import gql from 'graphql-tag'
 import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
-import { ROLE_OPTIONS } from './../../assets/data'
 
-// New Inputs
-// import RoleInput from './../input/RoleInput'
+import RoleInput from './../input/RoleInput'
 import NameInput from './../input/NameInput'
 import AliasInput from './../input/AliasInput'
 import NRICInput from './../input/NRICInput'
@@ -199,10 +173,12 @@ import ProjectInput from './../input/ProjectInput'
 import LanguageInput from './../input/LanguageInput'
 import WorkplaceInput from './../input/WorkplaceInput'
 import ProfessionInput from './../input/ProfessionInput'
-// import SpeechTherapistInput from './../input/SpeechTherapistInput'
+import SpeechTherapistInput from './../input/SpeechTherapistInput'
+import SupervisorInput from './../input/SupervisorInput'
 
 export default {
   components: {
+    RoleInput,
     NameInput,
     AliasInput,
     NRICInput,
@@ -215,7 +191,9 @@ export default {
     ProjectInput,
     LanguageInput,
     WorkplaceInput,
-    ProfessionInput
+    ProfessionInput,
+    SpeechTherapistInput,
+    SupervisorInput
   },
   props: {
     staff: {
@@ -227,7 +205,6 @@ export default {
     return {
       valid: true,
       isSubmitting: false,
-      ROLE_OPTIONS,
       staffData: {
         role: this.staff ? this.staff.role : '',
         name: this.staff ? `${this.staff.name}` : '',
@@ -247,22 +224,7 @@ export default {
         languages: this.staff ? this.staff.languages.map(item => item.language) : [],
         supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor.id) : [],
         is_active: this.staff ? this.staff.is_active : true
-      },
-      roleRules: [v => !!v || 'Role is required'],
-      dateJoinedRules: [v => !!v || 'Date Joined is required']
-    }
-  },
-  apollo: {
-    supervisors: {
-      query () {
-        return gql`query getCoreTeamMembers {
-          staffs(where: {role: {_eq: core_team}}){
-            id
-            name
-          }
-        }`
-      },
-      update: data => data.staffs.map((item) => { return { text: item.name, value: item.id } })
+      }
     }
   },
   computed: {

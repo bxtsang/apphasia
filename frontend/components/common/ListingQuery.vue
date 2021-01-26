@@ -23,6 +23,7 @@
         <v-data-table
           :headers="TABLE_HEADERS[resourceType]"
           :items="filterItems(data[resourceType])"
+          :search="search"
           item-key="id"
           class="elevation-1"
         >
@@ -36,9 +37,13 @@
               <v-row v-if="resourceType === 'staffs'">
                 <v-col>
                   <v-tabs>
-                    <v-tab @click="staffRoleFilter = 'core_team'">Core Team</v-tab>
-                    <v-tab @click="staffRoleFilter = 'intern'">Interns</v-tab>
-                    <v-tab @click="staffRoleFilter = 'core_volunteer'">Core Volunteers</v-tab>
+                    <v-tab
+                      v-for="role in ROLE_OPTIONS"
+                      :key="role.value"
+                      @click="staffRoleFilter = role.value"
+                    >
+                      {{ role.label}}
+                    </v-tab>
                   </v-tabs>
                 </v-col>
               </v-row>
@@ -74,7 +79,7 @@
 </template>
 
 <script>
-import { LIST_QUERY_PATHS, TABLE_HEADERS } from '../../assets/data'
+import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS } from '../../assets/data'
 import EditResourceModal from '~/components/modals/EditResourceModal'
 
 export default {
@@ -90,6 +95,7 @@ export default {
     return {
       LIST_QUERY_PATHS,
       TABLE_HEADERS,
+      ROLE_OPTIONS,
       staffRoleFilter: 'core_team',
       search: ''
     }

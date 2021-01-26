@@ -1,22 +1,26 @@
 <template>
-  <v-text-field
+  <v-select
     v-model="data"
-    :rules="validation"
-    label="Current Place of Work / Study"
+    :items="supervisors"
+    label="Tag Supervisor(s)"
     :required="required"
     :readonly="readonly"
+    multiple
   />
 </template>
 
 <script>
+import gql from 'graphql-tag'
 
 export default {
-  name: 'WorkplaceInput',
+  name: 'SupervisorInput',
 
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Array,
+      default () {
+        return []
+      }
     },
     required: {
       type: Boolean,
@@ -41,6 +45,20 @@ export default {
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
       }
+    }
+  },
+
+  apollo: {
+    supervisors: {
+      query () {
+        return gql`query getCoreTeamMembers {
+          staffs(where: {role: {_eq: core_team}}){
+            id
+            name
+          }
+        }`
+      },
+      update: data => data.staffs.map((item) => { return { text: item.name, value: item.id } })
     }
   }
 }

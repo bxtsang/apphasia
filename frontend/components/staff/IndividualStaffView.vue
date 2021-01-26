@@ -33,9 +33,10 @@
                     </h1>
                   </v-col>
                   <v-col class="d-flex justify-end">
-                    <EditStaffModal
+                    <EditResourceModal
                       v-if="$auth.user['custom:role'] === 'core_team'"
-                      :staff="data.staffs[0]"
+                      :resourceType="resourceType"
+                      :resource="data.staffs[0]"
                       :text="true"
                     />
                   </v-col>
@@ -171,7 +172,7 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-switch
-                      :value="data.staffs[0].is_speech_therapist"
+                      :input-value="data.staffs[0].is_speech_therapist"
                       label="Speech Therapist?"
                       readonly
                     />
@@ -216,10 +217,16 @@
 </template>
 <script>
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
-import EditStaffModal from './modals/EditStaffModal'
+import EditResourceModal from './../modals/EditResourceModal'
 
 export default {
-  components: { EditStaffModal },
+  components: { EditResourceModal },
+  props: {
+    resourceType: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       staffId: Number(this.$route.query.id),

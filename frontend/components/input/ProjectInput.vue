@@ -1,6 +1,6 @@
 <template>
   <v-select
-    v-model="value"
+    v-model="data"
     :items="projects"
     label="Projects Involved"
     :rules="validation"
@@ -35,13 +35,14 @@ export default {
 
   data () {
     return {
+      data: this.value,
       projects: ['project1'],
       validation: [INPUT_VALIDATION.address.required]
     }
   },
 
   watch: {
-    value: {
+    data: {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)

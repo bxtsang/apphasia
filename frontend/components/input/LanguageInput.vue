@@ -1,6 +1,6 @@
 <template>
   <v-select
-    v-model="value"
+    v-model="data"
     :items="languages"
     label="Languages understand and/or speak"
     :rules="validation"
@@ -36,12 +36,13 @@ export default {
 
   data () {
     return {
+      data: this.value,
       validation: [INPUT_VALIDATION.languages.required]
     }
   },
 
   watch: {
-    value: {
+    data: {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)

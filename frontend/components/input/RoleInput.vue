@@ -1,17 +1,14 @@
 <template>
-  <v-text-field
-    v-model="data"
-    :rules="validation"
-    label="Current Place of Work / Study"
-    :required="required"
-    :readonly="readonly"
-  />
+  <v-radio-group v-model="data" :rules="validation" row>
+    <v-radio v-for="role in ROLE_OPTIONS" :key="role.value" :label="role.label" :value="role.value" :readonly="readonly"/>
+  </v-radio-group>
 </template>
 
 <script>
+import { INPUT_VALIDATION, ROLE_OPTIONS } from './../../assets/data'
 
 export default {
-  name: 'WorkplaceInput',
+  name: 'RoleInput',
 
   props: {
     value: {
@@ -30,8 +27,9 @@ export default {
 
   data () {
     return {
+      ROLE_OPTIONS,
       data: this.value,
-      validation: []
+      validation: [INPUT_VALIDATION.role.required]
     }
   },
 

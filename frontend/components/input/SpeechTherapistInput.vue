@@ -1,8 +1,8 @@
 <template>
-  <v-text-field
+  <v-switch
     v-model="data"
     :rules="validation"
-    label="Current Place of Work / Study"
+    label="Speech Therapist?"
     :required="required"
     :readonly="readonly"
   />
@@ -11,12 +11,12 @@
 <script>
 
 export default {
-  name: 'WorkplaceInput',
+  name: 'SpeechTherapistInput',
 
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Boolean,
+      default: false
     },
     required: {
       type: Boolean,

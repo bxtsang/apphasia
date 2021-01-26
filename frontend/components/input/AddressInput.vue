@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    v-model="value"
+    v-model="data"
     :rules="validation"
     label="Home Address"
     :required="required"
@@ -31,12 +31,13 @@ export default {
 
   data () {
     return {
+      data: this.value,
       validation: [INPUT_VALIDATION.address.required]
     }
   },
 
   watch: {
-    value: {
+    data: {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)

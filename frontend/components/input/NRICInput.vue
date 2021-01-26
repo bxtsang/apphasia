@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    v-model="value"
+    v-model="data"
     :rules="validation"
     label="NRIC"
     :required="required"
@@ -31,12 +31,13 @@ export default {
 
   data () {
     return {
+      data: this.value,
       validation: [INPUT_VALIDATION.nric.required, INPUT_VALIDATION.nric.valid]
     }
   },
 
   watch: {
-    value: {
+    data: {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
