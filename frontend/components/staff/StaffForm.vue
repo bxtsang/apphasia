@@ -23,88 +23,54 @@
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-text-field
+            <NameInput
               v-model="staffData.name"
-              :rules="nameRules"
-              label="Full Name"
-              required
+              :required="true"
             />
           </v-col>
           <v-col class="py-0">
-            <v-text-field
+            <AliasInput
               v-model="staffData.nickname"
-              label="Nickname / Alias"
-              required
             />
           </v-col>
           <v-col class="py-0">
-            <v-text-field
+            <NRICInput
               v-model="staffData.nric"
-              :rules="nricRules"
-              label="NRIC"
-              required
+              :required="true"
             />
           </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-menu
-              transition="scale-transition"
-              offset-y
-              :close-on-content-click="false"
-              min-width="auto"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="staffData.dob"
-                  label="Date of Birth"
-                  v-bind="attrs"
-                  readonly
-                  :rules="dobRules"
-                  required
-                  v-on="on"
-                />
-              </template>
-              <v-date-picker
-                ref="picker"
-                v-model="staffData.dob"
-                :max="new Date().toISOString().substr(0, 10)"
-              />
-            </v-menu>
+            <DateOfBirthInput
+              v-model="staffData.dob"
+              :required="true"
+            />
           </v-col>
           <v-col class="py-0">
-            <v-text-field
+            <ContactInput
               v-model="staffData.contact_num"
-              :rules="contactRules"
-              label="Contact"
               required
             />
           </v-col>
           <v-col class="py-0">
-            <v-select
+            <GenderInput
               v-model="staffData.gender"
-              :items="GENDER_OPTIONS"
-              :rules="genderRules"
-              label="Gender"
             />
           </v-col>
         </v-row>
         <v-row>
           <!--  hide from edit -->
           <v-col v-if="!staff" class="py-0" cols="4">
-            <v-text-field
+            <EmailInput
               v-model="staffData.email"
-              :rules="emailRules"
-              label="Email Address"
-              required
+              :required="true"
             />
           </v-col>
           <v-col class="py-0" cols="8">
-            <v-text-field
+            <AddressInput
               v-model="staffData.address"
-              :rules="addressRules"
-              label="Home Address"
-              required
+              :required="true"
             />
           </v-col>
         </v-row>
@@ -115,43 +81,33 @@
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-text-field
+            <BioInput
               v-model="staffData.bio"
-              label="Hobbies / Interests"
             />
           </v-col>
           <v-col class="py-0">
-            <v-select
+            <ProjectInput
               v-model="staffData.projects_in"
-              :items="projects"
-              label="Projects Involved"
-              multiple
             />
           </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-select
+            <LanguageInput
               v-model="staffData.languages"
-              :items="languages"
-              label="Languages understand and/or speak"
-              :rules="languagesRules"
-              multiple
+              :required="true"
             />
           </v-col>
           <v-col class="py-0">
-            <v-text-field
+            <WorkplaceInput
               v-model="staffData.ws_place"
-              label="Current Place of Work / Study"
             />
           </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-text-field
+            <ProfessionInput
               v-model="staffData.profession"
-              :rules="professionRules"
-              label="Profession"
             />
           </v-col>
           <v-col class="py-0">
@@ -226,9 +182,41 @@ import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
-import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
+import { ROLE_OPTIONS } from './../../assets/data'
+
+// New Inputs
+// import RoleInput from './../input/RoleInput'
+import NameInput from './../input/NameInput'
+import AliasInput from './../input/AliasInput'
+import NRICInput from './../input/NRICInput'
+import DateOfBirthInput from './../input/DateOfBirthInput'
+import ContactInput from './../input/ContactInput'
+import GenderInput from './../input/GenderInput'
+import EmailInput from './../input/EmailInput'
+import AddressInput from './../input/AddressInput'
+import BioInput from './../input/BioInput'
+import ProjectInput from './../input/ProjectInput'
+import LanguageInput from './../input/LanguageInput'
+import WorkplaceInput from './../input/WorkplaceInput'
+import ProfessionInput from './../input/ProfessionInput'
+// import SpeechTherapistInput from './../input/SpeechTherapistInput'
 
 export default {
+  components: {
+    NameInput,
+    AliasInput,
+    NRICInput,
+    DateOfBirthInput,
+    ContactInput,
+    GenderInput,
+    EmailInput,
+    AddressInput,
+    BioInput,
+    ProjectInput,
+    LanguageInput,
+    WorkplaceInput,
+    ProfessionInput
+  },
   props: {
     staff: {
       type: Object,
@@ -240,15 +228,13 @@ export default {
       valid: true,
       isSubmitting: false,
       ROLE_OPTIONS,
-      GENDER_OPTIONS,
-      projects: ['Project1', 'Project 2'],
       staffData: {
         role: this.staff ? this.staff.role : '',
-        name: this.staff ? this.staff.name : '',
+        name: this.staff ? `${this.staff.name}` : '',
         nickname: this.staff ? this.staff.nickname : '',
         nric: this.staff ? this.staff.nric : '',
         dob: this.staff ? this.staff.dob : '',
-        contact_num: this.staff ? this.staff.contact_num : '',
+        contact_num: this.staff ? this.staff.contact_num.toString() : '',
         gender: this.staff ? this.staff.gender : '',
         email: this.staff ? this.staff.email : '',
         address: this.staff ? this.staff.address : '',
@@ -263,40 +249,10 @@ export default {
         is_active: this.staff ? this.staff.is_active : true
       },
       roleRules: [v => !!v || 'Role is required'],
-      nameRules: [v => !!v || 'Fullname is required'],
-      nricRules: [
-        v => !!v || 'NRIC is required',
-        v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
-      ],
-      dobRules: [v => !!v || 'Date of Birth is required'],
-      contactRules: [
-        v => !!v || 'Contact Number is required',
-        v => /(6|8|9)\d{7}/g.test(v) || 'Not a valid Contact Number'
-      ],
-      genderRules: [
-        v => !!v || 'Gender is required'
-      ],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
-      addressRules: [v => !!v || 'Home Address is required'],
-      professionRules: [v => !!v || 'Profession is required'],
-      dateJoinedRules: [v => !!v || 'Date Joined is required'],
-      languagesRules: [v => v.length > 0 || 'Language is required']
+      dateJoinedRules: [v => !!v || 'Date Joined is required']
     }
   },
   apollo: {
-    languages: {
-      query () {
-        return gql`query getLanguages {
-          languages {
-            language
-          }
-        }`
-      },
-      update: data => data.languages.map(item => item.language)
-    },
     supervisors: {
       query () {
         return gql`query getCoreTeamMembers {
@@ -449,7 +405,7 @@ export default {
             }
           }
         }).then((data) => {
-          this.isSubmitting = true
+          this.isSubmitting = false
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
         }).catch((error) => {
