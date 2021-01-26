@@ -2,24 +2,24 @@ mutation (
     $bio: String, 
     $contact_num: Int!, 
     $channels: vol_channels_arr_rel_insert_input!, 
-    $date_joined: date!, 
-    $dob: date!, 
-    $email: String!, 
-    $gender: bpchar!, 
-    $is_speech_therapist: Boolean!, 
-    $languages: vol_languages_arr_rel_insert_input!, 
-    $name: String!, 
-    $nickname: String, 
-    $profession: String, 
+  	$consent: Boolean!,
+    $date_joined: date!,
+    $dob: date!,
+    $email: String!,
+    $gender: bpchar!,
+    $is_speech_therapist: Boolean!,
+    $languages: vol_languages_arr_rel_insert_input!,
+    $name: String!,
+    $nickname: String,
+    $profession: String,
     $projects: project_vol_arr_rel_insert_input
-    $status: Int,
-    $supervisors: vol_supervisors_arr_rel_insert_input, 
-    $voltypes: vol_voltypes_arr_rel_insert_input, 
+    $status: status_enum,
     $ws_place: String
 ) {
   insert_volunteers_one(object: {
     bio: $bio, #string 
     contact_num: $contact_num, #int
+    consent: $consent, #boolean
     date_joined: $date_joined, #string in date format YYYY-MM-DD
     dob: $dob, #string in date format YYYY-MM-DD
     email: $email, #string
@@ -31,13 +31,12 @@ mutation (
     project_vols: $projects, #{data: [{project_id: 1, vol_id: 1}]}
     profession: $profession, #string
     ws_place: $ws_place, #string
-    vol_supervisors: $supervisors, #{data: [{staff_id: 10, vol_id: 1}]}
     vol_channels: $channels, #{data: [{channels: facebook, vol_id: 1}]}
     status: $status, #KIV,Approved,Pending_Approval,Rejected    NO " or '
-    vol_voltypes: $voltypes #{data: {vol_id: 1, voltype: Befriender}}
 }) {
     bio
     contact_num
+  	consent
     date_joined
     dob
     email
@@ -52,12 +51,6 @@ mutation (
     vol_languages {
       language
     }
-    vol_supervisors {
-      supervisor {
-        id
-        name
-      }
-    }
     project_vols {
       project {
         title
@@ -66,9 +59,6 @@ mutation (
     status
     vol_channels {
       channels
-    }
-    vol_voltypes {
-      voltype
     }
   }
 }
