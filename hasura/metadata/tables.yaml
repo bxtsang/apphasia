@@ -178,6 +178,15 @@
         table:
           schema: public
           name: project_vol
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - title
+      - owner_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -199,6 +208,19 @@
       - id
       - owner_id
       - title
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
       filter: {}
 - table:
     schema: public
@@ -633,6 +655,10 @@
       filter: {}
 - table:
     schema: public
+    name: status
+  is_enum: true
+- table:
+    schema: public
     name: test
   object_relationships:
   - name: staff
@@ -697,9 +723,6 @@
   - role: core_team
     permission:
       filter: {}
-  - role: intern
-    permission:
-      filter: {}
 - table:
     schema: public
     name: vol_languages
@@ -746,9 +769,6 @@
       filter: {}
   delete_permissions:
   - role: core_team
-    permission:
-      filter: {}
-  - role: intern
     permission:
       filter: {}
 - table:
@@ -799,9 +819,6 @@
   - role: core_team
     permission:
       filter: {}
-  - role: intern
-    permission:
-      filter: {}
 - table:
     schema: public
     name: vol_voltypes
@@ -850,9 +867,6 @@
   - role: core_team
     permission:
       filter: {}
-  - role: intern
-    permission:
-      filter: {}
 - table:
     schema: public
     name: voltypes
@@ -894,6 +908,10 @@
 - table:
     schema: public
     name: volunteers
+  object_relationships:
+  - name: vol_status
+    using:
+      foreign_key_constraint_on: status
   array_relationships:
   - name: project_vols
     using:
