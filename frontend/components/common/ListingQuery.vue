@@ -1,9 +1,7 @@
 <template>
   <ApolloQuery
     :query="query"
-    :variables="{
-      'isCoreTeam': $auth.user['custom:role'] === 'core_team'
-    }"
+    :variables="queryVariables"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -31,7 +29,7 @@
             <v-container class="py-0" fluid>
               <v-row>
                 <v-col>
-                  <h1 class="title pt-3 px-3">Manage Staff</h1>
+                  <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
                 </v-col>
               </v-row>
               <v-row v-if="resourceType === 'staffs'">
@@ -59,10 +57,22 @@
               </v-row>
             </v-container>
           </template>
-          <template v-if="resourceType === 'staffs'" v-slot:[`item.is_speech_therapist`]="{ item }">
+
+          <!-- Staff/Volunteer Column -->
+          <template v-if="resourceType === 'staffs' || resourceType === 'volunteers'" v-slot:[`item.is_speech_therapist`]="{ item }">
             <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
             <v-chip v-else color="error">No</v-chip>
           </template>
+
+          <!-- Volunteer Specific Columns -->
+          <template v-slot:[`item.status`]="{ item }">
+             <VolunteerStatusChip :value="item.status" />
+          </template>
+
+          <template v-slot:[`item.project_vols`]="{ item }">
+            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}
+          </template>
+
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="$auth.user['custom:role'] === 'core_team'" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
@@ -80,10 +90,11 @@
 
 <script>
 import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS } from '../../assets/data'
-import EditResourceModal from '~/components/modals/EditResourceModal'
+import EditResourceModal from './../modals/EditResourceModal'
+import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
 
 export default {
-  components: { EditResourceModal },
+  components: { EditResourceModal, VolunteerStatusChip },
   props: {
     resourceType: {
       type: String,
@@ -104,6 +115,18 @@ export default {
   computed: {
     query () {
       return LIST_QUERY_PATHS[this.resourceType]
+    },
+    queryVariables () {
+      const variables = {}
+      if (this.resourceType === 'staffs') {
+        variables.isCoreTeam = this.$auth.user['custom:role'] === 'core_team'
+      }
+      return variables
+    },
+    listingHeader () {
+      const type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+      const header = `Manage ${type}`
+      return header
     }
   },
 
