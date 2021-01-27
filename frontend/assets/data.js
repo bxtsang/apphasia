@@ -70,3 +70,18 @@ export const TABLE_HEADERS = {
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
+
+export const VOLUNTEER_STATUS = {
+  Approved: {
+    chipColor: 'success'
+  },
+  Pending_Approval: {
+    chipColor: 'warning'
+  },
+  Rejected: {
+    chipColor: 'error'
+  },
+  KIV: {
+    chipColor: 'error'
+  }
+}
