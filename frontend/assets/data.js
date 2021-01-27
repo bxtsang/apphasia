@@ -46,7 +46,8 @@ export const INPUT_VALIDATION = {
 }
 
 export const LIST_QUERY_PATHS = {
-  staffs: require('./../graphql/staff/GetAllStaff.graphql')
+  staffs: require('./../graphql/staff/GetAllStaff.graphql'),
+  volunteers: require('./../graphql/volunteer/GetAllVol.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -56,6 +57,16 @@ export const TABLE_HEADERS = {
     { text: 'Profession', value: 'profession' },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: '' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  volunteers: [
+    { text: 'Name', value: 'name', align: 'start' },
+    { text: 'Gender', value: 'gender' },
+    { text: 'Date of Birth', value: 'dob' },
+    { text: 'Profession', value: 'profession' },
+    { text: 'Programmes Interest', value: 'project_vols' },
+    { text: 'Speech Therapist?', value: 'is_speech_therapist' },
+    { text: 'Status', value: 'status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
