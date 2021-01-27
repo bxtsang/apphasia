@@ -1,6 +1,6 @@
 <template>
   <ApolloQuery
-    :query="require('./../../../graphql/staff/GetAllStaff.graphql')"
+    :query="query"
     :variables="{
       'isCoreTeam': $auth.user['custom:role'] === 'core_team'
     }"
@@ -21,11 +21,11 @@
       <!-- Result -->
       <div v-else-if="data">
         <v-data-table
-          :headers="getHeaders"
-          :items="filteredDataByRole(data.staffs)"
+          :headers="TABLE_HEADERS[resourceType]"
+          :items="filterItems(data[resourceType])"
+          :search="search"
           item-key="id"
           class="elevation-1"
-          :search="search"
         >
           <template v-slot:top>
             <v-container class="py-0" fluid>
@@ -34,12 +34,16 @@
                   <h1 class="title pt-3 px-3">Manage Staff</h1>
                 </v-col>
               </v-row>
-              <v-row>
+              <v-row v-if="resourceType === 'staffs'">
                 <v-col>
                   <v-tabs>
-                    <v-tab @click="staffRoleFilter = 'core_team'">Core Team</v-tab>
-                    <v-tab @click="staffRoleFilter = 'intern'">Interns</v-tab>
-                    <v-tab @click="staffRoleFilter = 'core_volunteer'">Core Volunteers</v-tab>
+                    <v-tab
+                      v-for="role in ROLE_OPTIONS"
+                      :key="role.value"
+                      @click="staffRoleFilter = role.value"
+                    >
+                      {{ role.label}}
+                    </v-tab>
                   </v-tabs>
                 </v-col>
               </v-row>
@@ -55,13 +59,13 @@
               </v-row>
             </v-container>
           </template>
-          <template v-slot:[`item.is_speech_therapist`]="{ item }">
+          <template v-if="resourceType === 'staffs'" v-slot:[`item.is_speech_therapist`]="{ item }">
             <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
             <v-chip v-else color="error">No</v-chip>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <EditStaffModal v-if="$auth.user['custom:role'] === 'core_team'" :staff="item" :text="false" />
-            <v-btn :to="`/staff?id=${item.id}`" icon>
+            <EditResourceModal v-if="$auth.user['custom:role'] === 'core_team'" :resourceType="resourceType" :resource="item" :text="false" />
+            <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
               </v-icon>
@@ -70,38 +74,51 @@
         </v-data-table>
       </div>
 
-      <!-- No result -->
-      <div v-else>No result :(</div>
     </template>
   </ApolloQuery>
 </template>
+
 <script>
-import EditStaffModal from './../modals/EditStaffModal'
+import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS } from '../../assets/data'
+import EditResourceModal from '~/components/modals/EditResourceModal'
 
 export default {
-  components: { EditStaffModal },
+  components: { EditResourceModal },
+  props: {
+    resourceType: {
+      type: String,
+      default: null
+    }
+  },
+
   data () {
     return {
-      search: '',
-      staffRoleFilter: 'core_team'
+      LIST_QUERY_PATHS,
+      TABLE_HEADERS,
+      ROLE_OPTIONS,
+      staffRoleFilter: 'core_team',
+      search: ''
     }
   },
+
   computed: {
-    getHeaders () {
-      return [
-        { text: 'Name', value: 'name', align: 'start' },
-        { text: 'Date Joined', value: 'date_joined' },
-        { text: 'Profession', value: 'profession' },
-        { text: 'Speech Therapist', value: 'is_speech_therapist' },
-        { text: 'Projects Involved', value: '' },
-        { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
-      ]
+    query () {
+      return LIST_QUERY_PATHS[this.resourceType]
     }
   },
+
   methods: {
-    filteredDataByRole (data) {
-      return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
+    filterItems (data) {
+      if (this.resourceType === 'staffs') {
+        return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
+      } else {
+        return data
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>

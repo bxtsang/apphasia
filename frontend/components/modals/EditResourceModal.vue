@@ -26,19 +26,23 @@
         </v-icon>
       </v-btn>
     </template>
-    <StaffForm :staff="staff" v-on:closeForm="isOpen = false" />
+    <StaffForm v-if="resourceType === 'staffs'" :staff="resource" v-on:closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
-import StaffForm from './../StaffForm'
+import StaffForm from './../staff/StaffForm'
 
 export default {
   components: { StaffForm },
   props: {
     text: Boolean,
-    staff: {
+    resource: {
       default: null,
       type: Object
+    },
+    resourceType: {
+      type: String,
+      default: null
     }
   },
   data () {

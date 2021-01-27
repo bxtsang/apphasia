@@ -6,4 +6,56 @@ export const ROLE_OPTIONS = [
 
 export const GENDER_OPTIONS = ['M', 'F']
 
-export default { ROLE_OPTIONS, GENDER_OPTIONS }
+export const INPUT_VALIDATION = {
+  role: {
+    required: v => !!v || 'Role is required'
+  },
+  name: {
+    required: v => !!v || 'Fullname is required'
+  },
+  nric: {
+    required: v => !!v || 'NRIC is required',
+    valid: v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
+  },
+  dob: {
+    required: v => !!v || 'Date of Birth is required'
+  },
+  contact: {
+    required: v => !!v || 'Contact Number is required',
+    valid: v => /(6|8|9)\d{7}/g.test(v) || 'Not a valid Contact Number'
+  },
+  gender: {
+    required: v => !!v || 'Gender is required'
+  },
+  email: {
+    required: v => !!v || 'E-mail is required',
+    valid: v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+  },
+  address: {
+    required: v => !!v || 'Home Address is required'
+  },
+  profession: {
+    required: v => !!v || 'Profession is required'
+  },
+  dateJoined: {
+    required: v => !!v || 'Date Joined is required'
+  },
+  languages: {
+    required: v => v.length > 0 || 'Language is required'
+  }
+}
+
+export const LIST_QUERY_PATHS = {
+  staffs: require('./../graphql/staff/GetAllStaff.graphql')
+}
+
+export const TABLE_HEADERS = {
+  staffs: [
+    { text: 'Name', value: 'name', align: 'start' },
+    { text: 'Date Joined', value: 'date_joined' },
+    { text: 'Profession', value: 'profession' },
+    { text: 'Speech Therapist', value: 'is_speech_therapist' },
+    { text: 'Projects Involved', value: '' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ]
+}
