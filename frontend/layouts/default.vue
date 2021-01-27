@@ -107,7 +107,7 @@ export default {
         },
         {
           icon: 'mdi-account-group',
-          title: 'Manage Staff',
+          title: 'Manage Staffs',
           to: '/staffs'
         }
       ],
