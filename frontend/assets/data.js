@@ -45,6 +45,9 @@ export const INPUT_VALIDATION = {
   },
   project_interest: {
     required: v => v.length > 0 || 'One Programme is required'
+  },
+  consent: {
+    required: v => v != null || 'Consent is required'
   }
 }
 
