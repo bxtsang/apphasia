@@ -98,7 +98,7 @@ export default {
         {
           icon: 'mdi-hand-heart',
           title: 'Manage Volunteers',
-          to: '/volunteer'
+          to: '/volunteers'
         },
         {
           icon: 'mdi-calendar-check',
@@ -107,7 +107,7 @@ export default {
         },
         {
           icon: 'mdi-account-group',
-          title: 'Manage Staff',
+          title: 'Manage Staffs',
           to: '/staffs'
         }
       ],
