@@ -42,6 +42,9 @@ export const INPUT_VALIDATION = {
   },
   languages: {
     required: v => v.length > 0 || 'Language is required'
+  },
+  project_interest: {
+    required: v => v.length > 0 || 'One Programme is required'
   }
 }
 
@@ -71,6 +74,8 @@ export const TABLE_HEADERS = {
   ]
 }
 
+// VOLUNTEER DATA
+
 export const VOLUNTEER_STATUS = {
   Approved: {
     chipColor: 'success'
@@ -83,5 +88,62 @@ export const VOLUNTEER_STATUS = {
   },
   KIV: {
     chipColor: 'error'
+  }
+}
+
+export const VOLUNTEER_CHANNELS = {
+  facebook: {
+    text: 'Facebook'
+  },
+  instagram: {
+    text: 'Instagram'
+  },
+  twitter: {
+    text: 'Twitter'
+  },
+  linkedIn: {
+    text: 'LinkedIn'
+  },
+  public_outreach: {
+    text: 'Public Outreach'
+  },
+  workshops_or_talks: {
+    text: 'From talks/workshops'
+  },
+  patients_or_caregivers: {
+    text: 'From patients/caregivers'
+  },
+  school: {
+    text: 'From my school/education institution'
+  },
+  other_volunteers: {
+    text: 'From other volunteers'
+  },
+  radio: {
+    text: 'Radio'
+  },
+  our_website: {
+    text: 'Aphasia SG Website'
+  },
+  speech_therapist: {
+    text: 'From a Speech Therapist'
+  },
+  other_healthcare_professionals: {
+    text: 'From other healthcare professionals'
+  },
+  newspaper: {
+    text: 'Newspaper'
+  },
+  hospital_advertisement: {
+    text: 'Saw the advertisment in a hospital'
+  },
+  word_of_mouth: {
+    text: 'Word of mouth'
+  },
+  social_care_centre: {
+    text: 'Social care centre'
+  },
+  doctor: {
+    text: 'doctor'
   }
 }
