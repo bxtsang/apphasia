@@ -1,15 +1,17 @@
 <template>
-  <div>
+  <v-container max-width="1200">
     <v-row>
-      <v-img src="/asg.png" max-width="400"/>
+      <v-col>
+        <v-img src="/asg.png" max-width="400" contain/>
+      </v-col>
     </v-row>
     <v-row>
-      <v-card max-width="1200">
+      <v-card>
         <v-container class="pa-12">
           <h1 class="text-center pb-3">Aphasia SG Volunteer Registration Form</h1>
           <v-row>
-            <v-col cols="12" class="d-flex align-start justify-center pa-6" sm="12" md="5">
-              <v-img src="/clip-social-networks.svg"/>
+            <v-col cols="12" class="d-flex align-center justify-center pa-6" sm="12" md="5">
+              <v-img src="/clip-social-networks.svg" contain/>
             </v-col>
             <v-col class="d-flex flex-column justify-center" cols="12" sm="12" md="7">
               <span class="section-title">
@@ -21,6 +23,7 @@
             </v-col>
           </v-row>
         </v-container>
+
         <v-container class="py-0" style="background-color: #D8E5FF;">
           <v-row class="py-0 px-12">
             <v-col class="px-6 d-flex align-center">
@@ -29,9 +32,18 @@
             </v-col>
           </v-row>
         </v-container>
+
+        <v-container>
+          <v-row>
+
+          </v-row>
+          <v-row>
+            
+          </v-row>
+        </v-container>
       </v-card>
     </v-row>
-  </div>
+  </v-container>
 </template>
 <script>
 export default {
