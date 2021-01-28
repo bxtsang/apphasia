@@ -5,6 +5,7 @@
     label="Email"
     :required="required"
     :readonly="readonly"
+    :outlined="true"
   />
 </template>
 
@@ -24,6 +25,10 @@ export default {
       default: false
     },
     readonly: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
       type: Boolean,
       default: false
     }
