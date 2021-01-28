@@ -1,5 +1,7 @@
 mutation(
+  	$address: String
     $bio: String
+  	$channel: channels_enum!
     $consent: Boolean!
     $contact_num: Int!
     $dob: date!
@@ -8,7 +10,9 @@ mutation(
     $is_speech_therapist: Boolean!
     $name: String!
     $nickname: String!
+  	$notes: String
     $profession: String!
+  	$rejection_reason: String
     $status: status_enum!
     $vol_id: Int!
     $ws_place: String
@@ -16,22 +20,20 @@ mutation(
     $languages_to_remove: [languages_enum!]
     $projects_to_add: [project_vol_insert_input!]!
     $projects_to_remove: [Int!]
-    $supervisors_to_add: [vol_supervisors_insert_input!]!
-    $supervisors_to_remove: [Int!]!
+    $ic_to_add: [vol_ic_insert_input!]!
+    $ic_to_remove: [Int!]!
     $voltypes_to_add: [vol_voltypes_insert_input!]!
     $voltypes_to_remove: [voltypes_enum!]
-    $volchannels_to_remove: [channels_enum!]
-    $volchannels_to_add: [vol_channels_insert_input!]!
 ) {
-    insert_vol_supervisors(objects: $supervisors_to_add) {
+    insert_vol_ic(objects: $ic_to_add) {
         affected_rows
     }
 
-    delete_vol_supervisors(
+    delete_vol_ic(
         where: {
             _and: [
                 {
-                    staff_id: { _in: $supervisors_to_remove }
+                    staff_id: { _in: $ic_to_remove }
                     vol_id: { _eq: $vol_id }
                 }
             ]
@@ -74,21 +76,6 @@ mutation(
         affected_rows
     }
 
-    insert_vol_channels(objects: $volchannels_to_add) {
-        affected_rows
-    }
-
-    delete_vol_channels(
-        where: {
-            _and: {
-                vol_id: { _eq: $vol_id }
-                channels: { _in: $volchannels_to_remove }
-            }
-        }
-    ) {
-        affected_rows
-    }
-
     insert_vol_voltypes(objects: $voltypes_to_add) {
         affected_rows
     }
@@ -106,7 +93,9 @@ mutation(
     update_volunteers(
         where: { id: { _eq: $vol_id } }
         _set: {
+          	address: $address
             bio: $bio
+          	channel: $channel
             consent: $consent
             contact_num: $contact_num
             dob: $dob
@@ -115,7 +104,9 @@ mutation(
             is_speech_therapist: $is_speech_therapist
             name: $name
             nickname: $nickname
+          	notes: $notes
             profession: $profession
+          	rejection_reason: $rejection_reason
             ws_place: $ws_place
             status: $status
         }
@@ -125,8 +116,11 @@ mutation(
 }
 
 #{
+#    "address": "123 Fake Street",
 #    "bio": "Hello World",
 #    "consent": true,
+#    "channel": "facebook",
+
 #    "contact_num": 1,
 #    "dob": "1999-09-09",
 #    "gender": "M",
@@ -142,11 +136,8 @@ mutation(
 #    "languages_to_remove": ["Chinese"],    #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
 #    "projects_to_add": [{"vol_id": 60, "project_id": 1}],        #list of objects with vol_id and project_id fields
 #    "projects_to_remove": [1]     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "supervisors_to_add": [{"vol_id": 60, "supervisor_id": 2}],      #list of objects with vol_id and supervisor_id fields
-#    "supervisors_to_remove": [2], #list of integers of supervisor_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "ic_to_add": [{"vol_id": 60, "staff_id": 2}],      #list of objects with vol_id and staff_id fields
+#    "ic_to_remove": [2], #list of integers of staff_id, put all that you want to remove or MORE (not added before but not going to add also can put)
 #    "voltypes_to_add": [{"vol_id": 1, "voltypes": "Befriender"}]
 #    "voltypes_to_remove": ["Befriender"]
-#    "volchannels_to_add": [{"vol_id": 1, "volchannels": "facebook"}]
-#    "volchannels_to_remove": ["facebook"]
-
 #}

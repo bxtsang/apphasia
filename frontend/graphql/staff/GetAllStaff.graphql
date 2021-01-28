@@ -11,7 +11,6 @@ query GetAllStaff ($isCoreTeam: Boolean!){
     is_active
     name
     nickname
-    nric @include(if: $isCoreTeam)
     profession
     role
     ws_place
