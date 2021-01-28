@@ -1,0 +1,1 @@
+CREATE TABLE "public"."projects_pwa"("project_id" integer NOT NULL, "pwa_id" integer NOT NULL, PRIMARY KEY ("project_id","pwa_id") , FOREIGN KEY ("pwa_id") REFERENCES "public"."pwa"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON UPDATE restrict ON DELETE cascade);

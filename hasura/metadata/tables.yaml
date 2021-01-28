@@ -1,5 +1,9 @@
 - table:
     schema: public
+    name: answers
+  is_enum: true
+- table:
+    schema: public
     name: channels
   is_enum: true
   insert_permissions:
@@ -74,6 +78,20 @@
   - role: core_team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: last_stroke
+  is_enum: true
+- table:
+    schema: public
+    name: project_pwa
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: pwa
+    using:
+      foreign_key_constraint_on: pwa_id
 - table:
     schema: public
     name: project_staffs
@@ -164,6 +182,13 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
+  - name: pwas
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_pwa
   - name: staffs
     using:
       foreign_key_constraint_on:
@@ -225,6 +250,55 @@
 - table:
     schema: public
     name: pwa
+  array_relationships:
+  - name: comm_diff
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: pwa_comms
+  - name: languages
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: pwa_languages
+  - name: nok
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: pwa_nok
+  - name: projects
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: project_pwa
+- table:
+    schema: public
+    name: pwa_comms
+  object_relationships:
+  - name: pwa
+    using:
+      foreign_key_constraint_on: pwa_id
+- table:
+    schema: public
+    name: pwa_languages
+  object_relationships:
+  - name: languages
+    using:
+      foreign_key_constraint_on: language
+  - name: pwa
+    using:
+      foreign_key_constraint_on: pwa_id
+- table:
+    schema: public
+    name: pwa_nok
 - table:
     schema: public
     name: roles
