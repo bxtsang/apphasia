@@ -1,118 +1,110 @@
 mutation(
-  	$address: String
-    $bio: String
-  	$channel: channels_enum!
-    $consent: Boolean!
-    $contact_num: Int!
-    $dob: date!
-    $gender: bpchar!
-    $is_active: Boolean!
-    $is_speech_therapist: Boolean!
-    $name: String!
-    $nickname: String!
-  	$notes: String
-    $profession: String!
-  	$rejection_reason: String
-    $status: status_enum!
-    $vol_id: Int!
-    $ws_place: String
-    $languages_to_add: [vol_languages_insert_input!]!
-    $languages_to_remove: [languages_enum!]
-    $projects_to_add: [project_vol_insert_input!]!
-    $projects_to_remove: [Int!]
-    $ic_to_add: [vol_ic_insert_input!]!
-    $ic_to_remove: [Int!]!
-    $voltypes_to_add: [vol_voltypes_insert_input!]!
-    $voltypes_to_remove: [voltypes_enum!]
+  $address: String
+  $bio: String
+  $channel: channels_enum!
+  $consent: Boolean!
+  $contact_num: Int!
+  $dob: date
+  $gender: bpchar!
+  $is_active: Boolean!
+  $is_speech_therapist: Boolean!
+  $name: String!
+  $nickname: String
+  $notes: String
+  $profession: String!
+  $rejection_reason: String
+  $status: status_enum!
+  $vol_id: Int!
+  $ws_place: String
+  $languages_to_add: [vol_languages_insert_input!]!
+  $languages_to_remove: [languages_enum!]
+  $projects_to_add: [project_vol_insert_input!]!
+  $projects_to_remove: [Int!]
+  $projects_to_update: [Int!]
+  $project_approval: Boolean
+  $ic_to_add: [vol_ic_insert_input!]!
+  $ic_to_remove: [Int!]!
+  $voltypes_to_add: [vol_voltypes_insert_input!]!
+  $voltypes_to_remove: [voltypes_enum!]
 ) {
-    insert_vol_ic(objects: $ic_to_add) {
-        affected_rows
-    }
+  insert_vol_ic(objects: $ic_to_add) {
+    affected_rows
+  }
 
-    delete_vol_ic(
-        where: {
-            _and: [
-                {
-                    staff_id: { _in: $ic_to_remove }
-                    vol_id: { _eq: $vol_id }
-                }
-            ]
-        }
-    ) {
-        affected_rows
+  delete_vol_ic(
+    where: {
+      _and: [{ staff_id: { _in: $ic_to_remove }, vol_id: { _eq: $vol_id } }]
     }
+  ) {
+    affected_rows
+  }
 
-    insert_vol_languages(objects: $languages_to_add) {
-        affected_rows
-    }
+  insert_vol_languages(objects: $languages_to_add) {
+    affected_rows
+  }
 
-    delete_vol_languages(
-        where: {
-            _and: [
-                {
-                    vol_id: { _eq: $vol_id }
-                    language: { _in: $languages_to_remove }
-                }
-            ]
-        }
-    ) {
-        affected_rows
+  delete_vol_languages(
+    where: {
+      _and: [
+        { vol_id: { _eq: $vol_id }, language: { _in: $languages_to_remove } }
+      ]
     }
+  ) {
+    affected_rows
+  }
 
-    insert_project_vol(objects: $projects_to_add) {
-        affected_rows
-    }
+  insert_project_vol(objects: $projects_to_add) {
+    affected_rows
+  }
 
-    delete_project_vol(
-        where: {
-            _and: [
-                {
-                    vol_id: { _eq: $vol_id }
-                    project_id: { _in: $projects_to_remove }
-                }
-            ]
-        }
-    ) {
-        affected_rows
+  delete_project_vol(
+    where: {
+      _and: [
+        { vol_id: { _eq: $vol_id }, project_id: { _in: $projects_to_remove } }
+      ]
     }
+  ) {
+    affected_rows
+  }
 
-    insert_vol_voltypes(objects: $voltypes_to_add) {
-        affected_rows
-    }
-    delete_vol_voltypes(
-        where: {
-            _and: {
-                vol_id: { _eq: $vol_id }
-                voltype: { _in: $voltypes_to_remove }
-            }
-        }
-    ) {
-        affected_rows
-    }
+  update_project_vol(where: {_and: {vol_id: {_eq: $vol_id}, project_id: {_in: $projects_to_update}}}, _set: {approved: $project_approval}) {
+    affected_rows
+  }
 
-    update_volunteers(
-        where: { id: { _eq: $vol_id } }
-        _set: {
-          	address: $address
-            bio: $bio
-          	channel: $channel
-            consent: $consent
-            contact_num: $contact_num
-            dob: $dob
-            gender: $gender
-            is_active: $is_active
-            is_speech_therapist: $is_speech_therapist
-            name: $name
-            nickname: $nickname
-          	notes: $notes
-            profession: $profession
-          	rejection_reason: $rejection_reason
-            ws_place: $ws_place
-            status: $status
-        }
-    ) {
-        affected_rows
+  insert_vol_voltypes(objects: $voltypes_to_add) {
+    affected_rows
+  }
+  delete_vol_voltypes(
+    where: {
+      _and: { vol_id: { _eq: $vol_id }, voltype: { _in: $voltypes_to_remove } }
     }
+  ) {
+    affected_rows
+  }
+
+  update_volunteers(
+    where: { id: { _eq: $vol_id } }
+    _set: {
+      address: $address
+      bio: $bio
+      channel: $channel
+      consent: $consent
+      contact_num: $contact_num
+      dob: $dob
+      gender: $gender
+      is_active: $is_active
+      is_speech_therapist: $is_speech_therapist
+      name: $name
+      nickname: $nickname
+      notes: $notes
+      profession: $profession
+      rejection_reason: $rejection_reason
+      ws_place: $ws_place
+      status: $status
+    }
+  ) {
+    affected_rows
+  }
 }
 
 #{

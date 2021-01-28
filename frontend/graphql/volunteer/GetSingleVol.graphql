@@ -24,6 +24,7 @@ query GetSingleVol($id: Int!) {
         title
         id
       }
+      approved
     }
     vol_languages {
       language

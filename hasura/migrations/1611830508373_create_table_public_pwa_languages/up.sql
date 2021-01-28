@@ -1,0 +1,1 @@
+CREATE TABLE "public"."pwa_languages"("pwa_id" integer NOT NULL, "language" text NOT NULL, PRIMARY KEY ("pwa_id","language") , FOREIGN KEY ("pwa_id") REFERENCES "public"."pwa"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("language") REFERENCES "public"."languages"("language") ON UPDATE restrict ON DELETE restrict);

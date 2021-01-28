@@ -24,6 +24,7 @@ query GetAllVol {
         id
         title
       }
+      approved
     }
     vol_languages {
       language
