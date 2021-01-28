@@ -144,6 +144,6 @@ export const VOLUNTEER_CHANNELS = {
     text: 'Social care centre'
   },
   doctor: {
-    text: 'doctor'
+    text: 'Doctor'
   }
 }
