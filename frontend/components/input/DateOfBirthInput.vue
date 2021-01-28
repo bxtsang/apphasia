@@ -53,7 +53,7 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [INPUT_VALIDATION.dob.required]
+      validation: [...(this.required ? [INPUT_VALIDATION.dob.required] : [])]
     }
   },
 
