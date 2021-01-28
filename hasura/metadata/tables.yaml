@@ -458,197 +458,7 @@
         column: staff_id
         table:
           schema: public
-          name: vol_supervisors
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      backend_only: false
-  - role: core_volunteer
-    permission:
-      check: {}
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
-      - email
-      - gender
-      - id
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
-      - email
-      - gender
-      - id
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
-      - email
-      - gender
-      - id
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter: {}
-      check: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-      check: null
-  - role: intern
-    permission:
-      columns:
-      - address
-      - bio
-      - contact_num
-      - date_joined
-      - dob
-      - email
-      - gender
-      - is_active
-      - is_speech_therapist
-      - name
-      - nickname
-      - nric
-      - profession
-      - role
-      - ws_place
-      filter:
-        id:
-          _eq: X-Hasura-User-Id
-      check: null
+          name: vol_ic
   delete_permissions:
   - role: core_team
     permission:
@@ -711,11 +521,11 @@
     webhook: https://aphasia-hasura-dev.herokuapp.com/v1/graphql
 - table:
     schema: public
-    name: vol_channels
+    name: vol_ic
   object_relationships:
-  - name: channel
+  - name: ic
     using:
-      foreign_key_constraint_on: channels
+      foreign_key_constraint_on: staff_id
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
@@ -725,33 +535,33 @@
       check: {}
       columns:
       - vol_id
-      - channels
+      - staff_id
       backend_only: false
   - role: intern
     permission:
       check: {}
       columns:
       - vol_id
-      - channels
+      - staff_id
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
       - vol_id
-      - channels
+      - staff_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - vol_id
-      - channels
+      - staff_id
       filter: {}
   - role: intern
     permission:
       columns:
       - vol_id
-      - channels
+      - staff_id
       filter: {}
   delete_permissions:
   - role: core_team
@@ -800,54 +610,6 @@
       columns:
       - vol_id
       - language
-      filter: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-- table:
-    schema: public
-    name: vol_supervisors
-  object_relationships:
-  - name: supervisor
-    using:
-      foreign_key_constraint_on: staff_id
-  - name: volunteer
-    using:
-      foreign_key_constraint_on: vol_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - vol_id
-      - staff_id
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - vol_id
-      - staff_id
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - vol_id
-      - staff_id
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - vol_id
-      - staff_id
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - vol_id
-      - staff_id
       filter: {}
   delete_permissions:
   - role: core_team
@@ -950,13 +712,13 @@
         table:
           schema: public
           name: project_vol
-  - name: vol_channels
+  - name: vol_ic
     using:
       foreign_key_constraint_on:
         column: vol_id
         table:
           schema: public
-          name: vol_channels
+          name: vol_ic
   - name: vol_languages
     using:
       foreign_key_constraint_on:
@@ -964,13 +726,6 @@
         table:
           schema: public
           name: vol_languages
-  - name: vol_supervisors
-    using:
-      foreign_key_constraint_on:
-        column: vol_id
-        table:
-          schema: public
-          name: vol_supervisors
   - name: vol_voltypes
     using:
       foreign_key_constraint_on:
