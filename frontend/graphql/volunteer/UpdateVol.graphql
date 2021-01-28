@@ -1,110 +1,132 @@
-mutation (
-    $address: String!,
-    $bio: String,
-    $contact_num: Int!,
-    $dob: date!,
-    $gender: bpchar!,
-    $is_active: Boolean!,
-    $is_speech_therapist: Boolean!,
-    $name: String!,
-    $nickname: String!,
-    $nric: String!,
-    $profession: String!,
-    $role: roles_enum!,
-    $ws_place: String,
-    $staff_id: Int!,
-    $supervisors_to_add: [staff_supervisors_insert_input!]!,
-    $supervisors_to_remove: [Int!]!,
-    $languages_to_add: [staff_languages_insert_input!]!,
-    $languages_to_remove: [languages_enum!],
-    # $projects_to_add: [project_staffs_insert_input!]!,
-    # $projects_to_remove: [Int!]
+mutation(
+    $bio: String
+    $consent: Boolean!
+    $contact_num: Int!
+    $dob: date!
+    $gender: bpchar!
+    $is_active: Boolean!
+    $is_speech_therapist: Boolean!
+    $name: String!
+    $nickname: String!
+    $profession: String!
+    $status: status_enum!
+    $vol_id: Int!
+    $ws_place: String
+    $languages_to_add: [vol_languages_insert_input!]!
+    $languages_to_remove: [languages_enum!]
+    $projects_to_add: [project_vol_insert_input!]!
+    $projects_to_remove: [Int!]
+    $supervisors_to_add: [vol_supervisors_insert_input!]!
+    $supervisors_to_remove: [Int!]!
+    $voltypes_to_add: [vol_voltypes_insert_input!]!
+    $voltypes_to_remove: [voltypes_enum!]
+    $volchannels_to_remove: [channels_enum!]
+    $volchannels_to_add: [vol_channels_insert_input!]!
 ) {
-    insert_staff_supervisors(objects: $supervisors_to_add) {
+    insert_vol_supervisors(objects: $supervisors_to_add) {
         affected_rows
     }
 
-    delete_staff_supervisors(where: {
-        _and: [
-            {
-                supervisor_id: {_in: $supervisors_to_remove},
-                staff_id: { _eq: $staff_id}
-            }
-        ]
-    }) {
-        affected_rows
-    }
-
-    insert_staff_languages(objects: $languages_to_add) {
-        affected_rows
-    }
-
-    delete_staff_languages(where: {
-        _and: [
-            {
-                staff_id: {_eq: $staff_id},
-                language: {_in: $languages_to_remove}
-            }
-        ]
-    }) {
-        affected_rows
-    }
-
-    # insert_project_staffs(objects: $projects_to_add) {
-    #     affected_rows
-    # }
-
-    # delete_project_staffs(where: {
-    #     _and: [
-    #         {
-    #             staff_id: {_eq: $staff_id},
-    #             project_id: {_in: $projects_to_remove}
-    #         }
-    #     ]
-    # }) {
-    #     affected_rows
-    # }
-
-    update_staffs(_set: {address: $address, bio: $bio, contact_num: $contact_num, dob: $dob, gender: $gender, is_active: $is_active, is_speech_therapist: $is_speech_therapist, name: $name, nickname: $nickname, profession: $profession, nric: $nric, role: $role, ws_place: $ws_place}, where: {id: {_eq: $staff_id}}) {
-        affected_rows
-        returning {
-            address
-            bio
-            contact_num
-            date_joined
-            dob
-            email
-            gender
-            id
-            is_active
-            is_speech_therapist
-            languages {
-                language
-            }
-            name
-            nickname
-            nric
-            profession
-            role
-            supervisors {
-                supervisor {
-                    id
-                    name
+    delete_vol_supervisors(
+        where: {
+            _and: [
+                {
+                    staff_id: { _in: $supervisors_to_remove }
+                    vol_id: { _eq: $vol_id }
                 }
-            }
-            ws_place
-            projects_in {
-                project {
-                    title
+            ]
+        }
+    ) {
+        affected_rows
+    }
+
+    insert_vol_languages(objects: $languages_to_add) {
+        affected_rows
+    }
+
+    delete_vol_languages(
+        where: {
+            _and: [
+                {
+                    vol_id: { _eq: $vol_id }
+                    language: { _in: $languages_to_remove }
                 }
+            ]
+        }
+    ) {
+        affected_rows
+    }
+
+    insert_project_vol(objects: $projects_to_add) {
+        affected_rows
+    }
+
+    delete_project_vol(
+        where: {
+            _and: [
+                {
+                    vol_id: { _eq: $vol_id }
+                    project_id: { _in: $projects_to_remove }
+                }
+            ]
+        }
+    ) {
+        affected_rows
+    }
+
+    insert_vol_channels(objects: $volchannels_to_add) {
+        affected_rows
+    }
+
+    delete_vol_channels(
+        where: {
+            _and: {
+                vol_id: { _eq: $vol_id }
+                channels: { _in: $volchannels_to_remove }
             }
         }
+    ) {
+        affected_rows
+    }
+
+    insert_vol_voltypes(objects: $voltypes_to_add) {
+        affected_rows
+    }
+    delete_vol_voltypes(
+        where: {
+            _and: {
+                vol_id: { _eq: $vol_id }
+                voltype: { _in: $voltypes_to_remove }
+            }
+        }
+    ) {
+        affected_rows
+    }
+
+    update_volunteers(
+        where: { id: { _eq: $vol_id } }
+        _set: {
+            bio: $bio
+            consent: $consent
+            contact_num: $contact_num
+            dob: $dob
+            gender: $gender
+            is_active: $is_active
+            is_speech_therapist: $is_speech_therapist
+            name: $name
+            nickname: $nickname
+            profession: $profession
+            ws_place: $ws_place
+            status: $status
+        }
+    ) {
+        affected_rows
     }
 }
 
 #{
-#    "address": "4 Road road",
-#    "bio": "",
+#    "bio": "Hello World",
+#    "consent": true,
 #    "contact_num": 1,
 #    "dob": "1999-09-09",
 #    "gender": "M",
@@ -112,15 +134,19 @@ mutation (
 #    "is_speech_therapist": false,
 #    "name": "test4",
 #    "nickname": "",
-#    "nric": "213",
 #    "profession": "",
-#    "role": "core_volunteer",
+#    "status": "Pending_Approval",
+#    "vol_id": 3,
 #    "ws_place": null,
-#    "staff_id": 60,
-#    "supervisors_to_add": [{"staff_id": 60, "supervisor_id": 2}],      #list of objects with staff_id and supervisor_id fields
-#    "supervisors_to_remove": [2],      #list of integers of supervisor_id, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "languages_to_add": [{"staff_id": 60, "language": "Chinese"}],     #list of objects with staff_id and language fields
-#    "languages_to_remove": ["Chinese"],        #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "projects_to_add": [{"staff_id": 60, "project_id": 1}],        #list of objects with staff_id and project_id fields
+#    "languages_to_add": [{"vol_id": 60, "language": "Chinese"}],     #list of objects with vol_id and language fields
+#    "languages_to_remove": ["Chinese"],    #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "projects_to_add": [{"vol_id": 60, "project_id": 1}],        #list of objects with vol_id and project_id fields
 #    "projects_to_remove": [1]     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "supervisors_to_add": [{"vol_id": 60, "supervisor_id": 2}],      #list of objects with vol_id and supervisor_id fields
+#    "supervisors_to_remove": [2], #list of integers of supervisor_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "voltypes_to_add": [{"vol_id": 1, "voltypes": "Befriender"}]
+#    "voltypes_to_remove": ["Befriender"]
+#    "volchannels_to_add": [{"vol_id": 1, "volchannels": "facebook"}]
+#    "volchannels_to_remove": ["facebook"]
+
 #}

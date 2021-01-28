@@ -983,21 +983,22 @@
     permission:
       check: {}
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
+      - bio
+      - consent
+      - contact_num
+      - created_at
       - date_joined
       - dob
-      - contact_num
-      - id
-      - status
-      - bio
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - profession
+      - status
       - ws_place
-      - created_at
       backend_only: false
   - role: intern
     permission:
@@ -1044,21 +1045,22 @@
   - role: core_team
     permission:
       columns:
-      - id
-      - email
-      - name
-      - created_at
-      - nickname
-      - dob
-      - gender
-      - is_active
-      - date_joined
-      - contact_num
-      - is_speech_therapist
-      - profession
-      - ws_place
       - bio
+      - consent
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
+      - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - profession
       - status
+      - ws_place
       filter: {}
   - role: core_volunteer
     permission:
@@ -1102,21 +1104,22 @@
   - role: core_team
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - contact_num
       - id
-      - status
-      - bio
       - email
       - name
+      - created_at
       - nickname
+      - dob
+      - gender
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
       - profession
       - ws_place
-      - created_at
+      - bio
+      - status
+      - consent
       filter: {}
       check: {}
   - role: intern
