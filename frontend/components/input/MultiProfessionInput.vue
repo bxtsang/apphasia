@@ -1,14 +1,13 @@
 <template>
   <div>
-    {{ data }}
     <v-checkbox
-      v-for="(profession, index) in COMMON_PROFESSIONS"
+      v-for="profession in COMMON_PROFESSIONS"
       :key="profession"
       v-model="data"
       :rules="validation"
       :label="profession"
       :value="profession"
-      :hide-details="index !== profession.length - 1"
+      hide-details
     />
     <div class="d-flex">
       <v-checkbox
