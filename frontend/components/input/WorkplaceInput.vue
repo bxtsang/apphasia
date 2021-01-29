@@ -5,7 +5,7 @@
     label="Current Place of Work / Study"
     :required="required"
     :readonly="readonly"
-    :outlined="true"
+    :outlined="outlined"
   />
 </template>
 

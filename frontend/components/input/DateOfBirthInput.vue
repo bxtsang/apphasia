@@ -14,7 +14,7 @@
         :rules="validation"
         :required="required"
         v-on="on"
-        :outlined="true"
+        :outlined="outlined"
       />
     </template>
     <v-date-picker

@@ -5,7 +5,7 @@
     label="Home Address"
     :required="required"
     :readonly="readonly"
-    :outlined="true"
+    :outlined="outlined"
   />
 </template>
 
