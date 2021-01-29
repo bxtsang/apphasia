@@ -2,7 +2,10 @@ query GetSingleVol($id: Int!) {
   volunteers(where: {id: {_eq: $id}}) {
     address
     bio
-    channel
+    channel_description {
+      channel
+      description
+    }
     consent
     contact_num
     date_joined
@@ -17,7 +20,11 @@ query GetSingleVol($id: Int!) {
     notes
     profession
     rejection_reason
-    status
+    rejected_date
+    status_description {
+      status
+      description
+    }
     ws_place
     project_vols {
       project {
@@ -27,7 +34,10 @@ query GetSingleVol($id: Int!) {
       approved
     }
     vol_languages {
-      language
+      languages {
+        language
+        description
+      }
     }
     vol_ic {
       ic {
@@ -36,7 +46,10 @@ query GetSingleVol($id: Int!) {
       }
     }
     vol_voltypes {
-      voltype
+      voltypes {
+        type
+        description
+      }
     }
   }
 }

@@ -12,7 +12,10 @@ query GetSingleStaff($id: Int!, $isCoreTeam: Boolean!) {
     name
     nickname
     profession
-    role
+    role_description {
+      description
+      role
+    }
     ws_place
     id
     languages {

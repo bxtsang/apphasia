@@ -1,4 +1,4 @@
-query GetAllStaff ($isCoreTeam: Boolean!){
+query GetAllStaff($isCoreTeam: Boolean!) {
   staffs {
     address @include(if: $isCoreTeam)
     bio
@@ -12,7 +12,10 @@ query GetAllStaff ($isCoreTeam: Boolean!){
     name
     nickname
     profession
-    role
+    role_description {
+      description
+      role
+    }
     ws_place
     id
     languages {
