@@ -1,0 +1,11 @@
+<template>
+  <v-card>
+    <v-container>
+      <v-row>
+        <v-col>
+          success
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
+</template>
