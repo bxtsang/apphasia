@@ -48,6 +48,9 @@ export const INPUT_VALIDATION = {
   },
   consent: {
     required: v => v != null || 'Consent is required'
+  },
+  multi_profession: {
+    required: v => v.length > 0 || 'Profession is required'
   }
 }
 
@@ -150,3 +153,13 @@ export const VOLUNTEER_CHANNELS = {
     text: 'Doctor'
   }
 }
+
+export const COMMON_PROFESSIONS = [
+  'Speech and Langauge Therapist (SLT)',
+  'Music Therapist',
+  'Occupational Therapist',
+  'Social Worker',
+  'Healthcare professional (but none of the above)',
+  'SLT Student',
+  'Student (but not in the field of speech therapy)'
+]
