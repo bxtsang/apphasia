@@ -2,20 +2,17 @@ mutation (
   	$address: String,
     $bio: String, 
     $contact_num: Int!, 
-    $channel: channels_enum!, 
+    $channel: channels_enum, 
   	$consent: Boolean!,
     $date_joined: date!,
     $dob: date,
     $email: String!,
     $gender: bpchar!,
-    $is_speech_therapist: Boolean!,
     $languages: vol_languages_arr_rel_insert_input!,
     $name: String!,
     $nickname: String,
-  	$notes: String,
     $profession: String,
     $projects: project_vol_arr_rel_insert_input,
-    $status: status_enum,
     $ws_place: String
 ) {
   insert_volunteers_one(object: {
@@ -28,41 +25,14 @@ mutation (
     dob: $dob, #string in date format YYYY-MM-DD
     email: $email, #string
     gender: $gender, #char, "M" or "F"
-    is_speech_therapist: $is_speech_therapist, #boolean
     vol_languages: $languages, #{data: [{language: Abkhaz, vol_id: 1}]}
     name: $name, #string
     nickname: $nickname, #string
-    notes: $notes, #string
     project_vols: $projects, #{data: [{project_id: 1, vol_id: 1}]}
     profession: $profession, #string
-    status: $status, #enum: KIV,Approved,Pending_Approval,Rejected
     ws_place: $ws_place, #string
-}) {
-  	address
-    bio
-    contact_num
-  	channel
-  	consent
-    date_joined
-    dob
-    email
-    gender
-    is_speech_therapist
-    is_active
-    name
-    nickname
-  	notes
-    profession
-    status
-    ws_place
+}) 
+  {
     id
-    vol_languages {
-      language
-    }
-    project_vols {
-      project {
-        title
-      }
-    }
   }
 }
