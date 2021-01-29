@@ -35,7 +35,7 @@
         </v-container>
 
         <slot :registerSuccessful="registerSuccessful">
-          <nuxt />
+
         </slot>
 
       </v-card>
