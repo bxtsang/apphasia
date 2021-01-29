@@ -627,6 +627,10 @@
 - table:
     schema: public
     name: staffs
+  object_relationships:
+  - name: role_description
+    using:
+      foreign_key_constraint_on: role
   array_relationships:
   - name: languages
     using:
@@ -1084,6 +1088,13 @@
 - table:
     schema: public
     name: volunteers
+  object_relationships:
+  - name: channel_description
+    using:
+      foreign_key_constraint_on: channel
+  - name: status_description
+    using:
+      foreign_key_constraint_on: status
   array_relationships:
   - name: project_vols
     using:
