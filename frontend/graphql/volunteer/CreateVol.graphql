@@ -14,7 +14,7 @@ mutation (
     $nickname: String,
   	$notes: String,
     $profession: String,
-    $projects: project_vol_arr_rel_insert_input
+    $projects: project_vol_arr_rel_insert_input,
     $status: status_enum,
     $ws_place: String
 ) {
