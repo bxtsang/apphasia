@@ -5,6 +5,7 @@
     label="Contact"
     :required="required"
     :readonly="readonly"
+    :outlined="outlined"
   />
 </template>
 
@@ -24,6 +25,10 @@ export default {
       default: false
     },
     readonly: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
       type: Boolean,
       default: false
     }
