@@ -102,7 +102,7 @@
               <v-col class="px-6">
                 <v-card class="card-input pa-6" outlined>
                   <span class="input-label">What is your profession?</span>
-                  <MultiProfessionInput v-model="volunteerData.profession" :placeholderOnly="true" />
+                  <MultiProfessionInput v-model="volunteerData.profession" />
                 </v-card>
               </v-col>
             </v-row>
@@ -157,6 +157,8 @@ import LanguageInput from './../../components/input/LanguageInput.vue'
 import VolunteerProjectInterestInput from './../../components/input/VolunteerProjectInterestInput'
 import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
+import MultiProfessionInput from './../../components/input/MultiProfessionInput'
+
 export default {
   components: {
     NameInput,
@@ -171,9 +173,11 @@ export default {
     VolunteerProjectInterestInput,
     LanguageInput,
     ChannelInput,
-    ConsentInput
+    ConsentInput,
+    MultiProfessionInput
   },
   layout: 'none',
+  middleware: 'clearLoginCache',
   data () {
     return {
       valid: true,
@@ -190,7 +194,7 @@ export default {
         bio: '',
         projects: [],
         languages: [],
-        profession: '',
+        profession: [],
         channel: '',
         consent: null
       }
