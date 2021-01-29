@@ -304,6 +304,7 @@ export default {
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
+          this.isSubmitting = false
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
@@ -371,6 +372,7 @@ export default {
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
         }).catch((error) => {
+          this.isSubmitting = false
           console.log(error.message)
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
