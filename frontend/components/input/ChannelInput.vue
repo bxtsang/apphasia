@@ -1,18 +1,20 @@
 <template>
-  <v-text-field
+  <v-select
     v-model="data"
+    :items="channels"
+    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
+    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
     :rules="validation"
-    label="Hobbies / Interests"
     :required="required"
     :readonly="readonly"
-    :outlined="outlined"
   />
 </template>
 
 <script>
-
+import gql from 'graphql-tag'
+import { VOLUNTEER_CHANNELS } from './../../assets/data'
 export default {
-  name: 'BioInput',
+  name: 'ChannelInput',
 
   props: {
     value: {
@@ -27,7 +29,7 @@ export default {
       type: Boolean,
       default: false
     },
-    outlined: {
+    placeholderOnly: {
       type: Boolean,
       default: false
     }
@@ -46,6 +48,21 @@ export default {
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
       }
+    }
+  },
+
+  apollo: {
+    channels: {
+      query () {
+        return gql`query getChannels {
+          channels {
+            channel
+          }
+        }`
+      },
+      update: data => data.channels.map((item) => {
+        return { value: item.channel, text: VOLUNTEER_CHANNELS[item.channel].text }
+      })
     }
   }
 }
