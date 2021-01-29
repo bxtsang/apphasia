@@ -14,6 +14,7 @@
         :rules="validation"
         :required="required"
         v-on="on"
+        :outlined="outlined"
       />
     </template>
     <v-date-picker
@@ -42,13 +43,17 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    outlined: {
+      type: Boolean,
+      default: false
     }
   },
 
   data () {
     return {
       data: this.value,
-      validation: [INPUT_VALIDATION.dob.required]
+      validation: [...(this.required ? [INPUT_VALIDATION.dob.required] : [])]
     }
   },
 

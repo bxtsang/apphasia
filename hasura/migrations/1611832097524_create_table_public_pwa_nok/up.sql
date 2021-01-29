@@ -1,0 +1,1 @@
+CREATE TABLE "public"."pwa_nok"("pwa_id" integer NOT NULL, "name" text NOT NULL, "contact_num" integer NOT NULL, "email" text NOT NULL, "relationship" text NOT NULL, PRIMARY KEY ("pwa_id") , FOREIGN KEY ("pwa_id") REFERENCES "public"."pwa"("id") ON UPDATE restrict ON DELETE cascade);

@@ -2,7 +2,8 @@
   <v-select
     v-model="data"
     :items="languages"
-    label="Languages understand and/or speak"
+    :label="!placeholderOnly ? 'Languages understand and/or speak' : ''"
+    :placeholder="placeholderOnly ? 'Select language(s)' : ''"
     :rules="validation"
     :required="required"
     :readonly="readonly"
@@ -29,6 +30,10 @@ export default {
       default: false
     },
     readonly: {
+      type: Boolean,
+      default: false
+    },
+    placeholderOnly: {
       type: Boolean,
       default: false
     }
@@ -59,7 +64,9 @@ export default {
           }
         }`
       },
-      update: data => data.languages.map(item => item.language)
+      update: data => data.languages.map((item) => {
+        return { value: item.language, text: item.language.replace('_', ' ') }
+      })
     }
   }
 }

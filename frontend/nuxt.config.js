@@ -94,6 +94,7 @@ export default {
           primary: colors.blue,
           success: colors.green,
           error: colors.red,
+          warning: colors.amber,
           background: '#FBFCFD'
         },
       },
