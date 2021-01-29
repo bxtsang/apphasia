@@ -459,6 +459,210 @@
         table:
           schema: public
           name: project_pwa
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - email
+      - name
+      - created_at
+      - dob
+      - gender
+      - contact_num
+      - address
+      - last_stroke
+      - wheelchair
+      - hobbies
+      - channel
+      - consent
+      - date_joined
+      - notes
+      - status
+      - speak_media
+      - media_engagement_details
+      - hospital
+      - speech_therapist
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: pwa_comms
@@ -466,6 +670,62 @@
   - name: pwa
     using:
       foreign_key_constraint_on: pwa_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - difficulty
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - difficulty
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - difficulty
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - pwa_id
+      - difficulty
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - pwa_id
+      - difficulty
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - pwa_id
+      - difficulty
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - pwa_id
+      - difficulty
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: pwa_languages
@@ -476,6 +736,62 @@
   - name: pwa
     using:
       foreign_key_constraint_on: pwa_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - language
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - language
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - language
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - pwa_id
+      - language
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - pwa_id
+      - language
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - pwa_id
+      - language
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - pwa_id
+      - language
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: pwa_nok
