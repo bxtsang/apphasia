@@ -29,6 +29,11 @@
       columns:
       - channel
       filter: {}
+  - role: public
+    permission:
+      columns:
+      - channel
+      filter: {}
   update_permissions:
   - role: core_team
     permission:
@@ -63,6 +68,11 @@
       - language
       filter: {}
   - role: intern
+    permission:
+      columns:
+      - language
+      filter: {}
+  - role: public
     permission:
       columns:
       - language
@@ -228,6 +238,13 @@
       - owner_id
       filter: {}
   - role: intern
+    permission:
+      columns:
+      - id
+      - owner_id
+      - title
+      filter: {}
+  - role: public
     permission:
       columns:
       - id
