@@ -125,7 +125,7 @@ import VolunteerProjectInterestInput from './../../components/input/VolunteerPro
 import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
-// import CreateVol from './../../graphql/volunteer/CreateVol.graphql'
+import CreateVol from './../../graphql/volunteer/CreateVol.graphql'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
 
 export default {
@@ -172,36 +172,36 @@ export default {
   },
   methods: {
     submitForm (registerSuccessful) {
-      registerSuccessful()
-      // if (this.$refs.form.validate()) {
-      //   this.isSubmitting = true
-      //   this.$apollo.mutate({
-      //     mutation: CreateVol,
-      //     variables: {
-      //       $address: this.volunteerData.address,
-      //       $bio: this.volunteerData.bio,
-      //       $contact_num: this.volunteerData.contact_num,
-      //       $channel: this.volunteerData.channel,
-      //       $consent: this.volunteerData.consent,
-      //       $date_joined: this.volunteerData.date_joined, // ????
-      //       $dob: this.volunteerData.dob,
-      //       $email: this.volunteerData.email,
-      //       $gender: this.volunteerData.gender,
-      //       $is_speech_therapist: false,
-      //       $languages: { data: this.volunteerData.languages.map((item) => { return { language: item } }) },
-      //       $name: this.volunteerData.name,
-      //       $nickname: this.volunteerData.nickname,
-      //       $profession: this.volunteerData.profession.join(),
-      //       $projects: { data: this.volunteerData.projects.map((item) => { return { project_id: item } }) },
-      //       $ws_place: this.volunteerData.ws_place
-      //     }
-      //   }).then((data) => {
-      //     this.isSubmitting = false
-      //     this.$store.commit('notification/newNotification', ['Your registration has been created', 'success'])
-      //   }).catch((error) => {
-      //     this.$store.commit('notification/newNotification', [error.message, 'error'])
-      //   })
-      // }
+      if (this.$refs.registrationForm.validate()) {
+        this.isSubmitting = true
+        this.$apollo.mutate({
+          mutation: CreateVol,
+          variables: {
+            address: this.volunteerData.address,
+            bio: this.volunteerData.bio,
+            contact_num: this.volunteerData.contact_num,
+            channel: this.volunteerData.channel ? this.volunteerData.channel : null,
+            consent: this.volunteerData.consent,
+            date_joined: '2021-01-05', // ????
+            dob: this.volunteerData.dob ? this.volunteerData.dob : null,
+            email: this.volunteerData.email,
+            gender: this.volunteerData.gender,
+            languages: { data: this.volunteerData.languages.map((item) => { return { language: item } }) },
+            name: this.volunteerData.name,
+            nickname: this.volunteerData.nickname,
+            profession: this.volunteerData.profession.join(),
+            projects: { data: this.volunteerData.projects.map((item) => { return { project_id: item } }) },
+            ws_place: this.volunteerData.ws_place
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', ['Your registration has been created', 'success'])
+          registerSuccessful()
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
     }
   }
 }
