@@ -12,7 +12,6 @@
 
 <script>
 import gql from 'graphql-tag'
-// import { VOLUNTEER_CHANNELS } from './../../assets/data'
 export default {
   name: 'ChannelInput',
 
