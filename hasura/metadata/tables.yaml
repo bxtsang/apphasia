@@ -196,55 +196,6 @@
       filter: {}
 - table:
     schema: public
-    name: last_stroke
-  is_enum: true
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - when
-      - description
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_pwa
   object_relationships:
   - name: project
@@ -253,6 +204,54 @@
   - name: pwa
     using:
       foreign_key_constraint_on: pwa_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: project_staffs
@@ -1727,6 +1726,11 @@
       - notes
       - rejection_reason
       - rejected_date
+      filter: {}
+  - role: public
+    permission:
+      columns:
+      - id
       filter: {}
   update_permissions:
   - role: core_team

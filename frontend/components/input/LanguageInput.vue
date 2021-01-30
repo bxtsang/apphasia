@@ -61,11 +61,12 @@ export default {
         return gql`query getLanguages {
           languages {
             language
+            description
           }
         }`
       },
       update: data => data.languages.map((item) => {
-        return { value: item.language, text: item.language.replace('_', ' ') }
+        return { value: item.language, text: item.description }
       })
     }
   }
