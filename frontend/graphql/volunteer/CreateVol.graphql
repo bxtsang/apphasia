@@ -4,7 +4,6 @@ mutation (
     $contact_num: Int!, 
     $channel: channels_enum, 
   	$consent: Boolean!,
-    $date_joined: date!,
     $dob: date,
     $email: String!,
     $gender: bpchar!,
@@ -21,7 +20,6 @@ mutation (
     contact_num: $contact_num, #int
     channel: $channel, #enum: twitter,facebook,instagram...
     consent: $consent, #boolean
-    date_joined: $date_joined, #string in date format YYYY-MM-DD
     dob: $dob, #string in date format YYYY-MM-DD
     email: $email, #string
     gender: $gender, #char, "M" or "F"

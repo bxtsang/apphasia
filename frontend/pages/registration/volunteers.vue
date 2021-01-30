@@ -182,7 +182,6 @@ export default {
             contact_num: this.volunteerData.contact_num,
             channel: this.volunteerData.channel ? this.volunteerData.channel : null,
             consent: this.volunteerData.consent,
-            date_joined: '2021-01-05', // ????
             dob: this.volunteerData.dob ? this.volunteerData.dob : null,
             email: this.volunteerData.email,
             gender: this.volunteerData.gender,
