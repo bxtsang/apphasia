@@ -40,7 +40,7 @@
                   </v-col>
                 </v-row>
                 <v-row class="mt-2">
-                  <v-col cols="1" class="py-0">
+                  <v-col cols="2" class="py-0">
                     <VolunteerStatusChip :value="data.volunteers[0].status"/>
                   </v-col>
                   <v-col class="py-0 mt-1" v-if="data.volunteers[0].rejection_reason">
@@ -105,6 +105,31 @@
                     <v-text-field
                       :value="data.volunteers[0].address || 'Not Available'"
                       label="Home Address"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row class="mt-3">
+                  <v-col cols="12" class="py-0">
+                    <span>Additional Information</span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-select
+                      :value="data.volunteers[0].project_vols.map(item => item.project.title)"
+                      :items="data.volunteers[0].project_vols.map(item => item.project.title)"
+                      label="Projects Interested"
+                      multiple
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-select
+                      :value="data.volunteers[0].project_vols.filter(item => item.approved).map(item => item.project.title)"
+                      :items="data.volunteers[0].project_vols.filter(item => item.approved).map(item => item.project.title)"
+                      label="Projects Involved"
+                      multiple
                       readonly
                     />
                   </v-col>
