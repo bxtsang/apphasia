@@ -176,7 +176,7 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-text-field
-                      :value="data.volunteers[0].channel"
+                      :value="data.volunteers[0].channel_description.description"
                       label="Channel"
                       readonly
                     />
