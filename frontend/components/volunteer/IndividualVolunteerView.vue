@@ -44,8 +44,8 @@
                     <span class="font-italic">Reason for rejection: {{ data.volunteers[0].rejection_reason }}</span>
                   </v-col>
                 </v-row>
-                <v-row class="mt-4">
-                  <v-col cols="12" class="py-0 mt-2">
+                <v-row class="mt-8">
+                  <v-col cols="12" class="py-0">
                     <span class="font-weight-bold">Personal Details</span>
                   </v-col>
                 </v-row>
@@ -105,12 +105,12 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
-                  <v-col cols="12" class="py-0 mt-2">
+                <v-row class="mt-8">
+                  <v-col cols="12" class="py-0">
                     <span class="font-weight-bold">Additional Information</span>
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
+                <v-row>
                   <v-col cols="12" class="py-0">
                     <v-text-field
                       :value="data.volunteers[0].bio"
