@@ -114,6 +114,15 @@
                     <span>Additional Information</span>
                   </v-col>
                 </v-row>
+                <v-row class="mt-3">
+                  <v-col cols="12" class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].bio"
+                      label="Self Description"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
                 <v-row>
                   <v-col class="py-0">
                     <v-select
@@ -130,6 +139,74 @@
                       :items="data.volunteers[0].project_vols.filter(item => item.approved).map(item => item.project.title)"
                       label="Projects Involved"
                       multiple
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-select
+                      :value="data.volunteers[0].vol_languages.map(item => item.language)"
+                      :items="data.volunteers[0].vol_languages.map(item => item.language)"
+                      label="Languages understand and/or speak"
+                      multiple
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].ws_place"
+                      label="Current Place of Work / Study"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].profession"
+                      label="Profession"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-switch
+                      :input-value="data.volunteers[0].is_speech_therapist"
+                      label="Speech Therapist?"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].channel"
+                      label="Channel"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-switch
+                      :input-value="data.volunteers[0].consent"
+                      label="Consent to Updates?"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-select
+                      :items="data.volunteers[0].vol_ic.map(item => item.ic.name)"
+                      :value="data.volunteers[0].vol_ic.map(item => item.ic.name)"
+                      label="In-Charge(s)"
+                      multiple
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-textarea
+                      label="Notes"
+                      :value="data.volunteers[0].notes"
                       readonly
                     />
                   </v-col>
