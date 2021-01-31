@@ -27,7 +27,7 @@
                   <v-col>
                     <h1 class="title hover-underline">
                       <NuxtLink to="/staffs">
-                        Staff
+                        Staffs
                       </NuxtLink>
                       <span>/ {{ data.staffs[0].name }}</span>
                     </h1>
@@ -42,7 +42,7 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Role</span>
                   </v-col>
                 </v-row>
@@ -54,7 +54,7 @@
                   </v-col>
                 </v-row>
                 <v-row class="mt-3">
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Personal Details</span>
                   </v-col>
                 </v-row>
@@ -122,7 +122,7 @@
                   </v-col>
                 </v-row>
                 <v-row class="mt-3">
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Additional Information</span>
                   </v-col>
                 </v-row>
@@ -188,7 +188,7 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="data.staffs.role != '' && data.staffs.role != 'core_team'" class="mt-3">
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Supervisor Details</span>
                   </v-col>
                 </v-row>

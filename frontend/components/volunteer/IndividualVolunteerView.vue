@@ -49,7 +49,7 @@
                   </v-col>
                 </v-row>
                 <v-row class="mt-4">
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Personal Details</span>
                   </v-col>
                 </v-row>
