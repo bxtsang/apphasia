@@ -2,7 +2,9 @@ query GetSingleVol($id: Int!) {
   volunteers(where: {id: {_eq: $id}}) {
     address
     bio
-    channel
+    channel_description {
+      description
+    }
     consent
     contact_num
     date_joined
