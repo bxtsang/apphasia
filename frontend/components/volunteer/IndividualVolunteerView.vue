@@ -32,6 +32,82 @@
                       <span>/ {{ data.volunteers[0].name }}</span>
                     </h1>
                   </v-col>
+                  <!-- add edit modal -->
+                </v-row>
+                <v-row>
+                  <v-col cols="12" class="py-0">
+                    <span>Status</span>
+                  </v-col>
+                </v-row>
+                <v-row class="mt-2">
+                  <v-col cols="1" class="py-0">
+                    <VolunteerStatusChip :value="data.volunteers[0].status"/>
+                  </v-col>
+                  <v-col class="py-0 mt-1" v-if="data.volunteers[0].rejection_reason">
+                    <span>Reason for rejection: </span>
+                    <span>{{ data.volunteers[0].rejection_reason }}</span>
+                  </v-col>
+                </v-row>
+                <v-row class="mt-4">
+                  <v-col col="12" class="py-0">
+                    <span>Personal Details</span>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].name"
+                      label="Full Name"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].nickname"
+                      label="Nickname / Alias"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].dob"
+                      label="Date of Birth"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-text-field
+                      :value="data.volunteers[0].contact_num"
+                      label="Contact"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0">
+                    <v-select
+                      :value="data.volunteers[0].gender"
+                      :items="GENDER_OPTIONS"
+                      label="Gender"
+                      readonly
+                    />
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col class="py-0" cols="4">
+                    <v-text-field
+                      :value="data.volunteers[0].email"
+                      label="Email Address"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col class="py-0" cols="8">
+                    <v-text-field
+                      :value="data.volunteers[0].address || 'Not Available'"
+                      label="Home Address"
+                      readonly
+                    />
+                  </v-col>
                 </v-row>
               </v-container>
             </div>
@@ -43,7 +119,11 @@
 </template>
 
 <script>
+import { GENDER_OPTIONS } from './../../assets/data'
+import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
+
 export default {
+  components: { VolunteerStatusChip },
   props: {
     resourceType: {
       type: String,
@@ -52,7 +132,8 @@ export default {
   },
   data () {
     return {
-      volunteerId: Number(this.$route.query.id)
+      volunteerId: Number(this.$route.query.id),
+      GENDER_OPTIONS
     }
   }
 }
