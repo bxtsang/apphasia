@@ -34,23 +34,19 @@
                   </v-col>
                   <!-- add edit modal -->
                 </v-row>
-                <v-row>
-                  <v-col cols="12" class="py-0">
-                    <span>Status</span>
-                  </v-col>
-                </v-row>
                 <v-row class="mt-2">
-                  <v-col cols="2" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <VolunteerStatusChip :value="data.volunteers[0].status"/>
                   </v-col>
-                  <v-col class="py-0 mt-1" v-if="data.volunteers[0].rejection_reason">
-                    <span>Reason for rejection: </span>
-                    <span>{{ data.volunteers[0].rejection_reason }}</span>
+                </v-row>
+                <v-row v-if="data.volunteers[0].rejection_reason">
+                  <v-col class="py-0 mt-1">
+                    <span class="font-italic">Reason for rejection: {{ data.volunteers[0].rejection_reason }}</span>
                   </v-col>
                 </v-row>
                 <v-row class="mt-4">
-                  <v-col cols="12" class="py-0">
-                    <span>Personal Details</span>
+                  <v-col cols="12" class="py-0 mt-2">
+                    <span class="font-weight-bold">Personal Details</span>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -110,8 +106,8 @@
                   </v-col>
                 </v-row>
                 <v-row class="mt-3">
-                  <v-col cols="12" class="py-0">
-                    <span>Additional Information</span>
+                  <v-col cols="12" class="py-0 mt-2">
+                    <span class="font-weight-bold">Additional Information</span>
                   </v-col>
                 </v-row>
                 <v-row class="mt-3">
