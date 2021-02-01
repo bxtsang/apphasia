@@ -12,7 +12,6 @@
 
 <script>
 import gql from 'graphql-tag'
-import { VOLUNTEER_CHANNELS } from './../../assets/data'
 export default {
   name: 'ChannelInput',
 
@@ -57,11 +56,12 @@ export default {
         return gql`query getChannels {
           channels {
             channel
+            description
           }
         }`
       },
       update: data => data.channels.map((item) => {
-        return { value: item.channel, text: VOLUNTEER_CHANNELS[item.channel].text }
+        return { value: item.channel, text: item.description }
       })
     }
   }

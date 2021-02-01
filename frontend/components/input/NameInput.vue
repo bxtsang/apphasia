@@ -13,7 +13,7 @@
 import { INPUT_VALIDATION } from './../../assets/data'
 
 export default {
-  name: 'NameInput',
+  name: 'NameInputabcde',
 
   props: {
     value: {

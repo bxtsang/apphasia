@@ -1,9 +1,9 @@
 <template>
   <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="submitForm">
     <v-container class="pa-0">
-      <v-row class="mt-3">
+      <v-row class="mt-8">
         <v-col col="12" class="py-0">
-          <span>Personal Details</span>
+          <span class="font-weight-bold">Personal Details</span>
         </v-col>
       </v-row>
       <v-row>
@@ -93,9 +93,9 @@
           />
         </v-col>
       </v-row>
-      <v-row class="mt-3">
+      <v-row class="mt-8">
         <v-col col="12" class="py-0">
-          <span>Additional Information</span>
+          <span class="font-weight-bold">Additional Information</span>
         </v-col>
       </v-row>
       <v-row>

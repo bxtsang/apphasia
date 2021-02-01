@@ -3,7 +3,6 @@ query GetAllVol {
     address
     bio
     channel_description {
-      channel
       description
     }
     consent
