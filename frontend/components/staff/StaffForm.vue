@@ -33,12 +33,6 @@
               v-model="staffData.nickname"
             />
           </v-col>
-          <v-col class="py-0">
-            <NRICInput
-              v-model="staffData.nric"
-              :required="true"
-            />
-          </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
@@ -162,7 +156,6 @@ import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import RoleInput from './../input/RoleInput'
 import NameInput from './../input/NameInput'
 import AliasInput from './../input/AliasInput'
-import NRICInput from './../input/NRICInput'
 import DateOfBirthInput from './../input/DateOfBirthInput'
 import ContactInput from './../input/ContactInput'
 import GenderInput from './../input/GenderInput'
@@ -181,7 +174,6 @@ export default {
     RoleInput,
     NameInput,
     AliasInput,
-    NRICInput,
     DateOfBirthInput,
     ContactInput,
     GenderInput,

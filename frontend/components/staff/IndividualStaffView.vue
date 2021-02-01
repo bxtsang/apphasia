@@ -73,13 +73,6 @@
                       readonly
                     />
                   </v-col>
-                  <v-col class="py-0">
-                    <v-text-field
-                      :value="data.staffs[0].nric || 'Not Available'"
-                      label="NRIC"
-                      readonly
-                    />
-                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col class="py-0">
