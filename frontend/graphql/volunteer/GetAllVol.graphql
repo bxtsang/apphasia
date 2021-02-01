@@ -3,6 +3,7 @@ query GetAllVol {
     address
     bio
     channel_description {
+      channel
       description
     }
     consent
@@ -19,8 +20,18 @@ query GetAllVol {
     notes
     profession
     rejection_reason
-    status
+    rejected_date
+    status_description{
+      status
+      description
+    }
     ws_place
+    befrienders {
+      pwa {
+        id
+        name
+      }
+    }
     project_vols {
       project {
         id
@@ -29,7 +40,10 @@ query GetAllVol {
       approved
     }
     vol_languages {
-      language
+      languages {
+        language
+        description
+      }
     }
     vol_ic {
       ic {
@@ -38,7 +52,10 @@ query GetAllVol {
       }
     }
     vol_voltypes {
-      voltype
+      voltypes {
+        type
+        description
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ mutation(
   $channel: channels_enum!
   $consent: Boolean!
   $contact_num: Int!
+  $date_joined: date,
   $dob: date
   $gender: bpchar!
   $is_active: Boolean!
@@ -13,9 +14,12 @@ mutation(
   $notes: String
   $profession: String!
   $rejection_reason: String
+  $rejection_date: date
   $status: status_enum!
   $vol_id: Int!
   $ws_place: String
+  $pwa_befriender_to_add: [pwa_befriender_insert_input!]!
+  $pwa_befriender_to_remove: [Int!]
   $languages_to_add: [vol_languages_insert_input!]!
   $languages_to_remove: [languages_enum!]
   $projects_to_add: [project_vol_insert_input!]!
@@ -27,6 +31,19 @@ mutation(
   $voltypes_to_add: [vol_voltypes_insert_input!]!
   $voltypes_to_remove: [voltypes_enum!]
 ) {
+
+  insert_pwa_befriender(objects: $pwa_befriender_to_add) {
+    affected_rows
+  }
+  
+  delete_pwa_befriender (where: {
+    _and: [
+      {pwa_id: {_in: $pwa_befriender_to_remove }, befriender_id: {_eq: $vol_id } }
+    ]
+  }) {
+    affected_rows
+  }
+
   insert_vol_ic(objects: $ic_to_add) {
     affected_rows
   }
@@ -91,6 +108,7 @@ mutation(
       consent: $consent
       contact_num: $contact_num
       dob: $dob
+      date_joined: $date_joined
       gender: $gender
       is_active: $is_active
       is_speech_therapist: $is_speech_therapist
@@ -99,6 +117,7 @@ mutation(
       notes: $notes
       profession: $profession
       rejection_reason: $rejection_reason
+      rejected_date: $rejection_date
       ws_place: $ws_place
       status: $status
     }
@@ -107,12 +126,11 @@ mutation(
   }
 }
 
-#{
+# {
 #    "address": "123 Fake Street",
 #    "bio": "Hello World",
 #    "consent": true,
 #    "channel": "facebook",
-
 #    "contact_num": 1,
 #    "dob": "1999-09-09",
 #    "gender": "M",
@@ -121,6 +139,8 @@ mutation(
 #    "name": "test4",
 #    "nickname": "",
 #    "profession": "",
+#    "rejection_reason": "",
+#    "rejection_date": "2021-01-30",
 #    "status": "Pending_Approval",
 #    "vol_id": 3,
 #    "ws_place": null,
@@ -132,4 +152,4 @@ mutation(
 #    "ic_to_remove": [2], #list of integers of staff_id, put all that you want to remove or MORE (not added before but not going to add also can put)
 #    "voltypes_to_add": [{"vol_id": 1, "voltypes": "Befriender"}]
 #    "voltypes_to_remove": ["Befriender"]
-#}
+# }
