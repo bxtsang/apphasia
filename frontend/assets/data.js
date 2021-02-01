@@ -52,7 +52,8 @@ export const INPUT_VALIDATION = {
 
 export const LIST_QUERY_PATHS = {
   staffs: require('./../graphql/staff/GetAllStaff.graphql'),
-  volunteers: require('./../graphql/volunteer/GetAllVol.graphql')
+  volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
+  pwas: require('./../graphql/pwa/GetAllPWA.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -71,6 +72,15 @@ export const TABLE_HEADERS = {
     { text: 'Profession', value: 'profession' },
     { text: 'Programmes Interest', value: 'project_vols' },
     { text: 'Speech Therapist?', value: 'is_speech_therapist' },
+    { text: 'Status', value: 'status' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  pwas: [
+    { text: 'Name', value: 'name', align: 'start' },
+    { text: 'Communication Difficulties', value: 'comm_diff' },
+    { text: 'Programmes Involved In', value: 'projects' },
+    { text: 'NOK', value: 'nok' },
+    { text: 'Languages understand/speak', value: 'languages' },
     { text: 'Status', value: 'status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
