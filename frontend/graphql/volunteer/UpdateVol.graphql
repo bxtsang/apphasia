@@ -4,6 +4,7 @@ mutation(
   $channel: channels_enum!
   $consent: Boolean!
   $contact_num: Int!
+  $date_joined: date,
   $dob: date
   $gender: bpchar!
   $is_active: Boolean!
@@ -92,6 +93,7 @@ mutation(
       consent: $consent
       contact_num: $contact_num
       dob: $dob
+      date_joined: $date_joined
       gender: $gender
       is_active: $is_active
       is_speech_therapist: $is_speech_therapist
