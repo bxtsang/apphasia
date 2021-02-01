@@ -3,6 +3,7 @@ query GetSingleVol($id: Int!) {
     address
     bio
     channel_description {
+      channel
       description
     }
     consent
