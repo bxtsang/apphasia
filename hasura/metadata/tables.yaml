@@ -437,6 +437,13 @@
     using:
       foreign_key_constraint_on: last_stroke
   array_relationships:
+  - name: befrienders
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: pwa_befriender
   - name: comm_diff
     using:
       foreign_key_constraint_on:
@@ -693,6 +700,9 @@
   - role: core_team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: pwa_befriender
 - table:
     schema: public
     name: pwa_comms
@@ -1575,6 +1585,13 @@
     using:
       foreign_key_constraint_on: status
   array_relationships:
+  - name: befrienders
+    using:
+      foreign_key_constraint_on:
+        column: befriender_id
+        table:
+          schema: public
+          name: pwa_befriender
   - name: project_vols
     using:
       foreign_key_constraint_on:

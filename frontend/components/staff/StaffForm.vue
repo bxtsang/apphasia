@@ -33,12 +33,6 @@
               v-model="staffData.nickname"
             />
           </v-col>
-          <v-col class="py-0">
-            <NRICInput
-              v-model="staffData.nric"
-              :required="true"
-            />
-          </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
@@ -162,7 +156,6 @@ import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 import RoleInput from './../input/RoleInput'
 import NameInput from './../input/NameInput'
 import AliasInput from './../input/AliasInput'
-import NRICInput from './../input/NRICInput'
 import DateOfBirthInput from './../input/DateOfBirthInput'
 import ContactInput from './../input/ContactInput'
 import GenderInput from './../input/GenderInput'
@@ -181,7 +174,6 @@ export default {
     RoleInput,
     NameInput,
     AliasInput,
-    NRICInput,
     DateOfBirthInput,
     ContactInput,
     GenderInput,
@@ -209,7 +201,6 @@ export default {
         role: this.staff ? this.staff.role : '',
         name: this.staff ? `${this.staff.name}` : '',
         nickname: this.staff ? this.staff.nickname : '',
-        nric: this.staff ? this.staff.nric : '',
         dob: this.staff ? this.staff.dob : '',
         contact_num: this.staff ? this.staff.contact_num.toString() : '',
         gender: this.staff ? this.staff.gender : '',
@@ -253,7 +244,6 @@ export default {
             is_speech_therapist: this.staffData.is_speech_therapist,
             name: this.staffData.name,
             nickname: this.staffData.nickname,
-            nric: this.staffData.nric,
             profession: this.staffData.profession,
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
@@ -286,7 +276,6 @@ export default {
             role: 'core_team',
             name: '',
             nickname: '',
-            nric: '',
             dob: '',
             contact_num: '',
             gender: '',
@@ -327,7 +316,6 @@ export default {
             is_active: !archive,
             name: this.staffData.name,
             nickname: this.staffData.nickname,
-            nric: this.staffData.nric,
             profession: this.staffData.profession,
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
