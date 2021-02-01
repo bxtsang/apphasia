@@ -1,0 +1,53 @@
+query GetAllPWA {
+  pwa {
+    address
+    befrienders {
+      volunteer {
+        id
+        name
+      }
+    }
+    channels {
+      description
+    }
+    comm_diff {
+      difficulty
+    }
+    consent
+    contact_num
+    date_joined
+    dob
+    email
+    gender
+    hobbies
+    hospital
+    id
+    languages {
+      languages {
+        description
+      }
+    }
+    last_stroke_description {
+      description
+    }
+    media_engagement_details
+    nok {
+      contact_num
+      email
+      name
+      relationship
+    }
+    notes
+    name
+    speak_media
+    speech_therapist
+    status
+    wheelchair
+    projects {
+      project {
+        id
+        title
+      }
+    }
+  }
+}

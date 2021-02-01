@@ -1,0 +1,46 @@
+mutation (
+  	$address: String,
+    $channel: channels_enum, 
+  	$comm_diff: pwa_comms_arr_rel_insert_input!,
+  	$consent: Boolean!,
+    $contact_num: Int!,
+    $dob: date,
+    $email: String!,
+    $gender: bpchar!,
+  	$hobbies: String,
+  	$hospital: String,
+    $languages: pwa_languages_arr_rel_insert_input!,
+  	$last_stroke: last_stroke_enum!,
+    $media_engagement_details: String,
+    $name: String!,
+  	$nok: pwa_nok_arr_rel_insert_input,
+    $projects: project_pwa_arr_rel_insert_input,
+  	$speak_media: answers_enum,
+    $speech_therapist: String,
+    $wheelchair: answers_enum
+) {
+  insert_pwa_one(object: {
+    address: $address, #string
+    contact_num: $contact_num, #int
+    channel: $channel, #enum: twitter,facebook,instagram...
+    comm_diff: $comm_diff,
+    consent: $consent, #boolean
+    dob: $dob, #string in date format YYYY-MM-DD
+    email: $email, #string
+    gender: $gender, #char, "M" or "F"
+    hobbies: $hobbies, #string
+    hospital: $hospital, #string
+    languages: $languages, #{data: [{language: Abkhaz}]}
+    last_stroke: $last_stroke, # less_than_1_year_ago, more_than_a_year_but_less_than_5_years, more_than_5_years
+    media_engagement_details: $media_engagement_details, #string
+    name: $name, #string
+    nok: $nok, #{data: [{contact_num: 90000000, email: "nok1@aphasia.sg", name: "Son of Ah Ma", relationship: "Son"}]}
+    projects: $projects, #{data: [{project_id: 1}]}
+    speak_media: $speak_media, # yes, no, maybe
+    speech_therapist: $speech_therapist, #string
+    wheelchair: $wheelchair # yes, no, maybe
+}) 
+  {
+    id
+  }
+}
