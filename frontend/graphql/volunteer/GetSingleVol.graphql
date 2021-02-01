@@ -3,7 +3,6 @@ query GetSingleVol($id: Int!) {
     address
     bio
     channel_description {
-      channel
       description
     }
     consent
@@ -22,7 +21,6 @@ query GetSingleVol($id: Int!) {
     rejection_reason
     rejected_date
     status_description {
-      status
       description
     }
     ws_place
@@ -35,7 +33,6 @@ query GetSingleVol($id: Int!) {
     }
     vol_languages {
       languages {
-        language
         description
       }
     }
@@ -47,7 +44,6 @@ query GetSingleVol($id: Int!) {
     }
     vol_voltypes {
       voltypes {
-        type
         description
       }
     }
