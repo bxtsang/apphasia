@@ -3,6 +3,7 @@ query GetAllVol {
     address
     bio
     channel_description {
+      channel
       description
     }
     consent
@@ -21,6 +22,7 @@ query GetAllVol {
     rejection_reason
     rejected_date
     status_description{
+      status
       description
     }
     ws_place
@@ -33,6 +35,7 @@ query GetAllVol {
     }
     vol_languages {
       languages {
+        language
         description
       }
     }
@@ -44,6 +47,7 @@ query GetAllVol {
     }
     vol_voltypes {
       voltypes {
+        type
         description
       }
     }
