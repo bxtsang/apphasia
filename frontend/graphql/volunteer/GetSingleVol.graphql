@@ -3,6 +3,7 @@ query GetSingleVol($id: Int!) {
     address
     bio
     channel_description {
+      channel
       description
     }
     consent
@@ -19,8 +20,18 @@ query GetSingleVol($id: Int!) {
     notes
     profession
     rejection_reason
-    status
+    rejected_date
+    status_description {
+      status
+      description
+    }
     ws_place
+    befrienders {
+      pwa {
+        id
+        name
+      }
+    }
     project_vols {
       project {
         title
@@ -29,7 +40,10 @@ query GetSingleVol($id: Int!) {
       approved
     }
     vol_languages {
-      language
+      languages {
+        language
+        description
+      }
     }
     vol_ic {
       ic {
@@ -38,7 +52,10 @@ query GetSingleVol($id: Int!) {
       }
     }
     vol_voltypes {
-      voltype
+      voltypes {
+        type
+        description
+      }
     }
   }
 }

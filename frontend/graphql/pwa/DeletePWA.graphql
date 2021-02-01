@@ -1,0 +1,8 @@
+mutation ($id: Int!){
+  delete_pwa(where: {id: {_eq: $id}}) {
+    returning {
+      id
+      name
+    }
+  }
+}
