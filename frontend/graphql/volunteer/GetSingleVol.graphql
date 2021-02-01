@@ -26,6 +26,12 @@ query GetSingleVol($id: Int!) {
       description
     }
     ws_place
+    befrienders {
+      pwa {
+        id
+        name
+      }
+    }
     project_vols {
       project {
         title

@@ -18,6 +18,8 @@ mutation(
   $status: status_enum!
   $vol_id: Int!
   $ws_place: String
+  $pwa_befriender_to_add: [pwa_befriender_insert_input!]!
+  $pwa_befriender_to_remove: [Int!]
   $languages_to_add: [vol_languages_insert_input!]!
   $languages_to_remove: [languages_enum!]
   $projects_to_add: [project_vol_insert_input!]!
@@ -29,6 +31,19 @@ mutation(
   $voltypes_to_add: [vol_voltypes_insert_input!]!
   $voltypes_to_remove: [voltypes_enum!]
 ) {
+
+  insert_pwa_befriender(objects: $pwa_befriender_to_add) {
+    affected_rows
+  }
+  
+  delete_pwa_befriender (where: {
+    _and: [
+      {pwa_id: {_in: $pwa_befriender_to_remove }, befriender_id: {_eq: $vol_id } }
+    ]
+  }) {
+    affected_rows
+  }
+
   insert_vol_ic(objects: $ic_to_add) {
     affected_rows
   }
