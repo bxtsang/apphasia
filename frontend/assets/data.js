@@ -13,10 +13,6 @@ export const INPUT_VALIDATION = {
   name: {
     required: v => !!v || 'Fullname is required'
   },
-  nric: {
-    required: v => !!v || 'NRIC is required',
-    valid: v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
-  },
   dob: {
     required: v => !!v || 'Date of Birth is required'
   },
