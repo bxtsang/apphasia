@@ -2,7 +2,7 @@
   <div>
     <!-- <IndividualPWAView v-if="pwaId" :resourceType="resourceType"/>
     <v-container v-else class="pa-0" fluid> -->
-    <v-container class="pa-0" fluid>   
+    <v-container class="pa-0" fluid>
       <v-row>
         <v-col>
           <AddResourceModal :resourceType="resourceType"/>
