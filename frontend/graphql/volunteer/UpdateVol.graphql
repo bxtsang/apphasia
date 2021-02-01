@@ -16,31 +16,16 @@ mutation(
   $rejection_date: date
   $status: status_enum!
   $ws_place: String
-  $pwa_befriender_to_add: [pwa_befriender_insert_input!]!
-  $pwa_befriender_to_remove: [Int!]
   $languages_to_add: [vol_languages_insert_input!]!
   $languages_to_remove: [languages_enum!]
   $projects_to_add: [project_vol_insert_input!]!
   $projects_to_remove: [Int!]
-  $projects_to_update: [Int!]
-  $project_approval: Boolean
   $ic_to_add: [vol_ic_insert_input!]!
   $ic_to_remove: [Int!]!
+  $vol_id: Int!
   $voltypes_to_add: [vol_voltypes_insert_input!]!
   $voltypes_to_remove: [voltypes_enum!]
 ) {
-
-  insert_pwa_befriender(objects: $pwa_befriender_to_add) {
-    affected_rows
-  }
-
-  delete_pwa_befriender (where: {
-    _and: [
-      {pwa_id: {_in: $pwa_befriender_to_remove }, befriender_id: {_eq: $vol_id } }
-    ]
-  }) {
-    affected_rows
-  }
 
   insert_vol_ic(objects: $ic_to_add) {
     affected_rows
@@ -79,10 +64,6 @@ mutation(
       ]
     }
   ) {
-    affected_rows
-  }
-
-  update_project_vol(where: {_and: {vol_id: {_eq: $vol_id}, project_id: {_in: $projects_to_update}}}, _set: {approved: $project_approval}) {
     affected_rows
   }
 
