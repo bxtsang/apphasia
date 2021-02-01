@@ -22,14 +22,6 @@
             required
           />
         </v-col>
-        <v-col class="py-0">
-          <v-text-field
-            v-model="profileData.nric"
-            :rules="nricRules"
-            label="NRIC"
-            required
-          />
-        </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
@@ -201,7 +193,6 @@ export default {
         role: this.profile.role,
         name: this.profile.name,
         nickname: this.profile.nickname,
-        nric: this.profile.nric,
         dob: this.profile.dob,
         contact_num: this.profile.contact_num,
         gender: this.profile.gender,
@@ -217,10 +208,6 @@ export default {
       },
       roleRules: [v => !!v || 'Role is required'],
       nameRules: [v => !!v || 'Fullname is required'],
-      nricRules: [
-        v => !!v || 'NRIC is required',
-        v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
-      ],
       dobRules: [v => !!v || 'Date of Birth is required'],
       contactRules: [
         v => !!v || 'Contact Number is required',
@@ -268,7 +255,6 @@ export default {
             is_active: true,
             name: this.profileData.name,
             nickname: this.profileData.nickname,
-            nric: this.profileData.nric,
             profession: this.profileData.profession,
             role: this.profileData.role,
             ws_place: this.profileData.ws_place,
