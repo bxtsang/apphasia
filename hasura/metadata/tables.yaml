@@ -625,25 +625,6 @@
     permission:
       columns:
       - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
       filter: {}
   update_permissions:
   - role: core_team
@@ -710,6 +691,55 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: befriender_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - befriender_id
+      - pwa_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - befriender_id
+      - pwa_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - befriender_id
+      - pwa_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - befriender_id
+      - pwa_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - befriender_id
+      - pwa_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - befriender_id
+      - pwa_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: pwa_comms
@@ -924,6 +954,9 @@
       check: {}
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
 - table:
@@ -1435,6 +1468,9 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_languages
@@ -1490,6 +1526,9 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: vol_voltypes
@@ -1538,6 +1577,9 @@
   - role: core_team
     permission:
       filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: voltypes
@@ -1564,6 +1606,12 @@
       - description
       filter: {}
   - role: intern
+    permission:
+      columns:
+      - type
+      - description
+      filter: {}
+  - role: public
     permission:
       columns:
       - type
