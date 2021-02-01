@@ -1,5 +1,5 @@
 query GetPWA($id: Int!) {
-  pwa(where: {id: {_eq: $id}}) {
+  pwas(where: {id: {_eq: $id}}) {
     address
     befrienders {
       volunteer {

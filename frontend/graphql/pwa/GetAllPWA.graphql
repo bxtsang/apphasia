@@ -1,5 +1,5 @@
 query GetAllPWA {
-  pwa {
+  pwas {
     address
     befrienders {
       volunteer {
