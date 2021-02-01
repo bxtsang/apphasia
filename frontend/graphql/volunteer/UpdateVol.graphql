@@ -4,7 +4,6 @@ mutation(
   $channel: channels_enum!
   $consent: Boolean!
   $contact_num: Int!
-  $date_joined: date,
   $dob: date
   $gender: bpchar!
   $is_active: Boolean!
@@ -16,7 +15,6 @@ mutation(
   $rejection_reason: String
   $rejection_date: date
   $status: status_enum!
-  $vol_id: Int!
   $ws_place: String
   $pwa_befriender_to_add: [pwa_befriender_insert_input!]!
   $pwa_befriender_to_remove: [Int!]
@@ -35,7 +33,7 @@ mutation(
   insert_pwa_befriender(objects: $pwa_befriender_to_add) {
     affected_rows
   }
-  
+
   delete_pwa_befriender (where: {
     _and: [
       {pwa_id: {_in: $pwa_befriender_to_remove }, befriender_id: {_eq: $vol_id } }
