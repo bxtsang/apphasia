@@ -703,6 +703,13 @@
 - table:
     schema: public
     name: pwa_befriender
+  object_relationships:
+  - name: pwa
+    using:
+      foreign_key_constraint_on: pwa_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: befriender_id
 - table:
     schema: public
     name: pwa_comms
