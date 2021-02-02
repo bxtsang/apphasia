@@ -55,6 +55,7 @@ export default {
         const languageChanges = this.getLanguageChanges()
         const volIcChanges = this.getVolIcChanges()
         const volTypeChanges = this.getVolTypeChanges()
+        const projectChanges = this.getProjectInterestChanges()
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
@@ -77,12 +78,12 @@ export default {
             ws_place: this.volunteerData.ws_place,
             languages_to_add: languageChanges.added,
             languages_to_remove: languageChanges.removed,
-            // projects_to_add: this.volunteerData.projects_to_add,
-            // projects_to_remove: this.volunteerData.projects_to_remove,
+            projects_to_add: projectChanges.added,
+            projects_to_remove: projectChanges.removed,
             ic_to_add: volIcChanges.added,
             ic_to_remove: volIcChanges.removed,
-            voltypes_to_add: this.volunteerData.voltypes_to_add,
-            voltypes_to_remove: this.volunteerData.voltypes_to_remove
+            voltypes_to_add: volTypeChanges.added,
+            voltypes_to_remove: volTypeChanges.removed
           }
         })
       }
