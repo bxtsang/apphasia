@@ -1,0 +1,1 @@
+CREATE TABLE "public"."pwa_befriender_core"("pwa_id" integer NOT NULL, "staff_id" integer NOT NULL, PRIMARY KEY ("pwa_id","staff_id") , FOREIGN KEY ("pwa_id") REFERENCES "public"."pwas"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("staff_id") REFERENCES "public"."staffs"("id") ON UPDATE restrict ON DELETE cascade);

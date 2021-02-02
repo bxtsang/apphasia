@@ -487,6 +487,50 @@
       filter: {}
 - table:
     schema: public
+    name: pwa_befriender_core
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - pwa_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - pwa_id
+      - staff_id
+      filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: pwa_comms
   object_relationships:
   - name: pwa
