@@ -57,21 +57,23 @@
 - table:
     schema: public
     name: people_external
-  array_relationships:
-  - name: pwas
+  object_relationships:
+  - name: pwa_details
     using:
-      foreign_key_constraint_on:
-        column: id
-        table:
+      manual_configuration:
+        remote_table:
           schema: public
           name: pwas
-  - name: volunteers
+        column_mapping:
+          id: id
+  - name: volunteer_details
     using:
-      foreign_key_constraint_on:
-        column: id
-        table:
+      manual_configuration:
+        remote_table:
           schema: public
           name: volunteers
+        column_mapping:
+          id: id
 - table:
     schema: public
     name: project_pwa
