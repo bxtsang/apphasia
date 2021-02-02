@@ -140,7 +140,7 @@ export default {
   methods: {
     filterItems (data) {
       if (this.resourceType === 'staffs') {
-        return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
+        return data.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
       } else {
         return data
       }
