@@ -1,97 +1,6 @@
 - table:
     schema: public
-    name: answers
-  is_enum: true
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - answer
-      - description
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - answer
-      - description
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - answer
-      - description
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - answer
-      - description
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - answer
-      - description
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - answer
-      - description
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: channels
-  is_enum: true
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - channel
-      - description
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - channel
-      - description
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - channel
-      - description
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - channel
-      - description
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - channel
-      - description
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - channel
-      - description
-      filter: {}
-      check: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -147,53 +56,22 @@
       filter: {}
 - table:
     schema: public
-    name: last_stroke
-  is_enum: true
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - when
-      - description
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - when
-      - description
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
+    name: people_external
+  array_relationships:
+  - name: pwas
+    using:
+      foreign_key_constraint_on:
+        column: id
+        table:
+          schema: public
+          name: pwas
+  - name: volunteers
+    using:
+      foreign_key_constraint_on:
+        column: id
+        table:
+          schema: public
+          name: volunteers
 - table:
     schema: public
     name: project_pwa
@@ -607,6 +485,9 @@
       filter: {}
 - table:
     schema: public
+    name: pwa_contact_status
+- table:
+    schema: public
     name: pwa_languages
   object_relationships:
   - name: languages
@@ -765,12 +646,12 @@
     schema: public
     name: pwas
   object_relationships:
-  - name: channels
+  - name: general_info
     using:
-      foreign_key_constraint_on: channel
-  - name: last_stroke_description
+      foreign_key_constraint_on: id
+  - name: pwa_contact_status
     using:
-      foreign_key_constraint_on: last_stroke
+      foreign_key_constraint_on: contact_status
   array_relationships:
   - name: befrienders
     using:
@@ -807,211 +688,12 @@
         table:
           schema: public
           name: project_pwa
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
-  - role: public
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
   select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
   - role: public
     permission:
       columns:
       - id
       filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-      check: {}
-  - role: intern
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - contact_status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-      check: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -1030,6 +712,18 @@
       backend_only: false
   select_permissions:
   - role: core_team
+    permission:
+      columns:
+      - role
+      - description
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - role
+      - description
+      filter: {}
+  - role: intern
     permission:
       columns:
       - role
@@ -1690,9 +1384,9 @@
     schema: public
     name: volunteers
   object_relationships:
-  - name: channel_description
+  - name: general_info
     using:
-      foreign_key_constraint_on: channel
+      foreign_key_constraint_on: id
   - name: status_description
     using:
       foreign_key_constraint_on: status
@@ -1732,211 +1426,12 @@
         table:
           schema: public
           name: vol_voltypes
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - nickname
-      - dob
-      - gender
-      - date_joined
-      - contact_num
-      - is_speech_therapist
-      - profession
-      - ws_place
-      - bio
-      - status
-      - consent
-      - address
-      - channel
-      - notes
-      - status_reason
-      - rejected_date
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - nickname
-      - dob
-      - gender
-      - date_joined
-      - contact_num
-      - is_speech_therapist
-      - profession
-      - ws_place
-      - bio
-      - status
-      - consent
-      - address
-      - channel
-      - notes
-      - status_reason
-      - rejected_date
-      backend_only: false
-  - role: public
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - nickname
-      - dob
-      - gender
-      - date_joined
-      - contact_num
-      - is_speech_therapist
-      - profession
-      - ws_place
-      - bio
-      - status
-      - consent
-      - address
-      - channel
-      - notes
-      - status_reason
-      - rejected_date
-      backend_only: false
   select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - consent
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - rejected_date
-      - contact_num
-      - id
-      - address
-      - bio
-      - channel
-      - email
-      - name
-      - nickname
-      - notes
-      - profession
-      - status_reason
-      - status
-      - ws_place
-      - created_at
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - consent
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - rejected_date
-      - contact_num
-      - id
-      - address
-      - bio
-      - channel
-      - email
-      - name
-      - nickname
-      - notes
-      - profession
-      - status_reason
-      - status
-      - ws_place
-      - created_at
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - consent
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - rejected_date
-      - contact_num
-      - id
-      - address
-      - bio
-      - channel
-      - email
-      - name
-      - nickname
-      - notes
-      - profession
-      - status_reason
-      - status
-      - ws_place
-      - created_at
-      filter: {}
   - role: public
     permission:
       columns:
       - id
       filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - consent
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - rejected_date
-      - contact_num
-      - id
-      - address
-      - bio
-      - channel
-      - email
-      - name
-      - nickname
-      - notes
-      - profession
-      - status_reason
-      - status
-      - ws_place
-      - created_at
-      filter: {}
-      check: null
-  - role: intern
-    permission:
-      columns:
-      - consent
-      - is_speech_therapist
-      - gender
-      - date_joined
-      - dob
-      - rejected_date
-      - contact_num
-      - id
-      - address
-      - bio
-      - channel
-      - email
-      - name
-      - nickname
-      - notes
-      - profession
-      - status_reason
-      - status
-      - ws_place
-      - created_at
-      filter: {}
-      check: null
   delete_permissions:
   - role: core_team
     permission:
