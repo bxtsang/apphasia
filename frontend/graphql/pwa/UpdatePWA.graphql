@@ -1,22 +1,22 @@
 mutation(
   $pwa_id: Int!
   $address: String
-  $channel: channels_enum!
+  $channel: channels_enum
   $consent: Boolean!
   $contact_num: Int!
   $date_joined: date
-  $dob: date
+  $dob: date!
   $gender: bpchar!
   $hobbies: String
   $hospital: String
-  $last_stroke: last_stroke_enum!
+  $last_stroke: last_stroke_enum
   $media_engagement_details: String
   $name: String!
   $notes: String
   $speak_media: answers_enum
   $speech_therapist: String
   $wheelchair: answers_enum!
-  $status: String!
+  $contact_status: String!
   $befriender_to_add: [pwa_befriender_insert_input!]!
   $befriender_to_remove: [Int!]
   $comm_to_add: [pwa_comms_insert_input!]!
@@ -94,13 +94,14 @@ mutation(
     affected_rows
   }
 
-  update_pwa(
+  update_pwas(
     where: { id: { _eq: $pwa_id } }
     _set: {
       address: $address
       channel: $channel
       consent: $consent
       contact_num: $contact_num
+      contact_status: $contact_status
       date_joined: $date_joined,
       dob: $dob
       gender: $gender
@@ -112,7 +113,6 @@ mutation(
       notes: $notes
       speak_media: $speak_media
       speech_therapist: $speech_therapist
-      status: $status
       wheelchair: $wheelchair
     }
   ) {
