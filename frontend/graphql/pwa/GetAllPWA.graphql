@@ -1,58 +1,58 @@
-query GetAllPwa {
-  people_external {
-    address
-    bio
-    channel
-    consent
-    contact_num
-    date_joined
-    dob
-    email
-    gender
-    id
-    name
-    notes
-    pwa_details{
-      befrienders {
-        volunteer {
-          general_info {
-            id
-            name
-          }
-        }
-      }
-      comm_diff {
-        difficulty
-      }
-      contact_status
-      hospital
-      languages {
-        language
-      }
-      media_engagement_details
-      media_willingness
-      nok {
-        contact_num
-        email
-        name
-        relationship
-      }
-      projects {
-        project {
-          id
-          title
-        }
-      }
-      pwa_befriender_cores {
-        core_volunteer {
+query GetAllPWA {
+  pwas {
+    befrienders {
+      volunteer {
+        general_info {
           id
           name
         }
       }
-      speech_therapist
-      stroke_date
-      wheelchair
+    }
+    comm_diff {
+      difficulty
+    }
+    contact_status
+    hospital
+    languages {
+      language
+    }
+    media_engagement_details
+    media_willingness
+    nok {
+      contact_num
+      email
+      name
+      relationship
+    }
+    projects {
+      project {
+        id
+        title
+      }
+    }
+    pwa_befriender_cores {
+      core_volunteer {
+        id
+        name
+      }
+    }
+    speech_therapist
+    stroke_date
+    wheelchair
+    id
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
       id
+      name
+      notes
     }
   }
 }
