@@ -488,17 +488,30 @@
 - table:
     schema: public
     name: pwa_befriender_core
+  object_relationships:
+  - name: core_volunteer
+    using:
+      foreign_key_constraint_on: staff_id
+  - name: pwa
+    using:
+      foreign_key_constraint_on: pwa_id
   insert_permissions:
   - role: core_team
     permission:
-      check: {}
+      check:
+        core_volunteer:
+          role:
+            _eq: core_volunteer
       columns:
       - pwa_id
       - staff_id
       backend_only: false
   - role: intern
     permission:
-      check: {}
+      check:
+        core_volunteer:
+          role:
+            _eq: core_volunteer
       columns:
       - pwa_id
       - staff_id
