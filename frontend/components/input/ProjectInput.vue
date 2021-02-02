@@ -6,7 +6,7 @@
     :rules="validation"
     :required="required"
     :readonly="readonly"
-    :disabled="true"
+    :disabled="disabled"
     multiple
   />
 </template>
