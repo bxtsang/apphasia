@@ -6,12 +6,13 @@
     :rules="validation"
     :required="required"
     :readonly="readonly"
+    :disabled="true"
     multiple
   />
 </template>
 
 <script>
-import { INPUT_VALIDATION } from './../../assets/data'
+import gql from 'graphql-tag'
 
 export default {
   name: 'ProjectInput',
@@ -30,14 +31,17 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolan,
+      default: false
     }
   },
 
   data () {
     return {
       data: this.value,
-      projects: ['project1'],
-      validation: [INPUT_VALIDATION.address.required]
+      validation: []
     }
   },
 
@@ -47,6 +51,23 @@ export default {
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
       }
+    }
+  },
+
+  apollo: {
+    projects: {
+      query () {
+        return gql`query getProjects {
+          projects {
+            id
+            title
+          }
+        }`
+      },
+      update: data => data.projects.map((item) => {
+        console.log(item)
+        return { value: item.id, text: item.title }
+      })
     }
   }
 }
