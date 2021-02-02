@@ -9,8 +9,8 @@
 
 <script>
 import UpdateVol from './../../graphql/volunteer/UpdateVol.graphql'
-import GetSingleStaff from '~/graphql/staff/GetSingleStaff.graphql'
-import GetAllStaff from '~/graphql/staff/GetAllStaff.graphql'
+import GetSingleVol from './../../graphql/volunteer/GetSingleVol.graphql'
+import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
 
 export default {
   props: {
@@ -84,7 +84,42 @@ export default {
             ic_to_remove: volIcChanges.removed,
             voltypes_to_add: volTypeChanges.added,
             voltypes_to_remove: volTypeChanges.removed
+          },
+          update: (
+            store, {
+              data: {
+                update_volunteers: {
+                  returning: [updatedVolunteer]
+                }
+              }
+            }
+          ) => {
+            store.writeQuery({
+              query: GetSingleVol,
+              data: { volunteers: [updatedVolunteer] },
+              variables: {}
+            })
+            try {
+              const allVol = store.readQuery({
+                query: GetAllVol,
+                variables: {}
+              })
+              allVol.volunteers = allVol.volunteers.filter(item => item.id !== this.volunteer.id)
+              allVol.volunteers.push(updatedVolunteer)
+              store.writeQuery({
+                query: GetAllVol,
+                allVol,
+                variables: {}
+              })
+            } catch (error) {
+              // Handle if GetAllStaff query not in store
+            }
           }
+        }).then((data) => {
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'successful'])
+        }).catch((error) => {
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
     },
