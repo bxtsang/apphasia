@@ -54,6 +54,7 @@ query GetAllPwa {
       speech_therapist
       stroke_date
       wheelchair
+      id
     }
   }
 }
