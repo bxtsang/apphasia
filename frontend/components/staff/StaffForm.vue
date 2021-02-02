@@ -44,7 +44,7 @@
           <v-col class="py-0">
             <ContactInput
               v-model="staffData.contact_num"
-              required
+              required="true"
             />
           </v-col>
           <v-col class="py-0">
