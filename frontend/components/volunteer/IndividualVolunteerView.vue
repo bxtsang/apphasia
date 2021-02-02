@@ -36,7 +36,7 @@
                 </v-row>
                 <v-row class="mt-2">
                   <v-col cols="12" class="py-0">
-                    <VolunteerStatusChip :value="data.volunteers[0].status"/>
+                    <VolunteerStatusChip :value="data.volunteers[0].status_description.description"/>
                   </v-col>
                 </v-row>
                 <v-row v-if="data.volunteers[0].rejection_reason">
