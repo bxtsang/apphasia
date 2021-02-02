@@ -44,7 +44,7 @@
           <v-col class="py-0">
             <ContactInput
               v-model="staffData.contact_num"
-              required="true"
+              :required="true"
             />
           </v-col>
           <v-col class="py-0">
@@ -198,7 +198,7 @@ export default {
       valid: true,
       isSubmitting: false,
       staffData: {
-        role: this.staff ? this.staff.role : '',
+        role: this.staff ? this.staff.role_description.role : '',
         name: this.staff ? `${this.staff.name}` : '',
         nickname: this.staff ? this.staff.nickname : '',
         dob: this.staff ? this.staff.dob : '',
@@ -260,11 +260,12 @@ export default {
               variables: {
                 email: newStaff.email,
                 password: 'aphasiapassword',
-                role: newStaff.role,
+                role: newStaff.role_description.role,
                 user_id: newStaff.id
               },
               update: (store, response) => {
                 // Success
+                console.log('Cognito Success')
               }
             }).catch((error) => {
               console.log(error)
@@ -290,6 +291,8 @@ export default {
             date_joined: '',
             supervisors: []
           }
+          console.log('final')
+          console.log(this.staffData)
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully created', 'success'])
         }).catch((error) => {
@@ -336,15 +339,15 @@ export default {
             } catch (error) {
               // GetAllStaff Query not in store
             }
-
+            console.log('Is the error here??')
             // Call UpdateCognitoUser action
-            if (this.staffData.role !== this.staff.role) {
+            if (this.staffData.role !== this.staff.role_description.role) {
               this.$apollo.mutate({
                 mutation: UpdateCognitoUser,
                 variables: {
                   email: this.staff.email,
                   user_id: this.staff.id,
-                  current_role: this.staff.role,
+                  current_role: this.staff.role_description.role,
                   new_role: this.staffData.role
                 },
                 update: (store, response) => {
