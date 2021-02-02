@@ -688,6 +688,13 @@
         table:
           schema: public
           name: project_pwa
+  - name: pwa_befriender_cores
+    using:
+      foreign_key_constraint_on:
+        column: pwa_id
+        table:
+          schema: public
+          name: pwa_befriender_core
   select_permissions:
   - role: public
     permission:
