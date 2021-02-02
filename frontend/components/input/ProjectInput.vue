@@ -33,7 +33,7 @@ export default {
       default: false
     },
     disabled: {
-      type: Boolan,
+      type: Boolean,
       default: false
     }
   },
