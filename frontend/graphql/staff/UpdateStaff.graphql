@@ -7,7 +7,7 @@ mutation (
     $is_active: Boolean!,
     $is_speech_therapist: Boolean!,
     $name: String!,
-    $nickname: String!,
+    $nickname: String,
     $profession: String!,
     $role: roles_enum!,
     $ws_place: String,
@@ -83,7 +83,10 @@ mutation (
             name
             nickname
             profession
-            role
+            role_description {
+                description
+                role
+            }
             supervisors {
                 supervisor {
                     id
