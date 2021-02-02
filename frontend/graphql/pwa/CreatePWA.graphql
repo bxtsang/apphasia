@@ -4,20 +4,20 @@ mutation (
   	$comm_diff: pwa_comms_arr_rel_insert_input!,
   	$consent: Boolean!,
     $contact_num: Int!,
-    $dob: date,
+    $dob: date!,
     $email: String!,
     $gender: bpchar!,
   	$hobbies: String,
   	$hospital: String,
     $languages: pwa_languages_arr_rel_insert_input!,
-  	$last_stroke: last_stroke_enum!,
+  	$last_stroke: last_stroke_enum,
     $media_engagement_details: String,
     $name: String!,
   	$nok: pwa_nok_arr_rel_insert_input,
-    $projects: project_pwa_arr_rel_insert_input,
+    $projects: project_pwa_arr_rel_insert_input!,
   	$speak_media: answers_enum,
     $speech_therapist: String,
-    $wheelchair: answers_enum
+    $wheelchair: answers_enum!
 ) {
   insert_pwa_one(object: {
     address: $address, #string

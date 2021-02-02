@@ -1,18 +1,17 @@
 mutation(
   $address: String
   $bio: String
-  $channel: channels_enum!
+  $channel: channels_enum
   $consent: Boolean!
   $contact_num: Int!
   $dob: date
   $gender: bpchar!
-  $is_active: Boolean!
   $is_speech_therapist: Boolean!
   $name: String!
   $nickname: String
   $notes: String
   $profession: String!
-  $rejection_reason: String
+  $status_reason: String
   $rejection_date: date
   $status: status_enum!
   $ws_place: String
@@ -89,13 +88,12 @@ mutation(
       dob: $dob
       date_joined: $date_joined
       gender: $gender
-      is_active: $is_active
       is_speech_therapist: $is_speech_therapist
       name: $name
       nickname: $nickname
       notes: $notes
       profession: $profession
-      rejection_reason: $rejection_reason
+      status_reason: $status_reason
       rejected_date: $rejection_date
       ws_place: $ws_place
       status: $status
