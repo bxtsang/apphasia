@@ -9,9 +9,10 @@ query ($id: Int!) {
     dob
     email
     gender
+    id
     name
     notes
-    pwa_details {
+    pwa_details{
       befrienders {
         volunteer {
           general_info {
@@ -48,9 +49,6 @@ query ($id: Int!) {
           name
         }
       }
-      pwa_contact_status {
-        status
-      }
       speech_therapist
       stroke_date
       wheelchair
@@ -58,3 +56,4 @@ query ($id: Int!) {
     }
   }
 }
+

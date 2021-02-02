@@ -9,9 +9,10 @@ query GetAllPwa {
     dob
     email
     gender
+    id
     name
     notes
-    pwa_details {
+    pwa_details{
       befrienders {
         volunteer {
           general_info {
@@ -47,9 +48,6 @@ query GetAllPwa {
           id
           name
         }
-      }
-      pwa_contact_status {
-        status
       }
       speech_therapist
       stroke_date
