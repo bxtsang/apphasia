@@ -65,7 +65,6 @@ export default {
         }`
       },
       update: data => data.projects.map((item) => {
-        console.log(item)
         return { value: item.id, text: item.title }
       })
     }
