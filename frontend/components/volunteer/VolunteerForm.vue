@@ -1,8 +1,27 @@
 <template>
   <v-card>
-    <span v-if="volunteer" class="section-title">Edit Volunteer</span>
-    <span v-else class="section-title">Add Volunteer</span>
+    <span class="section-title">Edit Volunteer</span>
     <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
+      <v-container class="pa-0">
+        <v-row>
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Personal Details</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <NameInput
+              v-model="volunteerData.name"
+              :required="true"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <AliasInput
+              v-model="volunteerData.nickname"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-form>
   </v-card>
 </template>
