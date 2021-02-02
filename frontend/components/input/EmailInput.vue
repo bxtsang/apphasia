@@ -6,6 +6,7 @@
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
+    :disabled="disabled"
   />
 </template>
 
@@ -29,6 +30,10 @@ export default {
       default: false
     },
     outlined: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
