@@ -48,8 +48,8 @@
                 </v-row>
                 <v-row>
                   <v-col class="py-0">
-                    <v-radio-group :value="data.staffs[0].role" readonly row>
-                      <v-radio v-for="role in ROLE_OPTIONS.filter(item => item.value == data.staffs[0].role)" :key="role.value" :label="role.label" :value="role.value" />
+                    <v-radio-group :value="data.staffs[0].role_description.role" readonly row>
+                      <v-radio v-for="role in ROLE_OPTIONS.filter(item => item.value == data.staffs[0].role_description.role)" :key="role.value" :label="role.label" :value="role.value" />
                     </v-radio-group>
                   </v-col>
                 </v-row>
