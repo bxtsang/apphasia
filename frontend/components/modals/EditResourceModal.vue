@@ -27,6 +27,7 @@
       </v-btn>
     </template>
     <StaffForm v-if="resourceType === 'staffs'" :staff="resource" v-on:closeForm="isOpen = false" />
+    <VolunteerForm v-if="resourceType === 'volunteers'" :volunteer="resource" v-on:closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>

@@ -13,7 +13,7 @@
 import { INPUT_VALIDATION } from './../../assets/data'
 
 export default {
-  name: 'NameInputabcde',
+  name: 'NameInput',
 
   props: {
     value: {
@@ -46,6 +46,11 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
+      }
+    },
+    value: {
+      handler (newValue, oldValue) {
+        this.data = this.value
       }
     }
   }

@@ -6,6 +6,7 @@
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
+    :disabled="disabled"
   />
 </template>
 
@@ -31,6 +32,10 @@ export default {
     outlined: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -46,6 +51,11 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
+      }
+    },
+    value: {
+      handler (newValue, oldValue) {
+        this.data = this.value
       }
     }
   }

@@ -68,6 +68,11 @@ export default {
         const oldArray = this.data.filter(item => item !== oldValue)
         this.data = [...oldArray, newValue]
       }
+    },
+    value: {
+      handler (newValue, oldValue) {
+        this.data = this.value
+      }
     }
   }
 }

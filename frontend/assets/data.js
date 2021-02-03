@@ -112,3 +112,8 @@ export const COMMON_PROFESSIONS = [
   'SLT Student',
   'Student (but not in the field of speech therapy)'
 ]
+
+export const EDIT_RESOURCE_PERMISSIONS = {
+  staffs: ['core_team'],
+  volunteers: ['core_team', 'intern']
+}

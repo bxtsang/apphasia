@@ -141,7 +141,6 @@ export default {
       query () {
         return gql`query($email: String!) {
           staffs(where: {email: {_eq: $email}}) {
-            id
             name
           }
         }`
