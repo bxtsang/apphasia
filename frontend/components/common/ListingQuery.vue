@@ -74,8 +74,16 @@
           </template>
 
           <!-- PWA Specific Columns -->
+          <template v-slot:[`item.comm_diff`]="{ item }">
+            {{ item.comm_diff.map(item => item.difficulty).toString().replaceAll(',', ', ') }}
+          </template>
+
           <template v-slot:[`item.languages`]="{ item }">
-            languages{{item.languages}}
+            {{ item.languages.map(item => item.language).toString().replaceAll(',', ', ') }}
+          </template>
+
+          <template v-slot:[`item.nok`]="{ item }">
+            {{ item.nok[0].name }}
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
