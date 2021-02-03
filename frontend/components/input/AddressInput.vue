@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [INPUT_VALIDATION.address.required]
+      validation: [...(this.required ? [INPUT_VALIDATION.address.required] : [])]
     }
   },
 
