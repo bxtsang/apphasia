@@ -8,6 +8,7 @@ query GetAllPWA {
       }
     }
     channels {
+      channel
       description
     }
     comm_diff {
@@ -15,6 +16,7 @@ query GetAllPWA {
     }
     consent
     contact_num
+    contact_status
     date_joined
     dob
     email
@@ -41,7 +43,6 @@ query GetAllPWA {
     name
     speak_media
     speech_therapist
-    status
     wheelchair
     projects {
       project {

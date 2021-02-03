@@ -8,6 +8,7 @@ query GetPWA($id: Int!) {
       }
     }
     channels {
+      channel
       description
     }
     comm_diff {
@@ -15,6 +16,7 @@ query GetPWA($id: Int!) {
     }
     consent
     contact_num
+    contact_status
     date_joined
     dob
     email
@@ -24,10 +26,12 @@ query GetPWA($id: Int!) {
     id
     languages {
       languages {
+        language
         description
       }
     }
     last_stroke_description {
+      when
       description
     }
     media_engagement_details
@@ -41,7 +45,6 @@ query GetPWA($id: Int!) {
     name
     speak_media
     speech_therapist
-    status
     wheelchair
     projects {
       project {

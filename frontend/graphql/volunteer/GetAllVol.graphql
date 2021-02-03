@@ -13,13 +13,12 @@ query GetAllVol {
     email
     gender
     id
-    is_active
     is_speech_therapist
     name
     nickname
     notes
     profession
-    rejection_reason
+    status_reason
     rejected_date
     status_description{
       status

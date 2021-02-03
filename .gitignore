@@ -3,3 +3,4 @@ credentials.json
 .idea
 node_modules/
 hasura/hasura.exe
+*.graphqlconfig

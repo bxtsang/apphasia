@@ -1,0 +1,1 @@
+ALTER TABLE "public"."pwas" ALTER COLUMN "id" DROP DEFAULT;
