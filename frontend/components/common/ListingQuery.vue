@@ -65,8 +65,8 @@
           </template>
 
           <!-- Volunteer Specific Columns -->
-          <template v-slot:[`item.status`]="{ item }">
-             <VolunteerStatusChip :value="item.status" />
+          <template v-slot:[`item.status_description`]="{ item }">
+             <VolunteerStatusChip :value="item.status_description.description" />
           </template>
 
           <template v-slot:[`item.project_vols`]="{ item }">
@@ -74,7 +74,7 @@
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
-            <EditResourceModal v-if="$auth.user['custom:role'] === 'core_team'" :resourceType="resourceType" :resource="item" :text="false" />
+            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS } from '../../assets/data'
+import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from '../../assets/data'
 import EditResourceModal from './../modals/EditResourceModal'
 import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
 
@@ -107,6 +107,7 @@ export default {
       LIST_QUERY_PATHS,
       TABLE_HEADERS,
       ROLE_OPTIONS,
+      EDIT_RESOURCE_PERMISSIONS,
       staffRoleFilter: 'core_team',
       search: ''
     }
@@ -127,13 +128,19 @@ export default {
       const type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
       const header = `Manage ${type}`
       return header
+    },
+    editPermission () {
+      if (this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])) {
+        return true
+      }
+      return false
     }
   },
 
   methods: {
     filterItems (data) {
       if (this.resourceType === 'staffs') {
-        return data.filter(item => item.role === this.staffRoleFilter && item.is_active)
+        return data.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
       } else {
         return data
       }

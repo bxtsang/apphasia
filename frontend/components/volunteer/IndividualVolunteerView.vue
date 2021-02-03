@@ -32,11 +32,18 @@
                       <span>/ {{ data.volunteers[0].name }}</span>
                     </h1>
                   </v-col>
-                  <!-- add edit modal -->
+                  <v-col class="d-flex justify-end">
+                    <EditResourceModal
+                      v-if="editPermission"
+                      :resourceType="resourceType"
+                      :resource="data.volunteers[0]"
+                      :text="true"
+                    />
+                  </v-col>
                 </v-row>
                 <v-row class="mt-2">
                   <v-col cols="12" class="py-0">
-                    <VolunteerStatusChip :value="data.volunteers[0].status"/>
+                    <VolunteerStatusChip :value="data.volunteers[0].status_description.description"/>
                   </v-col>
                 </v-row>
                 <v-row v-if="data.volunteers[0].rejection_reason">
@@ -217,7 +224,7 @@
 </template>
 
 <script>
-import { GENDER_OPTIONS } from './../../assets/data'
+import { GENDER_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from './../../assets/data'
 import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
 
 export default {
@@ -231,7 +238,13 @@ export default {
   data () {
     return {
       volunteerId: Number(this.$route.query.id),
-      GENDER_OPTIONS
+      GENDER_OPTIONS,
+      EDIT_RESOURCE_PERMISSIONS
+    }
+  },
+  computed: {
+    editPermission () {
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
     }
   }
 }

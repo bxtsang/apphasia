@@ -42,6 +42,11 @@ export default {
       handler (newValue, oldValue) {
         this.$emit('input', newValue)
       }
+    },
+    value: {
+      handler (newValue, oldValue) {
+        this.data = this.value
+      }
     }
   }
 }
