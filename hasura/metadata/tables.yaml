@@ -1915,12 +1915,100 @@
         table:
           schema: public
           name: vol_voltypes
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
   select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+      filter: {}
   - role: public
     permission:
       columns:
       - id
       filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status
+      - status_reason
+      - rejected_date
+      filter: {}
+      check: null
   delete_permissions:
   - role: core_team
     permission:
