@@ -16,8 +16,8 @@ def lambda_handler(event, context):
     user_id = json.loads(event['body'])['input']['user_id']
     current_role = json.loads(event['body'])['input']['current_role']
     new_role = json.loads(event['body'])['input']['new_role']
+    hasura_secret = get_secret()
 
-    print(get_secret())
     try:
         response = client.admin_update_user_attributes(
             UserPoolId=os.environ['USER_POOL_ID'],
@@ -60,7 +60,7 @@ def lambda_handler(event, context):
 
             headers = {
                 "Content-Type": "application/json",
-                "x-hasura-admin-secret": os.environ['HASURA_ADMIN_SECRET']
+                "x-hasura-admin-secret": hasura_secret
             }
 
             url = os.environ['HASURA_URI']
@@ -100,6 +100,5 @@ def get_secret():
         SecretId = secret_name
     )
 
-    print(response)
 
-    return response['SecretString']
+    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
