@@ -1,54 +1,58 @@
 query GetAllPWA {
   pwas {
-    address
     befrienders {
       volunteer {
-        id
-        name
+        general_info {
+          id
+          name
+        }
       }
-    }
-    channels {
-      channel
-      description
     }
     comm_diff {
       difficulty
     }
-    consent
-    contact_num
     contact_status
-    date_joined
-    dob
-    email
-    gender
-    hobbies
     hospital
-    id
     languages {
-      languages {
-        description
-      }
-    }
-    last_stroke_description {
-      description
+      language
     }
     media_engagement_details
+    media_willingness
     nok {
       contact_num
       email
       name
       relationship
     }
-    notes
-    name
-    speak_media
-    speech_therapist
-    wheelchair
     projects {
       project {
         id
         title
       }
+    }
+    pwa_befriender_cores {
+      core_volunteer {
+        id
+        name
+      }
+    }
+    speech_therapist
+    stroke_date
+    wheelchair
+    id
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      id
+      name
+      notes
     }
   }
 }

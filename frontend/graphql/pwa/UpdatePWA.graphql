@@ -1,152 +1,106 @@
-mutation(
-  $pwa_id: Int!
-  $address: String
-  $channel: channels_enum
-  $consent: Boolean!
-  $contact_num: Int!
-  $date_joined: date
-  $dob: date!
-  $gender: bpchar!
-  $hobbies: String
-  $hospital: String
-  $last_stroke: last_stroke_enum
-  $media_engagement_details: String
-  $name: String!
-  $notes: String
-  $speak_media: answers_enum
-  $speech_therapist: String
-  $wheelchair: answers_enum!
-  $contact_status: String!
-  $befriender_to_add: [pwa_befriender_insert_input!]!
-  $befriender_to_remove: [Int!]
-  $comm_to_add: [pwa_comms_insert_input!]!
-  $comm_to_remove: [String!]
-  $languages_to_add: [pwa_languages_insert_input!]!
-  $languages_to_remove: [languages_enum!]
-  $nok_to_add: [pwa_nok_insert_input!]!
-  $nok_to_remove: [String!]
-  $projects_to_add: [project_pwa_insert_input!]!
-  $projects_to_remove: [Int!]
-) {
-  
-  insert_pwa_befriender(objects: $befriender_to_add) {
-    affected_rows
+mutation UpdatePWA($people_external: people_external_set_input!, $id: Int!, $pwa: pwas_insert_input!) {
+  delete_pwas_by_pk(id: $id) {
+    id
   }
-  
-  delete_pwa_befriender (where: {
-    _and: [
-      {pwa_id: {_eq: $pwa_id}, befriender_id: {_in: $befriender_to_remove } }
-    ]
-  }) {
-    affected_rows
+  insert_pwas_one(object: $pwa) {
+    id
   }
-  
-  insert_pwa_comms(objects: $comm_to_add) {
-    affected_rows
-  }
-  
-  delete_pwa_comms (where: {
-    _and: [
-      {pwa_id: {_eq: $pwa_id}, difficulty: {_in: $comm_to_remove } }
-    ]
-  }) {
-    affected_rows
-  }
-  insert_pwa_languages(objects: $languages_to_add) {
-    affected_rows
-  }
-
-  delete_pwa_languages(
-    where: {
-      _and: [
-        { pwa_id: { _eq: $pwa_id }, language: { _in: $languages_to_remove } }
-      ]
+  update_people_external_by_pk(pk_columns: {id: $id}, _set: $people_external) {
+    address
+    bio
+    channel
+    consent
+    contact_num
+    date_joined
+    dob
+    email
+    gender
+    id
+    name
+    notes
+    pwa_details{
+      befrienders {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+      comm_diff {
+        difficulty
+      }
+      contact_status
+      hospital
+      languages {
+        language
+      }
+      media_engagement_details
+      media_willingness
+      nok {
+        contact_num
+        email
+        name
+        relationship
+      }
+      projects {
+        project {
+          id
+          title
+        }
+      }
+      pwa_befriender_cores {
+        core_volunteer {
+          id
+          name
+        }
+      }
+      pwa_contact_status {
+        status
+      }
+      speech_therapist
+      stroke_date
+      wheelchair
+      id
     }
-  ) {
-    affected_rows
-  }
-
-  insert_pwa_nok(objects: $nok_to_add) {
-    affected_rows
-  }
-
-  delete_pwa_nok(
-    where: {
-      _and: [
-        { pwa_id: { _eq: $pwa_id }, email: { _in: $nok_to_remove } }
-      ]
-    }
-  ) {
-    affected_rows
-  }
-
-  insert_project_pwa(objects: $projects_to_add) {
-    affected_rows
-  }
-
-  delete_project_pwa(
-    where: {
-      _and: [
-        { pwa_id: { _eq: $pwa_id }, project_id: { _in: $projects_to_remove } }
-      ]
-    }
-  ) {
-    affected_rows
-  }
-
-  update_pwas(
-    where: { id: { _eq: $pwa_id } }
-    _set: {
-      address: $address
-      channel: $channel
-      consent: $consent
-      contact_num: $contact_num
-      contact_status: $contact_status
-      date_joined: $date_joined,
-      dob: $dob
-      gender: $gender
-      hobbies: $hobbies
-      hospital: $hospital
-      last_stroke: $last_stroke
-      media_engagement_details: $media_engagement_details
-      name: $name
-      notes: $notes
-      speak_media: $speak_media
-      speech_therapist: $speech_therapist
-      wheelchair: $wheelchair
-    }
-  ) {
-    affected_rows
   }
 }
 
-# {
-#   "pwa_id": 1,
-#   "address": "Happy Land",
-#   "channel": "doctor",
-#   "consent": true,
-#   "contact_num": 91111111,
-#   "date_joined": "2021-01-31",
-#   "dob": "1964-05-25",
-#   "gender": "F",
-#   "hobbies": "Cooking",
-#   "hospital": "St. Eagles Hospital",
-#   "last_stroke": "more_than_a_year_but_less_than_5_years",
-#   "media_engagement_details": "No comment",
-#   "name": "Ah Ma",
-#   "notes": "She's an old lady, take good care of her",
-#   "speak_media": "yes",
-#   "speech_therapist": "Uncle John",
-#   "wheelchair": "no",
-#   "status": "Contacted",
-#   "befriender_to_add": [{"pwa_id": 1, "befriender_id": 2}],
-#   "befriender_to_remove": [2],
-#   "comm_to_add": [{"pwa_id": 1, "difficulty": "Learning"}],
-#   "comm_to_remove": ["Learning"],
-#   "languages_to_add": [{"pwa_id": 1, "language": "Spanish"}],
-#   "languages_to_remove": ["Spanish"],
-#   "nok_to_add": [{"pwa_id": 1, "name": "Winnie The Pooh", "contact_num": 99999999, "email": "winnie@aphasia.sg", "relationship": "Godfather" }],
-#   "nok_to_remove": ["winnie@aphasia.sg"],
-#   "projects_to_add": [{"pwa_id": 1, "project_id": 2}],
-#   "projects_to_remove": [2]
-# }
+# variables:
+#{
+#  "id": 3,
+#  "people_external": { #ONLY NEED INCLUDE THE FIELDS THAT ARE UPDATED
+#    "address": "10 Sirat Place"
+#  },
+#  "pwa": { #THIS VARIABLE IS EXACTLY THE SAME AS THE PWA OBJECT INSIDE INSERT
+#    "befrienders": {"data": []},
+#    "comm_diff": {"data": [
+#      {
+#        "difficulty": "Speech"
+#      }
+#    ]},
+#    "contact_status": "Contacted",
+#    "hospital": "Tan Tock Seng",
+#    "languages": { "data": [
+#      {
+#        "language": "English"
+#      }
+#    ]},
+#    "media_engagement_details": "Friday",
+#    "media_willingness": null,
+#    "nok": {"data": [
+#      {
+#        "contact_num": 96831363,
+#        "email": "nok1@aphasia.com",
+#        "name": "Wong Lai Lih",
+#        "relationship": "Mother"
+#      }
+#    ]},
+#    "projects": {"data": []},
+#    "pwa_befriender_cores": {"data": []},
+#    "speech_therapist": "Evelyn",
+#    "stroke_date": "2020-01-01",
+#    "wheelchair": true,
+#    "id": 3
+#  }
+#}
