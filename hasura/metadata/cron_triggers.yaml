@@ -1,1 +1,5 @@
-[]
+- name: deleteVolunteers
+  webhook: https://4mmt83raed.execute-api.ap-southeast-1.amazonaws.com/dev
+  schedule: 0 1 * * *
+  include_in_metadata: true
+  payload: {}
