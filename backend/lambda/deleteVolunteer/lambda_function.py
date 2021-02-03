@@ -1,9 +1,11 @@
 import requests
 import psycopg2
 import os
+import json 
 
 def lambda_handler(event, context):
-    result = ""
+    result = {}
+    statusCode = 500
 
     try :
         con = psycopg2.connect (
@@ -19,12 +21,23 @@ def lambda_handler(event, context):
         cur.execute(query)
         con.commit()
 
-        result = cur.fetchall()
-        print(result)
+        message = cur.fetchall()
+        statusCode = 200
+        result['status'] = 'success'
+        result['message'] = str(message)
+        print(message)
         con.close()
         
     except Exception as e:
         print(e)
-        result = e
+        statusCode = 400
+        result['status'] = "failed"
+        result['message'] = str(e)
         
-    return str(result)
+    return {
+        "statusCode": statusCode,
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": json.dumps(result)
+    }
