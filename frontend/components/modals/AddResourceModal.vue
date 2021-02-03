@@ -8,14 +8,16 @@
         Add {{ resource }}
       </v-btn>
     </template>
-    <StaffForm v-if="resourceType === 'staffs'" v-on:closeForm="isOpen = false" />
+    <StaffForm v-if="resourceType === 'staffs'" @closeForm="isOpen = false" />
+    <PWAForm v-if="resourceType === 'pwas'" @closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
 import StaffForm from './../staff/StaffForm'
+import PWAForm from './../pwa/PWAForm'
 
 export default {
-  components: { StaffForm },
+  components: { StaffForm, PWAForm },
   props: {
     text: Boolean,
     resourceType: {
@@ -32,6 +34,9 @@ export default {
     resource () {
       if (this.resourceType === 'staffs') {
         return 'Staff'
+      }
+      if (this.resourceType === 'pwas') {
+        return 'PWA'
       }
       return 'Resource'
     }
