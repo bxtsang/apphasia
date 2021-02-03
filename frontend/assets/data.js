@@ -103,6 +103,18 @@ export const VOLUNTEER_STATUS = {
   }
 }
 
+export const CONTACT_STATUS = {
+  Contacted: {
+    chipColor: 'success'
+  },
+  'Contacted but no response': {
+    chipColor: 'warning'
+  },
+  'Not Contacted': {
+    chipColor: 'error'
+  }
+}
+
 export const COMMON_PROFESSIONS = [
   'Speech and Langauge Therapist (SLT)',
   'Music Therapist',

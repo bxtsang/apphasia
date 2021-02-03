@@ -86,6 +86,10 @@
             {{ item.nok[0].name }}
           </template>
 
+          <template v-slot:[`item.contact_status`]="{ item }">
+            <ContactStatusChip :value="item.contact_status" />
+          </template>
+
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
@@ -105,9 +109,10 @@
 import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from '../../assets/data'
 import EditResourceModal from './../modals/EditResourceModal'
 import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
+import ContactStatusChip from './../common/components/ContactStatusChip'
 
 export default {
-  components: { EditResourceModal, VolunteerStatusChip },
+  components: { EditResourceModal, VolunteerStatusChip, ContactStatusChip },
   props: {
     resourceType: {
       type: String,
