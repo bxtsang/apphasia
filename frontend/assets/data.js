@@ -76,12 +76,12 @@ export const TABLE_HEADERS = {
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
-    { text: 'Name', value: 'name', align: 'start' },
+    { text: 'Name', value: 'general_info.name', align: 'start' },
     { text: 'Communication Difficulties', value: 'comm_diff' },
     { text: 'Programmes Involved In', value: 'projects' },
     { text: 'NOK', value: 'nok' },
     { text: 'Languages understand/speak', value: 'languages' },
-    { text: 'Status', value: 'status' },
+    { text: 'Status', value: 'contact_status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
@@ -115,5 +115,6 @@ export const COMMON_PROFESSIONS = [
 
 export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
-  volunteers: ['core_team', 'intern']
+  volunteers: ['core_team', 'intern'],
+  pwas: ['core_team', 'intern']
 }

@@ -73,6 +73,11 @@
             {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}
           </template>
 
+          <!-- PWA Specific Columns -->
+          <template v-slot:[`item.languages`]="{ item }">
+            languages{{item.languages}}
+          </template>
+
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
