@@ -93,7 +93,7 @@ export default {
         {
           icon: 'mdi-clipboard-account',
           title: 'Manage PWAs',
-          to: '/pwa'
+          to: '/pwas'
         },
         {
           icon: 'mdi-hand-heart',

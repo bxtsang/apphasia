@@ -52,7 +52,8 @@ export const INPUT_VALIDATION = {
 
 export const LIST_QUERY_PATHS = {
   staffs: require('./../graphql/staff/GetAllStaff.graphql'),
-  volunteers: require('./../graphql/volunteer/GetAllVol.graphql')
+  volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
+  pwas: require('./../graphql/pwa/GetAllPWA.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -72,6 +73,15 @@ export const TABLE_HEADERS = {
     { text: 'Programmes Interest', value: 'project_vols' },
     { text: 'Speech Therapist?', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  pwas: [
+    { text: 'Name', value: 'general_info.name', align: 'start' },
+    { text: 'Communication Difficulties', value: 'comm_diff' },
+    { text: 'Programmes Involved In', value: 'projects' },
+    { text: 'NOK', value: 'nok' },
+    { text: 'Languages understand/speak', value: 'languages' },
+    { text: 'Status', value: 'contact_status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
@@ -93,6 +103,18 @@ export const VOLUNTEER_STATUS = {
   }
 }
 
+export const CONTACT_STATUS = {
+  Contacted: {
+    chipColor: 'success'
+  },
+  'Contacted but no response': {
+    chipColor: 'warning'
+  },
+  'Not Contacted': {
+    chipColor: 'error'
+  }
+}
+
 export const COMMON_PROFESSIONS = [
   'Speech and Langauge Therapist (SLT)',
   'Music Therapist',
@@ -105,5 +127,6 @@ export const COMMON_PROFESSIONS = [
 
 export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
-  volunteers: ['core_team', 'intern']
+  volunteers: ['core_team', 'intern'],
+  pwas: ['core_team', 'intern']
 }
