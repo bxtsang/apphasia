@@ -312,14 +312,21 @@
       - project_id
       - vol_id
       - approved
-      backend_only: false
-  - role: public
+      - interested
+  - role: intern
     permission:
       check: {}
       columns:
       - project_id
       - vol_id
       - approved
+      - interested
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -328,6 +335,7 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
   - role: core_volunteer
     permission:
@@ -335,6 +343,7 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
   - role: intern
     permission:
@@ -342,9 +351,32 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      - approved
+      - interested
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      - approved
+      - interested
+      filter: {}
+      check: null
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
 - table:
@@ -1616,12 +1648,78 @@
           schema: public
           name: vol_voltypes
   select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      filter: {}
   - role: public
     permission:
       columns:
       - id
       filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      filter: {}
+      check: null
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
