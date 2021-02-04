@@ -7,7 +7,6 @@
     :required="required"
     :readonly="readonly"
     :disabled="disabled"
-    multiple
   />
 </template>
 
@@ -67,7 +66,7 @@ export default {
           }
         }`
       },
-      update: data => data.voltypes.map((item) => {
+      update: data => data.status.map((item) => {
         return { value: item.status, text: item.status }
       })
     }

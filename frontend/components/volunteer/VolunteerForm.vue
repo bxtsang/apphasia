@@ -141,7 +141,9 @@
             />
           </v-col>
           <v-col>
-            Status
+            <VolunteerStatusInput
+              v-model="volunteerDetails.status"
+            />
           </v-col>
         </v-row>
         <v-row class="mt-8">
