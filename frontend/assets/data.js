@@ -14,6 +14,12 @@ export const COMM_DIFF_OPTIONS = [
   'Using numbers'
 ]
 
+export const PWA_CONTACT_STATUS_OPTIONS = [
+  'Not Contacted',
+  'Contacted but no response',
+  'Contacted'
+]
+
 export const INPUT_VALIDATION = {
   role: {
     required: v => !!v || 'Role is required'
