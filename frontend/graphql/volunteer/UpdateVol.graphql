@@ -1,132 +1,87 @@
-mutation(
-  $address: String
-  $bio: String
-  $channel: channels_enum
-  $consent: Boolean!
-  $contact_num: Int!
-  $dob: date
-  $gender: bpchar!
-  $is_speech_therapist: Boolean!
-  $name: String!
-  $nickname: String
-  $notes: String
-  $profession: String!
-  $status_reason: String
-  $rejection_date: date
-  $status: status_enum!
-  $ws_place: String
-  $languages_to_add: [vol_languages_insert_input!]!
-  $languages_to_remove: [languages_enum!]
-  $projects_to_add: [project_vol_insert_input!]!
-  $projects_to_remove: [Int!]
-  $ic_to_add: [vol_ic_insert_input!]!
-  $ic_to_remove: [Int!]!
-  $vol_id: Int!
-  $voltypes_to_add: [vol_voltypes_insert_input!]!
-  $voltypes_to_remove: [voltypes_enum!]
-) {
-
-  insert_vol_ic(objects: $ic_to_add) {
-    affected_rows
+mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $volunteer:volunteers_insert_input!) {
+  delete_volunteers_by_pk(id: $id) {
+    id
   }
 
-  delete_vol_ic(
-    where: {
-      _and: [{ staff_id: { _in: $ic_to_remove }, vol_id: { _eq: $vol_id } }]
-    }
+  insert_volunteers_one(object:$volunteer) {
+    id
+  }
+
+  update_people_external_by_pk(
+    pk_columns: {id: $id}
+    _set: $general_info
   ) {
-    affected_rows
-  }
-
-  insert_vol_languages(objects: $languages_to_add) {
-    affected_rows
-  }
-
-  delete_vol_languages(
-    where: {
-      _and: [
-        { vol_id: { _eq: $vol_id }, language: { _in: $languages_to_remove } }
-      ]
+    address
+    bio
+    channel
+    consent
+    contact_num
+    date_joined
+    dob
+    email
+    gender
+    name
+    notes
+    volunteer_details {
+      befrienders {
+        pwa {
+          general_info {
+            name
+          }
+          id
+        }
+      }
+      id
+      is_speech_therapist
+      nickname
+      profession
+      project_vols {
+        project {
+          id
+          title
+        }
+        interested
+        approved
+      }
+      rejected_date
+      status
+      status_reason
+      vol_ic {
+        ic {
+          id
+          name
+        }
+      }
+      ws_place
     }
-  ) {
-    affected_rows
-  }
-
-  insert_project_vol(objects: $projects_to_add) {
-    affected_rows
-  }
-
-  delete_project_vol(
-    where: {
-      _and: [
-        { vol_id: { _eq: $vol_id }, project_id: { _in: $projects_to_remove } }
-      ]
-    }
-  ) {
-    affected_rows
-  }
-
-  insert_vol_voltypes(objects: $voltypes_to_add) {
-    affected_rows
-  }
-  delete_vol_voltypes(
-    where: {
-      _and: { vol_id: { _eq: $vol_id }, voltype: { _in: $voltypes_to_remove } }
-    }
-  ) {
-    affected_rows
-  }
-
-  update_volunteers(
-    where: { id: { _eq: $vol_id } }
-    _set: {
-      address: $address
-      bio: $bio
-      channel: $channel
-      consent: $consent
-      contact_num: $contact_num
-      dob: $dob
-      date_joined: $date_joined
-      gender: $gender
-      is_speech_therapist: $is_speech_therapist
-      name: $name
-      nickname: $nickname
-      notes: $notes
-      profession: $profession
-      status_reason: $status_reason
-      rejected_date: $rejection_date
-      ws_place: $ws_place
-      status: $status
-    }
-  ) {
-    affected_rows
   }
 }
 
-# {
-#    "address": "123 Fake Street",
-#    "bio": "Hello World",
-#    "consent": true,
-#    "channel": "facebook",
-#    "contact_num": 1,
-#    "dob": "1999-09-09",
-#    "gender": "M",
-#    "is_active": true,
+#{
+#  "volunteer": {
 #    "is_speech_therapist": false,
-#    "name": "test4",
-#    "nickname": "",
-#    "profession": "",
-#    "rejection_reason": "",
-#    "rejection_date": "2021-01-30",
-#    "status": "Pending_Approval",
-#    "vol_id": 3,
-#    "ws_place": null,
-#    "languages_to_add": [{"vol_id": 60, "language": "Chinese"}],     #list of objects with vol_id and language fields
-#    "languages_to_remove": ["Chinese"],    #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "projects_to_add": [{"vol_id": 60, "project_id": 1}],        #list of objects with vol_id and project_id fields
-#    "projects_to_remove": [1]     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "ic_to_add": [{"vol_id": 60, "staff_id": 2}],      #list of objects with vol_id and staff_id fields
-#    "ic_to_remove": [2], #list of integers of staff_id, put all that you want to remove or MORE (not added before but not going to add also can put)
-#    "voltypes_to_add": [{"vol_id": 1, "voltypes": "Befriender"}]
-#    "voltypes_to_remove": ["Befriender"]
-# }
+#    "nickname": "bobster",
+#    "profession": "Student",
+#    "project_vols": {
+#      "data": {
+#        "project_id": 1,
+#        "interested": true
+#      }
+#    },
+#    "ws_place": "Singapore Management University",
+#    "id": 17
+#  },
+#  "general_info": {
+#    "address": "81 Stamford Road",
+#    "bio": "Hello my name is Bob",
+#    "channel": "Facebook",
+#    "consent": true,
+#    "contact_num": 94837171,
+#    "dob": "1997-06-12",
+#    "email": "bob@aphasia.sg",
+#    "gender": "M",
+#    "name": "Bob",
+#    "notes": "He likes to poop"
+#  },
+#  "id": 17
+#}
