@@ -2,8 +2,8 @@ query GetAllPWA {
   pwas {
     befrienders {
       volunteer {
+        id
         general_info {
-          id
           name
         }
       }
@@ -50,7 +50,6 @@ query GetAllPWA {
       dob
       email
       gender
-      id
       name
       notes
     }
