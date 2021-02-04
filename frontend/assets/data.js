@@ -70,7 +70,7 @@ export const TABLE_HEADERS = {
     { text: 'Gender', value: 'general_info.gender' },
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Programmes Interest', value: 'project_vols' },
+    { text: 'Programmes Interested  ', value: 'project_vols' },
     { text: 'Speech Therapist?', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
@@ -92,7 +92,7 @@ export const VOLUNTEER_STATUS = {
   Approved: {
     chipColor: 'success'
   },
-  Pending_Approval: {
+  'Pending Approval': {
     chipColor: 'warning'
   },
   Rejected: {
