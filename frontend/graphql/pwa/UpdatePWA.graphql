@@ -1,11 +1,11 @@
-mutation UpdatePWA($people_external: people_external_set_input!, $id: Int!, $pwa: pwas_insert_input!) {
+mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: pwas_insert_input!) {
   delete_pwas_by_pk(id: $id) {
     id
   }
   insert_pwas_one(object: $pwa) {
     id
   }
-  update_people_external_by_pk(pk_columns: {id: $id}, _set: $people_external) {
+  update_people_external_by_pk(pk_columns: {id: $id}, _set: $general_info) {
     address
     bio
     channel
