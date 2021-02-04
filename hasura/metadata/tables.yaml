@@ -1,6 +1,27 @@
 - table:
     schema: public
     name: channels
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: public
+    permission:
+      columns:
+      - channel
+      filter: {}
   delete_permissions:
   - role: core_team
     permission:
