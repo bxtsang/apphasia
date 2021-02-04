@@ -160,12 +160,19 @@
             />
           </v-col>
         </v-row>
-        <v-row class="mt-3">
-          <v-col cols="12" class="py-0">
-            <span class="font-weight-bold">Next-of-Kin Information</span>
-          </v-col>
+        <NOKInput
+          v-model="pwaData.nok.data"
+        />
+        <pre>{{ pwaData }}</pre>
+        <v-row>
+          <v-btn v-if="pwa" color="error" class="my-3" @click="() => { }">
+            DELETE
+          </v-btn>
+          <v-spacer/>
+          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+            {{ pwa ? 'Edit' : 'Save' }}
+          </v-btn>
         </v-row>
-        {{ pwaData }}
       </v-container>
     </v-form>
   </v-card>
@@ -188,6 +195,7 @@ import ConsentInput from './../input/ConsentInput'
 import MediaWillingnessInput from './../input/MediaWillingnessInput'
 import PWAContactStatusInput from './../input/PWAContactStatusInput'
 import GeneralOptionalText from './../input/GeneralOptionalText'
+import NOKInput from './../input/NOKInput'
 
 export default {
   components: {
@@ -207,7 +215,8 @@ export default {
     ConsentInput,
     MediaWillingnessInput,
     PWAContactStatusInput,
-    GeneralOptionalText
+    GeneralOptionalText,
+    NOKInput
   },
   props: {
     pwa: {
@@ -230,16 +239,7 @@ export default {
         languages: { data: [] },
         media_engagement_details: '',
         media_willingness: null,
-        nok: {
-          data: [
-            {
-              contact_num: '',
-              email: '',
-              name: '',
-              relationship: ''
-            }
-          ]
-        },
+        nok: { data: [] },
         projects: { data: [] },
         pwa_befriender_cores: { data: [] },
         speech_therapist: '',
@@ -267,7 +267,7 @@ export default {
       if (this.pwa) {
         return this.editPWA
       } else {
-        return this.submitStaff
+        return this.submitPWA
       }
     },
     contactedButNoResponse () {
@@ -275,7 +275,14 @@ export default {
     }
   },
   methods: {
+    submitPWA () {
+      if (this.$refs.form.validate()) {
 
+      }
+    },
+    editPWA () {
+
+    }
   }
 }
 </script>
