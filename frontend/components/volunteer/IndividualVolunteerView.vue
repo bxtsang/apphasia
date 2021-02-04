@@ -46,9 +46,9 @@
                     <VolunteerStatusChip :value="data.volunteers_by_pk.status"/>
                   </v-col>
                 </v-row>
-                <v-row v-if="data.volunteers_by_pk.status_reason">
+                <v-row v-if="data.volunteers_by_pk.status === 'Rejected' || data.volunteers_by_pk.status === 'KIV'">
                   <v-col class="py-0 mt-1">
-                    <span class="font-italic">Reason for rejection: {{ data.volunteers_by_pk.status_reason }}</span>
+                    <span class="font-italic">Reason for {{ data.volunteers_by_pk.status }}: {{ data.volunteers_by_pk.status_reason }}</span>
                   </v-col>
                 </v-row>
                 <v-row class="mt-8">

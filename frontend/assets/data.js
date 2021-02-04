@@ -99,7 +99,7 @@ export const VOLUNTEER_STATUS = {
     chipColor: 'error'
   },
   KIV: {
-    chipColor: 'error'
+    chipColor: 'warning'
   }
 }
 
