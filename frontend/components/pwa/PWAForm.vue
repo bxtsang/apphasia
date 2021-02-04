@@ -76,7 +76,10 @@
             />
           </v-col>
           <v-col col="6" class="py-0">
-            Communication Difficukty Input
+            <CommDiffInput
+              v-model="pwaData.comm_diff.data"
+              :required="true"
+            />
           </v-col>
         </v-row>
         <v-row>
@@ -147,10 +150,11 @@ import GenderInput from './../input/GenderInput'
 import EmailInput from './../input/EmailInput'
 import AddressInput from './../input/AddressInput'
 import BioInput from './../input/BioInput'
+import WheelChairInput from './../input/WheelChairInput.vue'
 import ProjectInput from './../input/ProjectInput'
+import CommDiffInput from './../input/CommDiffInput'
 import LanguageInput from './../input/LanguageInput'
 import ChannelInput from './../input/ChannelInput'
-import WheelChairInput from './../input/WheelChairInput.vue'
 
 export default {
   components: {
@@ -163,7 +167,7 @@ export default {
     BioInput,
     WheelChairInput,
     ProjectInput,
-    // comm diff
+    CommDiffInput,
     LanguageInput,
     // stroke date
     ChannelInput
