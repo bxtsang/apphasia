@@ -47,6 +47,9 @@ export const INPUT_VALIDATION = {
   },
   multi_profession: {
     required: v => v.length > 0 || 'Profession is required'
+  },
+  wheelchair: {
+    required: v => v != null || 'Wheelchair usage is required'
   }
 }
 

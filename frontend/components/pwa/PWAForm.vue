@@ -62,7 +62,10 @@
             />
           </v-col>
           <v-col col="6" class="py-0">
-            WheelChair Input
+            <WheelChairInput
+              v-model="pwaData.wheelchair"
+              :required="true"
+            />
           </v-col>
         </v-row>
         <v-row>
@@ -79,7 +82,7 @@
         <v-row>
           <v-col col="6" class="py-0">
             <LanguageInput
-              v-model="pwaData.languages"
+              v-model="pwaData.languages.data"
               :required="true"
             />
           </v-col>
@@ -131,6 +134,7 @@
             <span class="font-weight-bold">Next-of-Kin Information</span>
           </v-col>
         </v-row>
+        {{ pwaData }}
       </v-container>
     </v-form>
   </v-card>
@@ -146,6 +150,7 @@ import BioInput from './../input/BioInput'
 import ProjectInput from './../input/ProjectInput'
 import LanguageInput from './../input/LanguageInput'
 import ChannelInput from './../input/ChannelInput'
+import WheelChairInput from './../input/WheelChairInput.vue'
 
 export default {
   components: {
@@ -156,9 +161,16 @@ export default {
     EmailInput,
     AddressInput,
     BioInput,
+    WheelChairInput,
     ProjectInput,
+    // comm diff
     LanguageInput,
+    // stroke date
     ChannelInput
+    // consentSelectIinput
+    // media willingness
+    // Media project input
+    // conatact
   },
   props: {
     pwa: {
@@ -194,7 +206,7 @@ export default {
         pwa_befriender_cores: { data: [] },
         speech_therapist: '',
         stroke_date: '',
-        wheelchair: false,
+        wheelchair: null,
         general_info: {
           data: {
             address: '',
