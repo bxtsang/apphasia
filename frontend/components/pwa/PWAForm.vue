@@ -5,7 +5,7 @@
     <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row class="mt-3">
-          <v-col col="12" class="py-0">
+          <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Personal Details</span>
           </v-col>
         </v-row>
@@ -18,19 +18,19 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="4" class="py-0">
+          <v-col cols="4" class="py-0">
             <DateOfBirthInput
               v-model="pwaData.general_info.data.dob"
               :required="true"
             />
           </v-col>
-          <v-col col="4" class="py-0">
+          <v-col cols="4" class="py-0">
             <ContactInput
               v-model="pwaData.general_info.data.contact_num"
               :required="true"
             />
           </v-col>
-          <v-col col="4" class="py-0">
+          <v-col cols="4" class="py-0">
             <GenderInput
               v-model="pwaData.general_info.gender"
               :required="true"
@@ -38,30 +38,30 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="4" class="py-0">
+          <v-col cols="4" class="py-0">
             <EmailInput
               v-model="pwaData.general_info.data.email"
               :required="true"
             />
           </v-col>
-          <v-col col="8" class="py-0">
+          <v-col cols="8" class="py-0">
             <AddressInput
               v-model="pwaData.general_info.data.address"
             />
           </v-col>
         </v-row>
         <v-row class="mt-3">
-          <v-col col="12" class="py-0">
+          <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Additional Information</span>
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <BioInput
               v-model="pwaData.general_info.data.bio"
             />
           </v-col>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <WheelChairInput
               v-model="pwaData.wheelchair"
               :required="true"
@@ -69,13 +69,13 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <ProjectInput
               v-model="pwaData.projects.data"
               :required="true"
             />
           </v-col>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <CommDiffInput
               v-model="pwaData.comm_diff.data"
               :required="true"
@@ -83,25 +83,25 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <LanguageInput
               v-model="pwaData.languages.data"
               :required="true"
             />
           </v-col>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <StrokeDateInput
               v-model="pwaData.stroke_date"
             />
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <ChannelInput
               v-model="pwaData.general_info.data.channel"
             />
           </v-col>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             <ConsentInput
               v-model="pwaData.general_info.data.consent"
               :required="true"
@@ -110,36 +110,43 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
-            Agree Media Input
+          <v-col cols="6" class="py-0">
+            <MediaWillingnessInput
+              v-model="pwaData.media_willingness"
+            />
           </v-col>
-          <v-col col="6" class="py-0">
-            Media Project Input
+          <v-col cols="6" class="py-0">
+            <MediaEngagementInput
+              v-model="pwaData.media_engagement_details"
+            />
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
             Contact Status Input
           </v-col>
-          <v-col col="6" class="py-0">
+          <v-col cols="6" class="py-0">
+            Contact Status Input
+          </v-col>
+          <v-col cols="6" class="py-0">
             Note Input
           </v-col>
         </v-row>
         <v-row class="mt-3">
-          <v-col col="12" class="py-0">
+          <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Speech Therapist Details</span>
           </v-col>
         </v-row>
         <v-row>
-          <v-col col="12" class="py-0">
+          <v-col cols="6" class="py-0">
             Speech Therapist Name Input
           </v-col>
-          <v-col col="12" class="py-0">
+          <v-col cols="6" class="py-0">
             Hospital Input
           </v-col>
         </v-row>
         <v-row class="mt-3">
-          <v-col col="12" class="py-0">
+          <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Next-of-Kin Information</span>
           </v-col>
         </v-row>
@@ -163,6 +170,8 @@ import LanguageInput from './../input/LanguageInput'
 import StrokeDateInput from './../input/StrokeDateInput'
 import ChannelInput from './../input/ChannelInput'
 import ConsentInput from './../input/ConsentInput'
+import MediaWillingnessInput from './../input/MediaWillingnessInput'
+import MediaEngagementInput from './../input/MediaEngagementInput'
 
 export default {
   components: {
@@ -179,9 +188,9 @@ export default {
     LanguageInput,
     StrokeDateInput,
     ChannelInput,
-    ConsentInput
-    // media willingness
-    // Media project input
+    ConsentInput,
+    MediaWillingnessInput,
+    MediaEngagementInput
     // conatact
   },
   props: {
