@@ -1,41 +1,42 @@
 <template>
   <v-text-field
     v-model="data"
-    :rules="validation"
-    label="Participated in any media projects?"
-    :required="required"
+    :label="label"
     :readonly="readonly"
     :outlined="outlined"
+    :disabled="disabled"
   />
 </template>
 
 <script>
 export default {
-  name: 'MediaEngagementInput',
-
+  name: 'GeneralOptionalText',
   props: {
     value: {
       type: String,
       default: ''
     },
-    required: {
+    readonly: {
       type: Boolean,
       default: false
     },
-    readonly: {
+    disabled: {
       type: Boolean,
       default: false
     },
     outlined: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: ''
     }
   },
 
   data () {
     return {
-      data: this.value,
-      validation: []
+      data: this.value
     }
   },
 
