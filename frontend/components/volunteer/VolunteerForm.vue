@@ -153,7 +153,9 @@
         </v-row>
         <v-row>
           <v-col>
-            IC input
+            <VolunteerIcInput
+              :value="volunteerDetails.vol_ic.data.map(item => item.ic.name)"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -202,7 +204,7 @@ export default {
         },
         vol_languages: { data: this.volunteer.vol_languages },
         vol_ic: {
-          data: this.volunteer
+          data: this.volunteer.vol_ic
         },
         vol_voltypes: { data: this.volunteer.vol_voltypes }
       }

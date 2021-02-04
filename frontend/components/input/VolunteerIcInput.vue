@@ -61,14 +61,15 @@ export default {
   apollo: {
     staffs: {
       query () {
-        return gql`query getVoltypes {
+        return gql`query getStaffs {
           staffs {
-            type
+            id,
+            name
           }
         }`
       },
-      update: data => data.voltypes.map((item) => {
-        return { value: item.type, text: item.type.replace('_', ' ') }
+      update: data => data.staffs.map((item) => {
+        return { value: item.id, text: item.name }
       })
     }
   }
