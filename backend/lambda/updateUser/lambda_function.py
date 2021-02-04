@@ -2,8 +2,6 @@ import boto3
 import json
 import os
 import requests
-import base64
-from botocore.exceptions import ClientError
 
 client = boto3.client('cognito-idp')
 clientSecret = boto3.client('secretsmanager')
