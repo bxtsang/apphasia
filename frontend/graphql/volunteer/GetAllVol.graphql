@@ -1,60 +1,47 @@
 query GetAllVol {
   volunteers {
-    address
-    bio
-    channel_description {
+    general_info {
+      address
+      bio
       channel
-      description
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
     }
-    consent
-    contact_num
-    date_joined
-    dob
-    email
-    gender
-    id
-    is_speech_therapist
-    name
-    nickname
-    notes
-    profession
-    status_reason
-    rejected_date
-    status_description{
-      status
-      description
-    }
-    ws_place
     befrienders {
       pwa {
+        general_info {
+          name
+        }
         id
-        name
       }
     }
+    id
+    is_speech_therapist
+    nickname
+    profession
     project_vols {
       project {
         id
         title
       }
+      interested
       approved
     }
-    vol_languages {
-      languages {
-        language
-        description
-      }
-    }
+    rejected_date
+    status
+    status_reason
     vol_ic {
       ic {
-        name
         id
+        name
       }
     }
-    vol_voltypes {
-      voltypes {
-        type
-        description
-      }
-    }
+    ws_place
   }
 }

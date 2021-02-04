@@ -312,14 +312,21 @@
       - project_id
       - vol_id
       - approved
-      backend_only: false
-  - role: public
+      - interested
+  - role: intern
     permission:
       check: {}
       columns:
       - project_id
       - vol_id
       - approved
+      - interested
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -328,6 +335,7 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
   - role: core_volunteer
     permission:
@@ -335,6 +343,7 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
   - role: intern
     permission:
@@ -342,9 +351,32 @@
       - project_id
       - vol_id
       - approved
+      - interested
       filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      - approved
+      - interested
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      - approved
+      - interested
+      filter: {}
+      check: null
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
 - table:
@@ -934,261 +966,6 @@
       filter: {}
 - table:
     schema: public
-    name: pwas
-  object_relationships:
-  - name: channels
-    using:
-      foreign_key_constraint_on: channel
-  - name: last_stroke_description
-    using:
-      foreign_key_constraint_on: last_stroke
-  array_relationships:
-  - name: befrienders
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_befriender
-  - name: comm_diff
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_comms
-  - name: languages
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_languages
-  - name: nok
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_nok
-  - name: projects
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: project_pwa
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
-  - role: public
-    permission:
-      check: {}
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - id
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-      check: {}
-  - role: intern
-    permission:
-      columns:
-      - id
-      - email
-      - name
-      - created_at
-      - dob
-      - gender
-      - contact_num
-      - address
-      - last_stroke
-      - wheelchair
-      - hobbies
-      - channel
-      - consent
-      - date_joined
-      - notes
-      - status
-      - speak_media
-      - media_engagement_details
-      - hospital
-      - speech_therapist
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: roles
   is_enum: true
   insert_permissions:
@@ -1596,48 +1373,6 @@
 - table:
     schema: public
     name: status
-  is_enum: true
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - description
-      - status
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - description
-      - status
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - description
-      - status
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - description
-      - status
-      filter: {}
-  - role: public
-    permission:
-      columns:
-      - description
-      - status
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - description
-      - status
-      filter: {}
-      check: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -1876,9 +1611,6 @@
   - name: general_info
     using:
       foreign_key_constraint_on: id
-  - name: status_description
-    using:
-      foreign_key_constraint_on: status
   array_relationships:
   - name: befrienders
     using:
@@ -1915,31 +1647,6 @@
         table:
           schema: public
           name: vol_voltypes
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - id
-      - nickname
-      - is_speech_therapist
-      - profession
-      - ws_place
-      - status
-      - status_reason
-      - rejected_date
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - id
-      - nickname
-      - is_speech_therapist
-      - profession
-      - ws_place
-      - status
-      - status_reason
-      - rejected_date
   select_permissions:
   - role: core_team
     permission:
@@ -1949,9 +1656,9 @@
       - is_speech_therapist
       - profession
       - ws_place
-      - status
       - status_reason
       - rejected_date
+      - status
       filter: {}
   - role: core_volunteer
     permission:
@@ -1961,9 +1668,9 @@
       - is_speech_therapist
       - profession
       - ws_place
-      - status
       - status_reason
       - rejected_date
+      - status
       filter: {}
   - role: intern
     permission:
@@ -1973,9 +1680,9 @@
       - is_speech_therapist
       - profession
       - ws_place
-      - status
       - status_reason
       - rejected_date
+      - status
       filter: {}
   - role: public
     permission:
@@ -1991,9 +1698,9 @@
       - is_speech_therapist
       - profession
       - ws_place
-      - status
       - status_reason
       - rejected_date
+      - status
       filter: {}
       check: null
   - role: intern
@@ -2004,12 +1711,15 @@
       - is_speech_therapist
       - profession
       - ws_place
-      - status
       - status_reason
       - rejected_date
+      - status
       filter: {}
       check: null
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
