@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pa-8">
     <span class="section-title">Edit Volunteer</span>
     <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
       <v-container class="pa-0">
@@ -11,13 +11,13 @@
         <v-row>
           <v-col class="py-0">
             <NameInput
-              v-model="volunteerData.name"
+              v-model="generalInfo.name"
               :required="true"
             />
           </v-col>
           <v-col class="py-0">
             <AliasInput
-              v-model="volunteerData.nickname"
+              v-model="generalInfo.nickname"
             />
           </v-col>
         </v-row>
@@ -41,25 +41,26 @@ export default {
   data () {
     return {
       valid: true,
-      volunteerData: {
-        address: this.volunteer.address,
-        bio: this.volunteer.bio,
-        channel: this.volunteer.channel_description.channel,
-        consent: this.volunteer.consent,
-        contact_num: this.volunteer.contact_num,
-        date_joined: this.volunteer.date_joined,
-        dob: this.volunteer.dob,
-        email: this.volunteer.email,
-        gender: this.volunteer.gender,
-        is_active: this.volunteer.is_active,
+      generalInfo: {
+        address: this.volunteer.general_info.address,
+        bio: this.volunteer.general_info.bio,
+        channel: this.volunteer.general_info.channel,
+        contact_num: this.volunteer.general_info.contact_num,
+        consent: this.volunteer.general_info.consent,
+        date_joined: this.volunteer.general_info.date_joined,
+        dob: this.volunteer.general_info.dob,
+        email: this.volunteer.general_info.email,
+        gender: this.volunteer.general_info.gender,
+        name: this.volunteer.general_info.name,
+        nickname: this.volunteer.general_info.nickname,
+        notes: this.volunteer.general_info.notes
+      },
+      volunteerDetails: {
         is_speech_therapist: this.volunteer.is_speech_therapist,
-        name: this.volunteer.name,
-        nickname: this.volunteer.nickname,
-        notes: this.volunteer.notes,
         profession: this.volunteer.profession,
-        rejection_reason: this.volunteer.rejection_reason,
+        status_reason: this.volunteer.status_reason,
         rejected_date: this.volunteer.rejected_date,
-        status: this.volunteer.status_description.status,
+        status: this.volunteer.status,
         ws_place: this.volunteer.ws_place,
         projects_interested: this.volunteer.project_vols,
         vol_languages: this.volunteer.vol_languages,
@@ -71,38 +72,14 @@ export default {
   methods: {
     updateVolunteer () {
       if (this.$refs.form.validate()) {
-        const languageChanges = this.getLanguageChanges()
-        const volIcChanges = this.getVolIcChanges()
-        const volTypeChanges = this.getVolTypeChanges()
-        const projectChanges = this.getProjectInterestChanges()
+        // const languageChanges = this.getLanguageChanges()
+        // const volIcChanges = this.getVolIcChanges()
+        // const volTypeChanges = this.getVolTypeChanges()
+        // const projectChanges = this.getProjectInterestChanges()
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
-            address: this.volunteerData.address,
-            bio: this.volunteerData.bio,
-            channel: this.volunteerData.channel,
-            consent: this.volunteerData.consent,
-            contact_num: this.volunteerData.contact_num,
-            dob: this.volunteerData.dob,
-            gender: this.volunteerData.gender,
-            is_active: this.volunteerData.is_active,
-            is_speech_therapist: this.volunteerData.is_speech_therapist,
-            name: this.volunteerData.name,
-            nickname: this.volunteerData.nickname,
-            notes: this.volunteerData.notes,
-            profession: this.volunteerData.profession,
-            rejection_reason: this.volunteerData.rejection_reason,
-            rejection_date: this.volunteerData.rejection_date,
-            status: this.volunteerData.status,
-            ws_place: this.volunteerData.ws_place,
-            languages_to_add: languageChanges.added,
-            languages_to_remove: languageChanges.removed,
-            projects_to_add: projectChanges.added,
-            projects_to_remove: projectChanges.removed,
-            ic_to_add: volIcChanges.added,
-            ic_to_remove: volIcChanges.removed,
-            voltypes_to_add: volTypeChanges.added,
-            voltypes_to_remove: volTypeChanges.removed
+          //  to be added
           },
           update: (
             store, {
