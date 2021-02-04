@@ -83,7 +83,7 @@
           </template>
 
           <template v-slot:[`item.nok`]="{ item }">
-            {{ item.nok[0].name }}
+            {{ item.nok[0] ? item.nok[0].name : ''  }}
           </template>
 
           <template v-slot:[`item.contact_status`]="{ item }">
