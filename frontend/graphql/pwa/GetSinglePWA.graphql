@@ -2,8 +2,8 @@ query GetSinglePWA ($id: Int!) {
   pwas_by_pk(id: $id) {
     befrienders {
       volunteer {
+        id
         general_info {
-          id
           name
         }
       }
@@ -50,7 +50,6 @@ query GetSinglePWA ($id: Int!) {
       dob
       email
       gender
-      id
       name
       notes
     }

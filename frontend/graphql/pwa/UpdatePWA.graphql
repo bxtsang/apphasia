@@ -15,14 +15,13 @@ mutation UpdatePWA($people_external: people_external_set_input!, $id: Int!, $pwa
     dob
     email
     gender
-    id
     name
     notes
     pwa_details{
       befrienders {
         volunteer {
+          id
           general_info {
-            id
             name
           }
         }

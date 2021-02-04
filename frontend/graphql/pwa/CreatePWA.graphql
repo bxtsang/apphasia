@@ -2,9 +2,9 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
   insert_pwas_one(object: $pwa) {
     befrienders {
       volunteer {
+        id
         general_info {
           name
-          id
         }
       }
     }
@@ -50,7 +50,6 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
       dob
       email
       gender
-      id
       name
       notes
     }
