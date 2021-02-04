@@ -90,7 +90,9 @@
             />
           </v-col>
           <v-col col="6" class="py-0">
-            When Stroke input
+            <StrokeDateInput
+              v-model="pwaData.stroke_date"
+            />
           </v-col>
         </v-row>
         <v-row>
@@ -154,6 +156,7 @@ import WheelChairInput from './../input/WheelChairInput.vue'
 import ProjectInput from './../input/ProjectInput'
 import CommDiffInput from './../input/CommDiffInput'
 import LanguageInput from './../input/LanguageInput'
+import StrokeDateInput from './../input/StrokeDateInput'
 import ChannelInput from './../input/ChannelInput'
 
 export default {
@@ -169,7 +172,7 @@ export default {
     ProjectInput,
     CommDiffInput,
     LanguageInput,
-    // stroke date
+    StrokeDateInput,
     ChannelInput
     // consentSelectIinput
     // media willingness
