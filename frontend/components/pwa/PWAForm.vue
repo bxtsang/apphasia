@@ -116,20 +116,29 @@
             />
           </v-col>
           <v-col cols="6" class="py-0">
-            <MediaEngagementInput
+            <GeneralOptionalText
               v-model="pwaData.media_engagement_details"
+              label="Participated in any media project?"
             />
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="6" class="py-0">
-            Contact Status Input
+            <PWAContactStatusInput
+              v-model="pwaData.contact_status"
+            />
           </v-col>
-          <v-col cols="6" class="py-0">
-            Contact Status Input
+          <v-col v-if="contactedButNoResponse" cols="6" class="py-0">
+            <GeneralOptionalText
+              v-model="pwaData.last_contact_details"
+              label="Last Contact Details"
+            />
           </v-col>
-          <v-col cols="6" class="py-0">
-            Note Input
+          <v-col :cols="contactedButNoResponse ? 12 : 6" class="py-0">
+            <GeneralOptionalText
+              v-model="pwaData.general_info.data.notes"
+              label="Notes"
+            />
           </v-col>
         </v-row>
         <v-row class="mt-3">
@@ -139,10 +148,16 @@
         </v-row>
         <v-row>
           <v-col cols="6" class="py-0">
-            Speech Therapist Name Input
+            <GeneralOptionalText
+              v-model="pwaData.speech_therapist"
+              label="Name of Speech Therapist"
+            />
           </v-col>
           <v-col cols="6" class="py-0">
-            Hospital Input
+            <GeneralOptionalText
+              v-model="pwaData.hospital"
+              label="Discharge from which hospital?"
+            />
           </v-col>
         </v-row>
         <v-row class="mt-3">
@@ -171,7 +186,8 @@ import StrokeDateInput from './../input/StrokeDateInput'
 import ChannelInput from './../input/ChannelInput'
 import ConsentInput from './../input/ConsentInput'
 import MediaWillingnessInput from './../input/MediaWillingnessInput'
-import MediaEngagementInput from './../input/MediaEngagementInput'
+import PWAContactStatusInput from './../input/PWAContactStatusInput'
+import GeneralOptionalText from './../input/GeneralOptionalText'
 
 export default {
   components: {
@@ -190,8 +206,8 @@ export default {
     ChannelInput,
     ConsentInput,
     MediaWillingnessInput,
-    MediaEngagementInput
-    // conatact
+    PWAContactStatusInput,
+    GeneralOptionalText
   },
   props: {
     pwa: {
@@ -208,7 +224,8 @@ export default {
         comm_diff: {
           data: []
         },
-        contact_status: '',
+        contact_status: null,
+        last_contact_details: '',
         hospital: '',
         languages: { data: [] },
         media_engagement_details: '',
@@ -252,6 +269,9 @@ export default {
       } else {
         return this.submitStaff
       }
+    },
+    contactedButNoResponse () {
+      return this.pwaData.contact_status === 'Contacted but no response'
     }
   },
   methods: {
