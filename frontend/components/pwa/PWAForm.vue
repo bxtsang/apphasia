@@ -102,7 +102,11 @@
             />
           </v-col>
           <v-col col="6" class="py-0">
-            Consent Input
+            <ConsentInput
+              v-model="pwaData.general_info.data.consent"
+              :required="true"
+              inputType="select"
+            />
           </v-col>
         </v-row>
         <v-row>
@@ -158,6 +162,7 @@ import CommDiffInput from './../input/CommDiffInput'
 import LanguageInput from './../input/LanguageInput'
 import StrokeDateInput from './../input/StrokeDateInput'
 import ChannelInput from './../input/ChannelInput'
+import ConsentInput from './../input/ConsentInput'
 
 export default {
   components: {
@@ -173,8 +178,8 @@ export default {
     CommDiffInput,
     LanguageInput,
     StrokeDateInput,
-    ChannelInput
-    // consentSelectIinput
+    ChannelInput,
+    ConsentInput
     // media willingness
     // Media project input
     // conatact
@@ -219,7 +224,7 @@ export default {
             address: '',
             bio: '',
             channel: '',
-            consent: false,
+            consent: null,
             contact_num: '',
             dob: '',
             email: '',
