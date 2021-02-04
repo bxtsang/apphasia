@@ -61,12 +61,11 @@ export default {
         return gql`query getChannels {
           channels {
             channel
-            description
           }
         }`
       },
       update: data => data.channels.map((item) => {
-        return { value: item.channel, text: item.description }
+        return item.channel
       })
     }
   }
