@@ -1401,6 +1401,22 @@
 - table:
     schema: public
     name: status
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - status
+      filter: {}
   delete_permissions:
   - role: core_team
     permission:
