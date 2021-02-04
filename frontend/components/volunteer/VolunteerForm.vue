@@ -20,6 +20,139 @@
               v-model="generalInfo.nickname"
             />
           </v-col>
+          <v-col class="py-0">
+            <DateOfBirthInput
+              v-model="generalInfo.dob"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <ContactInput
+              v-model="generalInfo.contact_num"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <GenderInput
+              v-model="generalInfo.gender"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <EmailInput
+              v-model="generalInfo.email"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="8" class="py-0">
+            <AddressInput
+              v-model="generalInfo.address"
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Additional Information</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <BioInput
+              v-model="generalInfo.bio"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <ProfessionInput
+              v-model="volunteerDetails.profession"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <v-select
+              :value="volunteer.project_vols.map(item => item.project.title)"
+              :items="volunteer.project_vols.map(item => item.project.title)"
+              label="Projects Interested"
+              multiple
+              readonly
+            />
+          </v-col>
+          <v-col class="py-0">
+            <WorkplaceInput
+              v-model="volunteerDetails.ws_place"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <LanguageInput
+              :value="volunteerDetails.vol_languages.data.map(item => item.language)"
+              :items="volunteerDetails.vol_languages.data.map(item => item.language)"
+              label="Languages"
+              multiple
+            />
+          </v-col>
+          <v-col class="py-0">
+            <DateJoinedInput
+              v-model="generalInfo.date_joined"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <ChannelInput
+              v-model="generalInfo.channel"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <ConsentInput
+              v-model="generalInfo.consent"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <v-textarea
+              v-model="generalInfo.notes"
+              :label="'Notes'"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <v-select
+              :value="volunteer.project_vols.map(item => item.project.title)"
+              :items="volunteer.project_vols.map(item => item.project.title)"
+              label="Projects Interested"
+              multiple
+              readonly
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Volunteer Status</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <VolTypeInput
+              :value="volunteerDetails.vol_voltypes.data.map(item => item.voltype)"
+            />
+          </v-col>
+          <v-col>
+            Status
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">In-Charge Details</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            IC input
+          </v-col>
         </v-row>
       </v-container>
     </v-form>
@@ -62,14 +195,26 @@ export default {
         rejected_date: this.volunteer.rejected_date,
         status: this.volunteer.status,
         ws_place: this.volunteer.ws_place,
-        projects_interested: this.volunteer.project_vols,
-        vol_languages: this.volunteer.vol_languages,
-        vol_ic: this.volunteer.vol_ic,
-        vol_voltypes: this.volunteer.vol_voltypes
+        project_vols: {
+          data: this.volunteer.project_vols.map(item => this.removeKey(item, 'project'))
+        },
+        vol_languages: { data: this.volunteer.vol_languages },
+        vol_ic: {
+          data: this.volunteer
+        },
+        vol_voltypes: { data: this.volunteer.vol_voltypes }
       }
     }
   },
   methods: {
+    removeKey (item, excessKey) {
+      return Object.keys(item)
+        .filter(key => key !== excessKey)
+        .reduce((newObj, key) => {
+          newObj[key] = item[key]
+          return newObj
+        }, {})
+    },
     updateVolunteer () {
       if (this.$refs.form.validate()) {
         // const languageChanges = this.getLanguageChanges()
