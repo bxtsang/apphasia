@@ -53,6 +53,12 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
         }
       }
       ws_place
+      vol_languages {
+        language
+      }
+      vol_voltypes {
+        voltype
+      }
     }
   }
 }

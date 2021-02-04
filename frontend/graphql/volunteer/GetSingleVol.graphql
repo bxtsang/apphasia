@@ -14,6 +14,7 @@ query GetSingleVol($id: Int!) {
       notes
     }
     befrienders {
+      pwa_id
       pwa {
         general_info {
           name
@@ -26,6 +27,7 @@ query GetSingleVol($id: Int!) {
     nickname
     profession
     project_vols {
+      project_id
       project {
         id
         title
@@ -37,6 +39,7 @@ query GetSingleVol($id: Int!) {
     status
     status_reason
     vol_ic {
+      staff_id
       ic {
         id
         name
