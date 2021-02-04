@@ -1,5 +1,5 @@
 <template>
-  <v-chip :color="color">{{ value.replace('_', ' ') }}</v-chip>
+  <v-chip :color="color">{{ value }}</v-chip>
 </template>
 <script>
 import { VOLUNTEER_STATUS } from './../../../assets/data'

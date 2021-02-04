@@ -65,8 +65,8 @@
           </template>
 
           <!-- Volunteer Specific Columns -->
-          <template v-slot:[`item.status_description`]="{ item }">
-             <VolunteerStatusChip :value="item.status_description.description" />
+          <template v-slot:[`item.status`]="{ item }">
+             <VolunteerStatusChip :value="item.status" />
           </template>
 
           <template v-slot:[`item.project_vols`]="{ item }">

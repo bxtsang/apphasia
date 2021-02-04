@@ -1,6 +1,27 @@
 - table:
     schema: public
     name: channels
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - channel
+      filter: {}
+  - role: public
+    permission:
+      columns:
+      - channel
+      filter: {}
   delete_permissions:
   - role: core_team
     permission:
@@ -871,60 +892,65 @@
     permission:
       check: {}
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
   - role: intern
     permission:
       check: {}
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
       filter: {}
   - role: intern
     permission:
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
       filter: {}
@@ -937,12 +963,13 @@
   - role: core_team
     permission:
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
       filter: {}
@@ -950,12 +977,13 @@
   - role: intern
     permission:
       columns:
-      - id
       - contact_status
-      - media_engagement_details
       - hospital
-      - speech_therapist
+      - id
+      - last_contact_details
+      - media_engagement_details
       - media_willingness
+      - speech_therapist
       - stroke_date
       - wheelchair
       filter: {}
