@@ -66,9 +66,9 @@ export const TABLE_HEADERS = {
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
-    { text: 'Name', value: 'name', align: 'start' },
-    { text: 'Gender', value: 'gender' },
-    { text: 'Date of Birth', value: 'dob' },
+    { text: 'Name', value: 'general_info.name', align: 'start' },
+    { text: 'Gender', value: 'general_info.gender' },
+    { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
     { text: 'Programmes Interest', value: 'project_vols' },
     { text: 'Speech Therapist?', value: 'is_speech_therapist' },
