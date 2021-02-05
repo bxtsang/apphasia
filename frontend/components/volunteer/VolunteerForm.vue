@@ -189,11 +189,11 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: this.removeKey(this.volunteer.general_info, '__typename'),
-      volunteerDetails: this.removeKey(this.removeKey(this.volunteer, 'general_info'), '__typename'),
+      generalInfo: this.removeKeys(this.volunteer.general_info, ['__typename']),
+      volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
       languages: this.volunteer.vol_languages.map(item => item.language),
       voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      vol_ic: this.volunteer.vol_ic.map(item => item.ic.id),
+      vol_ic: this.volunteer.vol_ic.map(item => item.staff_id),
       project_vols: this.volunteer.project_vols,
       isSubmitting: false
     }
@@ -202,7 +202,7 @@ export default {
     languages: {
       immediate: true,
       handler (newValue, oldValue) {
-        this.volunteerDetails.languages = {
+        this.volunteerDetails.vol_languages = {
           data: newValue.map((item) => { return { language: item } })
         }
       }
@@ -219,7 +219,7 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
-          data: newValue.map((item) => { return { ic: item } })
+          data: newValue.map((item) => { return { staff_id: item } })
         }
       }
     },
@@ -227,17 +227,15 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
-          data: newValue.map(
-            item => this.removeKey(this.removeKey(item, 'project'), '__typename')
-          )
+          data: newValue.map((item) => { return { project_id: item.project_id } })
         }
       }
     }
   },
   methods: {
-    removeKey (item, excessKey) {
+    removeKeys (item, excessKeys) {
       return Object.keys(item)
-        .filter(key => key !== excessKey)
+        .filter(key => !excessKeys.includes(key))
         .reduce((newObj, key) => {
           newObj[key] = item[key]
           return newObj
@@ -293,80 +291,11 @@ export default {
         }).then((data) => {
           this.isSubmitting = false
           this.$emit('closeForm')
-          console.log('success')
           this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'successful'])
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
-    },
-    getLanguageChanges () {
-      const originalArray = this.volunteer.languages.map(item => item.language)
-      const currentArray = this.volunteerData.languages
-      const added = []
-      const removed = []
-      for (const language of originalArray) {
-        if (!currentArray.find(item => item === language)) {
-          removed.push(language)
-        }
-      }
-      for (const language of currentArray) {
-        if (!originalArray.find(item => item === language)) {
-          added.push({ language, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getVolIcChanges () {
-      const originalArray = this.volunteer.vol_ic.map(item => item.ic)
-      const currentArray = this.volunteerData.vol_ic
-      const added = []
-      const removed = []
-      for (const ic of originalArray) {
-        if (!currentArray.find(item => item === ic)) {
-          removed.push(ic)
-        }
-      }
-      for (const ic of currentArray) {
-        if (!originalArray.find(item => item === ic)) {
-          added.push({ ic, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getVolTypeChanges () {
-      const originalArray = this.volunteer.vol_voltypes.map(item => item.voltypes)
-      const currentArray = this.volunteerData.vol_voltypes
-      const added = []
-      const removed = []
-      for (const voltype of originalArray) {
-        if (!currentArray.find(item => item === voltype)) {
-          removed.push(voltype)
-        }
-      }
-      for (const voltype of currentArray) {
-        if (!originalArray.find(item => item === voltype)) {
-          added.push({ voltype, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getProjectInterestChanges () {
-      const originalArray = this.volunteer.project_vols.map(item => item.project)
-      const currentArray = this.volunteerData.projects_interested
-      const added = []
-      const removed = []
-      for (const project of originalArray) {
-        if (!currentArray.find(item => item === project)) {
-          removed.push(project)
-        }
-      }
-      for (const project of currentArray) {
-        if (!originalArray.find(item => item === project)) {
-          added.push({ project, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
     }
   }
 }
