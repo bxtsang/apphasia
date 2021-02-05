@@ -65,7 +65,7 @@ export default {
         }`
       },
       update: data => data.channels.map((item) => {
-        return item.channelg
+        return item.channel
       })
     }
   }
