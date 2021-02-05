@@ -1,13 +1,23 @@
 <template>
-  <v-radio-group v-model="data" :rules="validation">
+  <v-radio-group v-if="inputType === 'radio'" v-model="data" :rules="validation">
     <v-radio
       v-for="role in CONSENT_OPTIONS"
       :key="role.value"
-      :label="role.label"
+      :label="role.text"
       :value="role.value"
       :readonly="readonly"
     />
   </v-radio-group>
+  <v-select
+    v-else
+    v-model="data"
+    :items="CONSENT_OPTIONS"
+    :rules="validation"
+    label="Consent"
+    :required="required"
+    :readonly="readonly"
+    :outlined="outlined"
+  />
 </template>
 
 <script>
@@ -28,17 +38,25 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    outlined: {
+      type: Boolean,
+      default: false
+    },
+    inputType: {
+      type: String,
+      default: 'radio'
     }
   },
 
   data () {
     return {
       CONSENT_OPTIONS: [
-        { label: 'Yes, I wish to receive updates about Aphasia SG events and programmes!', value: true },
-        { label: 'No', value: false }
+        { text: this.inputType === 'radio' ? 'Yes, I wish to receive updates about Aphasia SG events and programmes!' : 'Yes', value: true },
+        { text: 'No', value: false }
       ],
       data: this.value,
-      validation: [INPUT_VALIDATION.consent.required]
+      validation: [...(this.required ? [INPUT_VALIDATION.consent.required] : [])]
     }
   },
 

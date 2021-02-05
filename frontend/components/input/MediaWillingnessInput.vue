@@ -1,24 +1,24 @@
 <template>
   <v-select
     v-model="data"
-    :items="channels"
-    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
+    :items="OPTIONS"
     :rules="validation"
+    label="Agreeable to speak to Media?"
     :required="required"
     :readonly="readonly"
+    :outlined="outlined"
   />
 </template>
 
 <script>
-import gql from 'graphql-tag'
+
 export default {
-  name: 'ChannelInput',
+  name: 'MediaWillingnessInput',
 
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Boolean,
+      default: null
     },
     required: {
       type: Boolean,
@@ -28,7 +28,7 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholderOnly: {
+    outlined: {
       type: Boolean,
       default: false
     }
@@ -36,6 +36,10 @@ export default {
 
   data () {
     return {
+      OPTIONS: [
+        { text: 'Yes', value: true },
+        { text: 'No', value: false }
+      ],
       data: this.value,
       validation: []
     }
@@ -52,21 +56,6 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
-    }
-  },
-
-  apollo: {
-    channels: {
-      query () {
-        return gql`query getChannels {
-          channels {
-            channel
-          }
-        }`
-      },
-      update: data => data.channels.map((item) => {
-        return item.channel
-      })
     }
   }
 }

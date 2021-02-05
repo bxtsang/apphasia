@@ -6,6 +6,20 @@ export const ROLE_OPTIONS = [
 
 export const GENDER_OPTIONS = ['M', 'F']
 
+export const COMM_DIFF_OPTIONS = [
+  'Speaking',
+  'Understanding what others are saying',
+  'Reading',
+  'Writing',
+  'Using numbers'
+]
+
+export const PWA_CONTACT_STATUS_OPTIONS = [
+  'Not Contacted',
+  'Contacted but no response',
+  'Contacted'
+]
+
 export const INPUT_VALIDATION = {
   role: {
     required: v => !!v || 'Role is required'
@@ -47,6 +61,12 @@ export const INPUT_VALIDATION = {
   },
   multi_profession: {
     required: v => v.length > 0 || 'Profession is required'
+  },
+  wheelchair: {
+    required: v => v != null || 'Wheelchair usage is required'
+  },
+  comm_diff: {
+    required: v => v.length > 0 || 'One Communication Difficulty is required'
   }
 }
 

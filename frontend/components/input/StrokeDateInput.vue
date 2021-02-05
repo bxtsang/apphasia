@@ -1,19 +1,34 @@
 <template>
-  <v-select
-    v-model="data"
-    :items="channels"
-    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :rules="validation"
-    :required="required"
-    :readonly="readonly"
-  />
+  <v-menu
+    transition="scale-transition"
+    offset-y
+    :close-on-content-click="false"
+    min-width="auto"
+  >
+    <template v-slot:activator="{ on, attrs }">
+      <v-text-field
+        v-model="data"
+        label="When did stroke/brain injury happen?"
+        v-bind="attrs"
+        readonly
+        :rules="validation"
+        :required="required"
+        v-on="on"
+        :outlined="outlined"
+      />
+    </template>
+    <v-date-picker
+      ref="picker"
+      v-model="data"
+      :max="new Date().toISOString().substr(0, 10)"
+    />
+  </v-menu>
 </template>
 
 <script>
-import gql from 'graphql-tag'
+
 export default {
-  name: 'ChannelInput',
+  name: 'StrokeDateInput',
 
   props: {
     value: {
@@ -28,7 +43,7 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholderOnly: {
+    outlined: {
       type: Boolean,
       default: false
     }
@@ -52,21 +67,6 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
-    }
-  },
-
-  apollo: {
-    channels: {
-      query () {
-        return gql`query getChannels {
-          channels {
-            channel
-          }
-        }`
-      },
-      update: data => data.channels.map((item) => {
-        return item.channel
-      })
     }
   }
 }

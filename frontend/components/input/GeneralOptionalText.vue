@@ -1,43 +1,42 @@
 <template>
   <v-text-field
     v-model="data"
-    :rules="validation"
-    label="Home Address"
-    :required="required"
+    :label="label"
     :readonly="readonly"
     :outlined="outlined"
+    :disabled="disabled"
   />
 </template>
 
 <script>
-import { INPUT_VALIDATION } from './../../assets/data'
-
 export default {
-  name: 'AddressInput',
-
+  name: 'GeneralOptionalText',
   props: {
     value: {
       type: String,
       default: ''
     },
-    required: {
+    readonly: {
       type: Boolean,
       default: false
     },
-    readonly: {
+    disabled: {
       type: Boolean,
       default: false
     },
     outlined: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: ''
     }
   },
 
   data () {
     return {
-      data: this.value,
-      validation: [...(this.required ? [INPUT_VALIDATION.address.required] : [])]
+      data: this.value
     }
   },
 

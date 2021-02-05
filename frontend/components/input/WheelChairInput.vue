@@ -1,24 +1,25 @@
 <template>
   <v-select
     v-model="data"
-    :items="channels"
-    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
+    :items="OPTIONS"
     :rules="validation"
+    label="Wheelchair needed?"
     :required="required"
     :readonly="readonly"
+    :outlined="outlined"
   />
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { INPUT_VALIDATION } from './../../assets/data'
+
 export default {
-  name: 'ChannelInput',
+  name: 'WheelChairInput',
 
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Boolean,
+      default: null
     },
     required: {
       type: Boolean,
@@ -28,7 +29,7 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholderOnly: {
+    outlined: {
       type: Boolean,
       default: false
     }
@@ -36,8 +37,12 @@ export default {
 
   data () {
     return {
+      OPTIONS: [
+        { text: 'Yes', value: true },
+        { text: 'No', value: false }
+      ],
       data: this.value,
-      validation: []
+      validation: [...(this.required ? [INPUT_VALIDATION.wheelchair.required] : [])]
     }
   },
 
@@ -52,21 +57,6 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
-    }
-  },
-
-  apollo: {
-    channels: {
-      query () {
-        return gql`query getChannels {
-          channels {
-            channel
-          }
-        }`
-      },
-      update: data => data.channels.map((item) => {
-        return item.channel
-      })
     }
   }
 }
