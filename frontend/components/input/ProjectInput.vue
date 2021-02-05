@@ -13,6 +13,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { INPUT_VALIDATION } from './../../assets/data'
 
 export default {
   name: 'ProjectInput',
@@ -41,7 +42,8 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: []
+      INPUT_VALIDATION,
+      validation: [...(this.required ? [INPUT_VALIDATION.project_interest.required] : [])]
     }
   },
 

@@ -1,19 +1,20 @@
 <template>
   <v-select
     v-model="data"
-    :items="channels"
-    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
+    :items="PWA_CONTACT_STATUS_OPTIONS"
+    label="Status"
     :rules="validation"
     :required="required"
     :readonly="readonly"
+    :disabled="disabled"
   />
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { PWA_CONTACT_STATUS_OPTIONS } from './../../assets/data'
+
 export default {
-  name: 'ChannelInput',
+  name: 'PWAContactStatusInput',
 
   props: {
     value: {
@@ -28,7 +29,7 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholderOnly: {
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -37,6 +38,7 @@ export default {
   data () {
     return {
       data: this.value,
+      PWA_CONTACT_STATUS_OPTIONS,
       validation: []
     }
   },
@@ -52,21 +54,6 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
-    }
-  },
-
-  apollo: {
-    channels: {
-      query () {
-        return gql`query getChannels {
-          channels {
-            channel
-          }
-        }`
-      },
-      update: data => data.channels.map((item) => {
-        return item.channelg
-      })
     }
   }
 }

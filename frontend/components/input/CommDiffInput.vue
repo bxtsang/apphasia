@@ -1,24 +1,28 @@
 <template>
   <v-select
     v-model="data"
-    :items="channels"
-    :label="!placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
-    :placeholder="placeholderOnly ? 'How did you hear about Aphasia SG?' : ''"
+    :items="COMM_DIFF_OPTIONS"
+    label="Communication Difficults"
     :rules="validation"
     :required="required"
     :readonly="readonly"
+    :disabled="disabled"
+    multiple
   />
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { INPUT_VALIDATION, COMM_DIFF_OPTIONS } from './../../assets/data'
+
 export default {
-  name: 'ChannelInput',
+  name: 'CommDiffInput',
 
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Array,
+      default () {
+        return []
+      }
     },
     required: {
       type: Boolean,
@@ -28,7 +32,7 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholderOnly: {
+    disabled: {
       type: Boolean,
       default: false
     }
@@ -37,7 +41,9 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: []
+      INPUT_VALIDATION,
+      COMM_DIFF_OPTIONS,
+      validation: [...(this.required ? [INPUT_VALIDATION.comm_diff.required] : [])]
     }
   },
 
@@ -52,21 +58,6 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
-    }
-  },
-
-  apollo: {
-    channels: {
-      query () {
-        return gql`query getChannels {
-          channels {
-            channel
-          }
-        }`
-      },
-      update: data => data.channels.map((item) => {
-        return item.channelg
-      })
     }
   }
 }

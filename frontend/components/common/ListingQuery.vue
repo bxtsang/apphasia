@@ -78,12 +78,16 @@
             {{ item.comm_diff.map(item => item.difficulty).toString().replaceAll(',', ', ') }}
           </template>
 
+          <template v-slot:[`item.projects`]="{ item }">
+            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}
+          </template>
+
           <template v-slot:[`item.languages`]="{ item }">
             {{ item.languages.map(item => item.language).toString().replaceAll(',', ', ') }}
           </template>
 
           <template v-slot:[`item.nok`]="{ item }">
-            {{ item.nok[0].name }}
+            {{ item.nok[0] ? item.nok[0].name : ''  }}
           </template>
 
           <template v-slot:[`item.contact_status`]="{ item }">
