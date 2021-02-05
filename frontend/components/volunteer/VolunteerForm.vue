@@ -78,8 +78,12 @@
             />
           </v-col>
           <v-col class="py-0">
-            <WorkplaceInput
-              v-model="volunteerDetails.ws_place"
+            <v-select
+              :value="volunteer.project_vols.map(item => item.project.title)"
+              :items="volunteer.project_vols.map(item => item.project.title)"
+              label="Projects Involved In"
+              multiple
+              readonly
             />
           </v-col>
         </v-row>
@@ -105,6 +109,13 @@
             />
           </v-col>
           <v-col class="py-0">
+            <WorkplaceInput
+              v-model="volunteerDetails.ws_place"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
             <ConsentInput
               v-model="generalInfo.consent"
             />
@@ -119,15 +130,6 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="py-0">
-            <v-select
-              :value="volunteer.project_vols.map(item => item.project.title)"
-              :items="volunteer.project_vols.map(item => item.project.title)"
-              label="Projects Interested"
-              multiple
-              readonly
-            />
-          </v-col>
         </v-row>
         <v-row class="mt-8">
           <v-col cols="12" class="py-0">
