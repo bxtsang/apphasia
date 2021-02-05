@@ -227,7 +227,9 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
-          data: newValue
+          data: newValue.map(
+            item => this.removeKey(this.removeKey(item, 'project'), '__typename')
+          )
         }
       }
     }

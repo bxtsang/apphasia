@@ -26,6 +26,7 @@ query GetAllVol {
     nickname
     profession
     project_vols {
+      project_id
       project {
         id
         title
