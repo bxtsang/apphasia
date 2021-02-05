@@ -1691,6 +1691,31 @@
         table:
           schema: public
           name: vol_voltypes
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - nickname
+      - is_speech_therapist
+      - profession
+      - ws_place
+      - status_reason
+      - rejected_date
+      - status
   select_permissions:
   - role: core_team
     permission:
