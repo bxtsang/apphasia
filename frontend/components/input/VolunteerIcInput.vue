@@ -2,7 +2,7 @@
   <v-select
     v-model="data"
     :items="staffs"
-    label="Tag IC(s)"
+    :label="'Tag IC(s)'"
     :rules="validation"
     :required="required"
     :readonly="readonly"

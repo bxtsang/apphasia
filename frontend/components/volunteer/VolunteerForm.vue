@@ -70,8 +70,8 @@
         <v-row>
           <v-col class="py-0">
             <v-select
-              :value="volunteer.project_vols.map(item => item.project.title)"
-              :items="volunteer.project_vols.map(item => item.project.title)"
+              :value="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
+              :items="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
               label="Projects Interested"
               multiple
               readonly
@@ -79,8 +79,8 @@
           </v-col>
           <v-col class="py-0">
             <v-select
-              :value="volunteer.project_vols.map(item => item.project.title)"
-              :items="volunteer.project_vols.map(item => item.project.title)"
+              :value="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
+              :items="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
               label="Projects Involved In"
               multiple
               readonly
@@ -90,10 +90,8 @@
         <v-row>
           <v-col class="py-0">
             <LanguageInput
-              :value="volunteerDetails.vol_languages.data.map(item => item.language)"
-              :items="volunteerDetails.vol_languages.data.map(item => item.language)"
-              label="Languages"
-              multiple
+              v-model="languages"
+              :required="true"
             />
           </v-col>
           <v-col class="py-0">
@@ -139,7 +137,7 @@
         <v-row>
           <v-col>
             <VolTypeInput
-              :value="volunteerDetails.vol_voltypes.data.map(item => item.voltype)"
+              v-model="voltypes"
             />
           </v-col>
           <v-col>
@@ -156,9 +154,20 @@
         <v-row>
           <v-col>
             <VolunteerIcInput
-              :value="volunteerDetails.vol_ic.data.map(item => item.ic.name)"
+              v-model="vol_ic"
             />
           </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
+          <v-btn v-if="volunteer" color="error" class="my-3" @click="deleteVolunteer()">
+            Delete
+          </v-btn>
+          <v-spacer />
+          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+            Save
+          </v-btn>
         </v-row>
       </v-container>
     </v-form>
@@ -180,35 +189,37 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: {
-        address: this.volunteer.general_info.address,
-        bio: this.volunteer.general_info.bio,
-        channel: this.volunteer.general_info.channel,
-        contact_num: this.volunteer.general_info.contact_num,
-        consent: this.volunteer.general_info.consent,
-        date_joined: this.volunteer.general_info.date_joined,
-        dob: this.volunteer.general_info.dob,
-        email: this.volunteer.general_info.email,
-        gender: this.volunteer.general_info.gender,
-        name: this.volunteer.general_info.name,
-        nickname: this.volunteer.general_info.nickname,
-        notes: this.volunteer.general_info.notes
-      },
-      volunteerDetails: {
-        is_speech_therapist: this.volunteer.is_speech_therapist,
-        profession: this.volunteer.profession,
-        status_reason: this.volunteer.status_reason,
-        rejected_date: this.volunteer.rejected_date,
-        status: this.volunteer.status,
-        ws_place: this.volunteer.ws_place,
-        project_vols: {
-          data: this.volunteer.project_vols.map(item => this.removeKey(item, 'project'))
-        },
-        vol_languages: { data: this.volunteer.vol_languages },
-        vol_ic: {
-          data: this.volunteer.vol_ic
-        },
-        vol_voltypes: { data: this.volunteer.vol_voltypes }
+      generalInfo: this.volunteer.general_info,
+      volunteerDetails: this.removeKey(this.volunteer, 'general_info'),
+      languages: this.volunteer.vol_languages.map(item => item.language),
+      voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
+      vol_ic: this.volunteer.vol_ic.map(item => item.ic.name),
+      isSubmitting: false
+    }
+  },
+  watch: {
+    languages: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.languages = {
+          data: newValue.map((item) => { return { language: item } })
+        }
+      }
+    },
+    voltypes: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.vol_voltypes = {
+          data: newValue.map((item) => { return { voltype: item } })
+        }
+      }
+    },
+    vol_ic: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.vol_ic = {
+          data: newValue.map((item) => { return { ic: item } })
+        }
       }
     }
   },
@@ -220,6 +231,9 @@ export default {
           newObj[key] = item[key]
           return newObj
         }, {})
+    },
+    deleteVolunteer () {
+    //  to implement
     },
     updateVolunteer () {
       if (this.$refs.form.validate()) {
