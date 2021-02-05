@@ -135,14 +135,22 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col class="py-0">
             <VolTypeInput
               v-model="voltypes"
             />
           </v-col>
-          <v-col>
+          <v-col class="py-0">
             <VolunteerStatusInput
               v-model="volunteerDetails.status"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="volunteerDetails.status === 'Rejected' || volunteerDetails.status === 'KIV'">
+          <v-col class="py-0">
+            <GeneralOptionalText
+              v-model="volunteerDetails.status_reason"
+              :label="`Reason for ${ volunteerDetails.status }`"
             />
           </v-col>
         </v-row>
@@ -152,7 +160,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col class="py-0">
             <VolunteerIcInput
               v-model="vol_ic"
             />
@@ -245,6 +253,7 @@ export default {
     //  to implement
     },
     updateVolunteer () {
+      console.log(this.volunteerDetails)
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
         // const languageChanges = this.getLanguageChanges()
