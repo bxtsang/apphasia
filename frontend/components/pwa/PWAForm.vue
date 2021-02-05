@@ -196,6 +196,7 @@ import MediaWillingnessInput from './../input/MediaWillingnessInput'
 import PWAContactStatusInput from './../input/PWAContactStatusInput'
 import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
+import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 
 export default {
   components: {
@@ -229,7 +230,6 @@ export default {
       valid: true,
       isSubmitting: false,
       pwaData: {
-        befrienders: { data: [] },
         comm_diff: {
           data: []
         },
@@ -241,7 +241,6 @@ export default {
         media_willingness: null,
         nok: { data: [] },
         projects: { data: [] },
-        pwa_befriender_cores: { data: [] },
         speech_therapist: '',
         stroke_date: '',
         wheelchair: null,
@@ -277,7 +276,18 @@ export default {
   methods: {
     submitPWA () {
       if (this.$refs.form.validate()) {
-
+        this.isSubmitting = true
+        this.$apollo.mutate({
+          mutation: CreatePWA,
+          variables: this.pwaData,
+          update: () => {}
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', ['PWA successfully created', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
       }
     },
     editPWA () {
