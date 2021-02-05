@@ -17,7 +17,7 @@
           </v-col>
           <v-col class="py-0">
             <AliasInput
-              v-model="generalInfo.nickname"
+              v-model="volunteerDetails.nickname"
             />
           </v-col>
           <v-col class="py-0">
@@ -189,11 +189,11 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: this.volunteer.general_info,
-      volunteerDetails: this.removeKey(this.volunteer, 'general_info'),
+      generalInfo: this.removeKey(this.volunteer.general_info, '__typename'),
+      volunteerDetails: this.removeKey(this.removeKey(this.volunteer, 'general_info'), '__typename'),
       languages: this.volunteer.vol_languages.map(item => item.language),
       voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      vol_ic: this.volunteer.vol_ic.map(item => item.ic.name),
+      vol_ic: this.volunteer.vol_ic.map(item => item.ic.id),
       isSubmitting: false
     }
   },
@@ -237,6 +237,7 @@ export default {
     },
     updateVolunteer () {
       if (this.$refs.form.validate()) {
+        this.isSubmitting = true
         // const languageChanges = this.getLanguageChanges()
         // const volIcChanges = this.getVolIcChanges()
         // const volTypeChanges = this.getVolTypeChanges()
@@ -244,7 +245,9 @@ export default {
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
-          //  to be added
+            volunteer: this.volunteerDetails,
+            id: this.volunteerDetails.id,
+            general_info: this.generalInfo
           },
           update: (
             store, {
@@ -258,7 +261,7 @@ export default {
             store.writeQuery({
               query: GetSingleVol,
               data: { volunteers: [updatedVolunteer] },
-              variables: {}
+              variables: { id: this.volunteerDetails.id }
             })
             try {
               const allVol = store.readQuery({
@@ -273,11 +276,13 @@ export default {
                 variables: {}
               })
             } catch (error) {
-              // Handle if GetAllStaff query not in store
+              // Handle if GetAllVols query not in store
             }
           }
         }).then((data) => {
+          this.isSubmitting = false
           this.$emit('closeForm')
+          console.log('success')
           this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'successful'])
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
