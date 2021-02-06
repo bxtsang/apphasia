@@ -1,0 +1,5 @@
+mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
+  insert_volunteers_one(object: $volunteer) {
+    id
+  }
+}
