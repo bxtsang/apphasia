@@ -637,9 +637,22 @@
     schema: public
     name: project_task_staffs
   object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: projects
+        column_mapping:
+          project_id: id
   - name: staff
     using:
-      foreign_key_constraint_on: staff_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: staffs
+        column_mapping:
+          staff_id: id
   - name: task
     using:
       manual_configuration:
@@ -708,6 +721,14 @@
     schema: public
     name: project_task_vols
   object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: projects
+        column_mapping:
+          project_id: id
   - name: task
     using:
       manual_configuration:
@@ -719,7 +740,12 @@
           project_id: project_id
   - name: volunteer
     using:
-      foreign_key_constraint_on: vol_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
   insert_permissions:
   - role: core_team
     permission:
