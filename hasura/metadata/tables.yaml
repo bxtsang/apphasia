@@ -1515,6 +1515,20 @@
       - speech_therapist
       - stroke_date
       - wheelchair
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - media_willingness
+      - wheelchair
+      - stroke_date
+      - id
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
