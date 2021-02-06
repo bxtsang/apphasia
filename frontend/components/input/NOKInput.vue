@@ -4,7 +4,7 @@
     <div v-for="(nok, index) in data" :key="index">
       <v-row class="mt-3" >
         <v-col cols="12" class="py-0 d-flex">
-          <span class="font-weight-bold">({{ index + 1 }})Next-of-Kin Information</span>
+          <span class="font-weight-bold">({{ index + 1 }}) Next-of-Kin Information</span>
           <v-spacer />
           <v-btn icon small @click="() => { removeNOK(index) }"><v-icon>mdi-close</v-icon></v-btn>
         </v-col>
