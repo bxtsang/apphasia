@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="pa-8">
     <span class="section-title">Edit Volunteer</span>
     <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
       <v-container class="pa-0">
@@ -11,15 +11,171 @@
         <v-row>
           <v-col class="py-0">
             <NameInput
-              v-model="volunteerData.name"
+              v-model="generalInfo.name"
               :required="true"
             />
           </v-col>
           <v-col class="py-0">
             <AliasInput
-              v-model="volunteerData.nickname"
+              v-model="volunteerDetails.nickname"
             />
           </v-col>
+          <v-col class="py-0">
+            <DateOfBirthInput
+              v-model="generalInfo.dob"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <ContactInput
+              v-model="generalInfo.contact_num"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <GenderInput
+              v-model="generalInfo.gender"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <EmailInput
+              v-model="generalInfo.email"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="8" class="py-0">
+            <AddressInput
+              v-model="generalInfo.address"
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Additional Information</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <BioInput
+              v-model="generalInfo.bio"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <ProfessionInput
+              v-model="volunteerDetails.profession"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <v-select
+              :value="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
+              :items="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
+              label="Projects Interested"
+              multiple
+              readonly
+            />
+          </v-col>
+          <v-col class="py-0">
+            <v-select
+              :value="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
+              :items="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
+              label="Projects Involved In"
+              multiple
+              readonly
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <LanguageInput
+              v-model="languages"
+              :required="true"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <DateJoinedInput
+              v-model="generalInfo.date_joined"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <ChannelInput
+              v-model="generalInfo.channel"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <WorkplaceInput
+              v-model="volunteerDetails.ws_place"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <ConsentInput
+              v-model="generalInfo.consent"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <v-textarea
+              v-model="generalInfo.notes"
+              :label="'Notes'"
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Volunteer Status</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <VolTypeInput
+              v-model="voltypes"
+            />
+          </v-col>
+          <v-col class="py-0">
+            <VolunteerStatusInput
+              v-model="volunteerDetails.status"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="volunteerDetails.status === 'Rejected' || volunteerDetails.status === 'KIV'">
+          <v-col class="py-0">
+            <GeneralOptionalText
+              v-model="volunteerDetails.status_reason"
+              :label="`Reason for ${ volunteerDetails.status }`"
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">In-Charge Details</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <VolunteerIcInput
+              v-model="vol_ic"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
+          <v-btn v-if="volunteer" color="error" class="my-3" @click="deleteVolunteer()">
+            Delete
+          </v-btn>
+          <v-spacer />
+          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+            Save
+          </v-btn>
         </v-row>
       </v-container>
     </v-form>
@@ -41,68 +197,75 @@ export default {
   data () {
     return {
       valid: true,
-      volunteerData: {
-        address: this.volunteer.address,
-        bio: this.volunteer.bio,
-        channel: this.volunteer.channel_description.channel,
-        consent: this.volunteer.consent,
-        contact_num: this.volunteer.contact_num,
-        date_joined: this.volunteer.date_joined,
-        dob: this.volunteer.dob,
-        email: this.volunteer.email,
-        gender: this.volunteer.gender,
-        is_active: this.volunteer.is_active,
-        is_speech_therapist: this.volunteer.is_speech_therapist,
-        name: this.volunteer.name,
-        nickname: this.volunteer.nickname,
-        notes: this.volunteer.notes,
-        profession: this.volunteer.profession,
-        rejection_reason: this.volunteer.rejection_reason,
-        rejected_date: this.volunteer.rejected_date,
-        status: this.volunteer.status_description.status,
-        ws_place: this.volunteer.ws_place,
-        projects_interested: this.volunteer.project_vols,
-        vol_languages: this.volunteer.vol_languages,
-        vol_ic: this.volunteer.vol_ic,
-        vol_voltypes: this.volunteer.vol_voltypes
+      generalInfo: this.removeKeys(this.volunteer.general_info, ['__typename']),
+      volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
+      languages: this.volunteer.vol_languages.map(item => item.language),
+      voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
+      vol_ic: this.volunteer.vol_ic.map(item => item.staff_id),
+      project_vols: this.volunteer.project_vols,
+      isSubmitting: false
+    }
+  },
+  watch: {
+    languages: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.vol_languages = {
+          data: newValue.map((item) => { return { language: item } })
+        }
+      }
+    },
+    voltypes: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.vol_voltypes = {
+          data: newValue.map((item) => { return { voltype: item } })
+        }
+      }
+    },
+    vol_ic: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.vol_ic = {
+          data: newValue.map((item) => { return { staff_id: item } })
+        }
+      }
+    },
+    project_vols: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.project_vols = {
+          data: newValue.map((item) => { return { project_id: item.project_id } })
+        }
       }
     }
   },
   methods: {
+    removeKeys (item, excessKeys) {
+      return Object.keys(item)
+        .filter(key => !excessKeys.includes(key))
+        .reduce((newObj, key) => {
+          newObj[key] = item[key]
+          return newObj
+        }, {})
+    },
+    deleteVolunteer () {
+    //  to implement
+    },
     updateVolunteer () {
+      console.log(this.volunteerDetails)
       if (this.$refs.form.validate()) {
-        const languageChanges = this.getLanguageChanges()
-        const volIcChanges = this.getVolIcChanges()
-        const volTypeChanges = this.getVolTypeChanges()
-        const projectChanges = this.getProjectInterestChanges()
+        this.isSubmitting = true
+        // const languageChanges = this.getLanguageChanges()
+        // const volIcChanges = this.getVolIcChanges()
+        // const volTypeChanges = this.getVolTypeChanges()
+        // const projectChanges = this.getProjectInterestChanges()
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
-            address: this.volunteerData.address,
-            bio: this.volunteerData.bio,
-            channel: this.volunteerData.channel,
-            consent: this.volunteerData.consent,
-            contact_num: this.volunteerData.contact_num,
-            dob: this.volunteerData.dob,
-            gender: this.volunteerData.gender,
-            is_active: this.volunteerData.is_active,
-            is_speech_therapist: this.volunteerData.is_speech_therapist,
-            name: this.volunteerData.name,
-            nickname: this.volunteerData.nickname,
-            notes: this.volunteerData.notes,
-            profession: this.volunteerData.profession,
-            rejection_reason: this.volunteerData.rejection_reason,
-            rejection_date: this.volunteerData.rejection_date,
-            status: this.volunteerData.status,
-            ws_place: this.volunteerData.ws_place,
-            languages_to_add: languageChanges.added,
-            languages_to_remove: languageChanges.removed,
-            projects_to_add: projectChanges.added,
-            projects_to_remove: projectChanges.removed,
-            ic_to_add: volIcChanges.added,
-            ic_to_remove: volIcChanges.removed,
-            voltypes_to_add: volTypeChanges.added,
-            voltypes_to_remove: volTypeChanges.removed
+            volunteer: this.volunteerDetails,
+            id: this.volunteerDetails.id,
+            general_info: this.generalInfo
           },
           update: (
             store, {
@@ -116,7 +279,7 @@ export default {
             store.writeQuery({
               query: GetSingleVol,
               data: { volunteers: [updatedVolunteer] },
-              variables: {}
+              variables: { id: this.volunteerDetails.id }
             })
             try {
               const allVol = store.readQuery({
@@ -131,84 +294,17 @@ export default {
                 variables: {}
               })
             } catch (error) {
-              // Handle if GetAllStaff query not in store
+              // Handle if GetAllVols query not in store
             }
           }
         }).then((data) => {
+          this.isSubmitting = false
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'successful'])
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
-    },
-    getLanguageChanges () {
-      const originalArray = this.volunteer.languages.map(item => item.language)
-      const currentArray = this.volunteerData.languages
-      const added = []
-      const removed = []
-      for (const language of originalArray) {
-        if (!currentArray.find(item => item === language)) {
-          removed.push(language)
-        }
-      }
-      for (const language of currentArray) {
-        if (!originalArray.find(item => item === language)) {
-          added.push({ language, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getVolIcChanges () {
-      const originalArray = this.volunteer.vol_ic.map(item => item.ic)
-      const currentArray = this.volunteerData.vol_ic
-      const added = []
-      const removed = []
-      for (const ic of originalArray) {
-        if (!currentArray.find(item => item === ic)) {
-          removed.push(ic)
-        }
-      }
-      for (const ic of currentArray) {
-        if (!originalArray.find(item => item === ic)) {
-          added.push({ ic, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getVolTypeChanges () {
-      const originalArray = this.volunteer.vol_voltypes.map(item => item.voltypes)
-      const currentArray = this.volunteerData.vol_voltypes
-      const added = []
-      const removed = []
-      for (const voltype of originalArray) {
-        if (!currentArray.find(item => item === voltype)) {
-          removed.push(voltype)
-        }
-      }
-      for (const voltype of currentArray) {
-        if (!originalArray.find(item => item === voltype)) {
-          added.push({ voltype, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
-    },
-    getProjectInterestChanges () {
-      const originalArray = this.volunteer.project_vols.map(item => item.project)
-      const currentArray = this.volunteerData.projects_interested
-      const added = []
-      const removed = []
-      for (const project of originalArray) {
-        if (!currentArray.find(item => item === project)) {
-          removed.push(project)
-        }
-      }
-      for (const project of currentArray) {
-        if (!originalArray.find(item => item === project)) {
-          added.push({ project, vol_id: this.volunteer.id })
-        }
-      }
-      return { added, removed }
     }
   }
 }

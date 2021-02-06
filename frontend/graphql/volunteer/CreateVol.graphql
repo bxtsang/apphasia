@@ -43,6 +43,12 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
       }
     }
     ws_place
+    vol_languages {
+      language
+    }
+    vol_voltypes {
+      voltype
+    }
   }
 }
 
