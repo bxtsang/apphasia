@@ -1,0 +1,1 @@
+ALTER TABLE ONLY "public"."test" ALTER COLUMN "start_at" DROP DEFAULT;

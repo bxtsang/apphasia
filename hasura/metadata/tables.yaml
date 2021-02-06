@@ -128,6 +128,21 @@
       - bio
       - consent
       - channel
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - address
+      - bio
+      - channel
+      - consent
+      - contact_num
+      - dob
+      - email
+      - gender
+      - name
+      - notes
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -218,6 +233,68 @@
       filter: {}
 - table:
     schema: public
+    name: project_dates
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: project_pwa
   object_relationships:
   - name: project
@@ -226,6 +303,25 @@
   - name: pwa
     using:
       foreign_key_constraint_on: pwa_id
+  array_relationships:
+  - name: staffs_assigned
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_pwa_staffs
+        column_mapping:
+          pwa_id: pwa_id
+          project_id: project_id
+  - name: vols_assigned
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_pwa_vols
+        column_mapping:
+          pwa_id: pwa_id
+          project_id: project_id
   insert_permissions:
   - role: core_team
     permission:
@@ -276,6 +372,228 @@
       filter: {}
 - table:
     schema: public
+    name: project_pwa_staffs
+  object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: projects
+        column_mapping:
+          project_id: id
+  - name: pwa
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: pwas
+        column_mapping:
+          pwa_id: id
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_pwa_vols
+  object_relationships:
+  - name: project
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: projects
+        column_mapping:
+          project_id: id
+  - name: pwa
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: pwas
+        column_mapping:
+          pwa_id: id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_resources
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: core_volunteer
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: project_staffs
   object_relationships:
   - name: project
@@ -311,6 +629,271 @@
       - project_id
       - staff_id
       filter: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_task_staffs
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  - name: task
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_tasks
+        column_mapping:
+          task_id: id
+          project_id: project_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_task_vols
+  object_relationships:
+  - name: task
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_tasks
+        column_mapping:
+          task_id: id
+          project_id: project_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: project_tasks
+  array_relationships:
+  - name: assigned_staffs
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_task_staffs
+        column_mapping:
+          project_id: project_id
+          id: task_id
+  - name: assigned_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_task_vols
+        column_mapping:
+          project_id: project_id
+          id: task_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - due_date
+      - id
+      - owner_id
+      - project_id
+      - description
+      - status
+      - title
+      - created_at
+      filter: {}
+      check: null
+  - role: core_volunteer
+    permission:
+      columns:
+      - status
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - due_date
+      - id
+      - owner_id
+      - project_id
+      - description
+      - status
+      - title
+      - created_at
+      filter: {}
+      check: null
   delete_permissions:
   - role: core_team
     permission:
@@ -408,6 +991,13 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
+  - name: dates
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_dates
   - name: pwas
     using:
       foreign_key_constraint_on:
@@ -415,6 +1005,13 @@
         table:
           schema: public
           name: project_pwa
+  - name: resources
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_resources
   - name: staffs
     using:
       foreign_key_constraint_on:
@@ -437,6 +1034,18 @@
       - id
       - title
       - owner_id
+      - description
+      - updated_at
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - title
+      - owner_id
+      - description
+      - updated_at
       backend_only: false
   select_permissions:
   - role: core_team
@@ -445,6 +1054,8 @@
       - id
       - title
       - owner_id
+      - description
+      - updated_at
       filter: {}
   - role: core_volunteer
     permission:
@@ -452,19 +1063,23 @@
       - id
       - title
       - owner_id
+      - description
+      - updated_at
       filter: {}
   - role: intern
     permission:
       columns:
       - id
-      - owner_id
       - title
+      - owner_id
+      - description
+      - updated_at
       filter: {}
   - role: public
     permission:
       columns:
+      - description
       - id
-      - owner_id
       - title
       filter: {}
   update_permissions:
@@ -474,6 +1089,18 @@
       - id
       - title
       - owner_id
+      - description
+      - updated_at
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      - description
+      - updated_at
       filter: {}
       check: {}
   delete_permissions:
@@ -914,6 +1541,20 @@
       - speech_therapist
       - stroke_date
       - wheelchair
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - media_willingness
+      - wheelchair
+      - stroke_date
+      - id
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -1716,6 +2357,14 @@
       - status_reason
       - rejected_date
       - status
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - nickname
+      - profession
+      - ws_place
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
