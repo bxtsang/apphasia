@@ -2,66 +2,64 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
   delete_pwas_by_pk(id: $id) {
     id
   }
-  insert_pwas_one(object: $pwa) {
+  update_people_external_by_pk(pk_columns: {id: $id}, _set: $general_info) {
     id
   }
-  update_people_external_by_pk(pk_columns: {id: $id}, _set: $general_info) {
-    address
-    bio
-    channel
-    consent
-    contact_num
-    date_joined
-    dob
-    email
-    gender
-    name
-    notes
-    pwa_details{
-      befrienders {
-        volunteer {
-          id
-          general_info {
-            name
-          }
-        }
-      }
-      comm_diff {
-        difficulty
-      }
-      contact_status
-      hospital
-      languages {
-        language
-      }
-      last_contact_details
-      media_engagement_details
-      media_willingness
-      nok {
-        contact_num
-        email
-        name
-        relationship
-      }
-      projects {
-        project {
-          id
-          title
-        }
-      }
-      pwa_befriender_cores {
-        core_volunteer {
-          id
+
+  insert_pwas_one(object: $pwa) {
+    befrienders {
+      volunteer {
+        id
+        general_info {
           name
         }
       }
-      pwa_contact_status {
-        status
+    }
+    comm_diff {
+      difficulty
+    }
+    contact_status
+    hospital
+    languages {
+      language
+    }
+    last_contact_details
+    media_engagement_details
+    media_willingness
+    nok {
+      contact_num
+      email
+      name
+      relationship
+    }
+    projects {
+      project {
+        id
+        title
       }
-      speech_therapist
-      stroke_date
-      wheelchair
-      id
+    }
+    pwa_befriender_cores {
+      core_volunteer {
+        id
+        name
+      }
+    }
+    speech_therapist
+    stroke_date
+    wheelchair
+    id
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
     }
   }
 }
@@ -69,7 +67,7 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 # variables:
 #{
 #  "id": 3,
-#  "people_external": { #ONLY NEED INCLUDE THE FIELDS THAT ARE UPDATED
+#  "general_info": { #ONLY NEED INCLUDE THE FIELDS THAT ARE UPDATED
 #    "address": "10 Sirat Place"
 #  },
 #  "pwa": { #THIS VARIABLE IS EXACTLY THE SAME AS THE PWA OBJECT INSIDE INSERT
