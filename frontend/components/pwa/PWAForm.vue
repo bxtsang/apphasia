@@ -197,6 +197,8 @@ import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
 import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
+import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
+import UpdatePWA from './../../graphql/pwa/UpdatePWA.graphql'
 
 export default {
   components: {
@@ -231,31 +233,31 @@ export default {
       isSubmitting: false,
       pwaData: {
         comm_diff: {
-          data: []
+          data: this.pwa ? this.pwa.comm_diff.map(item => item.difficulty) : []
         },
-        contact_status: 'Not Contacted',
-        last_contact_details: '',
-        hospital: '',
-        languages: { data: [] },
-        media_engagement_details: '',
-        media_willingness: null,
-        nok: { data: [] },
-        projects: { data: [] },
-        speech_therapist: '',
-        stroke_date: null,
-        wheelchair: null,
+        contact_status: this.pwa ? this.pwa.contact_status : 'Not Contacted',
+        last_contact_details: this.pwa ? this.pwa.last_contact_details : '',
+        hospital: this.pwa ? this.pwa.hospital : '',
+        languages: { data: this.pwa ? this.pwa.languages.map(item => item.language) : [] },
+        media_engagement_details: this.pwa ? this.pwa.media_engagement_details : '',
+        media_willingness: this.pwa ? this.pwa.media_willingness : null,
+        nok: { data: this.pwa ? this.pwa.nok : [] },
+        projects: { data: this.pwa ? this.pwa.projects.map(item => item.project.id) : [] },
+        speech_therapist: this.pwa ? this.pwa.speech_therapist : null,
+        stroke_date: this.pwa ? this.pwa.stroke_date : null,
+        wheelchair: this.pwa ? this.pwa.wheelchair : null,
         general_info: {
           data: {
-            address: '',
-            bio: '',
-            channel: null,
-            consent: null,
-            contact_num: '',
-            dob: '',
-            email: '',
-            gender: '',
-            name: '',
-            notes: ''
+            address: this.pwa ? this.pwa.general_info.address : '',
+            bio: this.pwa ? this.pwa.general_info.bio : '',
+            channel: this.pwa ? this.pwa.general_info.channel : null,
+            consent: this.pwa ? this.pwa.general_info.consent : null,
+            contact_num: this.pwa ? this.pwa.general_info.contact_num.toString() : '',
+            dob: this.pwa ? this.pwa.general_info.dob : '',
+            email: this.pwa ? this.pwa.general_info.email : '',
+            gender: this.pwa ? this.pwa.general_info.gender : '',
+            name: this.pwa ? this.pwa.general_info.name : '',
+            notes: this.pwa ? this.pwa.general_info.notes : ''
           }
         }
       }
@@ -275,13 +277,13 @@ export default {
   },
   methods: {
     submitPWA () {
-      const _ = require('lodash')
-      const newPwaData = _.cloneDeep(this.pwaData)
-      newPwaData.comm_diff.data = this.pwaData.comm_diff.data.map((item) => { return { difficulty: item } })
-      newPwaData.languages.data = this.pwaData.languages.data.map((item) => { return { language: item } })
-      newPwaData.projects.data = this.pwaData.projects.data.map((item) => { return { project_id: item } })
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
+        const _ = require('lodash')
+        const newPwaData = _.cloneDeep(this.pwaData)
+        newPwaData.comm_diff.data = this.pwaData.comm_diff.data.map((item) => { return { difficulty: item } })
+        newPwaData.languages.data = this.pwaData.languages.data.map((item) => { return { language: item } })
+        newPwaData.projects.data = this.pwaData.projects.data.map((item) => { return { project_id: item } })
         this.$apollo.mutate({
           mutation: CreatePWA,
           variables: { pwa: newPwaData },
@@ -331,7 +333,58 @@ export default {
       }
     },
     editPWA () {
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const constructedData = this.constructUpdateVariables(this.pwaData)
+        this.$apollo.mutate({
+          mutation: UpdatePWA,
+          variables: {
+            id: this.pwa.id,
+            general_info: constructedData.generalInfo.data,
+            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+          },
+          update: (store, { data: { insert_pwas_one: updatedPWA } }) => {
+            store.writeQuery({ query: GetSinglePWA, data: { pwas_by_pk: updatedPWA }, variables: { id: this.pwa.id } })
+            try {
+              const dataAll = store.readQuery({ query: GetAllPWA })
+              dataAll.pwas = dataAll.pwas.filter(item => item.id !== this.pwa.id)
+              dataAll.pwas.push(updatedPWA)
+              store.writeQuery({ query: GetAllPWA, dataAll })
+            } catch (error) {
+              // GetAllPWA Query not in store
+            }
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['PWA successfully updated', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          console.log(error.message)
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+    constructUpdateVariables (pwaData) {
+      const _ = require('lodash')
+      const updatedPwaData = _.cloneDeep(pwaData)
+      updatedPwaData.comm_diff.data = pwaData.comm_diff.data.map((item) => { return { difficulty: item } })
+      updatedPwaData.languages.data = pwaData.languages.data.map((item) => { return { language: item } })
+      updatedPwaData.projects.data = pwaData.projects.data.map((item) => { return { project_id: item } })
+      updatedPwaData.nok.data = updatedPwaData.nok.data.map((item) => {
+        return {
+          contact_num: item.contact_num,
+          email: item.email,
+          name: item.name,
+          relationship: item.relationship
+        }
+      })
 
+      delete updatedPwaData.general_info
+
+      const generalInfo = _.cloneDeep(pwaData.general_info)
+
+      return { updatedPwaData, generalInfo }
     }
   }
 }
