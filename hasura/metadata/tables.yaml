@@ -276,6 +276,13 @@
       filter: {}
 - table:
     schema: public
+    name: project_resources
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+- table:
+    schema: public
     name: project_staffs
   object_relationships:
   - name: project
@@ -1421,6 +1428,60 @@
   - role: core_team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: task_staffs
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
+  - name: task
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: tasks
+        column_mapping:
+          task_id: id
+          project_id: project_id
+- table:
+    schema: public
+    name: task_vols
+  object_relationships:
+  - name: task
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: tasks
+        column_mapping:
+          task_id: id
+          project_id: project_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+- table:
+    schema: public
+    name: tasks
+  array_relationships:
+  - name: assigned_staffs
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: task_staffs
+        column_mapping:
+          project_id: project_id
+          id: task_id
+  - name: assigned_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: task_vols
+        column_mapping:
+          project_id: project_id
+          id: task_id
 - table:
     schema: public
     name: test
