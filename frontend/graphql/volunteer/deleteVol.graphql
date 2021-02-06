@@ -1,5 +1,5 @@
-mutation delete_pwa ($id: Int!) {
-  delete_pwas(where: {
+mutation delete_volunteer ($id: Int!) {
+  delete_volunteers(where: {
       id: {_eq: $id}
   })
    {
