@@ -234,6 +234,10 @@
 - table:
     schema: public
     name: project_dates
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
   insert_permissions:
   - role: core_team
     permission:
@@ -987,6 +991,13 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
+  - name: dates
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          schema: public
+          name: project_dates
   - name: pwas
     using:
       foreign_key_constraint_on:
