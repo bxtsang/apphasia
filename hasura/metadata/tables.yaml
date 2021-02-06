@@ -218,6 +218,64 @@
       filter: {}
 - table:
     schema: public
+    name: project_dates
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - date
+      - recurring_schedule
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: project_pwa
   object_relationships:
   - name: project
