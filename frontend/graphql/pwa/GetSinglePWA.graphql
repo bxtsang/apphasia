@@ -16,6 +16,7 @@ query GetSinglePWA ($id: Int!) {
     languages {
       language
     }
+    last_contact_details
     media_engagement_details
     media_willingness
     nok {

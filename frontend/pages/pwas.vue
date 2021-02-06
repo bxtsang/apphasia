@@ -1,8 +1,7 @@
 <template>
   <div>
-    <!-- <IndividualPWAView v-if="pwaId" :resourceType="resourceType"/>
-    <v-container v-else class="pa-0" fluid> -->
-    <v-container class="pa-0" fluid>
+    <IndividualPWAView v-if="pwaId" :resourceType="resourceType"/>
+    <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
           <AddResourceModal :resourceType="resourceType"/>
@@ -18,11 +17,11 @@
 </template>
 <script>
 import AddResourceModal from './../components/modals/AddResourceModal'
-// import IndividualPWAView from './../components/volunteer/IndividualPWAView'
+import IndividualPWAView from './../components/pwa/IndividualPWAView'
 import ListingQuery from './../components/common/ListingQuery'
 
 export default {
-  components: { ListingQuery, AddResourceModal },
+  components: { ListingQuery, AddResourceModal, IndividualPWAView },
   data () {
     return {
       pwaId: this.$route.query.id,
