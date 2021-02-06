@@ -3,62 +3,65 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
     id
   }
 
-  insert_volunteers_one(object:$volunteer) {
-    id
-  }
-
   update_people_external_by_pk(
     pk_columns: {id: $id}
     _set: $general_info
   ) {
-    address
-    bio
-    channel
-    consent
-    contact_num
-    date_joined
-    dob
-    email
-    gender
-    name
-    notes
-    volunteer_details {
-      befrienders {
-        pwa {
-          general_info {
-            name
-          }
-          id
-        }
-      }
-      id
-      is_speech_therapist
-      nickname
-      profession
-      project_vols {
-        project {
-          id
-          title
-        }
-        interested
-        approved
-      }
-      rejected_date
-      status
-      status_reason
-      vol_ic {
-        ic {
-          id
+    id
+  }
+
+  insert_volunteers_one(object:$volunteer) {
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
+    }
+    befrienders {
+      pwa_id
+      pwa {
+        general_info {
           name
         }
+        id
       }
-      ws_place
-      vol_languages {
-        language
+    }
+    id
+    is_speech_therapist
+    nickname
+    profession
+    project_vols {
+      project_id
+      project {
+        id
+        title
       }
-      vol_voltypes {
-        voltype
+      interested
+      approved
+    }
+    rejected_date
+    status
+    status_reason
+    vol_ic {
+      staff_id
+      ic {
+        id
+        name
       }
+    }
+    ws_place
+    vol_languages {
+      language
+    }
+    vol_voltypes {
+      voltype
     }
   }
 }
