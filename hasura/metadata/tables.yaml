@@ -316,6 +316,61 @@
   - name: staff
     using:
       foreign_key_constraint_on: staff_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - staff_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: project_pwa_vols
@@ -339,6 +394,61 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - pwa_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: project_resources
@@ -346,6 +456,65 @@
   - name: project
     using:
       foreign_key_constraint_on: project_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - path
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - path
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: core_volunteer
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: project_staffs
@@ -519,6 +688,16 @@
       - description
       - updated_at
       backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - title
+      - owner_id
+      - description
+      - updated_at
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -556,6 +735,16 @@
       filter: {}
   update_permissions:
   - role: core_team
+    permission:
+      columns:
+      - id
+      - title
+      - owner_id
+      - description
+      - updated_at
+      filter: {}
+      check: {}
+  - role: intern
     permission:
       columns:
       - id
@@ -1526,6 +1715,61 @@
         column_mapping:
           task_id: id
           project_id: project_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - staff_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: task_vols
@@ -1542,6 +1786,61 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - task_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: tasks
@@ -1564,6 +1863,107 @@
         column_mapping:
           project_id: project_id
           id: task_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - id
+      - owner_id
+      - title
+      - description
+      - status
+      - due_date
+      - created_at
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - due_date
+      - id
+      - owner_id
+      - project_id
+      - description
+      - status
+      - title
+      - created_at
+      filter: {}
+      check: null
+  - role: core_volunteer
+    permission:
+      columns:
+      - status
+      filter: {}
+      check: null
+  - role: intern
+    permission:
+      columns:
+      - due_date
+      - id
+      - owner_id
+      - project_id
+      - description
+      - status
+      - title
+      - created_at
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: test
