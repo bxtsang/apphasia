@@ -3,6 +3,7 @@
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
+          <p>{{ volunteer }}</p>
           <v-row class="px-12">
             <v-col class="px-6">
               <span class="section-title">Let's get to know you better!</span>
@@ -10,39 +11,39 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <NameInput v-model="volunteerData.name" :outlined="true"/>
+              <NameInput v-model="volunteer.general_info.data.name" :outlined="true"/>
             </v-col>
             <v-col class="px-6">
-              <AliasInput v-model="volunteerData.nickname" :outlined="true"/>
+              <AliasInput v-model="volunteer.nickname" :outlined="true"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <ContactInput v-model="volunteerData.contact_num" :outlined="true"/>
+              <ContactInput v-model="volunteer.general_info.data.contact_num" :outlined="true"/>
             </v-col>
             <v-col class="px-6 px-6">
-              <EmailInput v-model="volunteerData.email" :outlined="true"/>
+              <EmailInput v-model="volunteer.general_info.data.email" :outlined="true"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <DateOfBirthInput v-model="volunteerData.dob" :outlined="true"/>
+              <DateOfBirthInput v-model="volunteer.general_info.data.dob" :outlined="true"/>
             </v-col>
             <v-col class="px-6">
-              <GenderInput v-model="volunteerData.gender" :outlined="true"/>
-            </v-col>
-          </v-row>
-          <v-row class="px-12">
-            <v-col class="px-6">
-              <AddressInput v-model="volunteerData.address" :outlined="true"/>
-            </v-col>
-            <v-col class="px-6">
-              <WorkplaceInput v-model="volunteerData.ws_place" :outlined="true"/>
+              <GenderInput v-model="volunteer.general_info.data.gender" :outlined="true"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <BioInput v-model="volunteerData.bio" :outlined="true"/>
+              <AddressInput v-model="volunteer.general_info.data.address" :outlined="true"/>
+            </v-col>
+            <v-col class="px-6">
+              <WorkplaceInput v-model="volunteer.ws_place" :outlined="true"/>
+            </v-col>
+          </v-row>
+          <v-row class="px-12">
+            <v-col class="px-6">
+              <BioInput v-model="volunteer.general_info.data.bio" :outlined="true"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
@@ -54,7 +55,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">How will you like to volunteer with us? (Tick all that applies)</span>
-                <VolunteerProjectInterestInput v-model="volunteerData.projects" />
+                <VolunteerProjectInterestInput v-model="volunteer.project_vols.data" />
               </v-card>
             </v-col>
           </v-row>
@@ -62,7 +63,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What language(s) can you speak? (Tick all that applies)</span>
-                <LanguageInput v-model="volunteerData.languages" :placeholderOnly="true" />
+                <LanguageInput v-model="volunteer.vol_languages.data" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -70,7 +71,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What is your profession?</span>
-                <MultiProfessionInput v-model="volunteerData.profession" />
+                <MultiProfessionInput v-model="volunteer.profession" />
               </v-card>
             </v-col>
           </v-row>
@@ -78,7 +79,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">How did you hear about Aphasia SG?</span>
-                <ChannelInput v-model="volunteerData.channel" :placeholderOnly="true" />
+                <ChannelInput v-model="volunteer.general_info.data.channel" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -86,7 +87,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">Consent</span>
-                <ConsentInput v-model="volunteerData.consent" />
+                <ConsentInput v-model="volunteer.general_info.data.consent" />
               </v-card>
             </v-col>
           </v-row>
@@ -152,45 +153,29 @@ export default {
     return {
       valid: true,
       isSubmitting: false,
-      volunteerData: {
-        name: '',
-        nickname: '',
-        contact_num: '',
-        email: '',
-        dob: '',
-        gender: '',
-        address: '',
-        ws_place: '',
-        bio: '',
-        projects: [],
-        languages: [],
-        profession: [],
-        channel: '',
-        consent: null
+      volunteer: {
+        general_info: {
+          data: {}
+        },
+        project_vols: {
+          data: []
+        },
+        vol_languages: {
+          data: []
+        },
+        profession: []
       }
     }
   },
   methods: {
     submitForm (registerSuccessful) {
       if (this.$refs.registrationForm.validate()) {
+        this.transformData()
         this.isSubmitting = true
         this.$apollo.mutate({
           mutation: CreateVol,
           variables: {
-            address: this.volunteerData.address,
-            bio: this.volunteerData.bio,
-            contact_num: this.volunteerData.contact_num,
-            channel: this.volunteerData.channel ? this.volunteerData.channel : null,
-            consent: this.volunteerData.consent,
-            dob: this.volunteerData.dob ? this.volunteerData.dob : null,
-            email: this.volunteerData.email,
-            gender: this.volunteerData.gender,
-            languages: { data: this.volunteerData.languages.map((item) => { return { language: item } }) },
-            name: this.volunteerData.name,
-            nickname: this.volunteerData.nickname,
-            profession: this.volunteerData.profession.join(),
-            projects: { data: this.volunteerData.projects.map((item) => { return { project_id: item } }) },
-            ws_place: this.volunteerData.ws_place
+            volunteer: this.volunteer
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -201,6 +186,11 @@ export default {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
+    },
+    transformData () {
+      this.volunteer.project_vols = this.volunteer.project_vols.map((item) => { return { project_id: item } })
+      this.volunteer.vol_languages = this.volunteer.vol_languages.map((item) => { return { language: item } })
+      this.volunteer.profession = this.volunteer.profession.join(',')
     }
   }
 }
