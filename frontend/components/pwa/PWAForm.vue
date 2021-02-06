@@ -32,7 +32,7 @@
           </v-col>
           <v-col cols="4" class="py-0">
             <GenderInput
-              v-model="pwaData.general_info.gender"
+              v-model="pwaData.general_info.data.gender"
               :required="true"
             />
           </v-col>
@@ -163,7 +163,6 @@
         <NOKInput
           v-model="pwaData.nok.data"
         />
-        <pre>{{ pwaData }}</pre>
         <v-row>
           <v-btn v-if="pwa" color="error" class="my-3" @click="() => { }">
             DELETE
@@ -197,6 +196,7 @@ import PWAContactStatusInput from './../input/PWAContactStatusInput'
 import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
 import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
+import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 
 export default {
   components: {
@@ -233,7 +233,7 @@ export default {
         comm_diff: {
           data: []
         },
-        contact_status: null,
+        contact_status: 'Not Contacted',
         last_contact_details: '',
         hospital: '',
         languages: { data: [] },
@@ -242,13 +242,13 @@ export default {
         nok: { data: [] },
         projects: { data: [] },
         speech_therapist: '',
-        stroke_date: '',
+        stroke_date: null,
         wheelchair: null,
         general_info: {
           data: {
             address: '',
             bio: '',
-            channel: '',
+            channel: null,
             consent: null,
             contact_num: '',
             dob: '',
@@ -275,14 +275,54 @@ export default {
   },
   methods: {
     submitPWA () {
+      const _ = require('lodash')
+      const newPwaData = _.cloneDeep(this.pwaData)
+      newPwaData.comm_diff.data = this.pwaData.comm_diff.data.map((item) => { return { difficulty: item } })
+      newPwaData.languages.data = this.pwaData.languages.data.map((item) => { return { language: item } })
+      newPwaData.projects.data = this.pwaData.projects.data.map((item) => { return { project_id: item } })
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
         this.$apollo.mutate({
           mutation: CreatePWA,
-          variables: this.pwaData,
-          update: () => {}
+          variables: { pwa: newPwaData },
+          update: (store, { data: { insert_pwas_one: newPWA } }) => {
+            const data = store.readQuery({ query: GetAllPWA })
+            data.pwas.push(newPWA)
+            store.writeQuery({ query: GetAllPWA, data })
+          }
         }).then((data) => {
           this.isSubmitting = false
+          this.pwaData = {
+            comm_diff: {
+              data: []
+            },
+            contact_status: 'Not Contacted',
+            last_contact_details: '',
+            hospital: '',
+            languages: { data: [] },
+            media_engagement_details: '',
+            media_willingness: null,
+            nok: { data: [] },
+            projects: { data: [] },
+            speech_therapist: '',
+            stroke_date: null,
+            wheelchair: null,
+            general_info: {
+              data: {
+                address: '',
+                bio: '',
+                channel: null,
+                consent: null,
+                contact_num: '',
+                dob: '',
+                email: '',
+                gender: '',
+                name: '',
+                notes: ''
+              }
+            }
+          }
+          this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['PWA successfully created', 'success'])
         }).catch((error) => {
           this.isSubmitting = false
