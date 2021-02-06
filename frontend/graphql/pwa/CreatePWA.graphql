@@ -54,9 +54,6 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
       name
       notes
     }
-    pwa_contact_status {
-      status
-    }
   }
 }
 
