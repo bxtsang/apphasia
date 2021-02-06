@@ -126,7 +126,7 @@ import VolunteerProjectInterestInput from './../../components/input/VolunteerPro
 import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
-import CreateVol from './../../graphql/volunteer/CreateVol.graphql'
+import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
 
 export default {
@@ -173,7 +173,7 @@ export default {
         this.transformData()
         this.isSubmitting = true
         this.$apollo.mutate({
-          mutation: CreateVol,
+          mutation: RegisterVol,
           variables: {
             volunteer: this.volunteer
           }
