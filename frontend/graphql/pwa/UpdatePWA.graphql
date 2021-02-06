@@ -34,6 +34,7 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
       languages {
         language
       }
+      last_contact_details
       media_engagement_details
       media_willingness
       nok {
