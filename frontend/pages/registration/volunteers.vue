@@ -3,7 +3,6 @@
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
-          <p>{{ volunteer }}</p>
           <v-row class="px-12">
             <v-col class="px-6">
               <span class="section-title">Let's get to know you better!</span>
@@ -55,7 +54,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">How will you like to volunteer with us? (Tick all that applies)</span>
-                <VolunteerProjectInterestInput v-model="volunteer.project_vols.data" />
+                <VolunteerProjectInterestInput v-model="projectVols" />
               </v-card>
             </v-col>
           </v-row>
@@ -63,7 +62,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What language(s) can you speak? (Tick all that applies)</span>
-                <LanguageInput v-model="volunteer.vol_languages.data" :placeholderOnly="true" />
+                <LanguageInput v-model="languages" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -71,7 +70,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What is your profession?</span>
-                <MultiProfessionInput v-model="volunteer.profession" />
+                <MultiProfessionInput v-model="profession" />
               </v-card>
             </v-col>
           </v-row>
@@ -162,9 +161,11 @@ export default {
         },
         vol_languages: {
           data: []
-        },
-        profession: []
-      }
+        }
+      },
+      profession: [],
+      projectVols: [],
+      languages: []
     }
   },
   methods: {
@@ -188,9 +189,9 @@ export default {
       }
     },
     transformData () {
-      this.volunteer.project_vols = this.volunteer.project_vols.map((item) => { return { project_id: item } })
-      this.volunteer.vol_languages = this.volunteer.vol_languages.map((item) => { return { language: item } })
-      this.volunteer.profession = this.volunteer.profession.join(',')
+      this.volunteer.project_vols = { data: this.projectVols.map((item) => { return { project_id: item } }) }
+      this.volunteer.vol_languages = { data: this.languages.map((item) => { return { language: item } }) }
+      this.volunteer.profession = this.profession.join(',')
     }
   }
 }
