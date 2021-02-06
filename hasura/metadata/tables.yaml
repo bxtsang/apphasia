@@ -2331,6 +2331,14 @@
       - status_reason
       - rejected_date
       - status
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - nickname
+      - profession
+      - ws_place
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
