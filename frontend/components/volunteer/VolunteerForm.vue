@@ -162,7 +162,7 @@
         <v-row>
           <v-col class="py-0">
             <VolunteerIcInput
-              v-model="vol_ic"
+              v-model="volIc"
             />
           </v-col>
         </v-row>
@@ -201,8 +201,7 @@ export default {
       volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
       languages: this.volunteer.vol_languages.map(item => item.language),
       voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      vol_ic: this.volunteer.vol_ic.map(item => item.staff_id),
-      project_vols: this.volunteer.project_vols,
+      volIc: this.volunteer.vol_ic.map(item => item.staff_id),
       isSubmitting: false
     }
   },
@@ -223,19 +222,11 @@ export default {
         }
       }
     },
-    vol_ic: {
+    volIc: {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
           data: newValue.map((item) => { return { staff_id: item } })
-        }
-      }
-    },
-    project_vols: {
-      immediate: true,
-      handler (newValue, oldValue) {
-        this.volunteerDetails.project_vols = {
-          data: newValue.map((item) => { return { project_id: item.project_id } })
         }
       }
     }
@@ -256,10 +247,6 @@ export default {
       console.log(this.volunteerDetails)
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
-        // const languageChanges = this.getLanguageChanges()
-        // const volIcChanges = this.getVolIcChanges()
-        // const volTypeChanges = this.getVolTypeChanges()
-        // const projectChanges = this.getProjectInterestChanges()
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
