@@ -20,6 +20,13 @@ export const PWA_CONTACT_STATUS_OPTIONS = [
   'Contacted'
 ]
 
+export const PWA_PREFFERED_CONTACTED_OPTIONS = [
+  'Whatsapp',
+  'Telegram',
+  'SMS',
+  'Call'
+]
+
 export const INPUT_VALIDATION = {
   role: {
     required: v => !!v || 'Role is required'
