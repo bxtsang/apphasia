@@ -135,14 +135,14 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="py-0">
-            <VolTypeInput
-              v-model="voltypes"
-            />
-          </v-col>
-          <v-col class="py-0">
+          <v-col cols="6" class="py-0">
             <VolunteerStatusInput
               v-model="volunteerDetails.status"
+            />
+          </v-col>
+          <v-col v-if="volunteerDetails.status === 'Approved'" class="py-0">
+            <VolTypeInput
+              v-model="voltypes"
             />
           </v-col>
         </v-row>
