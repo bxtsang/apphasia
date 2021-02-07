@@ -202,6 +202,7 @@ export default {
       languages: this.volunteer.vol_languages.map(item => item.language),
       voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
       volIc: this.volunteer.vol_ic.map(item => item.staff_id),
+      project_vols: this.volunteer.project_vols,
       isSubmitting: false
     }
   },
@@ -227,6 +228,14 @@ export default {
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
           data: newValue.map((item) => { return { staff_id: item } })
+        }
+      }
+    },
+    project_vols: {
+      immediate: true,
+      handler (newValue, oldValue) {
+        this.volunteerDetails.project_vols = {
+          data: newValue.map((item) => { return { project_id: item.project_id } })
         }
       }
     }
