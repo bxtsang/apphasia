@@ -1558,81 +1558,87 @@
     permission:
       check: {}
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
   - role: intern
     permission:
       check: {}
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
   - role: public
     permission:
       check: {}
       columns:
-      - media_willingness
-      - wheelchair
-      - stroke_date
-      - id
+      - comm_mode
       - contact_status
       - hospital
+      - id
       - last_contact_details
       - media_engagement_details
+      - media_willingness
       - speech_therapist
+      - stroke_date
+      - wheelchair
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
       filter: {}
   - role: intern
     permission:
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
       filter: {}
   - role: public
     permission:
@@ -1643,31 +1649,33 @@
   - role: core_team
     permission:
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
       filter: {}
-      check: null
+      check: {}
   - role: intern
     permission:
       columns:
-      - contact_status
-      - hospital
       - id
-      - last_contact_details
+      - contact_status
       - media_engagement_details
-      - media_willingness
+      - hospital
       - speech_therapist
+      - media_willingness
       - stroke_date
       - wheelchair
+      - last_contact_details
+      - comm_mode
       filter: {}
-      check: null
+      check: {}
   delete_permissions:
   - role: core_team
     permission:
