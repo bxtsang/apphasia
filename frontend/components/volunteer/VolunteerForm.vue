@@ -135,14 +135,14 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col class="py-0">
-            <VolTypeInput
-              v-model="voltypes"
-            />
-          </v-col>
-          <v-col class="py-0">
+          <v-col cols="6" class="py-0">
             <VolunteerStatusInput
               v-model="volunteerDetails.status"
+            />
+          </v-col>
+          <v-col v-if="volunteerDetails.status === 'Approved'" class="py-0">
+            <VolTypeInput
+              v-model="voltypes"
             />
           </v-col>
         </v-row>
@@ -162,7 +162,7 @@
         <v-row>
           <v-col class="py-0">
             <VolunteerIcInput
-              v-model="vol_ic"
+              v-model="volIc"
             />
           </v-col>
         </v-row>
@@ -201,7 +201,7 @@ export default {
       volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
       languages: this.volunteer.vol_languages.map(item => item.language),
       voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      vol_ic: this.volunteer.vol_ic.map(item => item.staff_id),
+      volIc: this.volunteer.vol_ic.map(item => item.staff_id),
       project_vols: this.volunteer.project_vols,
       isSubmitting: false
     }
@@ -223,7 +223,7 @@ export default {
         }
       }
     },
-    vol_ic: {
+    volIc: {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
@@ -256,10 +256,6 @@ export default {
       console.log(this.volunteerDetails)
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
-        // const languageChanges = this.getLanguageChanges()
-        // const volIcChanges = this.getVolIcChanges()
-        // const volTypeChanges = this.getVolTypeChanges()
-        // const projectChanges = this.getProjectInterestChanges()
         this.$apollo.mutate({
           mutation: UpdateVol,
           variables: {
@@ -270,15 +266,13 @@ export default {
           update: (
             store, {
               data: {
-                update_volunteers: {
-                  returning: [updatedVolunteer]
-                }
+                insert_volunteers_one: updatedVolunteer
               }
             }
           ) => {
             store.writeQuery({
               query: GetSingleVol,
-              data: { volunteers: [updatedVolunteer] },
+              data: { volunteers_by_pk: updatedVolunteer },
               variables: { id: this.volunteerDetails.id }
             })
             try {

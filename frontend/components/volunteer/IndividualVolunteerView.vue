@@ -51,6 +51,14 @@
                     <span class="font-italic">Reason for {{ data.volunteers_by_pk.status }}: {{ data.volunteers_by_pk.status_reason }}</span>
                   </v-col>
                 </v-row>
+                <v-row v-else-if="data.volunteers_by_pk.status === 'Approved'">
+                  <v-col class="py-0 mt-2" cols="4">
+                    <VolTypeInput
+                      :value="data.volunteers_by_pk.vol_voltypes.map(item => item.voltype)"
+                      :readonly="true"
+                    />
+                  </v-col>
+                </v-row>
                 <v-row class="mt-8">
                   <v-col cols="12" class="py-0">
                     <span class="font-weight-bold">Personal Details</span>
