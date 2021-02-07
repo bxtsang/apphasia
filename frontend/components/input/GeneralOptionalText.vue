@@ -1,7 +1,8 @@
 <template>
   <v-text-field
     v-model="data"
-    :label="label"
+    :label="!placeholderOnly ? label : ''"
+    :placeholder="placeholderOnly ? label : ''"
     :readonly="readonly"
     :outlined="outlined"
     :disabled="disabled"
@@ -31,6 +32,10 @@ export default {
     label: {
       type: String,
       default: ''
+    },
+    placeholderOnly: {
+      type: Boolean,
+      default: false
     }
   },
 
