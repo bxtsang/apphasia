@@ -73,6 +73,7 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 #  },
 #  "pwa": { #THIS VARIABLE IS EXACTLY THE SAME AS THE PWA OBJECT INSIDE INSERT
 #    "befrienders": {"data": []},
+#    "comm_mode": "Whatsapp",
 #    "comm_diff": {"data": [
 #      {
 #        "difficulty": "Speech"
