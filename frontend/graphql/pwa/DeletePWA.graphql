@@ -1,12 +1,7 @@
 mutation DeletePWA($id: Int!) {
-  delete_pwas(where: {
-    id: {_eq: $id}
-  })
+  delete_pwas_by_pk(id: $id)
   {
-    returning{
-      id
-    }
-    affected_rows
+    id
   }
 
   delete_people_external(where: {
