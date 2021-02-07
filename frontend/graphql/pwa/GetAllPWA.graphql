@@ -8,6 +8,7 @@ query GetAllPWA {
         }
       }
     }
+    comm_mode
     comm_diff {
       difficulty
     }

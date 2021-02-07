@@ -15,6 +15,7 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
         }
       }
     }
+    comm_mode
     comm_diff {
       difficulty
     }
