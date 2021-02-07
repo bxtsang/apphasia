@@ -2,7 +2,7 @@
   <v-select
     v-model="data"
     :items="COMM_DIFF_OPTIONS"
-    label="Communication Difficults"
+    label="Communication Difficulties"
     :rules="validation"
     :required="required"
     :readonly="readonly"

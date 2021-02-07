@@ -28,13 +28,16 @@
     </template>
     <StaffForm v-if="resourceType === 'staffs'" :staff="resource" v-on:closeForm="isOpen = false" />
     <VolunteerForm v-if="resourceType === 'volunteers'" :volunteer="resource" v-on:closeForm="isOpen = false" />
+    <PWAForm v-if="resourceType === 'pwas'" :pwa="resource" v-on:closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
 import StaffForm from './../staff/StaffForm'
+import VolunteerForm from './../volunteer/VolunteerForm'
+import PWAForm from './../pwa/PWAForm'
 
 export default {
-  components: { StaffForm },
+  components: { StaffForm, VolunteerForm, PWAForm },
   props: {
     text: Boolean,
     resource: {
