@@ -270,15 +270,13 @@ export default {
           update: (
             store, {
               data: {
-                update_volunteers: {
-                  returning: [updatedVolunteer]
-                }
+                insert_volunteers_one: updatedVolunteer
               }
             }
           ) => {
             store.writeQuery({
               query: GetSingleVol,
-              data: { volunteers: [updatedVolunteer] },
+              data: { volunteers_by_pk: updatedVolunteer },
               variables: { id: this.volunteerDetails.id }
             })
             try {
