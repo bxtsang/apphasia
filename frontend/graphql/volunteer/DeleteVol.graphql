@@ -1,16 +1,9 @@
-mutation delete_volunteer ($id: Int!) {
-  delete_volunteers(where: {
-      id: {_eq: $id}
-  })
+mutation DeleteVol ($id: Int!) {
+  delete_volunteers_by_pk(id: $id)
    {
-    returning{
-      id
-    }
-    affected_rows
-  }
-}
+     id
+   }
 
-mutation delete_people_external ($id: Int!) {
   delete_people_external(where: {
      _and: [
     {_not: {volunteer_details : {} } },
