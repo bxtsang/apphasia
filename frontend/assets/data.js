@@ -74,6 +74,9 @@ export const INPUT_VALIDATION = {
   },
   comm_diff: {
     required: v => v.length > 0 || 'One Communication Difficulty is required'
+  },
+  pref_comm: {
+    required: v => !!v || 'One Mode of Communication is required'
   }
 }
 
