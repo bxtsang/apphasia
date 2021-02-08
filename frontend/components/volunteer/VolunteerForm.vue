@@ -251,11 +251,7 @@ export default {
           return newObj
         }, {})
     },
-    deleteVolunteer () {
-    //  to implement
-    },
     updateVolunteer () {
-      console.log(this.volunteerDetails)
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
         this.$apollo.mutate({
@@ -296,7 +292,7 @@ export default {
         }).then((data) => {
           this.isSubmitting = false
           this.$emit('closeForm')
-          this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'successful'])
+          this.$store.commit('notification/newNotification', ['Volunteer successfully updated', 'success'])
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
