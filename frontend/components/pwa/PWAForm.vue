@@ -134,7 +134,12 @@
               label="Last Contact Details"
             />
           </v-col>
-          <v-col :cols="contactedButNoResponse ? 12 : 6" class="py-0">
+          <v-col cols="6" class="py-0">
+            <PWAPreferredCommInput
+              v-model="pwaData.comm_mode"
+            />
+          </v-col>
+          <v-col cols="6" class="py-0">
             <GeneralOptionalText
               v-model="pwaData.general_info.data.notes"
               label="Notes"
@@ -198,6 +203,7 @@ import MediaWillingnessInput from './../input/MediaWillingnessInput'
 import PWAContactStatusInput from './../input/PWAContactStatusInput'
 import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
+import PWAPreferredCommInput from './../input/PWAPreferredCommInput'
 import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
@@ -222,7 +228,8 @@ export default {
     MediaWillingnessInput,
     PWAContactStatusInput,
     GeneralOptionalText,
-    NOKInput
+    NOKInput,
+    PWAPreferredCommInput
   },
   props: {
     pwa: {
@@ -238,6 +245,7 @@ export default {
         comm_diff: {
           data: this.pwa ? this.pwa.comm_diff.map(item => item.difficulty) : []
         },
+        comm_mode: this.pwa ? this.pwa.comm_mode : '',
         contact_status: this.pwa ? this.pwa.contact_status : 'Not Contacted',
         last_contact_details: this.pwa ? this.pwa.last_contact_details : '',
         hospital: this.pwa ? this.pwa.hospital : '',
