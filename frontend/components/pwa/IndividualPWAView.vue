@@ -204,7 +204,15 @@
                       readonly
                     />
                   </v-col>
-                  <v-col :cols="contactedButNoResponse(data.pwas_by_pk.contact_status) ? 12 : 6" class="py-0">
+                  <v-col cols="6" class="py-0">
+                    <v-select
+                      :value="data.pwas_by_pk.comm_mode"
+                      :items="[data.pwas_by_pk.comm_mode]"
+                      label="Preferred mode of communication"
+                      readonly
+                    />
+                  </v-col>
+                  <v-col cols="6" class="py-0">
                     <v-textarea
                       :value="data.pwas_by_pk.general_info.notes"
                       auto-grow
