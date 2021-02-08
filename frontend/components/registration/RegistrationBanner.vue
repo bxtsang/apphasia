@@ -7,9 +7,11 @@
     </v-row>
     <v-row>
       <SuccessView v-if="submitSuccessful" />
-      <v-card v-else>
+      <v-card v-else max-width="1200">
         <v-container class="pa-12">
-          <h1 class="text-center pb-3">Aphasia SG Volunteer Registration Form</h1>
+          <h1 class="text-center pb-3">
+            {{ formTitle }}
+          </h1>
           <v-row>
             <v-col cols="12" class="d-flex align-center justify-center pa-6" sm="12" md="5">
               <v-img src="/clip-social-networks.svg" contain/>
@@ -29,7 +31,7 @@
           <v-row class="py-0 px-12">
             <v-col class="px-6 d-flex align-center">
               <v-icon>mdi-hand-pointing-right</v-icon>
-              <b class="pl-6">I AM A VOLUNTEER!</b>
+              <b class="pl-6">{{ formHeader }}</b>
             </v-col>
           </v-row>
         </v-container>
@@ -48,14 +50,36 @@ import SuccessView from './../../components/registration/SuccessView'
 export default {
   layout: 'none',
   components: { SuccessView },
+  props: {
+    resourceType: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
-      submitSuccessful: false
+      submitSuccessful: false,
+      title: {
+        pwas: 'Aphasia SG Person with Aphasia (PWA) or Caregiver Registration Form',
+        volunteers: 'Aphasia SG Volunteer Registration Form'
+      },
+      header: {
+        pwas: 'I AM A PERSON WITH APHASIA (PWA) / CAREGIVER',
+        volunteers: 'I AM A VOLUNTEER!'
+      }
     }
   },
   methods: {
     registerSuccessful () {
       this.submitSuccessful = true
+    }
+  },
+  computed: {
+    formTitle () {
+      return this.title[this.resourceType]
+    },
+    formHeader () {
+      return this.header[this.resourceType]
     }
   }
 }

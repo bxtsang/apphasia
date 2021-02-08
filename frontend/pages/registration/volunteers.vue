@@ -1,5 +1,5 @@
 <template>
-  <RegistrationBanner>
+  <RegistrationBanner :resourceType="resourceType">
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
@@ -152,6 +152,7 @@ export default {
     return {
       valid: true,
       isSubmitting: false,
+      resourceType: 'volunteers',
       volunteer: {
         general_info: {
           data: {}

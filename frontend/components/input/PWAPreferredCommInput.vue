@@ -1,30 +1,28 @@
 <template>
   <v-select
-    v-if="type === 'select'"
     v-model="data"
-    :items="OPTIONS"
+    :items="PWA_PREFFERED_CONTACTED_OPTIONS"
+    :label="label"
     :rules="validation"
-    :label="!placeholderOnly ? label : ''"
-    :placeholder="placeholderOnly ? label : ''"
     :required="required"
     :readonly="readonly"
+    :disabled="disabled"
     :outlined="outlined"
+    :hint="hint"
+    :persistent-hint="hint ? true : false"
   />
-  <v-radio-group v-else v-model="data" :rules="validation">
-    <v-radio v-for="option in OPTIONS" :key="option.value" :label="option.text" :value="option.value" :readonly="readonly"/>
-  </v-radio-group>
 </template>
 
 <script>
-import { INPUT_VALIDATION } from './../../assets/data'
+import { INPUT_VALIDATION, PWA_PREFFERED_CONTACTED_OPTIONS } from './../../assets/data'
 
 export default {
-  name: 'WheelChairInput',
+  name: 'PWAPreferredCommInput',
 
   props: {
     value: {
-      type: Boolean,
-      default: null
+      type: String,
+      default: ''
     },
     required: {
       type: Boolean,
@@ -34,28 +32,29 @@ export default {
       type: Boolean,
       default: false
     },
-    outlined: {
+    disabled: {
       type: Boolean,
       default: false
     },
+    outlined: {
+      type: Boolean
+    },
     label: {
       type: String,
-      default: 'Wheelchair needed?'
+      default: 'Preferred mode of communication'
     },
-    type: {
+    hint: {
       type: String,
-      default: 'select'
+      default: ''
     }
   },
 
   data () {
     return {
-      OPTIONS: [
-        { text: 'Yes', value: true },
-        { text: 'No', value: false }
-      ],
       data: this.value,
-      validation: [...(this.required ? [INPUT_VALIDATION.wheelchair.required] : [])]
+      INPUT_VALIDATION,
+      PWA_PREFFERED_CONTACTED_OPTIONS,
+      validation: [...(this.required ? [INPUT_VALIDATION.pref_comm.required] : [])]
     }
   },
 

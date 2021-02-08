@@ -2,7 +2,7 @@
   <v-text-field
     v-model="data"
     :rules="validation"
-    label="Email"
+    :label="label"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
@@ -36,6 +36,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Email'
     }
   },
 
