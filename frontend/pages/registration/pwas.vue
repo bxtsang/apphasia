@@ -68,7 +68,7 @@
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">Which activity will you like to attend(Can select more than one)</span>
                 <PWAProjectInterestInput
-                  v-model="pwa.projects"
+                  v-model="pwa.projects.data"
                   :required="true"
                 />
               </v-card>
@@ -89,7 +89,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What are your communication difficulties? (Can select more than one)</span>
-                <CommDiffInput v-model="pwa.comm_diff" :placeholderOnly="true" :required="true" />
+                <CommDiffInput v-model="pwa.comm_diff.data" :placeholderOnly="true" :required="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -97,7 +97,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">What language(s) can you speak or understand? (Can select more than one)</span>
-                <LanguageInput v-model="pwa.languages" :placeholderOnly="true" />
+                <LanguageInput v-model="pwa.languages.data" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -143,7 +143,7 @@
               <p class="pt-3">You can include more caregiver / next-of-kin details (up to three)</p>
             </v-col>
           </v-row>
-          <NOKRegistrationInput v-model="pwa.nok" />
+          <NOKRegistrationInput v-model="pwa.nok.data" />
           <v-row class="px-12">
             <v-col class="px-6">
               <span class="section-title">✏️ Lastly...</span>
@@ -204,6 +204,7 @@ import NOKRegistrationInput from './../../components/input/NOKRegistrationInput'
 import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import RegisterPWA from './../../graphql/pwa/RegisterPWA'
 
 export default {
   components: {
@@ -236,36 +237,49 @@ export default {
         general_info: {
           data: {}
         },
-        languages: [],
-        nok: [
-          {
-            contact_num: '',
-            email: '',
-            name: '',
-            relationship: ''
-          }
-        ]
+        nok: {
+          data: [
+            {
+              contact_num: '',
+              email: '',
+              name: '',
+              relationship: ''
+            }
+          ]
+        },
+        comm_diff: {
+          data: []
+        },
+        languages: {
+          data: []
+        },
+        projects: {
+          data: []
+        }
       }
     }
   },
   methods: {
     submitForm (registerSuccessful) {
       if (this.$refs.registrationForm.validate()) {
-        // this.transformData()
-        // this.isSubmitting = true
-        // this.$apollo.mutate({
-        //   mutation: RegisterVol,
-        //   variables: {
-        //     volunteer: this.volunteer
-        //   }
-        // }).then((data) => {
-        //   this.isSubmitting = false
-        //   this.$store.commit('notification/newNotification', ['Your registration has been created', 'success'])
-        //   registerSuccessful()
-        // }).catch((error) => {
-        //   this.isSubmitting = false
-        //   this.$store.commit('notification/newNotification', [error.message, 'error'])
-        // })
+        this.isSubmitting = true
+        const _ = require('lodash')
+        const newPwaData = _.cloneDeep(this.pwa)
+        newPwaData.comm_diff.data = this.pwa.comm_diff.data.map((item) => { return { difficulty: item } })
+        newPwaData.languages.data = this.pwa.languages.data.map((item) => { return { language: item } })
+        newPwaData.projects.data = this.pwa.projects.data.map((item) => { return { project_id: item } })
+        newPwaData.stroke_date = `${this.pwa.stroke_date}-01`
+        this.$apollo.mutate({
+          mutation: RegisterPWA,
+          variables: { pwa: newPwaData }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', ['Your registration has been created', 'success'])
+          registerSuccessful()
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
       }
     }
   }
