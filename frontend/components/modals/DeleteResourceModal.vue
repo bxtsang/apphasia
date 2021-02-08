@@ -26,7 +26,7 @@
         <v-spacer />
         <v-btn
           color="error"
-          @click="dialog = false"
+          @click="deleteResource"
         >
           Confirm
         </v-btn>
@@ -58,6 +58,11 @@ export default {
         return this.resource.general_info.name
       }
       return null
+    }
+  },
+  methods: {
+    deleteResource () {
+    //  to Implement
     }
   }
 }
