@@ -164,9 +164,11 @@
           v-model="pwaData.nok.data"
         />
         <v-row>
-          <v-btn v-if="pwa" color="error" class="my-3" @click="() => { }">
-            DELETE
-          </v-btn>
+          <DeleteResourceModal
+            :resource="pwa"
+            :resourceType="'pwas'"
+            @deleteSuccess="$emit('closeForm')"
+          />
           <v-spacer/>
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ pwa ? 'Edit' : 'Save' }}
