@@ -43,7 +43,13 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-
+              <PWAPreferredCommInput
+                v-model="pwa.comm_mode"
+                label="What is your preferred mode of communication"
+                :required="true"
+                :outlined="true"
+                hint="^ We will be contacting you through this mode of communication"
+              />
             </v-col>
             <v-col class="px-6">
               <BioInput
@@ -57,9 +63,36 @@
               <span class="section-title">👉🏻 More information about you</span>
             </v-col>
           </v-row>
-          PWA project interest<br />
-          StrokeData<br />
-          Comm Diff<br />
+          <v-row class="px-12">
+            <v-col class="px-6">
+              <v-card class="card-input pa-6" outlined>
+                <span class="input-label">Which activity will you like to attend(Can select more than one)</span>
+                <PWAProjectInterestInput
+                  v-model="pwa.projects"
+                  :required="true"
+                />
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row class="px-12">
+            <v-col class="px-6">
+              <v-card class="card-input pa-6" outlined>
+                <span class="input-label">When did your stroke / brain injury happen?</span>
+                <PWAStrokeDateRegistrationInput
+                  v-model="pwa.stroke_date"
+                  :required="true"
+                />
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row class="px-12">
+            <v-col class="px-6">
+              <v-card class="card-input pa-6" outlined>
+                <span class="input-label">What are your communication difficulties? (Can select more than one)</span>
+                <CommDiffInput v-model="pwa.comm_diff" :placeholderOnly="true" :required="true" />
+              </v-card>
+            </v-col>
+          </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
@@ -72,7 +105,11 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">Do you need a wheelchair?</span>
-
+                <WheelChairInput
+                  v-model="pwa.wheelchair"
+                  :required="true"
+                  type="radio"
+                />
               </v-card>
             </v-col>
           </v-row>
@@ -106,6 +143,7 @@
               <p class="pt-3">You can include more caregiver / next-of-kin details (up to three)</p>
             </v-col>
           </v-row>
+          <NOKRegistrationInput v-model="pwa.nok" />
           <v-row class="px-12">
             <v-col class="px-6">
               <span class="section-title">✏️ Lastly...</span>
@@ -142,7 +180,6 @@
               </v-btn>
             </v-col>
           </v-row>
-          <pre>{{ pwa }}</pre>
         </v-container>
       </v-form>
     </template>
@@ -156,10 +193,14 @@ import GenderInput from './../../components/input/GenderInput.vue'
 import ContactInput from './../../components/input/ContactInput.vue'
 import EmailInput from './../../components/input/EmailInput.vue'
 import AddressInput from './../../components/input/AddressInput.vue'
+import PWAPreferredCommInput from './../../components/input/PWAPreferredCommInput'
 import BioInput from './../../components/input/BioInput.vue'
-
+import PWAProjectInterestInput from './../../components/input/PWAProjectInterestInput'
+import PWAStrokeDateRegistrationInput from './../../components/input/PWAStrokeDateRegistrationInput'
 import LanguageInput from './../../components/input/LanguageInput.vue'
+import WheelChairInput from './../../components/input/WheelChairInput.vue'
 import GeneralOptionalText from './../../components/input/GeneralOptionalText'
+import NOKRegistrationInput from './../../components/input/NOKRegistrationInput'
 import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
@@ -172,12 +213,17 @@ export default {
     ContactInput,
     EmailInput,
     AddressInput,
+    PWAPreferredCommInput,
     BioInput,
+    PWAProjectInterestInput,
+    PWAStrokeDateRegistrationInput,
     LanguageInput,
     GeneralOptionalText,
     ChannelInput,
     ConsentInput,
-    RegistrationBanner
+    RegistrationBanner,
+    WheelChairInput,
+    NOKRegistrationInput
   },
   layout: 'none',
   middleware: 'clearLoginCache',
@@ -190,7 +236,15 @@ export default {
         general_info: {
           data: {}
         },
-        languages: []
+        languages: [],
+        nok: [
+          {
+            contact_num: '',
+            email: '',
+            name: '',
+            relationship: ''
+          }
+        ]
       }
     }
   },
