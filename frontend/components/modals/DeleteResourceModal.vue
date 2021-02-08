@@ -18,7 +18,7 @@
       </v-card-title>
       <v-divider />
       <v-card-text class="mt-4">
-        Deleting {{ resourceType }}: <span class="font-weight-bold">{{ identifier }}</span>
+        Deleting {{ resourceType.substr(0, resourceType.length - 1) }}: <span class="font-weight-bold">{{ identifier }}</span>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
@@ -38,6 +38,9 @@
 import DeleteVol from './../../graphql/volunteer/DeleteVol.graphql'
 import GetSingleVol from './../../graphql/volunteer/GetSingleVol.graphql'
 import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
+import DeletePWA from './../../graphql/pwa/DeletePWA.graphql'
+import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
+import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 
 export default {
   props: {
@@ -58,8 +61,32 @@ export default {
   },
   computed: {
     identifier () {
-      if (this.resourceType === 'volunteer' || this.resourceType === 'pwa') {
+      if (this.resourceType === 'volunteers' || this.resourceType === 'pwas') {
         return this.resource.general_info.name
+      }
+      return null
+    },
+    deleteMutation () {
+      if (this.resourceType === 'volunteers') {
+        return DeleteVol
+      } else if (this.resourceType === 'pwas') {
+        return DeletePWA
+      }
+      return null
+    },
+    getSingleMutation () {
+      if (this.resourceType === 'volunteers') {
+        return GetSingleVol
+      } else if (this.resourceType === 'pwas') {
+        return GetSinglePWA
+      }
+      return null
+    },
+    getAllMutation () {
+      if (this.resourceType === 'volunteers') {
+        return GetAllVol
+      } else if (this.resourceType === 'pwas') {
+        return GetAllPWA
       }
       return null
     }
@@ -68,31 +95,12 @@ export default {
     deleteResource () {
       this.isLoading = true
       this.$apollo.mutate({
-        mutation: DeleteVol,
+        mutation: this.deleteMutation,
         variables: {
           id: this.resource.id
         },
-        update: (store, { data: { delete_volunteers_by_pk: deletedVolunteer } }) => {
-          store.writeQuery({
-            query: GetSingleVol,
-            data: { volunteers_by_pk: null },
-            variables: { id: this.resource.id }
-          })
-          try {
-            const allVol = store.readQuery({
-              query: GetAllVol,
-              variables: {}
-            })
-            allVol.volunteers = allVol.volunteers.filter(item => item.id !== this.resource.id)
-            store.writeQuery(({
-              query: GetAllVol,
-              allVol,
-              variables: {}
-            }))
-            console.log(store)
-          } catch (error) {
-          //  handle if GetAllVols query is not in store
-          }
+        update: (store, { data: obj }) => {
+          this.updateCache(store)
         }
       }).then((data) => {
         this.isLoading = false
@@ -102,6 +110,34 @@ export default {
       }).catch((error) => {
         this.$store.commit('notification/newNotification', [error.message, 'error'])
       })
+    },
+    updateCache (store) {
+      const singleResourceData = {}
+      if (this.resourceType === 'volunteers') {
+        singleResourceData.volunteers_by_pk = null
+      } else if (this.resourceType === 'pwas') {
+        singleResourceData.pwas_by_pk = null
+      }
+
+      store.writeQuery({
+        query: this.getSingleMutation,
+        data: singleResourceData,
+        variables: { id: this.resource.id }
+      })
+      try {
+        const allResource = store.readQuery({
+          query: this.getAllMutation,
+          variables: {}
+        })
+        allResource[this.resourceType] = allResource[this.resourceType].filter(item => item.id !== this.resource.id)
+        store.writeQuery(({
+          query: this.getAllMutation,
+          allResource,
+          variables: {}
+        }))
+      } catch (error) {
+        //  handle if GetAllVols query is not in store
+      }
     }
   }
 }

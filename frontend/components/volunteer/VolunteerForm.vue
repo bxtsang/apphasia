@@ -171,7 +171,7 @@
         <v-row>
           <DeleteResourceModal
             :resource="volunteer"
-            :resourceType="'volunteer'"
+            :resourceType="'volunteers'"
             @deleteSuccess="$emit('closeForm')"
           />
           <v-spacer />
