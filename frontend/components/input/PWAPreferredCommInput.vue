@@ -9,7 +9,7 @@
     :disabled="disabled"
     :outlined="outlined"
     :hint="hint"
-    :persistent-hint="hint"
+    :persistent-hint="hint ? true : false"
   />
 </template>
 
