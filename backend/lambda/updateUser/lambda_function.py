@@ -4,9 +4,9 @@ import os
 import requests
 
 client = boto3.client('cognito-idp')
+clientSecret = boto3.client('secretsmanager')
 
-
-def lambda_handler(event, context): 
+def lambda_handler(event, context):
     result = {}
     old_role = ""
     statusCode = 500
@@ -14,6 +14,7 @@ def lambda_handler(event, context):
     user_id = json.loads(event['body'])['input']['user_id']
     current_role = json.loads(event['body'])['input']['current_role']
     new_role = json.loads(event['body'])['input']['new_role']
+    hasura_secret = get_secret()
 
     try:
         response = client.admin_update_user_attributes(
@@ -57,7 +58,7 @@ def lambda_handler(event, context):
 
             headers = {
                 "Content-Type": "application/json",
-                "x-hasura-admin-secret": os.environ['HASURA_ADMIN_SECRET']
+                "x-hasura-admin-secret": hasura_secret
             }
 
             url = os.environ['HASURA_URI']
@@ -78,7 +79,7 @@ def lambda_handler(event, context):
                 print(e)
                 result['hasura_status'] = "failed"
                 result['hasura_message'] = "failed to send query to hasura"
-                result['hasura_error'] = str(e) 
+                result['hasura_error'] = str(e)
 
     return {
         "statusCode": statusCode,
@@ -87,3 +88,15 @@ def lambda_handler(event, context):
         },
         "body": json.dumps(result)
     }
+
+
+
+def get_secret():
+    secret_name = "HASURA_ADMIN_SECRET"
+
+    response = clientSecret.get_secret_value(
+        SecretId = secret_name
+    )
+
+
+    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']

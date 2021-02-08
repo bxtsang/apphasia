@@ -1,10 +1,22 @@
 'use strict'
+const { rejects } = require('assert');
 var AWS = require('aws-sdk');
 var { default: axios } = require('axios');
 var { resolve } = require('path');
 const { env } = require('process');
 AWS.config.update({ region: process.env.REGION });
 var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider({ apiVersion: '2016-04-18' });
+const sm = new AWS.SecretsManager('aws-sdk')
+
+
+const getSecrets = async (SecretId) => {
+  return await new Promise ((resolve, reject) => {
+    sm.getSecretValue({ SecretId }, (err, result) => {
+      if (err) reject (err)
+      else resolve(JSON.parse(result.SecretString)['HASURA_ADMIN_SECRET'])
+    })
+  })
+}
 
 const hasuraQuery = async (qlQuery, result) => {
   var body = {
@@ -14,7 +26,7 @@ const hasuraQuery = async (qlQuery, result) => {
   try {
     const resp = await axios.post(process.env.HASURA_URI, JSON.stringify(body), {
       headers: {
-        "x-hasura-admin-secret": process.env.HASURA_ADMIN_SECRET,
+        "x-hasura-admin-secret": getSecrets("HASURA_ADMIN_SECRET"),
         "Content-Type": "application/json"
       },
     })
@@ -113,3 +125,5 @@ exports.handler = function (event, context, callback) {
 
 
 }
+
+
