@@ -26,7 +26,8 @@
         <v-spacer />
         <v-btn
           color="error"
-          @click="deleteResource"
+          :loading="isLoading"
+          @click="deleteResource()"
         >
           Confirm
         </v-btn>
@@ -36,6 +37,10 @@
 </template>
 
 <script>
+import DeleteVol from './../../graphql/volunteer/DeleteVol.graphql'
+import GetSingleVol from './../../graphql/volunteer/GetSingleVol.graphql'
+import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
+
 export default {
   props: {
     resource: {
@@ -49,7 +54,8 @@ export default {
   },
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      isLoading: false
     }
   },
   computed: {
@@ -62,7 +68,42 @@ export default {
   },
   methods: {
     deleteResource () {
-    //  to Implement
+      this.isLoading = true
+      this.$apollo.mutate({
+        mutation: DeleteVol,
+        variables: {
+          id: this.resource.id
+        },
+        update: (store, { data: { delete_volunteers_by_pk: deletedVolunteer } }) => {
+          store.writeQuery({
+            query: GetSingleVol,
+            data: { volunteers_by_pk: null },
+            variables: { id: this.resource.id }
+          })
+          try {
+            const allVol = store.readQuery({
+              query: GetAllVol,
+              variables: {}
+            })
+            allVol.volunteers = allVol.volunteers.filter(item => item.id !== this.resource.id)
+            store.writeQuery(({
+              query: GetAllVol,
+              allVol,
+              variables: {}
+            }))
+            console.log(store)
+          } catch (error) {
+          //  handle if GetAllVols query is not in store
+          }
+        }
+      }).then((data) => {
+        this.isLoading = false
+        this.isOpen = false
+        this.$emit('deleteSuccess')
+        this.$store.commit('notification/newNotification', ['Volunteer successfully deleted', 'success'])
+      }).catch((error) => {
+        this.$store.commit('notification/newNotification', [error.message, 'error'])
+      })
     }
   }
 }

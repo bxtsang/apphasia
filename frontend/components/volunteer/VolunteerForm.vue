@@ -172,6 +172,7 @@
           <DeleteResourceModal
             :resource="volunteer"
             :resourceType="'volunteer'"
+            @deleteSuccess="$emit('closeForm')"
           />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
