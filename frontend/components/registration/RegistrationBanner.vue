@@ -7,7 +7,7 @@
     </v-row>
     <v-row>
       <SuccessView v-if="submitSuccessful" />
-      <v-card v-else>
+      <v-card v-else max-width="1200">
         <v-container class="pa-12">
           <h1 class="text-center pb-3">
             {{ formTitle }}
