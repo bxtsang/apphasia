@@ -13,15 +13,13 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title class="headline secondary white--text">
+      <v-card-title class="headline">
         Confirm delete?
       </v-card-title>
-
+      <v-divider />
       <v-card-text class="mt-4">
         Deleting {{ resourceType }}: <span class="font-weight-bold">{{ identifier }}</span>
       </v-card-text>
-
-      <v-divider />
       <v-card-actions>
         <v-spacer />
         <v-btn
