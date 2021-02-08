@@ -169,9 +169,10 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-btn v-if="volunteer" color="error" class="my-3" @click="deleteVolunteer()">
-            Delete
-          </v-btn>
+          <DeleteResourceModal
+            :resource="volunteer"
+            :resourceType="'volunteer'"
+          />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             Save
