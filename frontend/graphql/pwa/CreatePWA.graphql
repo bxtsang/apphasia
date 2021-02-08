@@ -8,6 +8,7 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
         }
       }
     }
+    comm_mode
     comm_diff {
       difficulty
     }

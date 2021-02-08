@@ -8,6 +8,7 @@ query GetSinglePWA ($id: Int!) {
         }
       }
     }
+    comm_mode
     comm_diff {
       difficulty
     }
