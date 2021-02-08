@@ -1,13 +1,18 @@
 <template>
   <v-select
+    v-if="type === 'select'"
     v-model="data"
     :items="OPTIONS"
     :rules="validation"
-    label="Wheelchair needed?"
+    :label="!placeholderOnly ? label : ''"
+    :placeholder="placeholderOnly ? label : ''"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
   />
+  <v-radio-group v-else v-model="data" :rules="validation">
+    <v-radio v-for="option in OPTIONS" :key="option.value" :label="option.text" :value="option.value" :readonly="readonly"/>
+  </v-radio-group>
 </template>
 
 <script>
@@ -32,6 +37,14 @@ export default {
     outlined: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Wheelchair needed?'
+    },
+    type: {
+      type: String,
+      default: 'select'
     }
   },
 
