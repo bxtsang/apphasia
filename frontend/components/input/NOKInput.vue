@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-for="(nok, index) in data" :key="index">
       <v-row class="mt-3" >
         <v-col cols="12" class="py-0 d-flex">
