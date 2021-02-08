@@ -45,6 +45,10 @@ export default {
     type: {
       type: String,
       default: 'select'
+    },
+    placeholderOnly: {
+      type: Boolean,
+      default: false
     }
   },
 
