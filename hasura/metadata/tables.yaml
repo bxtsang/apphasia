@@ -1059,13 +1059,6 @@
         table:
           schema: public
           name: project_staffs
-  - name: tasks
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          schema: public
-          name: project_tasks
   - name: volunteers
     using:
       foreign_key_constraint_on:
@@ -1073,13 +1066,6 @@
         table:
           schema: public
           name: project_vol
-  computed_fields:
-  - name: upcoming_date
-    definition:
-      function:
-        schema: public
-        name: upcoming_project_date
-    comment: ""
   insert_permissions:
   - role: core_team
     permission:
@@ -1110,8 +1096,6 @@
       - owner_id
       - description
       - updated_at
-      computed_fields:
-      - upcoming_date
       filter: {}
   - role: core_volunteer
     permission:
@@ -1121,8 +1105,6 @@
       - owner_id
       - description
       - updated_at
-      computed_fields:
-      - upcoming_date
       filter: {}
   - role: intern
     permission:
@@ -1132,8 +1114,6 @@
       - owner_id
       - description
       - updated_at
-      computed_fields:
-      - upcoming_date
       filter: {}
   - role: public
     permission:
