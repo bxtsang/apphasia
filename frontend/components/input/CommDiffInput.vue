@@ -2,7 +2,8 @@
   <v-select
     v-model="data"
     :items="COMM_DIFF_OPTIONS"
-    label="Communication Difficulties"
+    :label="!placeholderOnly ? label : ''"
+    :placeholder="placeholderOnly ? label: ''"
     :rules="validation"
     :required="required"
     :readonly="readonly"
@@ -33,6 +34,14 @@ export default {
       default: false
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      default: 'Communication Difficulties'
+    },
+    placeholderOnly: {
       type: Boolean,
       default: false
     }
