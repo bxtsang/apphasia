@@ -1,149 +1,98 @@
 <template>
   <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="submitForm">
     <v-container class="pa-0">
-      <v-row class="mt-3">
+      <v-row class="mt-8">
         <v-col col="12" class="py-0">
-          <span>Personal Details</span>
+          <span class="font-weight-bold">Personal Details</span>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
-          <v-text-field
+          <NameInput
             v-model="profileData.name"
-            :rules="nameRules"
-            label="Full Name"
-            required
+            :required="true"
           />
         </v-col>
         <v-col class="py-0">
-          <v-text-field
+          <AliasInput
             v-model="profileData.nickname"
-            label="Nickname / Alias"
-            required
-          />
-        </v-col>
-        <v-col class="py-0">
-          <v-text-field
-            v-model="profileData.nric"
-            :rules="nricRules"
-            label="NRIC"
-            required
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
-          <v-menu
-            transition="scale-transition"
-            offset-y
-            :close-on-content-click="false"
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="profileData.dob"
-                label="Date of Birth"
-                v-bind="attrs"
-                readonly
-                :rules="dobRules"
-                required
-                v-on="on"
-              />
-            </template>
-            <v-date-picker
-              ref="picker"
-              v-model="profileData.dob"
-              :max="new Date().toISOString().substr(0, 10)"
-            />
-          </v-menu>
-        </v-col>
-        <v-col class="py-0">
-          <v-text-field
-            v-model="profileData.contact_num"
-            :rules="contactRules"
-            label="Contact"
-            required
+          <DateOfBirthInput
+            v-model="profileData.dob"
+            :required="true"
           />
         </v-col>
         <v-col class="py-0">
-          <v-select
+          <ContactInput
+            v-model="profileData.contact_num"
+            :required="true"
+          />
+        </v-col>
+        <v-col class="py-0">
+          <GenderInput
             v-model="profileData.gender"
-            :items="GENDER_OPTIONS"
-            :rules="genderRules"
-            label="Gender"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0" cols="4">
-          <v-text-field
+          <EmailInput
             v-model="profileData.email"
-            :rules="emailRules"
-            label="Email Address"
-            required
-            disabled
+            :required="true"
+            :disabled="true"
           />
         </v-col>
         <v-col class="py-0" cols="8">
-          <v-text-field
+          <AddressInput
             v-model="profileData.address"
-            :rules="addressRules"
-            label="Home Address"
-            required
+            :required="true"
           />
         </v-col>
       </v-row>
-      <v-row class="mt-3">
+      <v-row class="mt-8">
         <v-col col="12" class="py-0">
-          <span>Additional Information</span>
+          <span class="font-weight-bold">Additional Information</span>
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
-          <v-text-field
+          <BioInput
             v-model="profileData.bio"
-            label="Hobbies / Interests"
           />
         </v-col>
         <v-col class="py-0">
-          <v-select
-            :value="profileData.projects_in"
-            :items="projects"
-            label="Projects Involved"
-            multiple
-            readonly
+          <ProjectInput
+            v-model="profileData.projects_in"
+            :disabled="true"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
-          <v-select
+          <LanguageInput
             v-model="profileData.languages"
-            :items="languages"
-            label="Languages understand and/or speak"
-            :rules="languagesRules"
-            multiple
+            :required="true"
           />
         </v-col>
         <v-col class="py-0">
-          <v-text-field
+          <WorkplaceInput
             v-model="profileData.ws_place"
-            label="Current Place of Work / Study"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col class="py-0">
-          <v-text-field
+          <ProfessionInput
             v-model="profileData.profession"
-            :rules="professionRules"
-            label="Profession"
           />
         </v-col>
         <v-col class="py-0">
-          <v-switch
+          <SpeechTherapistInput
             v-model="profileData.is_speech_therapist"
-            label="Speech Therapist?"
             :readonly="$auth.user['custom:role'] !== 'core_team'"
           />
         </v-col>
@@ -154,7 +103,6 @@
             v-model="profileData.date_joined"
             label="Date Joined"
             disabled
-            required
           />
         </v-col>
         <v-col cols="6" class="py-0">
@@ -162,7 +110,6 @@
             :value="ROLE_OPTIONS.filter(item => item.value === profileData.role)[0].label"
             label="Role"
             disabled
-            required
           />
         </v-col>
       </v-row>
@@ -178,12 +125,40 @@
   </v-form>
 </template>
 <script>
-import gql from 'graphql-tag'
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
 import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 
+import NameInput from './../input/NameInput'
+import AliasInput from './../input/AliasInput'
+import DateOfBirthInput from './../input/DateOfBirthInput'
+import ContactInput from './../input/ContactInput'
+import GenderInput from './../input/GenderInput'
+import EmailInput from './../input/EmailInput'
+import AddressInput from './../input/AddressInput'
+import BioInput from './../input/BioInput'
+import ProjectInput from './../input/ProjectInput'
+import LanguageInput from './../input/LanguageInput'
+import WorkplaceInput from './../input/WorkplaceInput'
+import ProfessionInput from './../input/ProfessionInput'
+import SpeechTherapistInput from './../input/SpeechTherapistInput'
+
 export default {
+  components: {
+    NameInput,
+    AliasInput,
+    DateOfBirthInput,
+    ContactInput,
+    GenderInput,
+    EmailInput,
+    AddressInput,
+    BioInput,
+    ProjectInput,
+    LanguageInput,
+    WorkplaceInput,
+    ProfessionInput,
+    SpeechTherapistInput
+  },
   props: {
     profile: {
       type: Object,
@@ -196,14 +171,12 @@ export default {
       isSubmitting: false,
       ROLE_OPTIONS,
       GENDER_OPTIONS,
-      projects: ['Project1', 'Project 2', 'None'],
       profileData: {
-        role: this.profile.role,
+        role: this.profile.role_description.role,
         name: this.profile.name,
         nickname: this.profile.nickname,
-        nric: this.profile.nric,
         dob: this.profile.dob,
-        contact_num: this.profile.contact_num,
+        contact_num: this.profile.contact_num.toString(),
         gender: this.profile.gender,
         email: this.profile.email,
         address: this.profile.address,
@@ -214,40 +187,7 @@ export default {
         date_joined: this.profile.date_joined,
         projects_in: ['None'],
         languages: this.profile.languages.map(item => item.language)
-      },
-      roleRules: [v => !!v || 'Role is required'],
-      nameRules: [v => !!v || 'Fullname is required'],
-      nricRules: [
-        v => !!v || 'NRIC is required',
-        v => /^[STFG]\d{7}[A-Z]$/.test(v) || 'Not a valid NRIC'
-      ],
-      dobRules: [v => !!v || 'Date of Birth is required'],
-      contactRules: [
-        v => !!v || 'Contact Number is required',
-        v => /(6|8|9)\d{7}/g.test(v) || 'Not a valid Contact Number'
-      ],
-      genderRules: [
-        v => !!v || 'Gender is required'
-      ],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
-      addressRules: [v => !!v || 'Home Address is required'],
-      professionRules: [v => !!v || 'Profession is required'],
-      languagesRules: [v => v.length > 0 || 'Language is required']
-    }
-  },
-  apollo: {
-    languages: {
-      query () {
-        return gql`query getLanguages {
-          languages {
-            language
-          }
-        }`
-      },
-      update: data => data.languages.map(item => item.language)
+      }
     }
   },
   methods: {
@@ -268,7 +208,6 @@ export default {
             is_active: true,
             name: this.profileData.name,
             nickname: this.profileData.nickname,
-            nric: this.profileData.nric,
             profession: this.profileData.profession,
             role: this.profileData.role,
             ws_place: this.profileData.ws_place,
@@ -276,8 +215,6 @@ export default {
             supervisors_to_remove: [],
             languages_to_add: languageChanges.added,
             languages_to_remove: languageChanges.removed
-            // projects_to_add: ,
-            // projects_to_remove:
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
             store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.$auth.user['custom:hasura_id'], isCoreTeam: true } })

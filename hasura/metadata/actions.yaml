@@ -5,10 +5,12 @@ actions:
     handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
   permissions:
   - role: core_team
-- name: deleteCognitoUser
+- name: DeleteCognitoUser
   definition:
     kind: synchronous
     handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
 - name: UpdateCognitoUser
   definition:
     kind: synchronous

@@ -1,0 +1,56 @@
+query GetAllVol {
+  volunteers {
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
+    }
+    befrienders {
+      pwa_id
+      pwa {
+        general_info {
+          name
+        }
+        id
+      }
+    }
+    id
+    is_speech_therapist
+    nickname
+    profession
+    project_vols {
+      project_id
+      project {
+        id
+        title
+      }
+      interested
+      approved
+    }
+    rejected_date
+    status
+    status_reason
+    vol_ic {
+      staff_id
+      ic {
+        id
+        name
+      }
+    }
+    ws_place
+    vol_languages {
+      language
+    }
+    vol_voltypes {
+      voltype
+    }
+  }
+}

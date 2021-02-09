@@ -26,35 +26,36 @@
                 <v-row>
                   <v-col>
                     <h1 class="title hover-underline">
-                      <NuxtLink to="/staff">
-                        Staff
+                      <NuxtLink to="/staffs">
+                        Staffs
                       </NuxtLink>
                       <span>/ {{ data.staffs[0].name }}</span>
                     </h1>
                   </v-col>
                   <v-col class="d-flex justify-end">
-                    <EditStaffModal
+                    <EditResourceModal
                       v-if="$auth.user['custom:role'] === 'core_team'"
-                      :staff="data.staffs[0]"
+                      :resourceType="resourceType"
+                      :resource="data.staffs[0]"
                       :text="true"
                     />
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Role</span>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col class="py-0">
-                    <v-radio-group :value="data.staffs[0].role" readonly row>
-                      <v-radio v-for="role in ROLE_OPTIONS.filter(item => item.value == data.staffs[0].role)" :key="role.value" :label="role.label" :value="role.value" />
+                    <v-radio-group :value="data.staffs[0].role_description.role" readonly row>
+                      <v-radio v-for="role in ROLE_OPTIONS.filter(item => item.value == data.staffs[0].role_description.role)" :key="role.value" :label="role.label" :value="role.value" />
                     </v-radio-group>
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
-                  <v-col col="12" class="py-0">
-                    <span>Personal Details</span>
+                <v-row class="mt-8">
+                  <v-col cols="12" class="py-0">
+                    <span class="font-weight-bold">Personal Details</span>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -69,13 +70,6 @@
                     <v-text-field
                       :value="data.staffs[0].nickname"
                       label="Nickname / Alias"
-                      readonly
-                    />
-                  </v-col>
-                  <v-col class="py-0">
-                    <v-text-field
-                      :value="data.staffs[0].nric || 'Not Available'"
-                      label="NRIC"
                       readonly
                     />
                   </v-col>
@@ -120,9 +114,9 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
-                  <v-col col="12" class="py-0">
-                    <span>Additional Information</span>
+                <v-row class="mt-8">
+                  <v-col cols="12" class="py-0">
+                    <span class="font-weight-bold">Additional Information</span>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -171,7 +165,7 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-switch
-                      :value="data.staffs[0].is_speech_therapist"
+                      :input-value="data.staffs[0].is_speech_therapist"
                       label="Speech Therapist?"
                       readonly
                     />
@@ -187,7 +181,7 @@
                   </v-col>
                 </v-row>
                 <v-row v-if="data.staffs.role != '' && data.staffs.role != 'core_team'" class="mt-3">
-                  <v-col col="12" class="py-0">
+                  <v-col cols="12" class="py-0">
                     <span>Supervisor Details</span>
                   </v-col>
                 </v-row>
@@ -216,10 +210,16 @@
 </template>
 <script>
 import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
-import EditStaffModal from './modals/EditStaffModal'
+import EditResourceModal from './../modals/EditResourceModal'
 
 export default {
-  components: { EditStaffModal },
+  components: { EditResourceModal },
+  props: {
+    resourceType: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       staffId: Number(this.$route.query.id),

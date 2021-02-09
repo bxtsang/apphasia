@@ -1,0 +1,106 @@
+mutation CreatePWA($pwa: pwas_insert_input!) {
+  insert_pwas_one(object: $pwa) {
+    befrienders {
+      volunteer {
+        id
+        general_info {
+          name
+        }
+      }
+    }
+    comm_mode
+    comm_diff {
+      difficulty
+    }
+    contact_status
+    hospital
+    languages {
+      language
+    }
+    last_contact_details
+    media_engagement_details
+    media_willingness
+    nok {
+      contact_num
+      email
+      name
+      relationship
+    }
+    projects {
+      project {
+        id
+        title
+      }
+    }
+    pwa_befriender_cores {
+      core_volunteer {
+        id
+        name
+      }
+    }
+    speech_therapist
+    stroke_date
+    wheelchair
+    id
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
+    }
+  }
+}
+
+#{
+#  "pwa": {
+#    "befrienders": {"data": []},
+#    "comm_diff": {"data": [
+#      {
+#        "difficulty": "Speech"
+#      }
+#    ]},
+#    "contact_status": "Contacted",
+#    "hospital": "Tan Tock Seng",
+#    "languages": { "data": [
+#      {
+#        "language": "English"
+#      }
+#    ]},
+#    "media_engagement_details": "Friday",
+#    "media_willingness": null,
+#    "nok": {"data": [
+#      {
+#        "contact_num": 96831363,
+#        "email": "nok1@aphasia.com",
+#        "name": "Wong Lai Lih",
+#        "relationship": "Mother"
+#      }
+#    ]},
+#    "projects": {"data": []},
+#    "pwa_befriender_cores": {"data": []},
+#    "speech_therapist": "Evelyn",
+#    "stroke_date": "2020-01-01",
+#    "wheelchair": true,
+#    "general_info": {
+#      "data": {
+#        "address": "8 Sirat Place",
+#        "bio": "Cool",
+#        "channel": "Instagram",
+#        "consent": true,
+#        "contact_num": 93843232,
+#        "dob": "2020-01-01",
+#        "email": "baoxian1234@aphasia.com",
+#        "gender": "M",
+#        "name": "Bao Xian2",
+#        "notes": "he's quite funny"
+#      }
+#    }
+#  }
+#}

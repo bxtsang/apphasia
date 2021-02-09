@@ -93,12 +93,12 @@ export default {
         {
           icon: 'mdi-clipboard-account',
           title: 'Manage PWAs',
-          to: '/pwa'
+          to: '/pwas'
         },
         {
           icon: 'mdi-hand-heart',
           title: 'Manage Volunteers',
-          to: '/volunteer'
+          to: '/volunteers'
         },
         {
           icon: 'mdi-calendar-check',
@@ -107,8 +107,8 @@ export default {
         },
         {
           icon: 'mdi-account-group',
-          title: 'Manage Staff',
-          to: '/staff'
+          title: 'Manage Staffs',
+          to: '/staffs'
         }
       ],
       settings: [
@@ -141,7 +141,6 @@ export default {
       query () {
         return gql`query($email: String!) {
           staffs(where: {email: {_eq: $email}}) {
-            id
             name
           }
         }`

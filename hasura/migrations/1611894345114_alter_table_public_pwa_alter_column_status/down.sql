@@ -1,0 +1,2 @@
+ALTER TABLE ONLY "public"."pwa" ALTER COLUMN "status" DROP DEFAULT;
+ALTER TABLE "public"."pwa" ALTER COLUMN "status" DROP NOT NULL;

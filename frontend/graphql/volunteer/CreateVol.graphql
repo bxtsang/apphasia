@@ -1,0 +1,82 @@
+mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
+  insert_volunteers_one(object: $volunteer) {
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
+    }
+    befrienders {
+      pwa {
+        general_info {
+          name
+        }
+        id
+      }
+    }
+    id
+    is_speech_therapist
+    nickname
+    profession
+    project_vols {
+      project {
+        id
+        title
+      }
+      interested
+      approved
+    }
+    rejected_date
+    status
+    status_reason
+    vol_ic {
+      ic {
+        id
+        name
+      }
+    }
+    ws_place
+    vol_languages {
+      language
+    }
+    vol_voltypes {
+      voltype
+    }
+  }
+}
+
+#{
+#  "volunteer": {
+#    "general_info": {
+#      "data": {
+#        "address": "81 Stamford Road",
+#        "bio": "Hello my name is Bob",
+#        "channel": "Facebook",
+#        "consent": true,
+#        "contact_num": 94837171,
+#        "dob": "1997-06-12",
+#        "email": "bob@aphasia.sg",
+#        "gender": "M",
+#        "name": "Bob",
+#        "notes": "He likes to fart"
+#      }
+#    },
+#    "is_speech_therapist": false,
+#    "nickname": "Bobby",
+#    "profession": "Student",
+#    "project_vols": {
+#      "data": {
+#        "project_id": 1,
+#        "interested": true
+#      }
+#    },
+#    "ws_place": "Singapore Management University"
+#  }
+#}

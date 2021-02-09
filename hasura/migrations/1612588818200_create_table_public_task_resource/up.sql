@@ -1,0 +1,1 @@
+CREATE TABLE "public"."task_resource"("project_id" integer NOT NULL, "task_id" integer NOT NULL, "path" text NOT NULL, PRIMARY KEY ("project_id","task_id","path") , FOREIGN KEY ("project_id", "task_id") REFERENCES "public"."tasks"("project_id", "id") ON UPDATE restrict ON DELETE cascade);

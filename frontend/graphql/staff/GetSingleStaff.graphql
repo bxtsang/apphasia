@@ -11,9 +11,11 @@ query GetSingleStaff($id: Int!, $isCoreTeam: Boolean!) {
     is_active
     name
     nickname
-    nric @include(if: $isCoreTeam)
     profession
-    role
+    role_description {
+      description
+      role
+    }
     ws_place
     id
     languages {

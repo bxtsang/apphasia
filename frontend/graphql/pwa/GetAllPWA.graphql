@@ -1,0 +1,59 @@
+query GetAllPWA {
+  pwas {
+    befrienders {
+      volunteer {
+        id
+        general_info {
+          name
+        }
+      }
+    }
+    comm_mode
+    comm_diff {
+      difficulty
+    }
+    contact_status
+    hospital
+    languages {
+      language
+    }
+    last_contact_details
+    media_engagement_details
+    media_willingness
+    nok {
+      contact_num
+      email
+      name
+      relationship
+    }
+    projects {
+      project {
+        id
+        title
+      }
+    }
+    pwa_befriender_cores {
+      core_volunteer {
+        id
+        name
+      }
+    }
+    speech_therapist
+    stroke_date
+    wheelchair
+    id
+    general_info {
+      address
+      bio
+      channel
+      consent
+      contact_num
+      date_joined
+      dob
+      email
+      gender
+      name
+      notes
+    }
+  }
+}

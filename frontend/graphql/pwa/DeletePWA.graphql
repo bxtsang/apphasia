@@ -1,0 +1,20 @@
+mutation DeletePWA($id: Int!) {
+  delete_pwas_by_pk(id: $id)
+  {
+    id
+  }
+
+  delete_people_external(where: {
+    _and: [
+      {_not: {volunteer_details : {} } },
+      {_not: {pwa_details : {} } },
+      {id: {_eq: $id}}
+    ]
+  })
+  {
+    returning{
+      id
+    }
+    affected_rows
+  }
+}
