@@ -170,7 +170,7 @@
         />
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team'"
+            v-if="$auth.user['custom:role'] === 'core_team' && pwa"
             :resource="pwa"
             :resourceType="'pwas'"
             @deleteSuccess="$emit('closeForm')"
@@ -208,6 +208,7 @@ import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
 import UpdatePWA from './../../graphql/pwa/UpdatePWA.graphql'
+const _ = require('lodash')
 
 export default {
   components: {
@@ -252,7 +253,7 @@ export default {
         languages: { data: this.pwa ? this.pwa.languages.map(item => item.language) : [] },
         media_engagement_details: this.pwa ? this.pwa.media_engagement_details : '',
         media_willingness: this.pwa ? this.pwa.media_willingness : null,
-        nok: { data: this.pwa ? this.pwa.nok : [] },
+        nok: { data: this.pwa ? _.cloneDeep(this.pwa.nok) : [] },
         projects: { data: this.pwa ? this.pwa.projects.map(item => item.project.id) : [] },
         speech_therapist: this.pwa ? this.pwa.speech_therapist : null,
         stroke_date: this.pwa ? this.pwa.stroke_date : null,
