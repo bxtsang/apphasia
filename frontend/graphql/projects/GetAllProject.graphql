@@ -1,0 +1,14 @@
+query getAllProjects {
+  projects {
+    description
+    id
+    title
+    updated_at
+    staffs {
+      staff {
+        id
+        name
+      }
+    }
+  }
+}

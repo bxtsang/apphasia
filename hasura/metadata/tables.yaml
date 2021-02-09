@@ -610,6 +610,13 @@
       - project_id
       - staff_id
       backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - staff_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:

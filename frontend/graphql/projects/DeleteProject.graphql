@@ -1,0 +1,9 @@
+mutation DeleteProject($id: Int!) {
+  delete_projects_by_pk(id: $id) {
+    id
+  }
+}
+
+# {
+#   "id": 1
+# }
