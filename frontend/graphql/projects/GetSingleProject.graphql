@@ -32,7 +32,9 @@ query getSingleProject($id: Int!) {
         name
       }
     }
+    is_recurring
     updated_at
+    upcoming_datetime
     volunteers {
       volunteer {
         general_info {
