@@ -44,7 +44,7 @@
             <v-row class="mt-3">
               <v-col class="py-0">
                 <ProjectStaffSelector
-                  v-model="projectData.owner"
+                  v-model="projectData.owner_id"
                   label="Staff In-Charge"
                 />
               </v-col>
@@ -125,7 +125,7 @@ export default {
         staffs: { data: [] },
         volunteers: { data: [] },
         pwas: { data: [] },
-        owner: -1
+        owner_id: -1
       }
     }
   },
@@ -144,6 +144,9 @@ export default {
         this.isSubmitting = true
         const _ = require('lodash')
         const newProjectData = _.cloneDeep(this.projectData)
+        newProjectData.staffs.data = this.projectData.staffs.data.map((item) => { return { staff_id: item } })
+        newProjectData.volunteers.data = this.projectData.volunteers.data.map((item) => { return { vol_id: item } })
+        newProjectData.pwas.data = this.projectData.pwas.data.map((item) => { return { pwa_id: item } })
         this.$apollo.mutate({
           mutation: CreateProject,
           variables: { project: newProjectData }
