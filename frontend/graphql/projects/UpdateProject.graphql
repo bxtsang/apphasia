@@ -1,0 +1,77 @@
+mutation UpdateProject($id: Int!, $project: projects_insert_input!) {
+  delete_projects_by_pk(id: $id) {
+    id
+  }
+  
+  insert_projects_one(object: $project) {
+    description
+    id
+    owner {
+      id
+      name
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      staffs_assigned {
+        staff {
+          id
+          name
+        }
+      }
+      vols_assigned {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+    }
+    staffs {
+      staff {
+        id
+        name
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    title
+  }
+}
+
+# {
+#   "id": 1,
+#   "project": {
+#     "title": "New title",
+#     "description": "My new project",
+#     "owner_id": 1,
+#     "pwas": {"data": [
+#       {
+#         "pwa_id": 3,
+#         "staffs_assigned": {"data": [
+#           {"staff_id": 1}
+#         ]},
+#         "vols_assigned": {"data": [
+#           {"vol_id": 76}
+#         ]}
+#       }
+#     ]},
+#     "volunteers": {"data": [
+#       {"vol_id": 76}
+#     ]},
+#     "staffs": {"data": [
+#       {"staff_id": 1}
+#     ]}
+#   }
+# }

@@ -610,6 +610,13 @@
       - project_id
       - staff_id
       backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - staff_id
+      backend_only: false
   select_permissions:
   - role: core_team
     permission:
@@ -1076,6 +1083,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       backend_only: false
   - role: intern
     permission:
@@ -1086,6 +1095,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       backend_only: false
   select_permissions:
   - role: core_team
@@ -1096,6 +1107,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       filter: {}
   - role: core_volunteer
     permission:
@@ -1105,6 +1118,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       filter: {}
   - role: intern
     permission:
@@ -1114,6 +1129,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       filter: {}
   - role: public
     permission:
@@ -1131,6 +1148,8 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       filter: {}
       check: {}
   - role: intern
@@ -1141,10 +1160,15 @@
       - owner_id
       - description
       - updated_at
+      - upcoming_datetime
+      - is_recurring
       filter: {}
       check: {}
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
 - table:
