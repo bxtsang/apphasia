@@ -4,7 +4,7 @@
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
-          <AddResourceModal :resourceType="resourceType"/>
+          <AddResourceModal :resourceType="resourceType" size="long"/>
         </v-col>
       </v-row>
       <v-row>
