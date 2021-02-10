@@ -8,21 +8,21 @@ API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 SERVICE = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
-def lambda_handler():
-    # print(event)
+def lambda_handler(event, context):
+    print(event)
     result = {}
     statusCode = 500
-    file = "19qxGtWwivRK31U3ZlstL34LGrFgWuS9q"
+    fileId = json.loads(event['body'])['fileId']
 
     try:
-        SERVICE.files.delete(fileId=file).execute()
+        SERVICE.files().delete(fileId=fileId).execute()
         result['status'] = "success"
-        result['message'] = "folder created successfully!"
+        result['message'] = "folder deleted successfully!"
         statusCode = 200
 
     except Exception as e:
         result['status'] = "failed"
-        result['message'] = "failed to create folder"
+        result['message'] = "failed to delete folder"
         result['error'] = str(e)
         statusCode = 400
 
@@ -34,5 +34,3 @@ def lambda_handler():
         },
         "body": json.dumps(result)
     }
-
-lambda_handler()
