@@ -28,6 +28,100 @@
       filter: {}
 - table:
     schema: public
+    name: events
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: languages
   is_enum: true
   insert_permissions:
@@ -229,68 +323,6 @@
       check: null
   delete_permissions:
   - role: core_team
-    permission:
-      filter: {}
-- table:
-    schema: public
-    name: project_dates
-  object_relationships:
-  - name: project
-    using:
-      foreign_key_constraint_on: project_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
     permission:
       filter: {}
 - table:
@@ -1041,13 +1073,6 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
-  - name: dates
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          schema: public
-          name: project_dates
   - name: pwas
     using:
       foreign_key_constraint_on:
@@ -1717,6 +1742,9 @@
   - role: core_team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: recurring
 - table:
     schema: public
     name: roles

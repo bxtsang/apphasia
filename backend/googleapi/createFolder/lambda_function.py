@@ -31,11 +31,10 @@ def lambda_handler(event, context):
         }
 
     try:
-        folder = SERVICE.files().create(body = file_metadata).execute()
+        SERVICE.files().create(body = file_metadata).execute()
+
         result['status'] = "success"
         result['message'] = "folder created successfully!"
-        result['folderId'] = folder['id']
-        result['folderName'] = folder['name']
         statusCode = 200
     except Exception as e:
         result['status'] = "failed"
