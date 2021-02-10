@@ -84,7 +84,7 @@ export const LIST_QUERY_PATHS = {
   staffs: require('./../graphql/staff/GetAllStaff.graphql'),
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
-  projects: require('./../graphql/projects/GetAllProject.graphql')
+  projects: require('./../graphql/project/GetAllProject.graphql')
 }
 
 export const TABLE_HEADERS = {
