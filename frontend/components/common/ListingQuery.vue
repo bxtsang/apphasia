@@ -94,6 +94,15 @@
             <ContactStatusChip :value="item.contact_status" />
           </template>
 
+          <!-- Project Specific Columns -->
+          <template v-slot:[`item.staffs`]="{ item }">
+            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ')  }}
+          </template>
+
+          <template v-slot:[`item.is_recurring`]="{ item }">
+            <IsRecurringChip :value="item.is_recurring"/>
+          </template>
+
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
