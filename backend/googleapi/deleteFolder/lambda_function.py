@@ -12,13 +12,10 @@ def lambda_handler():
     # print(event)
     result = {}
     statusCode = 500
-
-    params = {
-            'fileId': "1eWcdfPgagDGqndrAAkDymbfmTjR2k6CU"
-        }
+    file = "19qxGtWwivRK31U3ZlstL34LGrFgWuS9q"
 
     try:
-        SERVICE.files.delete(parameters = params)
+        SERVICE.files.delete(fileId=file).execute()
         result['status'] = "success"
         result['message'] = "folder created successfully!"
         statusCode = 200
