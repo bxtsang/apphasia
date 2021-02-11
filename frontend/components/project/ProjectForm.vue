@@ -28,14 +28,6 @@
                 <ProjectNotesInput v-model="projectData.description"/>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col class="py-0">
-                <v-switch
-                  v-model="projectData.is_recurring"
-                  label="Is Recurring?"
-                />
-              </v-col>
-            </v-row>
             <v-row class="mt-3">
               <v-col cols="12" class="py-0">
                 <span class="font-weight-bold">People Involved</span>
@@ -121,11 +113,10 @@ export default {
       projectData: {
         title: this.project ? this.project.title : '',
         description: this.project ? this.project.description : '',
-        is_recurring: false,
         staffs: { data: [] },
         volunteers: { data: [] },
         pwas: { data: [] },
-        owner_id: -1
+        owner_id: this.project ? this.project.owner_id : -1
       }
     }
   },
