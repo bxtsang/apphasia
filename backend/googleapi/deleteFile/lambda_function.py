@@ -12,10 +12,10 @@ def lambda_handler(event, context):
     print(event)
     result = {}
     statusCode = 500
-    fileId = json.loads(event['body'])['file_id']
+    file_id = json.loads(event['body'])['file_id']
 
     try:
-        SERVICE.files().delete(fileId=fileId).execute()
+        SERVICE.files().delete(fileId=file_id).execute()
         result['status'] = "success"
         result['message'] = "file deleted successfully!"
         statusCode = 200
