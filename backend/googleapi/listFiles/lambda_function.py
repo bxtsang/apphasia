@@ -10,10 +10,45 @@ SERVICE = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
 def lambda_handler(event, context):
     print(event)
-    result = {}
-    statusCode = 500
-    drive_id = os.environ['drive_id']
 
+    statusCode = 500
+    parent_folder = os.environ['parent_folder']
+
+    if ('parent_folder' in json.loads(event['body'])) :
+        parent_folder = json.loads(event['body'])['parent_folder']
+
+
+    result = {}
+    folders = []
+
+    try:
+        page_token = None
+
+        while True:
+            response = SERVICE.files().list(q=f"'{parent_folder}' in parents",
+                                                spaces='drive',
+                                                fields='nextPageToken, files(id, name, mimeType)',
+                                                pageToken=page_token).execute()
+            for file in response.get('files', []):
+                # Process change
+                print ('Found file: %s (%s)' % (file.get('name'), file.get('id')))
+                folders.append(file)
+            page_token = response.get('nextPageToken', None)
+            if page_token is None:
+                break
+
+        result['status'] = "success"
+        result['message'] = "successfully retrieved files!"
+        result['folders'] = result
+        statusCode = 200
+
+    except Exception as e:
+        result['status'] = "failed"
+        result['message'] = "failed to list files"
+        result['error'] = str(e)
+        statusCode = 400
+
+    result['folders'] = folders
 
     return {
         "statusCode": statusCode,
