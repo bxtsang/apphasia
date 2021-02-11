@@ -424,7 +424,12 @@
           pwa_id: id
   - name: staff
     using:
-      foreign_key_constraint_on: staff_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: staffs
+        column_mapping:
+          staff_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -502,7 +507,12 @@
           pwa_id: id
   - name: volunteer
     using:
-      foreign_key_constraint_on: vol_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -1073,6 +1083,22 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
+  - name: pwa_assigned_staffs
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_pwa_staffs
+        column_mapping:
+          id: project_id
+  - name: pwa_assigned_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_pwa_vols
+        column_mapping:
+          id: project_id
   - name: pwas
     using:
       foreign_key_constraint_on:
