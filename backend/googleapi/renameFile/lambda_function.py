@@ -2,7 +2,7 @@ import json
 import os
 from Google import Create_Service
 
-CLIENT_SECRET_FILE = "credentials.json"
+CLIENT_SECRET_FILE = "aphasiasg.json"
 API_NAME = "drive"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
@@ -20,16 +20,16 @@ def lambda_handler(event, context):
     }
 
     try:
-        folder = SERVICE.files().update(fileId = file_id, body = file_metadata).execute()
-        
+        file = SERVICE.files().update(fileId = file_id, body = file_metadata).execute()
+
         result['status'] = "success"
-        result['message'] = "folder created successfully!"
-        result['folderId'] = folder['id']
-        result['folderName'] = folder['name']
+        result['message'] = "file renamed successfully!"
+        result['file'] = str(file)
         statusCode = 200
+
     except Exception as e:
         result['status'] = "failed"
-        result['message'] = "failed to create folder"
+        result['message'] = "failed to renamed file"
         result['error'] = str(e)
         statusCode = 400
 
