@@ -2,7 +2,7 @@ import json
 import os
 from Google import Create_Service
 
-CLIENT_SECRET_FILE = "credentials.json"
+CLIENT_SECRET_FILE = "aphasiasg.json"
 API_NAME = "drive"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
@@ -12,17 +12,17 @@ def lambda_handler(event, context):
     print(event)
     result = {}
     statusCode = 500
-    fileId = json.loads(event['body'])['fileId']
+    fileId = json.loads(event['body'])['file_id']
 
     try:
         SERVICE.files().delete(fileId=fileId).execute()
         result['status'] = "success"
-        result['message'] = "folder deleted successfully!"
+        result['message'] = "file deleted successfully!"
         statusCode = 200
 
     except Exception as e:
         result['status'] = "failed"
-        result['message'] = "failed to delete folder"
+        result['message'] = "failed to delete file"
         result['error'] = str(e)
         statusCode = 400
 

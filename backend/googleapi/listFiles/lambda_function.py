@@ -19,7 +19,7 @@ def lambda_handler(event, context):
 
 
     result = {}
-    folders = []
+    files = []
 
     try:
         page_token = None
@@ -32,14 +32,14 @@ def lambda_handler(event, context):
             for file in response.get('files', []):
                 # Process change
                 print ('Found file: %s (%s)' % (file.get('name'), file.get('id')))
-                folders.append(file)
+                files.append(file)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
 
         result['status'] = "success"
         result['message'] = "successfully retrieved files!"
-        result['folders'] = result
+        result['files'] = files
         statusCode = 200
 
     except Exception as e:
@@ -48,7 +48,6 @@ def lambda_handler(event, context):
         result['error'] = str(e)
         statusCode = 400
 
-    result['folders'] = folders
 
     return {
         "statusCode": statusCode,
