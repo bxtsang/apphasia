@@ -1,0 +1,1 @@
+CREATE TABLE "public"."recurring"("id" serial NOT NULL, "day" integer NOT NULL, "week" integer, "interval" integer, "name" text NOT NULL, "frequency" text NOT NULL, "end_date" date, "start_time" timetz NOT NULL, "end_time" timetz NOT NULL, PRIMARY KEY ("id") );

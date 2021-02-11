@@ -28,6 +28,100 @@
       filter: {}
 - table:
     schema: public
+    name: events
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - project_id
+      - date
+      - recurr_id
+      - note
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: languages
   is_enum: true
   insert_permissions:
@@ -233,68 +327,6 @@
       filter: {}
 - table:
     schema: public
-    name: project_dates
-  object_relationships:
-  - name: project
-    using:
-      foreign_key_constraint_on: project_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - date
-      - recurring_schedule
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_pwa
   object_relationships:
   - name: project
@@ -392,7 +424,12 @@
           pwa_id: id
   - name: staff
     using:
-      foreign_key_constraint_on: staff_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: staffs
+        column_mapping:
+          staff_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -470,7 +507,12 @@
           pwa_id: id
   - name: volunteer
     using:
-      foreign_key_constraint_on: vol_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -638,6 +680,9 @@
       filter: {}
   delete_permissions:
   - role: core_team
+    permission:
+      filter: {}
+  - role: intern
     permission:
       filter: {}
 - table:
@@ -1038,13 +1083,22 @@
     using:
       foreign_key_constraint_on: owner_id
   array_relationships:
-  - name: dates
+  - name: pwa_assigned_staffs
     using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
+      manual_configuration:
+        remote_table:
           schema: public
-          name: project_dates
+          name: project_pwa_staffs
+        column_mapping:
+          id: project_id
+  - name: pwa_assigned_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: project_pwa_vols
+        column_mapping:
+          id: project_id
   - name: pwas
     using:
       foreign_key_constraint_on:
@@ -1073,6 +1127,19 @@
         table:
           schema: public
           name: project_vol
+  computed_fields:
+  - name: is_recurring
+    definition:
+      function:
+        schema: public
+        name: is_recurring
+    comment: ""
+  - name: upcoming_date
+    definition:
+      function:
+        schema: public
+        name: upcoming_date
+    comment: ""
   insert_permissions:
   - role: core_team
     permission:
@@ -1083,8 +1150,6 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       backend_only: false
   - role: intern
     permission:
@@ -1095,42 +1160,43 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: intern
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: public
     permission:
@@ -1148,8 +1214,6 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       filter: {}
       check: {}
   - role: intern
@@ -1160,15 +1224,10 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       filter: {}
       check: {}
   delete_permissions:
   - role: core_team
-    permission:
-      filter: {}
-  - role: intern
     permission:
       filter: {}
 - table:
@@ -1705,6 +1764,9 @@
   - role: core_team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: recurring
 - table:
     schema: public
     name: roles
