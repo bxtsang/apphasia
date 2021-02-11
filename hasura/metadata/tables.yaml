@@ -28,6 +28,131 @@
       filter: {}
 - table:
     schema: public
+    name: event_pwas
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - pwa_id
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - pwa_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - pwa_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - event_id
+      - pwa_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - event_id
+      - pwa_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - event_id
+      - pwa_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - event_id
+      - pwa_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: event_vols
+  object_relationships:
+  - name: event
+    using:
+      foreign_key_constraint_on: event_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - vol_id
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - event_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - event_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - event_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - event_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - event_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: events
   insert_permissions:
   - role: core_team
@@ -41,18 +166,33 @@
       - note
       - start_time
       - end_time
+      - name
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - date
+      - id
+      - project_id
+      - recurr_id
+      - name
+      - note
+      - end_time
+      - start_time
       backend_only: false
   - role: intern
     permission:
       check: {}
       columns:
+      - date
       - id
       - project_id
-      - date
       - recurr_id
+      - name
       - note
-      - start_time
       - end_time
+      - start_time
       backend_only: false
   select_permissions:
   - role: core_team
@@ -65,6 +205,7 @@
       - note
       - start_time
       - end_time
+      - name
       filter: {}
   - role: core_volunteer
     permission:
@@ -76,6 +217,7 @@
       - note
       - start_time
       - end_time
+      - name
       filter: {}
   - role: intern
     permission:
@@ -87,6 +229,7 @@
       - note
       - start_time
       - end_time
+      - name
       filter: {}
   update_permissions:
   - role: core_team
@@ -99,18 +242,20 @@
       - note
       - start_time
       - end_time
+      - name
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
+      - date
       - id
       - project_id
-      - date
       - recurr_id
+      - name
       - note
-      - start_time
       - end_time
+      - start_time
       filter: {}
       check: {}
   delete_permissions:
@@ -1767,6 +1912,125 @@
 - table:
     schema: public
     name: recurring
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  - role: intern
+    permission:
+      columns:
+      - id
+      - day
+      - week
+      - interval
+      - name
+      - frequency
+      - end_date
+      - start_time
+      - end_time
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: roles
