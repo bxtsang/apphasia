@@ -1,0 +1,10 @@
+mutation DeleteEvent($recurrence_id: Int!, $date: date = "0000-01-01") {
+  delete_events(where: {_and: {recurr_id: {_eq: $recurrence_id}, date: {_gt: $date}}}) {
+    affected_rows
+  }
+}
+
+# {
+#   "recurrence_id": 1,
+#   "date": "2021-02-11"
+# }

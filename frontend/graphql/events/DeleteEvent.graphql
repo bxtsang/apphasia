@@ -1,0 +1,9 @@
+mutation DeleteEvent($id: Int!) {
+  delete_events_by_pk(id: $id) {
+    id
+  }
+}
+
+# {
+#   "id": 1
+# }
