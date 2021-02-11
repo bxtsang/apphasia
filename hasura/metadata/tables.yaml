@@ -1127,6 +1127,19 @@
         table:
           schema: public
           name: project_vol
+  computed_fields:
+  - name: is_recurring
+    definition:
+      function:
+        schema: public
+        name: is_recurring
+    comment: ""
+  - name: upcoming_date
+    definition:
+      function:
+        schema: public
+        name: upcoming_date
+    comment: ""
   insert_permissions:
   - role: core_team
     permission:
@@ -1137,20 +1150,6 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
-      backend_only: false
-  - role: core_volunteer
-    permission:
-      check: {}
-      columns:
-      - id
-      - title
-      - owner_id
-      - description
-      - updated_at
-      - upcoming_datetime
-      - is_recurring
       backend_only: false
   - role: intern
     permission:
@@ -1161,42 +1160,43 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: intern
     permission:
       columns:
       - id
-      - title
       - owner_id
       - description
+      - title
       - updated_at
-      - upcoming_datetime
+      computed_fields:
       - is_recurring
+      - upcoming_date
       filter: {}
   - role: public
     permission:
@@ -1214,8 +1214,6 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       filter: {}
       check: {}
   - role: intern
@@ -1226,8 +1224,6 @@
       - owner_id
       - description
       - updated_at
-      - upcoming_datetime
-      - is_recurring
       filter: {}
       check: {}
   delete_permissions:
