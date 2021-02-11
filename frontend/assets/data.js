@@ -117,7 +117,7 @@ export const TABLE_HEADERS = {
   ],
   projects: [
     { text: 'Project Name', value: 'title' },
-    { text: 'Upcoming DateTime', value: 'upcoming_datetime' },
+    { text: 'Upcoming DateTime', value: 'upcoming_date' },
     { text: 'Is Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs' },
     { text: 'Notes', value: 'description' },
