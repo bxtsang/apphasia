@@ -35,7 +35,7 @@ query getSingleProject($id: Int!) {
     is_recurring
     updated_at
     upcoming_datetime
-    volunteers {
+    volunteers where: {approved: {_eq: true}} {
       volunteer {
         general_info {
           id
