@@ -2,7 +2,7 @@ import json
 import os
 from Google import Create_Service
 
-CLIENT_SECRET_FILE = "credentials.json"
+CLIENT_SECRET_FILE = "aphasiasg.json"
 API_NAME = "drive"
 API_VERSION = "v3"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
@@ -12,6 +12,7 @@ def lambda_handler(event, context):
     print(event)
     result = {}
     statusCode = 500
+    drive_id = os.environ['drive_id']
     new_folder = json.loads(event['body'])['new_folder']
     parent_folder = ""
 
@@ -27,7 +28,8 @@ def lambda_handler(event, context):
     else:
         file_metadata = {
             'name': new_folder,
-            'mimeType': 'application/vnd.google-apps.folder'
+            'mimeType': 'application/vnd.google-apps.folder',
+            'parents': [drive_id]
         }
 
     try:
