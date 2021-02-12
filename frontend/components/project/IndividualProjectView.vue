@@ -37,24 +37,6 @@ export default {
       projectId: this.$route.query.id,
       project: null
     }
-  },
-  mounted () {
-    setTimeout(this.getProject, 2000)
-    // this.getProject()
-  },
-  methods: {
-    async getProject () {
-      this.project = null
-      this.isLoading = true
-      try {
-        const response = await this.$axios.get(`${process.env.BASE_API_URL}/projects/${this.projectId}`)
-        this.project = response.data
-      } catch (error) {
-        this.project = null
-      } finally {
-        this.isLoading = false
-      }
-    }
   }
 }
 </script>

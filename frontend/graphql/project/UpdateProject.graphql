@@ -1,4 +1,8 @@
-mutation CreateProject($project: projects_insert_input!) {
+mutation UpdateProject($id: Int!, $project: projects_insert_input!) {
+  delete_projects_by_pk(id: $id) {
+    id
+  }
+  
   insert_projects_one(object: $project) {
     description
     id
@@ -11,20 +15,6 @@ mutation CreateProject($project: projects_insert_input!) {
         general_info {
           id
           name
-        }
-      }
-      staffs_assigned {
-        staff {
-          id
-          name
-        }
-      }
-      vols_assigned {
-        volunteer {
-          general_info {
-            id
-            name
-          }
         }
       }
     }
@@ -42,6 +32,32 @@ mutation CreateProject($project: projects_insert_input!) {
         }
       }
     }
+    pwa_assigned_vols {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    pwa_assigned_staffs {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      staff {
+        id
+        name
+      }
+    }
     title
   }
 }
@@ -52,21 +68,19 @@ mutation CreateProject($project: projects_insert_input!) {
 #     "description": "My new project",
 #     "owner_id": 1,
 #     "pwas": {"data": [
-#       {
-#         "pwa_id": 3,
-#         "staffs_assigned": {"data": [
-#           {"staff_id": 1}
-#         ]},
-#         "vols_assigned": {"data": [
-#           {"vol_id": 76}
-#         ]}
-#       }
+#       {"pwa_id": 3}
 #     ]},
 #     "volunteers": {"data": [
 #       {"vol_id": 76}
 #     ]},
 #     "staffs": {"data": [
 #       {"staff_id": 1}
+#     ]},
+#     "pwa_assigned_vols": {"data": [
+#       {"pwa_id": 3, "vol_id": 76}
+#     ]},
+#     "pwa_assigned_staffs": {"data": [
+#       {"staff_id": 1,"pwa_id": 3}
 #     ]}
 #   }
 # }

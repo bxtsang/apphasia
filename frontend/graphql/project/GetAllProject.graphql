@@ -3,7 +3,7 @@ query getAllProjects {
     description
     id
     title
-    upcoming_datetime
+    upcoming_date
     is_recurring
     staffs {
       staff {
