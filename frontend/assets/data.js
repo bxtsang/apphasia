@@ -83,7 +83,8 @@ export const INPUT_VALIDATION = {
 export const LIST_QUERY_PATHS = {
   staffs: require('./../graphql/staff/GetAllStaff.graphql'),
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
-  pwas: require('./../graphql/pwa/GetAllPWA.graphql')
+  pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
+  projects: require('./../graphql/projects/GetAllProject.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -112,6 +113,14 @@ export const TABLE_HEADERS = {
     { text: 'NOK', value: 'nok' },
     { text: 'Languages understand/speak', value: 'languages' },
     { text: 'Status', value: 'contact_status' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  projects: [
+    { text: 'Project Name', value: 'title' },
+    { text: 'Upcoming DateTime', value: 'upcoming_datetime' },
+    { text: 'Is Recurring?', value: 'is_recurring' },
+    { text: 'Staff Involved', value: 'staffs' },
+    { text: 'Notes', value: 'description' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
@@ -158,5 +167,6 @@ export const COMMON_PROFESSIONS = [
 export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
   volunteers: ['core_team', 'intern'],
-  pwas: ['core_team', 'intern']
+  pwas: ['core_team', 'intern'],
+  projects: ['core_team']
 }

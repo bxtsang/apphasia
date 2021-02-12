@@ -17,6 +17,18 @@ type Mutation {
 
 
 type Mutation {
+  InsertEvents (
+    project_id: Int!
+    recurrence_id: Int
+    start_date: date!
+    new_recurrence: Boolean
+    previous_end_date: date
+    recurrence: recurrence
+  ): EventsResponse
+}
+
+
+type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
@@ -36,6 +48,17 @@ input SupervisorData {
   data : SupervisorInput!
 }
 
+input recurrence {
+  day : Int!
+  week : Int
+  interval : Int!
+  name : String!
+  frequency : String!
+  end_date : date
+  start_time : time!
+  end_time : time!
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -47,6 +70,11 @@ type UpdateUserResponse {
 }
 
 type DeleteUserResponse {
+  status : String!
+  message : String!
+}
+
+type EventsResponse {
   status : String!
   message : String!
 }
