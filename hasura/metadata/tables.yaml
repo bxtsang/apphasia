@@ -29,6 +29,24 @@
 - table:
     schema: public
     name: event_pwas
+  object_relationships:
+  - name: event
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        column_mapping:
+          project_id: project_id
+          event_id: id
+  - name: pwa
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: pwas
+        column_mapping:
+          pwa_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -91,10 +109,21 @@
   object_relationships:
   - name: event
     using:
-      foreign_key_constraint_on: event_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        column_mapping:
+          project_id: project_id
+          event_id: id
   - name: volunteer
     using:
-      foreign_key_constraint_on: vol_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -154,6 +183,32 @@
 - table:
     schema: public
     name: events
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: recurring
+    using:
+      foreign_key_constraint_on: recurr_id
+  array_relationships:
+  - name: pwas
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_pwas
+        column_mapping:
+          project_id: project_id
+          id: event_id
+  - name: volunteers
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_vols
+        column_mapping:
+          project_id: project_id
+          id: event_id
   insert_permissions:
   - role: core_team
     permission:
