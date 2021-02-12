@@ -1,0 +1,33 @@
+mutation ($event_id: Int!, $project_id: Int!, $event: events_set_input!) {
+  update_events_by_pk(pk_columns: {id: $event_id, project_id: $project_id}, _set: $event) {
+    date
+    end_time
+    id
+    name
+    note
+    project_id
+    recurr_id
+    start_time
+    pwas {
+      pwa_id
+    }
+    volunteers {
+      vol_id
+    }
+  }
+}
+
+# Have to set the specific event recurr_id to NULL to detach it from the reucrrence
+# Only set recurr_id to NULL if start_time and end_time is edited
+# {
+#   "event_id": 242,
+#   "project_id": 2,
+#   "event": {
+#     "start_time": "22:00:00",
+#     "end_time": "22:30:00",
+#     "date": "2021-02-15",
+#     "name": "New Name",
+#     "note": "New Note",
+#     "recurr_id": null
+#   }
+# }

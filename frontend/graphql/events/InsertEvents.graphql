@@ -1,0 +1,27 @@
+mutation ($recurrence: recurrence, $start_date: date!, $project_id: Int!) {
+  InsertEvents(
+    recurrence: $recurrence, 
+    start_date: $start_date, 
+    project_id: $project_id, 
+    previous_end_date: null,
+    new_recurrence: true,
+    ) {
+    message
+  }
+}
+
+# Previous end date is for another query
+# {
+#   "recurrence": {
+#     "day": 1,
+#     "week": 2,
+#     "interval": 1,
+#     "name": "Doing My Thing",
+#     "frequency": "Monthly",
+#     "end_date": "2030-04-15",
+#     "start_time": "12:00:00",
+#     "end_time": "13:00:00"
+#   },
+#   "start_date": "2022-01-19",
+#   "project_id": 1
+# }

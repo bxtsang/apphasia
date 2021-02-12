@@ -1,0 +1,35 @@
+query getEvent($event_id: Int!, $project_id: Int!) {
+  events_by_pk(id: $event_id, project_id: $project_id) {
+    date
+    start_time
+    end_time
+    id
+    name
+    note
+    project_id
+    project {
+      title
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+# {
+#   "project_id": 2,
+#   "event_id": 281
+# }
