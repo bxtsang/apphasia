@@ -27,7 +27,7 @@ def lambda_handler(event, context):
         while True:
             response = SERVICE.files().list(q=f"'{parent_folder}' in parents",
                                                 spaces='drive',
-                                                fields='nextPageToken, files(id, name, mimeType)',
+                                                fields='nextPageToken, files(id, name, mimeType, webViewLink, webContentLink)',
                                                 pageToken=page_token).execute()
             for file in response.get('files', []):
                 # Process change
