@@ -54,6 +54,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   - role: core_volunteer
     permission:
@@ -61,6 +62,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   - role: intern
     permission:
@@ -68,6 +70,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -75,18 +78,21 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   - role: intern
     permission:
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   update_permissions:
   - role: core_team
@@ -94,6 +100,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
       check: {}
   delete_permissions:
@@ -131,6 +138,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   - role: core_volunteer
     permission:
@@ -138,6 +146,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   - role: intern
     permission:
@@ -145,6 +154,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -152,18 +162,21 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   - role: intern
     permission:
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   update_permissions:
   - role: core_team
@@ -171,6 +184,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
       check: {}
   delete_permissions:
