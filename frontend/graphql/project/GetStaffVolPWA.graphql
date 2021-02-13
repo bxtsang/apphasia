@@ -1,0 +1,18 @@
+query GetStaffVolPWA {
+  volunteers {
+    id
+    general_info {
+      name
+    }
+  }
+  staffs {
+    id
+    name
+  },
+  pwas {
+    id
+    general_info {
+      name
+    }
+  }
+}

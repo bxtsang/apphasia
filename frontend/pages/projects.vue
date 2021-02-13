@@ -4,7 +4,7 @@
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
-          <AddResourceModal :resourceType="resourceType"/>
+          <AddResourceModal :resourceType="resourceType" size="long"/>
         </v-col>
       </v-row>
       <v-row>
@@ -17,7 +17,7 @@
 </template>
 <script>
 import AddResourceModal from './../components/modals/AddResourceModal'
-import IndividualProjectView from './../components/projects/IndividualProjectView'
+import IndividualProjectView from './../components/project/IndividualProjectView'
 
 export default {
   components: { IndividualProjectView, AddResourceModal },

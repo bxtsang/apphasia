@@ -84,7 +84,8 @@ export const LIST_QUERY_PATHS = {
   staffs: require('./../graphql/staff/GetAllStaff.graphql'),
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
-  projects: require('./../graphql/projects/GetAllProject.graphql')
+  projects: require('./../graphql/project/GetAllProject.graphql'),
+  staffVolPWA: require('./../graphql/project/GetStaffVolPWA.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -117,7 +118,7 @@ export const TABLE_HEADERS = {
   ],
   projects: [
     { text: 'Project Name', value: 'title' },
-    { text: 'Upcoming DateTime', value: 'upcoming_datetime' },
+    { text: 'Upcoming DateTime', value: 'upcoming_date' },
     { text: 'Is Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs' },
     { text: 'Notes', value: 'description' },
