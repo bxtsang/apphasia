@@ -15,7 +15,8 @@ def lambda_handler(event, context):
     parent_folder = os.environ['parent_folder']
 
     if ('parent_folder' in json.loads(event['body'])) :
-        parent_folder = json.loads(event['body'])['parent_folder']
+        if not json.loads(event['body'])['parent_folder'] == "":
+            parent_folder = json.loads(event['body'])['parent_folder']
 
 
     result = {}

@@ -1,0 +1,15 @@
+query getAllProjects {
+  projects {
+    description
+    id
+    title
+    upcoming_date
+    is_recurring
+    staffs {
+      staff {
+        id
+        name
+      }
+    }
+  }
+}
