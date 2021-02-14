@@ -6,6 +6,7 @@ mutation ($recurrence: recurrence, $start_date: date!, $project_id: Int!) {
     previous_end_date: null,
     new_recurrence: true,
     ) {
+    status
     message
   }
 }

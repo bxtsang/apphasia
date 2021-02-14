@@ -18,6 +18,7 @@ mutation ($event_date: date!, $recurring_id: Int!, $recurrence: recurrence!, $pr
     previous_end_date: null,
     new_recurrence: true,
     ) {
+    status
     message
   }
 }
