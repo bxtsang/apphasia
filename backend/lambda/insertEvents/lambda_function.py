@@ -4,6 +4,7 @@ from datetime import date
 import requests
 import json
 import boto3
+import os
 
 # ENV VARIABLES
 hasura_url = os.environ['HASURA_URI']
