@@ -6,11 +6,22 @@ import json
 import boto3
 import os
 
+def get_secret():
+    secret_name = "HASURA_ADMIN_SECRET"
+
+    response = clientSecret.get_secret_value(
+        SecretId = secret_name
+    )
+
+
+    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
+
 # ENV VARIABLES
+clientSecret = boto3.client('secretsmanager')
 hasura_url = os.environ['HASURA_URI']
 hasura_admin_secret = get_secret()
-
 def lambda_handler(event, context):
+    
     # GIVEN VARIABLES
     # project_id = 2
     # recurrence_id = 7
@@ -18,12 +29,15 @@ def lambda_handler(event, context):
     # new_recurrence = False
     result = {}
     statusCode = 500
-    project_id = json.loads(event['body'])['input']['project_id']
-    recurrence_id = json.loads(event['body'])['input']['recurrence_id']
-    start_date = json.loads(event['body'])['input']['start_date']
-    new_recurrence = json.loads(event['body'])['input']['new_recurrence']
-    previous_end_date = json.loads(event['body'])['input']['previous_end_date']
-    recurrence = json.loads(event['body'])['input']['recurrence']
+
+    parameters = json.loads(event['body'])['input']
+    print(parameters)
+    project_id = parameters['project_id']
+    recurrence_id = parameters['recurrence_id'] if 'recurrence_id' in parameters else None
+    start_date = parameters['start_date']
+    new_recurrence = parameters['new_recurrence']
+    previous_end_date = parameters['previous_end_date'] if 'previous_end_date' in parameters else None
+    recurrence = parameters['recurrence'] if 'recurrence' in parameters else None
 
     # For existing recurrence
     # previous_end_date = "2021-06-10" # OR "YYYY-MM-DD"
@@ -72,7 +86,7 @@ def lambda_handler(event, context):
 
     #COMPUTED VARIABLES
     start_date = date(*[int(ch) for ch in start_date.split("-")])
-    end_date = start_date + relativedelta(years=1) if recurrence["end_date"] == "NULL" else date(*[int(ch) for ch in recurrence["end_date"].split("-")])
+    end_date = start_date + relativedelta(years=1) if "end_date" not in recurrence or recurrence['end_date'] is None else date(*[int(ch) for ch in recurrence["end_date"].split("-")])
     events = []
     send = True
 
@@ -85,7 +99,7 @@ def lambda_handler(event, context):
     sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
 
     # Create SQL statement for insertion
-    if previous_end_date != "NULL":
+    if previous_end_date:
         previous_end_date = date(*[int(ch) for ch in previous_end_date.split("-")])
         count = 0
         for event in events:
@@ -139,12 +153,3 @@ def lambda_handler(event, context):
         "body": json.dumps(result)
     }
 
-def get_secret():
-    secret_name = "HASURA_ADMIN_SECRET"
-
-    response = clientSecret.get_secret_value(
-        SecretId = secret_name
-    )
-
-
-    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
