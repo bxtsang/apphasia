@@ -29,13 +29,12 @@ def lambda_handler(event, context):
     # new_recurrence = False
     result = {}
     statusCode = 500
-
     parameters = json.loads(event['body'])['input']
-    print(parameters)
     project_id = parameters['project_id']
     recurrence_id = parameters['recurrence_id'] if 'recurrence_id' in parameters else None
     start_date = parameters['start_date']
     new_recurrence = parameters['new_recurrence']
+    end_date = date(*[int(ch) for ch in parameters['end_date'].split("-")]) if 'end_date' in parameters else None
     previous_end_date = parameters['previous_end_date'] if 'previous_end_date' in parameters else None
     recurrence = parameters['recurrence'] if 'recurrence' in parameters else None
 
@@ -86,7 +85,8 @@ def lambda_handler(event, context):
 
     #COMPUTED VARIABLES
     start_date = date(*[int(ch) for ch in start_date.split("-")])
-    end_date = start_date + relativedelta(years=1) if "end_date" not in recurrence or recurrence['end_date'] is None else date(*[int(ch) for ch in recurrence["end_date"].split("-")])
+    if 'end_date' not in parameters:
+        end_date = start_date + relativedelta(years=1) if "end_date" not in recurrence or recurrence['end_date'] is None else date(*[int(ch) for ch in recurrence["end_date"].split("-")])
     events = []
     send = True
 
