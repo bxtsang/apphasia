@@ -6,8 +6,8 @@ import json
 import boto3
 
 # ENV VARIABLES
-hasura_url = "https://aphasia-hasura-dev.herokuapp.com/v1/query"
-hasura_admin_secret = "pwayismyhome12061997"
+hasura_url = os.environ['HASURA_URI']
+hasura_admin_secret = get_secret()
 
 def lambda_handler(event, context):
     # GIVEN VARIABLES
@@ -51,7 +51,7 @@ def lambda_handler(event, context):
         }
     })
     res = requests.post(hasura_url,data=data, headers={
-    "x-hasura-admin-secret": hasura_admin_secret, 
+    "x-hasura-admin-secret": hasura_admin_secret,
     "Content-Type": "application/json"
     })
 
@@ -110,7 +110,7 @@ def lambda_handler(event, context):
             }
         })
         res = requests.post(hasura_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret, 
+        "x-hasura-admin-secret": hasura_admin_secret,
         "Content-Type": "application/json"
         })
 
@@ -128,11 +128,22 @@ def lambda_handler(event, context):
         statusCode = 200
         result['status'] = "sent"
         result['message'] = "No new events to add"
-    
+
     return {
         "statusCode": statusCode,
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         },
         "body": json.dumps(result)
     }
+
+def get_secret():
+    secret_name = "HASURA_ADMIN_SECRET"
+
+    response = clientSecret.get_secret_value(
+        SecretId = secret_name
+    )
+
+
+    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
