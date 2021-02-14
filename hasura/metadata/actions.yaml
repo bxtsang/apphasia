@@ -14,7 +14,7 @@ actions:
 - name: InsertEvents
   definition:
     kind: synchronous
-    handler: http://host.docker.internal:3000
+    handler: https://wy4elxl3zb.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
   - role: core_volunteer
