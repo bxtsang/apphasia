@@ -21,7 +21,7 @@ type Mutation {
     project_id: Int!
     recurrence_id: Int
     start_date: date!
-    new_recurrence: Boolean
+    new_recurrence: Boolean!
     previous_end_date: date
     recurrence: recurrence
   ): EventsResponse
