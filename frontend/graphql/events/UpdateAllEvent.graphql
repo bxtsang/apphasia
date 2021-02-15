@@ -5,6 +5,7 @@
       end_time
       frequency
       id
+      infinite
       interval
       name
       start_time

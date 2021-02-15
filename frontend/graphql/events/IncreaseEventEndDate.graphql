@@ -1,33 +1,37 @@
-  mutation ($recurring_id: Int!, $end_date: date!, $previous_end_date: date!, $event_date: date!, $project_id: Int!) {
-    update_recurring_by_pk(pk_columns: {id: $recurring_id}, _set: {end_date: $end_date}) {
+  mutation ($recurring_id: Int!, $end_date: date!, $date_times: [dateTimes]!) {
+    update_recurring_by_pk(pk_columns: 	{id: $recurring_id}, _set: {end_date: $end_date}) {
       day
       end_date
       end_time
       frequency
       id
       interval
+      infinite
       name
       start_time
       week
     }
     
     InsertEvents(
-      recurrence_id: $recurring_id,
-      start_date: $event_date, 
-      end_date: $end_date,
-      project_id: $project_id, 
-      previous_end_date: $previous_end_date,
-      new_recurrence: false,
+      date_times: $date_times
       ) {
       status
       message
     }
 }
 
+# recurring_id and recurrence_id is the same
+# end_date in and outside of date_times is the same
+# start_date is the date of the event
 # {
 #   "recurring_id": 19,
 #   "end_date": "2027-02-22",
-#   "previous_end_date": "2026-02-14",
-#   "event_date": "2025-12-23",
-#   "project_id": 1
+#   "date_times": [{
+#     "recurrence_id": 19,
+#     "end_date": "2027-02-22",
+#     "new_recurrence": false,
+#     "previous_end_date": "2026-02-14",
+#     "start_date": "2025-12-23",
+#     "project_id": 1
+#   }]
 # }
