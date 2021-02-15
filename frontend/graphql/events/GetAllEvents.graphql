@@ -10,6 +10,30 @@ query getAllEvents($project_id: Int!) {
     project {
       title
     }
+    recurring {
+      id
+      frequency
+      end_date
+      infinite
+      day
+      week
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
   }
 }
 

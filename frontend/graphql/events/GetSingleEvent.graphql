@@ -10,6 +10,14 @@ query getEvent($event_id: Int!, $project_id: Int!) {
     project {
       title
     }
+    recurring {
+      id
+      frequency
+      end_date
+      infinite
+      day
+      week
+    }
     pwas {
       pwa {
         general_info {
