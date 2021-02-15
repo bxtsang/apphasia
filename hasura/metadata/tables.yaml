@@ -1988,6 +1988,14 @@
 - table:
     schema: public
     name: recurring
+  array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: recurr_id
+        table:
+          schema: public
+          name: events
   insert_permissions:
   - role: core_team
     permission:
