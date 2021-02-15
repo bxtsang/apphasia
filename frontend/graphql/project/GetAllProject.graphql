@@ -1,15 +1,50 @@
 query getAllProjects {
   projects {
-    description
-    id
-    title
-    upcoming_date
-    is_recurring
+    owner {
+      id
+      name
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      staffs_assigned {
+        staff {
+          id
+          name
+        }
+      }
+      vols_assigned {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+    }
     staffs {
       staff {
         id
         name
       }
     }
+    is_recurring
+    updated_at
+    voltypes
+    upcoming_date
+    volunteers (where: {approved: {_eq: true}}) {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    description
+    title
   }
 }

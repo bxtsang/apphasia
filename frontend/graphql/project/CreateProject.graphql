@@ -55,6 +55,7 @@ mutation CreateProject($project: projects_insert_input!) {
       }
     }
     title
+    voltypes
   }
 }
 

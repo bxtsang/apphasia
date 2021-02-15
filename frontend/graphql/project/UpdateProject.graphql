@@ -59,6 +59,7 @@ mutation UpdateProject($id: Int!, $project: projects_insert_input!) {
       }
     }
     title
+    voltypes
   }
 }
 

@@ -1,18 +1,25 @@
-query GetStaffVolPWA {
-  volunteers {
-    id
-    general_info {
-      name
-    }
-  }
-  staffs {
-    id
-    name
-  },
-  pwas {
-    id
-    general_info {
-      name
+query GetStaffVolPWAProject($id: Int!) {
+  projects_by_pk(id: $id) {
+    pwas {
+      pwa_id
+      staffs_assigned {
+        staff {
+          id
+          name
+        }
+      }
+      vols_assigned {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
     }
   }
 }
+
+# {
+#   "id": 1
+# }
