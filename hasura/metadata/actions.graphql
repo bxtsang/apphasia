@@ -18,13 +18,7 @@ type Mutation {
 
 type Mutation {
   InsertEvents (
-    project_id: Int!
-    recurrence_id: Int
-    start_date: date!
-    new_recurrence: Boolean!
-    end_date: date
-    previous_end_date: date
-    recurrence: recurrence
+    date_times: [dateTimes]
   ): EventsResponse
 }
 
@@ -58,6 +52,16 @@ input recurrence {
   end_date : date
   start_time : time!
   end_time : time!
+}
+
+input dateTimes {
+  project_id : Int!
+  recurrence_id : Int
+  start_date : date!
+  new_recurrence : Boolean!
+  end_date : date
+  previous_end_date : date
+  recurrence : recurrence
 }
 
 type CreateUserResponse {
