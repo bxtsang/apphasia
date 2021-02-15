@@ -1359,21 +1359,23 @@
     permission:
       check: {}
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       backend_only: false
   - role: intern
     permission:
       check: {}
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       backend_only: false
   select_permissions:
   - role: core_team
@@ -1383,6 +1385,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1395,6 +1398,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1407,6 +1411,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1423,21 +1428,23 @@
   - role: core_team
     permission:
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       filter: {}
       check: {}
   delete_permissions:
