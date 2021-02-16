@@ -104,7 +104,7 @@
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
-            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" :size="resourceType === 'projects' ? 'long' : ''" />
+            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
