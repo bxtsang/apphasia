@@ -134,6 +134,9 @@ export default {
     logout () {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
+    },
+    tokenExpired () {
+      this.$store.commit('notification/newNotification', ['Login token has expired. Please Login again', 'error'])
     }
   },
   apollo: {
@@ -151,9 +154,11 @@ export default {
         }
       },
       update: data => data.staffs[0].name,
-      error: (e) => {
-        console.log(e)
-        // this.logout()
+      error (e) {
+        if (e.message.includes('JWTExpired')) {
+          this.tokenExpired()
+        }
+        this.logout()
       }
     }
   }
