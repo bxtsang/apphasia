@@ -150,7 +150,11 @@ export default {
           email: this.$auth.user.email
         }
       },
-      update: data => data.staffs[0].name
+      update: data => data.staffs[0].name,
+      error: (e) => {
+        console.log(e)
+        // this.logout()
+      }
     }
   }
 }
