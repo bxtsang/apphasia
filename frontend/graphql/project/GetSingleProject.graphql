@@ -11,31 +11,18 @@ query getSingleProject($id: Int!) {
           name
         }
       }
-      staffs_assigned {
-        staff {
-          id
-          name
-        }
-      }
-      vols_assigned {
-        volunteer {
-          general_info {
-            id
-            name
-          }
-        }
-      }
     }
+    upcoming_date
+    is_recurring
+    description
+    id
     staffs {
       staff {
         id
         name
       }
     }
-    is_recurring
-    updated_at
-    upcoming_date
-    volunteers (where: {approved: {_eq: true}}) {
+    volunteers {
       volunteer {
         general_info {
           id
@@ -43,9 +30,33 @@ query getSingleProject($id: Int!) {
         }
       }
     }
-    description
+    pwa_assigned_vols {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    pwa_assigned_staffs {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      staff {
+        id
+        name
+      }
+    }
     title
-  }
 }
 
 # {

@@ -1,9 +1,5 @@
 query getAllProjects {
   projects {
-    upcoming_date
-    is_recurring
-    description
-    id
     owner {
       id
       name
@@ -16,6 +12,10 @@ query getAllProjects {
         }
       }
     }
+    upcoming_date
+    is_recurring
+    description
+    id
     staffs {
       staff {
         id
