@@ -11,14 +11,6 @@ actions:
     handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
-- name: InsertEvents
-  definition:
-    kind: synchronous
-    handler: https://wy4elxl3zb.execute-api.ap-southeast-1.amazonaws.com/dev
-  permissions:
-  - role: core_team
-  - role: core_volunteer
-  - role: intern
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
