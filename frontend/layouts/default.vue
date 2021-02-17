@@ -155,9 +155,7 @@ export default {
       },
       update: data => data.staffs[0].name,
       error (e) {
-        if (e.message.includes('JWTExpired')) {
-          this.tokenExpired()
-        }
+        this.tokenExpired()
         this.logout()
       }
     }
