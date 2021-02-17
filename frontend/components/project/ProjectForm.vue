@@ -50,6 +50,8 @@
             <v-row class="mt-3">
               <v-col class="py-0">
                 <!-- VOL TYPE HERE-->
+                <ProjectVolTypesInput
+                />
               </v-col>
             </v-row>
             <v-row class="mt-3">

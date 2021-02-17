@@ -136,6 +136,7 @@ export default {
       this.$auth.logout()
     },
     tokenExpired () {
+      console.log('token expire')
       this.$store.commit('notification/newNotification', ['Login token has expired. Please Login again', 'error'])
     }
   },

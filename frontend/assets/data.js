@@ -165,6 +165,11 @@ export const COMMON_PROFESSIONS = [
   'Student (but not in the field of speech therapy)'
 ]
 
+export const VOLUNTEER_TYPES = {
+  Befriender: 'Befriender',
+  Project_Volunteer: 'Project Volunteer'
+}
+
 export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
   volunteers: ['core_team', 'intern'],
