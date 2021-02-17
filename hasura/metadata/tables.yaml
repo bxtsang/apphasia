@@ -784,72 +784,6 @@
       filter: {}
 - table:
     schema: public
-    name: project_resources
-  object_relationships:
-  - name: project
-    using:
-      foreign_key_constraint_on: project_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  - role: core_volunteer
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: core_volunteer
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_staffs
   object_relationships:
   - name: project
@@ -1320,13 +1254,6 @@
         table:
           schema: public
           name: project_pwa
-  - name: resources
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          schema: public
-          name: project_resources
   - name: staffs
     using:
       foreign_key_constraint_on:
