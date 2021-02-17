@@ -38,6 +38,7 @@ def lambda_handler(event, context):
     result = {}
     statusCode = 500
     recurrence['start_date'] = date(*[int(ch) for ch in recurrence['start_date'].split("-")])
+    recurrence['project_id'] = recurrence['project_id'] if recurrence['project_id'] else "NULL"
 
     if recurrence['end_date']:
         recurrence['end_date'] = date(*[int(ch) for ch in recurrence['end_date'].split("-")])
@@ -72,8 +73,6 @@ def lambda_handler(event, context):
         events = list(rrule(freq=WEEKLY, dtstart=recurrence['start_date'], until=recurrence['end_date'], interval=int(recurrence["interval"])))
     elif recurrence["frequency"] == "Monthly":
         events = list(rrule(freq=MONTHLY, bysetpos=int(recurrence["week"]),byweekday=int(recurrence["day"]), dtstart=recurrence['start_date'], until=recurrence['end_date'], interval=int(recurrence["interval"])))
-
-
 
     sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
 

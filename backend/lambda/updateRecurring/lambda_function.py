@@ -40,6 +40,7 @@ def lambda_handler(event, context):
     result = {}
     statusCode = 500
     recurrence['start_date'] = date(*[int(ch) for ch in recurrence['start_date'].split("-")])
+    recurrence['project_id'] = recurrence['project_id'] if recurrence['project_id'] else "NULL"
 
     if recurrence['end_date']:
         # Update infinite to false if a new end date is given unless the previous end date is NULL
