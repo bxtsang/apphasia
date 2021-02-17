@@ -157,4 +157,8 @@ export default {
     }
   }
 }
+// cache clear code
+// mounted () {
+//   this.$apollo.vm.$apolloProvider.defaultClient.cache.data.clear()
+// }
 </script>
