@@ -1,5 +1,5 @@
-query getEvent($event_id: Int!, $project_id: Int!) {
-  events_by_pk(id: $event_id, project_id: $project_id) {
+query getEvent($event_id: Int!) {
+  events_by_pk(id: $event_id) {
     date
     start_time
     end_time
@@ -38,6 +38,5 @@ query getEvent($event_id: Int!, $project_id: Int!) {
 }
 
 # {
-#   "project_id": 2,
-#   "event_id": 281
+#   "event_id": 1
 # }

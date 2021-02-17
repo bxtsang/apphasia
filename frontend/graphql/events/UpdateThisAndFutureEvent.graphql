@@ -1,0 +1,38 @@
+  mutation UpdateThisAndFutureEvent($recurring_id: Int!, $event_date: date!, $recurring: recurring_insert_input) {
+    update_recurring_by_pk(pk_columns: 	{id: $recurring_id}, _set: {end_date: $event_date}) {
+      day
+      end_date
+      end_time
+      frequency
+      id
+      interval
+      infinite
+      name
+      start_time
+      week
+    }
+    
+    InsertEvents(
+      date_times: $date_times
+      ) {
+      status
+      message
+    }
+}
+
+# {
+#   "recurring_id": 33,
+#   "event_date": "2021-06-08",
+#   "recurring": {
+#     "day": 1,
+#     "week": null,
+#     "start_date": "2021-06-08",
+#     "end_date": "2022-03-14",
+#     "start_time": "16:00:00",
+#     "end_time": "15:00:00",
+#     "frequency": "Weekly",
+#     "interval": 2,
+#     "project_id": 3,
+#     "name": "Draft up papers"
+#   }
+# }

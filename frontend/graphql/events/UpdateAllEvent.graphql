@@ -1,30 +1,31 @@
-  mutation ($id: Int!, $recurring: recurring_set_input!) {
-    update_recurring_by_pk(pk_columns: {id: $id}, _set: $recurring) {
-      day
-      end_date
-      end_time
-      frequency
-      id
-      infinite
-      interval
-      name
-      start_time
-      week
-    }
+mutation UpdateAllEvents($id: Int!, $recurring: recurring_set_input!) {
+  update_recurring_by_pk(pk_columns: {id: $id}, _set: $recurring) {
+    day
+    end_date
+    end_time
+    frequency
+    id
+    infinite
+    interval
+    name
+    start_time
+    week
+    project_id
+    start_date
   }
+}
+
 
   # ID is recurring_id
-  # Unable to change frequency
-  # End date is only changeable if it's < previous end date
+  # Unable to change frequency, interval, project_id, infinite and start_date
   # {
   #   "id": 1,
   #   "recurring": {
-  #     "day": 1, # 0-6, Monday - Sunday
+  #     "day": 1,
+  #     "week": 1,
   #     "start_time": "22:00:00",
   #     "end_time": "23:00:00",
   #     "end_date": "2021-02-14",
-  #     "interval": 1, # Every X number of frequency
-  #     "name": "Hello Name",
-  #     "week": 1 # 1,2,3,4,-1 First Wk of the month - Last Wk of the month
+  #     "name": "Hello Name"
   #   }
   # }

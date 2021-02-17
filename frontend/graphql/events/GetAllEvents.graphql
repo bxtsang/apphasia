@@ -1,4 +1,4 @@
-query getAllEvents($project_id: Int!) {
+query GetAllEvents($project_id: Int!) {
   events(where: {project_id: {_eq: $project_id}}) {
     date
     start_time
