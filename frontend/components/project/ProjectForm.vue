@@ -96,6 +96,7 @@
 <script>
 import CreateProject from './../../graphql/project/CreateProject.graphql'
 import GetAllProject from './../../graphql/project/GetAllProject.graphql'
+
 export default {
   props: {
     project: {

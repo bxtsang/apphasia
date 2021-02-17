@@ -49,6 +49,10 @@ export default {
     resourceType: {
       type: String,
       default: null
+    },
+    size: {
+      type: String,
+      default: ''
     }
   },
   data () {

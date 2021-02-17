@@ -29,6 +29,24 @@
 - table:
     schema: public
     name: event_pwas
+  object_relationships:
+  - name: event
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        column_mapping:
+          project_id: project_id
+          event_id: id
+  - name: pwa
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: pwas
+        column_mapping:
+          pwa_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -36,6 +54,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   - role: core_volunteer
     permission:
@@ -43,6 +62,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   - role: intern
     permission:
@@ -50,6 +70,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -57,18 +78,21 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   - role: intern
     permission:
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
   update_permissions:
   - role: core_team
@@ -76,6 +100,7 @@
       columns:
       - event_id
       - pwa_id
+      - project_id
       filter: {}
       check: {}
   delete_permissions:
@@ -91,10 +116,21 @@
   object_relationships:
   - name: event
     using:
-      foreign_key_constraint_on: event_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: events
+        column_mapping:
+          project_id: project_id
+          event_id: id
   - name: volunteer
     using:
-      foreign_key_constraint_on: vol_id
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
   insert_permissions:
   - role: core_team
     permission:
@@ -102,6 +138,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   - role: core_volunteer
     permission:
@@ -109,6 +146,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   - role: intern
     permission:
@@ -116,6 +154,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       backend_only: false
   select_permissions:
   - role: core_team
@@ -123,18 +162,21 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   - role: intern
     permission:
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
   update_permissions:
   - role: core_team
@@ -142,6 +184,7 @@
       columns:
       - event_id
       - vol_id
+      - project_id
       filter: {}
       check: {}
   delete_permissions:
@@ -154,6 +197,32 @@
 - table:
     schema: public
     name: events
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: recurring
+    using:
+      foreign_key_constraint_on: recurr_id
+  array_relationships:
+  - name: pwas
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_pwas
+        column_mapping:
+          project_id: project_id
+          id: event_id
+  - name: volunteers
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_vols
+        column_mapping:
+          project_id: project_id
+          id: event_id
   insert_permissions:
   - role: core_team
     permission:
@@ -715,72 +784,6 @@
       filter: {}
 - table:
     schema: public
-    name: project_resources
-  object_relationships:
-  - name: project
-    using:
-      foreign_key_constraint_on: project_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  - role: core_volunteer
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - path
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - path
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: core_volunteer
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_staffs
   object_relationships:
   - name: project
@@ -1251,13 +1254,6 @@
         table:
           schema: public
           name: project_pwa
-  - name: resources
-    using:
-      foreign_key_constraint_on:
-        column: project_id
-        table:
-          schema: public
-          name: project_resources
   - name: staffs
     using:
       foreign_key_constraint_on:
@@ -1290,21 +1286,23 @@
     permission:
       check: {}
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       backend_only: false
   - role: intern
     permission:
       check: {}
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       backend_only: false
   select_permissions:
   - role: core_team
@@ -1314,6 +1312,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1326,6 +1325,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1338,6 +1338,7 @@
       - owner_id
       - description
       - title
+      - voltypes
       - updated_at
       computed_fields:
       - is_recurring
@@ -1354,21 +1355,23 @@
   - role: core_team
     permission:
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
-      - id
-      - title
-      - owner_id
       - description
+      - id
+      - owner_id
+      - title
       - updated_at
+      - voltypes
       filter: {}
       check: {}
   delete_permissions:
@@ -1912,6 +1915,14 @@
 - table:
     schema: public
     name: recurring
+  array_relationships:
+  - name: events
+    using:
+      foreign_key_constraint_on:
+        column: recurr_id
+        table:
+          schema: public
+          name: events
   insert_permissions:
   - role: core_team
     permission:
@@ -1926,6 +1937,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       backend_only: false
   - role: core_volunteer
     permission:
@@ -1940,6 +1954,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       backend_only: false
   - role: intern
     permission:
@@ -1954,6 +1971,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       backend_only: false
   select_permissions:
   - role: core_team
@@ -1968,6 +1988,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       filter: {}
   - role: core_volunteer
     permission:
@@ -1981,6 +2004,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       filter: {}
   - role: intern
     permission:
@@ -1994,6 +2020,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       filter: {}
   update_permissions:
   - role: core_team
@@ -2008,6 +2037,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       filter: {}
       check: {}
   - role: intern
@@ -2022,6 +2054,9 @@
       - end_date
       - start_time
       - end_time
+      - infinite
+      - project_id
+      - start_date
       filter: {}
       check: {}
   delete_permissions:
@@ -2031,6 +2066,28 @@
   - role: intern
     permission:
       filter: {}
+  event_triggers:
+  - name: insert_recurring
+    definition:
+      enable_manual: true
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://wy4elxl3zb.execute-api.ap-southeast-1.amazonaws.com/dev
+  - name: update_recurring
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - end_date
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://56zxv8iy77.execute-api.ap-southeast-1.amazonaws.com/dev
 - table:
     schema: public
     name: roles

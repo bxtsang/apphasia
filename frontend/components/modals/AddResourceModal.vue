@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="isOpen"
-    width="800"
+    :width="size === 'long' ? '1300' : '800'"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="primary" v-bind="attrs" v-on="on">
@@ -25,6 +25,10 @@ export default {
     resourceType: {
       type: String,
       default: null
+    },
+    size: {
+      type: String,
+      default: ''
     }
   },
   data () {

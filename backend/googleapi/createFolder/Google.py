@@ -4,6 +4,8 @@ from google_auth_oauthlib.flow import Flow, InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
+from google.oauth2 import service_account
+
 
 
 def Create_Service(client_secret_file, api_name, api_version, *scopes):
@@ -14,9 +16,11 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     SCOPES = [scope for scope in scopes[0]]
     print(SCOPES)
 
+# sqladmin = googleapiclient.discovery.build('sqladmin', 'v1beta3', credentials=credentials)
+
     cred = None
 
-    pickle_file = f'token_{API_SERVICE_NAME}_{API_VERSION}.pickle'
+    pickle_file = f'/tmp/token_{API_SERVICE_NAME}_{API_VERSION}.pickle'
     # print(pickle_file)
 
     if os.path.exists(pickle_file):
@@ -27,14 +31,13 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
         if cred and cred.expired and cred.refresh_token:
             cred.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
-            cred = flow.run_local_server()
+            cred = service_account.Credentials.from_service_account_file(CLIENT_SECRET_FILE, scopes=SCOPES)
 
         with open(pickle_file, 'wb') as token:
             pickle.dump(cred, token)
 
     try:
-        service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
+        service = build(API_SERVICE_NAME, API_VERSION, credentials=cred, cache_discovery=False)
         print(API_SERVICE_NAME, 'service created successfully')
         return service
     except Exception as e:
