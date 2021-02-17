@@ -96,6 +96,8 @@
 <script>
 import CreateProject from './../../graphql/project/CreateProject.graphql'
 import GetAllProject from './../../graphql/project/GetAllProject.graphql'
+import UpdateProject from './../../graphql/project/UpdateProject.graphql'
+import GetSingleProject from './../../graphql/project/GetSingleProject.graphql'
 
 export default {
   props: {
@@ -166,7 +168,34 @@ export default {
     },
     editProject () {
       if (this.$refs.form.validate()) {
-
+        this.isSubmitting = true
+        const _ = require('lodash')
+        const newProjectData = _.cloneDeep(this.projectData)
+        newProjectData.staffs.data = this.projectData.staffs.data.map((item) => { return { staff_id: item } })
+        newProjectData.volunteers.data = this.projectData.volunteers.data.map((item) => { return { vol_id: item } })
+        newProjectData.pwas.data = this.projectData.pwas.data.map((item) => { return { pwa_id: item } })
+        this.$apollo.mutate({
+          mutation: UpdateProject,
+          variables: { id: this.project.id, project: newProjectData },
+          update: (store, { data: { insert_projects_one: updatedProject } }) => {
+            store.writeQuery({ query: GetSingleProject, data: { projects_by_pk: updatedProject }, variables: { id: this.project.id } })
+            try {
+              const dataAll = store.readQuery({ query: GetAllProject })
+              dataAll.projects = dataAll.projects.filter(item => item.id !== this.project.id)
+              dataAll.projects.push(updatedProject)
+              store.writeQuery({ query: GetAllProject, dataAll })
+            } catch (error) {
+              // GetAllProject Query not in store
+            }
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Project successfully updated', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
       }
     }
   },
