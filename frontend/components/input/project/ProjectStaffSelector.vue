@@ -6,6 +6,7 @@
     item-text="name"
     item-value="id"
     :readonly="readonly"
+    :rules="validation"
   />
 </template>
 <script>
@@ -14,7 +15,8 @@ import gql from 'graphql-tag'
 export default {
   data () {
     return {
-      data: this.value
+      data: this.value,
+      validation: [v => v !== -1 || 'Staff is Required']
     }
   },
   props: {
