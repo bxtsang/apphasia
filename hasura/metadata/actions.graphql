@@ -17,13 +17,6 @@ type Mutation {
 
 
 type Mutation {
-  InsertEvents (
-    date_times: [dateTimes]
-  ): [EventsResponse]
-}
-
-
-type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
