@@ -115,7 +115,7 @@ export default {
         volunteers: { data: this.project ? this.project.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.project ? this.project.pwas.map(item => item.pwa.general_info.id) : [] },
         owner_id: this.project ? this.project.owner.id : -1,
-        voltypes: this.project ? this.project.voltypes : ''
+        voltypes: this.project ? this.project.voltypes : 'Project_Volunteer'
       }
     }
   },
@@ -154,7 +154,7 @@ export default {
             volunteers: { data: [] },
             pwas: { data: [] },
             owner_id: -1,
-            voltypes: ''
+            voltypes: 'Project_Volunteer'
           }
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['Project successfully created', 'success'])
