@@ -57,14 +57,77 @@
             </v-container>
           </v-col>
         </v-row>
+        <v-row>
+          <template>
+            <!-- <v-btn id="sign-in-or-out-button" color="primary" style="margin-left: 25px" @click="check()">
+              Sign In/Authorize
+            </v-btn> -->
+            <!-- <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="signOut()">
+              Sign out
+            </v-btn>
+            <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="testToken()">
+              Test Token
+            </v-btn>
+            <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="checkSignedIn()">
+              Load
+            </v-btn>
+            <v-btn id="revoke-access-button" style="display: none; margin-left: 25px">
+              Revoke access
+            </v-btn>
+            <div id="auth-status" style="display: inline; padding-left: 25px" /><hr>
+
+            <br>
+            <br>
+            <br>
+            <input id="files" name="file" type="file" multiple>
+            <input type="button" value="Upload" @click="getFiles()"> -->
+            <!-- <v-btn id="signin-btn" color="primary" style="margin-left: 25px" @click="signInFunction">
+              Sign In/Authorize
+            </v-btn> -->
+            <v-btn id="signout-btn" color="danger" style="margin-left: 25px" @click="signOutFunction">
+              Sign Out
+            </v-btn>
+            <v-btn>
+              <input id="files" name="file" type="file" multiple>
+            </v-btn>
+            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
+              Upload
+            </v-btn>
+          </template>
+          <!-- <template>
+            <v-btn>
+              <file-selector
+                accept-extensions=".jpg,.svg,.png"
+                :multiple="true"
+                :max-file-size="5 * 1024 * 1024"
+                @validated="handleFilesValidated"
+                @changed="handleFilesChanged"
+              >
+                Select image files
+              </file-selector>
+            </v-btn>
+          </template> -->
+        </v-row>
       </v-container>
     </v-row>
   </v-card>
 </template>
 <script>
+// import Vue from 'vue'
+// import VueGoogleApi from 'vue-google-api'
+// import FileSelector from 'vue-file-selector'
 import Empty from './resources/Empty'
 import ResourceFile from './resources/ResourceFile'
 import ResourceFolder from './resources/ResourceFolder'
+
+// const config = {
+//   apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY',
+//   clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
+//   scope: 'https://www.googleapis.com/auth/drive',
+//   discoveryDocs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+// }
+const SCOPE = 'https://www.googleapis.com/auth/drive'
+const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
 export default {
   components: { Empty, ResourceFile, ResourceFolder },
@@ -72,6 +135,7 @@ export default {
     return {
       isLoading: true,
       projectId: this.$route.query.id,
+      access_token: '',
       BASE_RESOURCE: {
         directory: '/',
         folders: [],
@@ -104,6 +168,12 @@ export default {
     }
   },
   mounted () {
+    // Vue.use(FileSelector)
+    // Vue.use(VueGoogleApi, config)
+    const script = document.createElement('script')
+    script.onload = this.handleClientLoad
+    script.src = 'https://apis.google.com/js/api.js'
+    document.body.appendChild(script)
     setTimeout(this.getProjectResources, 2000)
     // this.getProjectResources()
   },
@@ -118,6 +188,97 @@ export default {
         this.resources = this.BASE_RESOURCE
       } finally {
         this.isLoading = false
+      }
+    },
+    handleClientLoad () {
+      window.gapi.load('client:auth2', this.initClient)
+    },
+    initClient () {
+      const vm = this
+      try {
+        window.gapi.client.init({
+          apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY',
+          clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
+          scope: 'https://www.googleapis.com/auth/drive',
+          discoveryDocs: [discoveryUrl]
+        }).then(() => {
+          vm.googleAuth = window.gapi.auth2.getAuthInstance()
+          vm.googleAuth.isSignedIn.listen(vm.updateSigninStatus)
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async signInFunction () {
+      await this.googleAuth.signIn()
+      const user = this.googleAuth.currentUser.get()
+      if (!user.uc == null) {
+        this.upload()
+      }
+    },
+    signOutFunction () {
+      this.googleAuth.signOut()
+    },
+    upload  () {
+      const user = this.googleAuth.currentUser.get()
+      console.log(user)
+      if (user.uc == null) {
+        this.signInFunction()
+      } else {
+        const isAuthorized = user.hasGrantedScopes(SCOPE)
+        console.log(isAuthorized)
+        if (isAuthorized) {
+          const f = document.getElementById('files')
+          console.log(f);
+          [...f.files].forEach((file, i) => {
+            const fr = new FileReader()
+            // var fileContent2 = fr.readAsText(f.files[i])
+
+            fr.onload = (e) => {
+              console.log(e.target.result)
+              const data = e.target.result.split(',')
+              const obj = { fileName: f.files[i].name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
+              // const content = new Blob([obj.data])
+              const contentType = obj.mimeType
+
+              const boundary = '287032381131322'
+              const delimiter = '\r\n--' + boundary + '\r\n'
+              const closeDelim = '\r\n--' + boundary + '--'
+              const fileData = obj.data
+              const metadata = {
+                name: obj.fileName,
+                mimeType: contentType
+              }
+
+              const multipartRequestBody =
+          delimiter +
+          'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+          JSON.stringify(metadata) +
+          delimiter +
+          'Content-Type: ' + contentType + '\r\n' +
+          'Content-Transfer-Encoding: ' + ' base64' + '\r\n\r\n' +
+          fileData + '\r\n' +
+          closeDelim
+
+              console.log(multipartRequestBody)
+              const request = window.gapi.client.request({
+                path: 'https://www.googleapis.com/upload/drive/v3/files',
+                method: 'POST',
+                params: { uploadType: 'multipart' },
+                headers: {
+                  'Content-Type': 'multipart/related; boundary=' + boundary + ''
+                },
+                body: multipartRequestBody
+              })
+              request.execute(function (file) {
+                console.log(file)
+              })
+            }
+            fr.readAsDataURL(file)
+          })
+        } else {
+          console.log('unauthorized')
+        }
       }
     }
   }
