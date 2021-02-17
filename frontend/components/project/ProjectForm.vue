@@ -49,17 +49,18 @@
             </v-row>
             <v-row class="mt-3">
               <v-col class="py-0">
-                <!-- VOL TYPE HERE-->
                 <ProjectVolTypesInput
+                  v-model="projectData.voltypes"
                 />
               </v-col>
             </v-row>
-            <v-row class="mt-3">
+            <v-row class="mt-3" v-if="projectData.voltypes !== ''">
               <v-col class="py-0">
                 <ProjectPersonMultiSelector
                   v-model="projectData.volunteers.data"
                   label="Volunteers Involved"
                   type="volunteers"
+                  :voltype="projectData.voltypes"
                 />
               </v-col>
             </v-row>
@@ -112,13 +113,14 @@ export default {
         staffs: { data: this.project ? this.project.staffs.map(item => item.staff.id) : [] },
         volunteers: { data: this.project ? this.project.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.project ? this.project.pwas.map(item => item.pwa.general_info.id) : [] },
-        owner_id: this.project ? this.project.owner.id : -1
+        owner_id: this.project ? this.project.owner.id : -1,
+        voltypes: this.project ? this.project.voltypes : ''
       }
     }
   },
   computed: {
     formSubmitMethod () {
-      if (this.pwa) {
+      if (this.project) {
         return this.editProject
       } else {
         return this.submitProject
@@ -150,7 +152,8 @@ export default {
             staffs: { data: [] },
             volunteers: { data: [] },
             pwas: { data: [] },
-            owner_id: -1
+            owner_id: -1,
+            voltypes: ''
           }
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['Project successfully created', 'success'])
@@ -163,6 +166,13 @@ export default {
     editProject () {
       if (this.$refs.form.validate()) {
 
+      }
+    }
+  },
+  watch: {
+    'projectData.voltypes': {
+      handler (newValue, oldValue) {
+        this.projectData.volunteers.data = []
       }
     }
   }

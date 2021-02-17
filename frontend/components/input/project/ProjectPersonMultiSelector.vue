@@ -37,6 +37,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    voltype: {
+      type: String,
+      default: null
     }
   },
 
@@ -81,15 +85,20 @@ export default {
     },
     volunteers: {
       query () {
-        return gql`query getVolunteers {
-          volunteers {
-            id,
+        return gql`query GetVolsByType($voltype: voltypes_enum){
+          volunteers(where: {
+            vol_voltypes: {
+              voltype: {_eq: $voltype}
+            }
+          }) {
+            id
             general_info {
               name
             }
           }
         }`
       },
+      variables () { return { voltype: this.voltype } },
       update: data => data.volunteers.map((item) => {
         return { id: item.id, name: item.general_info.name }
       })
