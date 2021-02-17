@@ -13,7 +13,6 @@ def get_secret():
         SecretId = secret_name
     )
 
-
     return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
 
 # ENV VARIABLES
