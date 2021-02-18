@@ -32,7 +32,7 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col>
+                  <v-col class="py-0">
                     <v-tabs>
                       <v-tab
                         v-for="(tab, index) in tabs"
@@ -46,11 +46,23 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <transition-group name="fade" mode="out-in">
-                      <div key="0" v-if="selectedTab == 0">Slide 1</div>
-                      <div key="1" v-else-if="selectedTab == 1">Slide 2</div>
-                      <div key="2" v-else>Slide 3</div>
-                    </transition-group>
+                    <v-tabs-items v-model="selectedTab">
+
+                      <!-- Project Details -->
+                      <v-tab-item :key="0" transition="fade">
+                        <ProjectDetails :project="data.projects_by_pk" :resourceType="resourceType" />
+                      </v-tab-item>
+
+                      <!-- Project Resources -->
+                      <v-tab-item :key="1" transition="fade">
+                        <ResourceDirectory />
+                      </v-tab-item>
+
+                      <!-- Project Events -->
+                      <v-tab-item :key="2" transition="fade">
+
+                      </v-tab-item>
+                    </v-tabs-items>
                   </v-col>
                 </v-row>
               </v-container>
@@ -75,6 +87,12 @@
 <script>
 
 export default {
+  props: {
+    resourceType: {
+      type: String,
+      default: null
+    }
+  },
   data () {
     return {
       projectId: this.$route.query.id,
@@ -96,7 +114,11 @@ export default {
 .hover-underline > a:hover {
   text-decoration: underline !important;
 }
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active {
+  transition: opacity .3s ease;
+  transition-delay: .3s;
+}
+.fade-leave-active {
   transition: opacity .3s ease;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
