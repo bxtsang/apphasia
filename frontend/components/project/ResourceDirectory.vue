@@ -88,7 +88,6 @@ export default {
     return {
       isLoading: true,
       projectId: this.$route.query.id,
-      access_token: '',
       BASE_RESOURCE: {
         directory: '/',
         folders: [],
