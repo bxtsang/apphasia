@@ -5,7 +5,7 @@
         <span>Project Assignment</span>
       </v-col>
       <v-col class="d-flex justify-end">
-        <v-btn color="primary">Add Assignment</v-btn>
+        <ProjectAssignmentModal :project="project" />
       </v-col>
     </v-row>
     <v-row>
