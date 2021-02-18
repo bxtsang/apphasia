@@ -1923,6 +1923,24 @@
         table:
           schema: public
           name: events
+  - name: pwas
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring_pwas
+        column_mapping:
+          project_id: project_id
+          id: recurring_id
+  - name: volunteers
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring_vols
+        column_mapping:
+          project_id: project_id
+          id: recurring_id
   insert_permissions:
   - role: core_team
     permission:
@@ -2088,6 +2106,180 @@
       interval_sec: 10
       timeout_sec: 60
     webhook: https://56zxv8iy77.execute-api.ap-southeast-1.amazonaws.com/dev
+- table:
+    schema: public
+    name: recurring_pwas
+  object_relationships:
+  - name: pwa
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: pwas
+        column_mapping:
+          pwa_id: id
+  - name: recurring
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring
+        column_mapping:
+          project_id: project_id
+          recurring_id: id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - recurring_id
+      - pwa_id
+      - project_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: core_volunteer
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: recurring_vols
+  object_relationships:
+  - name: recurring
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring
+        column_mapping:
+          project_id: project_id
+          recurring_id: id
+  - name: volunteer
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: volunteers
+        column_mapping:
+          vol_id: id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      backend_only: false
+  - role: core_volunteer
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - recurring_id
+      - project_id
+      - vol_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: core_volunteer
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
 - table:
     schema: public
     name: roles
