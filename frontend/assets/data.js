@@ -174,5 +174,5 @@ export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
   volunteers: ['core_team', 'intern'],
   pwas: ['core_team', 'intern'],
-  projects: ['core_team']
+  projects: ['core_team', 'intern']
 }
