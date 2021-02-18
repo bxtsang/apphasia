@@ -68,6 +68,9 @@
             <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
               Upload
             </v-btn>
+            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="checkIfEditor">
+              checkEditor
+            </v-btn>
           </template>
         </v-row>
       </v-container>
@@ -120,6 +123,7 @@ export default {
     }
   },
   mounted () {
+    // loads the google api script
     const script = document.createElement('script')
     script.onload = this.handleClientLoad
     script.src = 'https://apis.google.com/js/api.js'
@@ -147,7 +151,7 @@ export default {
       const vm = this
       try {
         window.gapi.client.init({
-          apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY',
+          apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
           clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
           scope: 'https://www.googleapis.com/auth/drive',
           discoveryDocs: [discoveryUrl]
@@ -169,26 +173,52 @@ export default {
     signOutFunction () {
       this.googleAuth.signOut()
     },
+    async checkIfEditor (parentId) {
+      const request = window.gapi.client.request({
+        path: 'https://www.googleapis.com/drive/v3/files/' + parentId,
+        method: 'GET',
+        params: { fileId: parentId, fields: 'capabilities' }
+      })
+
+      try {
+        await request.execute(function (response) {
+          if (response.error !== null || response.error !== undefined) {
+            return false
+          }
+          if (response.capabilities === null || response.capabilities === undefined) {
+            return false
+          } else {
+            console.log(response.capabilities.canAddChildren)
+            return response.capabilities.canAddChildren
+          }
+        })
+      } catch (error) {
+        console.log(error)
+        return false
+      }
+    },
     upload  () {
+      if (this.googleAuth === undefined || this.googleAuth == null) {
+        this.signInFunction()
+        return
+      }
       const user = this.googleAuth.currentUser.get()
-      console.log(user)
+      // Checks if user has a google log in session in the web app
       if (user.uc == null) {
         this.signInFunction()
       } else {
+        const parentId = '15zTqofHz34QuOCXB4_XZXX55aLtEF-eZ' // parent Id of folder to upload file in
+        const isAnEditor = this.checkIfEditor(parentId)
         const isAuthorized = user.hasGrantedScopes(SCOPE)
-        console.log(isAuthorized)
-        if (isAuthorized) {
-          const f = document.getElementById('files')
-          console.log(f);
+        if (isAnEditor && isAuthorized) {
+          // Iterating through the inputted files, as multi upload is allowed
+          const f = document.getElementById('files');
           [...f.files].forEach((file, i) => {
             const fr = new FileReader()
-            // var fileContent2 = fr.readAsText(f.files[i])
 
             fr.onload = (e) => {
-              console.log(e.target.result)
               const data = e.target.result.split(',')
               const obj = { fileName: f.files[i].name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
-              // const content = new Blob([obj.data])
               const contentType = obj.mimeType
 
               const boundary = '287032381131322'
@@ -198,7 +228,7 @@ export default {
               const metadata = {
                 name: obj.fileName,
                 mimeType: contentType,
-                parents: ['']
+                parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
               }
 
               const multipartRequestBody =
@@ -211,7 +241,6 @@ export default {
           fileData + '\r\n' +
           closeDelim
 
-              console.log(multipartRequestBody)
               const request = window.gapi.client.request({
                 path: 'https://www.googleapis.com/upload/drive/v3/files',
                 method: 'POST',
