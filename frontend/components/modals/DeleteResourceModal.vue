@@ -41,6 +41,9 @@ import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
 import DeletePWA from './../../graphql/pwa/DeletePWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
+import DeleteProject from './../../graphql/project/DeleteProject.graphql'
+import GetSingleProject from './../../graphql/project/GetSingleProject.graphql'
+import GetAllProject from './../../graphql/project/GetAllProject.graphql'
 
 export default {
   props: {
@@ -64,6 +67,9 @@ export default {
       if (this.resourceType === 'volunteers' || this.resourceType === 'pwas') {
         return this.resource.general_info.name
       }
+      if (this.resourceType === 'projects') {
+        return this.resource.title
+      }
       return null
     },
     deleteMutation () {
@@ -71,6 +77,8 @@ export default {
         return DeleteVol
       } else if (this.resourceType === 'pwas') {
         return DeletePWA
+      } else if (this.resourceType === 'projects') {
+        return DeleteProject
       }
       return null
     },
@@ -79,6 +87,8 @@ export default {
         return GetSingleVol
       } else if (this.resourceType === 'pwas') {
         return GetSinglePWA
+      } else if (this.resourceType === 'projects') {
+        return GetSingleProject
       }
       return null
     },
@@ -87,6 +97,8 @@ export default {
         return GetAllVol
       } else if (this.resourceType === 'pwas') {
         return GetAllPWA
+      } else if (this.resourceType === 'projects') {
+        return GetAllProject
       }
       return null
     }
@@ -106,7 +118,8 @@ export default {
         this.isLoading = false
         this.isOpen = false
         this.$emit('deleteSuccess')
-        this.$store.commit('notification/newNotification', ['Volunteer successfully deleted', 'success'])
+        const displayResourceName = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+        this.$store.commit('notification/newNotification', [`${displayResourceName.slice(0, -1)} successfully deleted`, 'success'])
       }).catch((error) => {
         this.$store.commit('notification/newNotification', [error.message, 'error'])
       })
@@ -117,6 +130,8 @@ export default {
         singleResourceData.volunteers_by_pk = null
       } else if (this.resourceType === 'pwas') {
         singleResourceData.pwas_by_pk = null
+      } else if (this.resourceType === 'projects') {
+        singleResourceData.projects_by_pk = null
       }
 
       store.writeQuery({
@@ -142,7 +157,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
