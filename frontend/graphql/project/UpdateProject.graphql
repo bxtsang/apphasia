@@ -59,6 +59,9 @@ mutation UpdateProject($id: Int!, $project: projects_insert_input!) {
       }
     }
     title
+    voltypes
+    is_recurring
+    upcoming_date
   }
 }
 

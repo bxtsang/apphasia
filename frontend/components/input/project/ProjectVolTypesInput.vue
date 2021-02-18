@@ -1,36 +1,37 @@
 <template>
-  <v-autocomplete
+  <v-select
     v-model="data"
     :label="label"
-    :items="staffs"
-    item-text="name"
-    item-value="id"
+    :items="vol_voltypes"
     :readonly="readonly"
-    :rules="validation"
   />
 </template>
 <script>
 import gql from 'graphql-tag'
+import { VOLUNTEER_TYPES } from './../../../assets/data'
 
 export default {
   data () {
     return {
-      data: this.value,
-      validation: [v => v !== -1 || 'Staff is Required']
+      data: this.value
     }
   },
   props: {
     value: {
-      type: Number,
-      default: -1
+      type: String,
+      default: ''
     },
     label: {
       type: String,
-      default: ''
+      default: 'Project Volunteer Types'
     },
     readonly: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
 
@@ -47,16 +48,19 @@ export default {
       }
     }
   },
+
   apollo: {
-    staffs: {
+    vol_voltypes: {
       query () {
-        return gql`query getStaffs {
-          staffs {
-            id,
-            name
+        return gql`query getVolTypes{
+          vol_voltypes {
+            voltype
           }
         }`
-      }
+      },
+      update: data => data.vol_voltypes.map((item) => {
+        return { value: item.voltype, text: VOLUNTEER_TYPES[item.voltype] }
+      })
     }
   }
 }
