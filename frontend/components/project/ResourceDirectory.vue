@@ -68,9 +68,6 @@
             <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
               Upload
             </v-btn>
-            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="checkIfEditor">
-              checkEditor
-            </v-btn>
           </template>
         </v-row>
       </v-container>
