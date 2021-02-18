@@ -174,6 +174,7 @@ export default {
         newProjectData.staffs.data = this.projectData.staffs.data.map((item) => { return { staff_id: item } })
         newProjectData.volunteers.data = this.projectData.volunteers.data.map((item) => { return { vol_id: item } })
         newProjectData.pwas.data = this.projectData.pwas.data.map((item) => { return { pwa_id: item } })
+        newProjectData.id = this.project.id
         this.$apollo.mutate({
           mutation: UpdateProject,
           variables: { id: this.project.id, project: newProjectData },
