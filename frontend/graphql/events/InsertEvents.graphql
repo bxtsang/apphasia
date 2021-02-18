@@ -12,8 +12,26 @@ mutation InsertEvents($recurring: recurring_insert_input!) {
     start_date
     start_time
     week
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
   }
 }
+
+
 
 # {
 #   "recurring": {
@@ -26,6 +44,12 @@ mutation InsertEvents($recurring: recurring_insert_input!) {
 #     "frequency": "Weekly",
 #     "interval": 2,
 #     "project_id": 4,
-#     "name": "Draft up papers"
+#     "name": "Draft up papers",
+#     "volunteers": {"data": [
+#       {"vol_id": 76,"project_id": 4}
+#     ]},
+#     "pwas": {"data": [
+#       {"pwa_id": 25,"project_id": 4}
+#     ]}
 #   }
 # }
