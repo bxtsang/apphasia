@@ -59,31 +59,6 @@
         </v-row>
         <v-row>
           <template>
-            <!-- <v-btn id="sign-in-or-out-button" color="primary" style="margin-left: 25px" @click="check()">
-              Sign In/Authorize
-            </v-btn> -->
-            <!-- <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="signOut()">
-              Sign out
-            </v-btn>
-            <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="testToken()">
-              Test Token
-            </v-btn>
-            <v-btn id="sign-in-or-out-button" color="danger" style="margin-left: 25px" @click="checkSignedIn()">
-              Load
-            </v-btn>
-            <v-btn id="revoke-access-button" style="display: none; margin-left: 25px">
-              Revoke access
-            </v-btn>
-            <div id="auth-status" style="display: inline; padding-left: 25px" /><hr>
-
-            <br>
-            <br>
-            <br>
-            <input id="files" name="file" type="file" multiple>
-            <input type="button" value="Upload" @click="getFiles()"> -->
-            <!-- <v-btn id="signin-btn" color="primary" style="margin-left: 25px" @click="signInFunction">
-              Sign In/Authorize
-            </v-btn> -->
             <v-btn id="signout-btn" color="danger" style="margin-left: 25px" @click="signOutFunction">
               Sign Out
             </v-btn>
@@ -94,38 +69,16 @@
               Upload
             </v-btn>
           </template>
-          <!-- <template>
-            <v-btn>
-              <file-selector
-                accept-extensions=".jpg,.svg,.png"
-                :multiple="true"
-                :max-file-size="5 * 1024 * 1024"
-                @validated="handleFilesValidated"
-                @changed="handleFilesChanged"
-              >
-                Select image files
-              </file-selector>
-            </v-btn>
-          </template> -->
         </v-row>
       </v-container>
     </v-row>
   </v-card>
 </template>
 <script>
-// import Vue from 'vue'
-// import VueGoogleApi from 'vue-google-api'
-// import FileSelector from 'vue-file-selector'
 import Empty from './resources/Empty'
 import ResourceFile from './resources/ResourceFile'
 import ResourceFolder from './resources/ResourceFolder'
 
-// const config = {
-//   apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY',
-//   clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
-//   scope: 'https://www.googleapis.com/auth/drive',
-//   discoveryDocs: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
-// }
 const SCOPE = 'https://www.googleapis.com/auth/drive'
 const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
@@ -168,8 +121,6 @@ export default {
     }
   },
   mounted () {
-    // Vue.use(FileSelector)
-    // Vue.use(VueGoogleApi, config)
     const script = document.createElement('script')
     script.onload = this.handleClientLoad
     script.src = 'https://apis.google.com/js/api.js'
@@ -247,7 +198,8 @@ export default {
               const fileData = obj.data
               const metadata = {
                 name: obj.fileName,
-                mimeType: contentType
+                mimeType: contentType,
+                parents: ['']
               }
 
               const multipartRequestBody =
