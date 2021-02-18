@@ -54,7 +54,8 @@ def lambda_handler(event, context):
 
         recurrences = json.loads(r.text)['data']['recurring']
         for recurrence in recurrences:
-            createRecurringEvents(recurrence)
+            print(recurrence)
+            print(createRecurringEvents(recurrence))
 
         statusCode = 200
         result['status2'] = "success"
