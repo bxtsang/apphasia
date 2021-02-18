@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      <v-card class="px-6 py-3">
+      <v-card class="px-6 py-3" max-width="1600">
         <ApolloQuery
           :query="require('./../../graphql/project/GetSingleProject.graphql')"
           :variables="{ id: projectId }"
@@ -21,7 +21,7 @@
             </div>
 
             <div v-else-if="data && data.projects_by_pk">
-              <v-container class="pa-0 ma-0">
+              <v-container class="pa-0 ma-0" fluid>
                 <v-row>
                   <v-col>
                     <h1 class="title hover-underline">
