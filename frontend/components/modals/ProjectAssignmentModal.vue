@@ -93,7 +93,12 @@ export default {
     },
     vonlunteerItems () {
       if (this.assignmentData.role === 'staff') {
-        return []
+        return this.project.staffs.map((item) => {
+          return {
+            id: item.staff.id,
+            name: item.staff.name
+          }
+        })
       }
       if (this.assignmentData.role === 'volunteer') {
         return this.project.volunteers.map((item) => {
