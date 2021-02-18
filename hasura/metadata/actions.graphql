@@ -17,18 +17,6 @@ type Mutation {
 
 
 type Mutation {
-  InsertEvents (
-    project_id: Int!
-    recurrence_id: Int
-    start_date: date!
-    new_recurrence: Boolean
-    previous_end_date: date
-    recurrence: recurrence
-  ): EventsResponse
-}
-
-
-type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
@@ -57,6 +45,16 @@ input recurrence {
   end_date : date
   start_time : time!
   end_time : time!
+}
+
+input dateTimes {
+  project_id : Int!
+  recurrence_id : Int
+  start_date : date!
+  new_recurrence : Boolean!
+  end_date : date
+  previous_end_date : date
+  recurrence : recurrence
 }
 
 type CreateUserResponse {

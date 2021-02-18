@@ -44,6 +44,9 @@ export default {
       if (this.resourceType === 'pwas') {
         return 'PWA'
       }
+      if (this.resourceType === 'projects') {
+        return 'Project'
+      }
       return 'Resource'
     }
   }

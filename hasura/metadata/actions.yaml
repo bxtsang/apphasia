@@ -11,14 +11,6 @@ actions:
     handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
-- name: InsertEvents
-  definition:
-    kind: synchronous
-    handler: http://host.docker.internal:3000
-  permissions:
-  - role: core_team
-  - role: core_volunteer
-  - role: intern
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -31,6 +23,7 @@ custom_types:
   - name: SupervisorInput
   - name: SupervisorData
   - name: recurrence
+  - name: dateTimes
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse

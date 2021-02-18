@@ -150,8 +150,15 @@ export default {
           email: this.$auth.user.email
         }
       },
-      update: data => data.staffs[0].name
+      update: data => data.staffs[0].name,
+      error (e) {
+        this.logout()
+      }
     }
   }
 }
+// cache clear code
+// mounted () {
+//   this.$apollo.vm.$apolloProvider.defaultClient.cache.data.clear()
+// }
 </script>
