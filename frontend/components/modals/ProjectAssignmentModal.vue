@@ -4,8 +4,13 @@
     width="500"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" v-bind="attrs" v-on="on">
+      <v-btn v-if="!assignment" color="primary" v-bind="attrs" v-on="on">
         Add Assignment
+      </v-btn>
+      <v-btn v-else icon v-bind="attrs" v-on="on">
+        <v-icon>
+          mdi-pencil
+        </v-icon>
       </v-btn>
     </template>
     <v-card class="pa-8">
@@ -19,16 +24,20 @@
           </v-row>
           <v-row>
             <v-col class="py-0">
-              <v-select
-                :items="ASSIGNMENT_TYPE_OPTIONS"
-                v-model="assignmentData.role"
-                label="Which type of volunteer to assign to"
-              />
+              <v-radio-group v-model="assignmentData.role" row>
+                <v-radio
+                  v-for="item in ASSIGNMENT_TYPE_OPTIONS"
+                  :key="item.value"
+                  :value="item.value"
+                  :label="item.text"
+                />
+              </v-radio-group>
             </v-col>
           </v-row>
           <v-row v-if="assignmentData.role !== null">
             <v-col class="py-0">
               <v-autocomplete
+                v-model="assignmentData.id"
                 :label="vonlunteerLabel"
                 :items="vonlunteerItems"
                 item-text="name"
@@ -39,6 +48,7 @@
           <v-row v-if="assignmentData.role !== null">
             <v-col class="py-0">
               <v-autocomplete
+                v-model="assignmentData.pwas"
                 label="PWAs"
                 :items="pwaItems"
                 multiple
@@ -48,12 +58,20 @@
               />
             </v-col>
           </v-row>
+          <v-row v-if="assignmentData.id !== -1 && assignmentData.pwas.length > 0">
+            <v-spacer/>
+            <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
+              {{ assignment ? 'Edit' : 'Save' }}
+            </v-btn>
+            </v-row>
         </v-container>
       </v-form>
     </v-card>
   </v-dialog>
 </template>
 <script>
+import CreateAndUpdateVolProjectAssignment from './../../graphql/project/project_assignment/CreateAndUpdateVolProjectAssignment.graphql'
+import CreateAndUpdateStaffProjectAssignment from './../../graphql/project/project_assignment/CreateAndUpdateStaffProjectAssignment.graphql'
 
 export default {
   props: {
@@ -69,15 +87,57 @@ export default {
   data () {
     return {
       valid: true,
+      isSubmitting: false,
       isOpen: false,
       ASSIGNMENT_TYPE_OPTIONS: [
         { text: 'Staff', value: 'staff' },
         { text: 'Volunteer', value: 'volunteer' }
       ],
       assignmentData: {
-        role: null,
-        id: '',
-        pwas: []
+        role: this.assignment ? this.assignment.role : null,
+        id: this.assignment ? Number(this.assignment.id.split('-')[1]) : -1,
+        pwas: this.assignment ? this.assignment.pwas_id : []
+      }
+    }
+  },
+  methods: {
+    CreateAndUpdateAssignment (update) {
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const newAssignmentData = []
+        for (const pwa of this.assignmentData.pwas) {
+          const assignment = {
+            project_id: this.project.id,
+            pwa_id: pwa
+          }
+          assignment[this.assignmentData.role === 'staff' ? 'staff_id' : 'vol_id'] = this.assignmentData.id
+          newAssignmentData.push(assignment)
+        }
+        const variables = {
+          assignments: newAssignmentData,
+          project_id: this.project.id
+        }
+        variables[this.assignmentData.role === 'staff' ? 'staff_id' : 'vol_id'] = this.assignmentData.id
+        console.log(variables)
+        const mutationQuery = this.assignmentData.role === 'staff' ? CreateAndUpdateStaffProjectAssignment : CreateAndUpdateVolProjectAssignment
+        this.$apollo.mutate({
+          mutation: mutationQuery,
+          variables
+        }).then((data) => {
+          this.isSubmitting = false
+          if (!update) {
+            this.assignmentData = {
+              role: null,
+              id: -1,
+              pwas: []
+            }
+          }
+          this.isOpen = false
+          this.$store.commit('notification/newNotification', [`Project Assignment successfully ${update ? 'updated' : 'created'}`, 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
       }
     }
   },
@@ -117,8 +177,14 @@ export default {
           name: item.pwa.general_info.name
         }
       })
+    },
+    formSubmitMethod () {
+      if (this.assignment) {
+        return () => this.CreateAndUpdateAssignment(true)
+      } else {
+        return () => this.CreateAndUpdateAssignment(false)
+      }
     }
   }
-  // NEED TO WATCH FOR PWA AND VOLUNTEER CHANGES IN PROJECT DETAILS
 }
 </script>
