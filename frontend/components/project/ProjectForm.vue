@@ -181,6 +181,8 @@ export default {
               pwa_id: item.pwa.general_info.id,
               vol_id: item.volunteer.general_info.id
             }
+          }).filter((item) => {
+            return this.projectData.volunteers.data.includes(item.vol_id) && this.projectData.pwas.data.includes(item.pwa_id)
           })
         }
         newProjectData.pwa_assigned_staffs = {
@@ -189,6 +191,8 @@ export default {
               pwa_id: item.pwa.general_info.id,
               staff_id: item.staff.id
             }
+          }).filter((item) => {
+            return this.projectData.staffs.data.includes(item.staff_id) && this.projectData.pwas.data.includes(item.pwa_id)
           })
         }
         this.$apollo.mutate({
