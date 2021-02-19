@@ -175,6 +175,22 @@ export default {
         newProjectData.volunteers.data = this.projectData.volunteers.data.map((item) => { return { vol_id: item } })
         newProjectData.pwas.data = this.projectData.pwas.data.map((item) => { return { pwa_id: item } })
         newProjectData.id = this.project.id
+        newProjectData.pwa_assigned_vols = {
+          data: this.project.pwa_assigned_vols.map((item) => {
+            return {
+              pwa_id: item.pwa.general_info.id,
+              vol_id: item.volunteer.general_info.id
+            }
+          })
+        }
+        newProjectData.pwa_assigned_staffs = {
+          data: this.project.pwa_assigned_staffs.map((item) => {
+            return {
+              pwa_id: item.pwa.general_info.id,
+              staff_id: item.staff.id
+            }
+          })
+        }
         this.$apollo.mutate({
           mutation: UpdateProject,
           variables: { id: this.project.id, project: newProjectData },
