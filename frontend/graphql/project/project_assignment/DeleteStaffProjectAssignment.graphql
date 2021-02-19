@@ -1,0 +1,72 @@
+mutation DeleteStaffProjectAssignment(
+    $project_id: Int!,
+    $staff_id: Int!
+){
+    delete_project_pwa_staffs(where: {
+    project_id: {_eq: $project_id},
+    staff_id:{_eq: $staff_id}
+    }){
+	returning {
+      project {
+        owner {
+          id
+          name
+        }
+        pwas {
+          pwa {
+            general_info {
+              id
+              name
+            }
+          }
+        }
+        upcoming_date
+        is_recurring
+        description
+        id
+        staffs {
+          staff {
+            id
+            name
+          }
+        }
+        volunteers {
+          volunteer {
+            general_info {
+              id
+              name
+            }
+          }
+        }
+        pwa_assigned_vols {
+          pwa {
+            general_info {
+              id
+              name
+            }
+          }
+          volunteer {
+            general_info {
+              id
+              name
+            }
+          }
+        }
+        pwa_assigned_staffs {
+          pwa {
+            general_info {
+              id
+              name
+            }
+          }
+          staff {
+            id
+            name
+          }
+        }
+        title
+        voltypes
+      }
+    }
+  }
+}
