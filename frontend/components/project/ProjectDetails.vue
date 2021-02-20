@@ -4,7 +4,7 @@
 
       <!-- left col -->
       <v-col lg="6" cols="12">
-        <v-row>
+        <v-row class="d-flex align-center">
           <v-col>
             <span>Project Details</span>
           </v-col>
@@ -69,9 +69,9 @@
         <v-row>
           <v-col class="py-0">
             <v-autocomplete
-              :value="project.voltypes"
+              :value="VOLUNTEER_TYPES[project.voltypes]"
               label="Project Volunteer Types"
-              :items="[project.voltypes]"
+              :items="[VOLUNTEER_TYPES[project.voltypes]]"
               readonly
             />
           </v-col>
@@ -113,22 +113,13 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-row>
-          <v-col>
-            <span>Project Assignment</span>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            Table
-          </v-col>
-        </v-row>
+        <ProjectAssignmentView :project="project" />
       </v-col>
     </v-row>
   </v-card>
 </template>
 <script>
-import { EDIT_RESOURCE_PERMISSIONS } from './../../assets/data'
+import { EDIT_RESOURCE_PERMISSIONS, VOLUNTEER_TYPES } from './../../assets/data'
 
 export default {
   props: {
@@ -143,6 +134,7 @@ export default {
   },
   data () {
     return {
+      VOLUNTEER_TYPES,
       EDIT_RESOURCE_PERMISSIONS
     }
   },
