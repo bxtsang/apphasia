@@ -22,7 +22,7 @@
             </v-row>
             <v-row>
               <v-col class="py-0 d-flex justify-end">
-                <v-btn type="submit" color="primary">Save</v-btn>
+                <v-btn type="submit" color="primary" :loading="isLoading">Save</v-btn>
               </v-col>
             </v-row>
           </v-container>
@@ -41,17 +41,22 @@ export default {
   data () {
     return {
       valid: true,
-      folderName: ''
+      folderName: '',
+      isLoading: false
     }
   },
   methods: {
     createNewFolder () {
       if (this.$refs.form.validate()) {
-        console.log(`upload new folder ${this.folderName}`)
-        // CALL API HERE
+        this.isLoading = true
 
-        this.folderName = ""
-        this.isOpen = false
+        // CALL API HERE
+        console.log(`upload new folder ${this.folderName}`)
+
+        // END
+        this.folderName = ''
+        this.isLoading = false
+        this.$emit('closeForm')
       }
     }
   }

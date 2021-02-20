@@ -97,7 +97,7 @@
         </v-row>
       </v-container>
     </v-row>
-    <NewFolderModal :isOpen="addFolderOverlay" />
+    <NewFolderModal :isOpen="addFolderOverlay" @closeForm="addFolderOverlay = false" />
   </v-card>
 </template>
 <script>
