@@ -67,7 +67,7 @@
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <ResourceFolder v-for="folder in foldersInCurrentDirectory" :key="folder.id" :folder="folder" />
+              <Resource v-for="folder in foldersInCurrentDirectory" :key="folder.id" :resource="folder" resourceType="folder"/>
             </v-container>
           </v-col>
         </v-row>
@@ -75,7 +75,7 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <ResourceFile v-for="file in filesInCurrentDirectory" :key="file.id" :file="file" />
+              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resourceType="file"/>
             </v-container>
           </v-col>
         </v-row>
@@ -101,13 +101,12 @@
 </template>
 <script>
 import Empty from './resources/Empty'
-import ResourceFile from './resources/ResourceFile'
-import ResourceFolder from './resources/ResourceFolder'
+import Resource from './resources/Resource'
 const SCOPE = 'https://www.googleapis.com/auth/drive'
 const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
 export default {
-  components: { Empty, ResourceFile, ResourceFolder },
+  components: { Empty, Resource },
   props: {
     project: {
       type: Object,
