@@ -38,7 +38,7 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="options in BUTTON_OPTIONS" :key="options.title" link>
+              <v-list-item v-for="options in BUTTON_OPTIONS" :key="options.title" link @click="options.action">
                 <v-icon left>
                   {{ options.icon }}
                 </v-icon>
@@ -97,6 +97,7 @@
         </v-row>
       </v-container>
     </v-row>
+    <NewFolderModal :isOpen="addFolderOverlay" />
   </v-card>
 </template>
 <script>
@@ -119,13 +120,9 @@ export default {
       children: [],
       projectId: this.$route.query.id,
       isLoading: false,
-      // BASE_RESOURCE: {
-      //   directory: '/',
-      //   folders: [],
-      //   files: []
-      // },
+      addFolderOverlay: false,
       BUTTON_OPTIONS: [
-        { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { console.log('hi') } },
+        { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { this.addFolderOverlay = !this.addFolderOverlay } },
         { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { console.log('hi') } }
       ],
       currentDirectory: '/',
