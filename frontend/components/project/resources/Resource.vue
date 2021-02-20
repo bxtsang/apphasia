@@ -8,7 +8,9 @@
       width="200"
       @contextmenu="show"
     >
-      <v-icon class="ma-4">mdi-folder</v-icon>
+      <v-icon class="ma-4">
+        mdi-folder
+      </v-icon>
       <span> {{ resource.name }}</span>
     </v-card>
 
@@ -20,7 +22,9 @@
       width="200"
       @contextmenu="show"
     >
-      <v-icon x-large class="ma-4">mdi-file</v-icon>
+      <v-icon x-large class="ma-4">
+        mdi-file
+      </v-icon>
       <span> {{ resource.name }} </span>
     </v-card>
 
@@ -67,9 +71,13 @@ export default {
       x: 0,
       y: 0,
       RIGHT_CLICK_OPTIONS: [
-        { title: 'Download', icon: 'mdi-download', action: this.downloadResource },
         { title: 'Delete', icon: 'mdi-delete', action: this.deleteResource }
       ]
+    }
+  },
+  mounted () {
+    if (this.resource.webContentLink) {
+      this.RIGHT_CLICK_OPTIONS.push({ title: 'Download', icon: 'mdi-download', action: this.downloadResource })
     }
   },
   methods: {
@@ -83,10 +91,22 @@ export default {
       })
     },
     downloadResource () {
-      console.log('Download ' + this.resourceType + `: ${JSON.stringify(this.resource)}`)
+      window.location.href = this.resource.webContentLink
     },
-    deleteResource () {
-      console.log('Delete ' + this.resourceType + `: ${JSON.stringify(this.resource)}`)
+    async deleteResource () {
+      try {
+        const rootFolder = await this.$axios.post('https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev', { file_id: this.resource.id })
+        if (rootFolder.data.status !== 'success') {
+          console.log('error')
+          // insert error snackbar here
+        } else {
+          console.log('success!')
+          this.$emit('refresh')
+        }
+      } catch (e) {
+        console.log(e)
+        // insert error snackbar here
+      }
     }
   }
 }

@@ -67,7 +67,7 @@
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="folder in foldersInCurrentDirectory" :key="folder.id" :resource="folder" resourceType="folder"/>
+              <Resource v-for="folder in foldersInCurrentDirectory" :key="folder.id" :resource="folder" resource-type="folder" @refresh="refresh()" />
             </v-container>
           </v-col>
         </v-row>
@@ -75,7 +75,7 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resourceType="file"/>
+              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resource-type="file" @refresh="refresh()" />
             </v-container>
           </v-col>
         </v-row>
@@ -97,7 +97,7 @@
         </v-row>
       </v-container>
     </v-row>
-    <NewFolderModal :isOpen="addFolderOverlay" @closeForm="addFolderOverlay = false" />
+    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refresh()" />
   </v-card>
 </template>
 <script>
@@ -317,6 +317,9 @@ export default {
         console.log(e)
       }
       this.isLoading = false
+    },
+    refresh () {
+      this.getChildrenFolder(this.parent.id)
     }
   }
 }
