@@ -10,7 +10,7 @@
             <div v-if="isLoading" class="d-flex justify-center">
               <v-progress-circular
                 :size="50"
-                color = "primary"
+                color="primary"
                 indeterminate
               />
             </div>
@@ -47,21 +47,18 @@
                 <v-row>
                   <v-col>
                     <v-tabs-items v-model="selectedTab">
-
                       <!-- Project Details -->
                       <v-tab-item :key="0" transition="fade">
-                        <ProjectDetails :project="data.projects_by_pk" :resourceType="resourceType" />
+                        <ProjectDetails :project="data.projects_by_pk" :resource-type="resourceType" />
                       </v-tab-item>
 
                       <!-- Project Resources -->
                       <v-tab-item :key="1" transition="fade">
-                        <ResourceDirectory />
+                        <ResourceDirectory :project="data.projects_by_pk" />
                       </v-tab-item>
 
                       <!-- Project Events -->
-                      <v-tab-item :key="2" transition="fade">
-
-                      </v-tab-item>
+                      <v-tab-item :key="2" transition="fade" />
                     </v-tabs-items>
                   </v-col>
                 </v-row>

@@ -3,11 +3,17 @@
     <v-icon class="ma-4">
       mdi-folder
     </v-icon>
-    <span>folder</span>
+    <span> {{ folder.name }}</span>
   </v-card>
 </template>
 <script>
 export default {
+  props: {
+    folder: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {}
   }

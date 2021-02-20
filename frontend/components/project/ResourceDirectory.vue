@@ -1,9 +1,31 @@
 <template>
   <v-card class="px-6 py-3">
     <v-row>
-      <v-col>
-        <span class="section-title">Project Name</span>
-      </v-col>
+      <ApolloQuery
+        :query="require('./../../graphql/project/GetSingleProject.graphql')"
+        :variables="{ id: projectId }"
+      >
+        <template v-slot="{ result: { error, data }, isLoading }">
+          <div v-if="isLoading" class="d-flex justify-center">
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+            />
+          </div>
+
+          <!-- Error -->
+          <div v-else-if="error">
+            An error occurred
+          </div>
+
+          <div v-else-if="data && data.projects_by_pk">
+            <v-col>
+              <span class="section-title">{{ data.projects_by_pk.title }}</span>
+            </v-col>
+          </div>
+        </template>
+      </ApolloQuery>
       <v-col class="d-flex justify-end">
         <div class="text-center">
           <v-menu offset-y>
@@ -45,7 +67,7 @@
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <ResourceFolder />
+              <ResourceFolder v-for="folder in foldersInCurrentDirectory" :key="folder.id" :folder="folder" />
             </v-container>
           </v-col>
         </v-row>
@@ -53,7 +75,7 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <ResourceFile />
+              <ResourceFile v-for="file in filesInCurrentDirectory" :key="file.id" :file="file" />
             </v-container>
           </v-col>
         </v-row>
@@ -68,6 +90,9 @@
             <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
               Upload
             </v-btn>
+            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="getProjectFolder">
+              Test
+            </v-btn>
           </template>
         </v-row>
       </v-container>
@@ -78,21 +103,28 @@
 import Empty from './resources/Empty'
 import ResourceFile from './resources/ResourceFile'
 import ResourceFolder from './resources/ResourceFolder'
-
 const SCOPE = 'https://www.googleapis.com/auth/drive'
 const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
 export default {
   components: { Empty, ResourceFile, ResourceFolder },
+  props: {
+    project: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
-      isLoading: true,
+      parent: [],
+      children: [],
       projectId: this.$route.query.id,
-      BASE_RESOURCE: {
-        directory: '/',
-        folders: [],
-        files: []
-      },
+      isLoading: false,
+      // BASE_RESOURCE: {
+      //   directory: '/',
+      //   folders: [],
+      //   files: []
+      // },
       BUTTON_OPTIONS: [
         { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { console.log('hi') } },
         { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { console.log('hi') } }
@@ -103,20 +135,16 @@ export default {
   },
   computed: {
     filesInCurrentDirectory () {
-      return [
-        {
-          id: '',
-          name: '',
-          type: 'pdf'
-        }
-      ]
+      const children = this.children
+      return children.filter((obj) => {
+        return obj.mimeType !== 'application/vnd.google-apps.folder'
+      })
     },
     foldersInCurrentDirectory () {
-      return [
-        {
-          name: 'forms'
-        }
-      ]
+      const children = this.children
+      return children.filter((obj) => {
+        return obj.mimeType === 'application/vnd.google-apps.folder'
+      })
     }
   },
   mounted () {
@@ -125,22 +153,26 @@ export default {
     script.onload = this.handleClientLoad
     script.src = 'https://apis.google.com/js/api.js'
     document.body.appendChild(script)
-    setTimeout(this.getProjectResources, 2000)
+
+    this.getProjectFolder()
+
+    // setTimeout(this.getProjectResources, 2000)
+
     // this.getProjectResources()
   },
   methods: {
-    async getProjectResources () {
-      this.resources = this.BASE_RESOURCE
-      this.isLoading = true
-      try {
-        const response = await this.$axios.get(`${process.env.BASE_API_URL}/resources/${this.projectId}`)
-        this.resources = response.data.resources
-      } catch (error) {
-        this.resources = this.BASE_RESOURCE
-      } finally {
-        this.isLoading = false
-      }
-    },
+    // async getProjectResources () {
+    //   this.resources = this.BASE_RESOURCE
+    //   this.isLoading = true
+    //   try {
+    //     const response = await this.$axios.get(`${process.env.BASE_API_URL}/resources/${this.projectId}`)
+    //     this.resources = response.data.resources
+    //   } catch (error) {
+    //     this.resources = this.BASE_RESOURCE
+    //   } finally {
+    //     this.isLoading = false
+    //   }
+    // },
     handleClientLoad () {
       window.gapi.load('client:auth2', this.initClient)
     },
@@ -257,6 +289,38 @@ export default {
           console.log('unauthorized')
         }
       }
+    },
+    async getProjectFolder () {
+      this.isLoading = true
+      const projectTitle = this.project.title
+      try {
+        const rootFolder = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', {})
+        if (rootFolder.data.status === 'success') {
+          const projFolder = rootFolder.data.files.find((obj) => {
+            return obj.name === projectTitle
+          })
+          this.parent = projFolder
+          this.getChildrenFolder(projFolder.id)
+        } else {
+          console.log('error')
+          // error snackbar popup
+        }
+      } catch (e) {
+        // error snackbar popup
+        console.log(e)
+      }
+      this.isLoading = false
+    },
+    async getChildrenFolder (folderId) {
+      this.isLoading = true
+      try {
+        const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: folderId })
+        this.children = childrenFiles.data.files
+      } catch (e) {
+        // error snackbar popup
+        console.log(e)
+      }
+      this.isLoading = false
     }
   }
 }

@@ -3,11 +3,17 @@
     <v-icon x-large class="ma-4">
       mdi-file
     </v-icon>
-    <span>file name.pdf</span>
+    <span> {{ file.name }} </span>
   </v-card>
 </template>
 <script>
 export default {
+  props: {
+    file: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {}
   }
