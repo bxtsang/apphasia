@@ -7,6 +7,7 @@
       outlined
       width="200"
       @contextmenu="show"
+      @dblclick="changeDirectory"
     >
       <v-icon class="ma-4">
         mdi-folder
@@ -22,7 +23,6 @@
       height="150"
       width="200"
       @contextmenu="show"
-      @click="changeDirectory"
     >
       <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
       <v-icon v-else x-large class="ma-4">
@@ -96,22 +96,11 @@ export default {
     downloadResource () {
       window.location.href = this.resource.webContentLink
     },
-    async deleteResource () {
-      try {
-        const rootFolder = await this.$axios.post('https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev', { file_id: this.resource.id })
-        if (rootFolder.data.status !== 'success') {
-          console.log('error')
-          // insert error snackbar here
-        } else {
-          this.$emit('refresh')
-        }
-      } catch (e) {
-        console.log(e)
-        // insert error snackbar here
-      }
+    deleteResource () {
+      this.$emit('deleteResource')
     },
     changeDirectory () {
-      console.log(this.$emit('changeDirectory'))
+      this.$emit('changeDirectory')
     }
   }
 }

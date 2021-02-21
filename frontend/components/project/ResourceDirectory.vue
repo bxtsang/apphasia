@@ -78,7 +78,8 @@
                 :key="folder.id"
                 :resource="folder"
                 resource-type="folder"
-                @refresh="refresh(parent.id)"
+                @deleteResource="deleteResource(folder.id)"
+                @refresh="refreshWithDelay(parent.id)"
                 @changeDirectory="refresh(folder.id)"
               />
             </v-container>
@@ -88,29 +89,28 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resource-type="file" @refresh="refresh(parent.id)" />
+              <Resource
+                v-for="file in filesInCurrentDirectory"
+                :key="file.id"
+                :resource="file"
+                resource-type="file"
+                @refresh="refreshWithDelay(parent.id)"
+                @deleteResource="deleteFile(file.id)"
+              />
             </v-container>
           </v-col>
         </v-row>
-        <v-row>
-          <template>
-            <v-btn id="signout-btn" color="danger" style="margin-left: 25px" @click="signOutFunction">
-              Sign Out
-            </v-btn>
-            <v-btn>
-              <input id="files" name="file" type="file" multiple>
-            </v-btn>
-            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
-              Upload
-            </v-btn>
-            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="getProjectFolder">
-              Test
-            </v-btn>
-          </template>
-        </v-row>
+        <input
+          id="files"
+          name="file"
+          type="file"
+          multiple
+          hidden
+          @change="upload"
+        >
       </v-container>
     </v-row>
-    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refresh(parent.id)" />
+    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refreshWithDelay(parent.id)" />
   </v-card>
 </template>
 <script>
@@ -136,7 +136,7 @@ export default {
       addFolderOverlay: false,
       BUTTON_OPTIONS: [
         { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { this.addFolderOverlay = !this.addFolderOverlay } },
-        { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { console.log('hi') } }
+        { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { document.getElementById('files').click() } }
       ],
       currentDirectory: '/',
       resources: this.BASE_RESOURCE
@@ -235,7 +235,10 @@ export default {
         return false
       }
     },
-    upload  () {
+    upload () {
+      const vm = this
+      const f = document.getElementById('files')
+      this.loading = true
       if (this.googleAuth === undefined || this.googleAuth == null) {
         this.signInFunction()
         return
@@ -245,31 +248,31 @@ export default {
       if (user.uc == null) {
         this.signInFunction()
       } else {
-        const parentId = '15zTqofHz34QuOCXB4_XZXX55aLtEF-eZ' // parent Id of folder to upload file in
+        const parentId = this.parent.id // parent Id of folder to upload file in
         const isAnEditor = this.checkIfEditor(parentId)
         const isAuthorized = user.hasGrantedScopes(SCOPE)
         if (isAnEditor && isAuthorized) {
           // Iterating through the inputted files, as multi upload is allowed
-          const f = document.getElementById('files');
-          [...f.files].forEach((file, i) => {
-            const fr = new FileReader()
 
-            fr.onload = (e) => {
-              const data = e.target.result.split(',')
-              const obj = { fileName: f.files[i].name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
-              const contentType = obj.mimeType
+          try {
+            for (const file of f.files) {
+              const fr = new FileReader()
+              fr.onload = async (e) => {
+                const data = e.target.result.split(',')
+                const obj = { fileName: file.name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
+                const contentType = obj.mimeType
 
-              const boundary = '287032381131322'
-              const delimiter = '\r\n--' + boundary + '\r\n'
-              const closeDelim = '\r\n--' + boundary + '--'
-              const fileData = obj.data
-              const metadata = {
-                name: obj.fileName,
-                mimeType: contentType,
-                parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
-              }
+                const boundary = '287032381131322'
+                const delimiter = '\r\n--' + boundary + '\r\n'
+                const closeDelim = '\r\n--' + boundary + '--'
+                const fileData = obj.data
+                const metadata = {
+                  name: obj.fileName,
+                  mimeType: contentType,
+                  parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
+                }
 
-              const multipartRequestBody =
+                const multipartRequestBody =
           delimiter +
           'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
           JSON.stringify(metadata) +
@@ -279,23 +282,36 @@ export default {
           fileData + '\r\n' +
           closeDelim
 
-              const request = window.gapi.client.request({
-                path: 'https://www.googleapis.com/upload/drive/v3/files',
-                method: 'POST',
-                params: { uploadType: 'multipart' },
-                headers: {
-                  'Content-Type': 'multipart/related; boundary=' + boundary + ''
-                },
-                body: multipartRequestBody
-              })
-              request.execute(function (file) {
-                console.log(file)
-              })
+                const request = window.gapi.client.request({
+                  path: 'https://www.googleapis.com/upload/drive/v3/files',
+                  method: 'POST',
+                  params: { uploadType: 'multipart' },
+                  headers: {
+                    'Content-Type': 'multipart/related; boundary=' + boundary + ''
+                  },
+                  body: multipartRequestBody
+                })
+                await request.execute(function (file) {
+                  console.log(file)
+                })
+              }
+              fr.readAsDataURL(file)
             }
-            fr.readAsDataURL(file)
-          })
+          } catch (e) {
+            // insert error snackbar
+            console.log(e)
+          } finally {
+            f.value = null
+            vm.refreshWithDelay(parentId)
+            console.log('no way hose')
+
+            this.loading = false
+          }
         } else {
+          // insert error snackbar
           console.log('unauthorized')
+          f.value = null
+          this.loading = false
         }
       }
     },
@@ -331,16 +347,66 @@ export default {
       }
       this.loading = false
     },
-    refresh (newParentId) {
+    refreshWithDelay (newParentId) {
       this.loading = true
-      console.log(this.loading)
       setTimeout(async () => {
         const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: newParentId })
-        console.log(childrenFiles)
         this.children = childrenFiles.data.files
         this.loading = false
-        console.log(this.loading)
       }, 2000)
+    },
+    async refresh (newParentId) {
+      this.loading = true
+      const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: newParentId })
+      this.children = childrenFiles.data.files
+      this.loading = false
+    },
+    async deleteResource (fileId) {
+      this.loading = true
+      const vm = this
+      try {
+        const rootFolder = await this.$axios.post('https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev', { file_id: fileId })
+        if (rootFolder.data.status !== 'success') {
+          console.log('error')
+          // insert error snackbar here
+        } else {
+          this.refreshWithDelay(fileId)
+        }
+      } catch (e) {
+        try {
+          const request = window.gapi.client.request({
+            path: 'https://www.googleapis.com/drive/v3/files/' + fileId,
+            method: 'DELETE',
+            params: { fileId }
+          })
+          await request.execute(function (response) {
+            console.log(response)
+            vm.refreshWithDelay(vm.parent.id)
+          })
+        } catch (e2) {
+          console.log(e2)
+        }
+        console.log(e)
+        // insert error snackbar here
+      } finally {
+        this.loading = false
+      }
+    },
+    async deleteFile (fileId) {
+      const vm = this
+      try {
+        const request = window.gapi.client.request({
+          path: 'https://www.googleapis.com/drive/v3/files/' + fileId,
+          method: 'DELETE',
+          params: { fileId }
+        })
+        await request.execute(function (response) {
+          console.log(response)
+          vm.refreshWithDelay(vm.parent.id)
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
