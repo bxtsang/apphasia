@@ -17,15 +17,18 @@
     <!-- Item Card File-->
     <v-card
       v-else
-      class="pa-3 ma-2 d-flex flex-column align-center clickable"
+      class="pa-3 ma-2 d-flex flex-column justify-space-between align-center clickable"
       outlined
+      height="150"
       width="200"
       @contextmenu="show"
+      @click="changeDirectory"
     >
-      <v-icon x-large class="ma-4">
+      <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
+      <v-icon v-else x-large class="ma-4">
         mdi-file
       </v-icon>
-      <span> {{ resource.name }} </span>
+      <span> {{ resource.name }}</span>
     </v-card>
 
     <!-- Context Menu -->
@@ -100,13 +103,15 @@ export default {
           console.log('error')
           // insert error snackbar here
         } else {
-          console.log('success!')
           this.$emit('refresh')
         }
       } catch (e) {
         console.log(e)
         // insert error snackbar here
       }
+    },
+    changeDirectory () {
+      console.log(this.$emit('changeDirectory'))
     }
   }
 }

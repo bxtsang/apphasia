@@ -28,6 +28,11 @@
       </ApolloQuery>
       <v-col class="d-flex justify-end">
         <div class="text-center">
+          <v-btn color="" class="mr-4" @click="refresh(parent.id)">
+            refresh
+          </v-btn>
+        </div>
+        <div class="text-center">
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" v-bind="attrs" v-on="on">
@@ -49,7 +54,8 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-if="isLoading">
+
+    <v-row v-if="loading">
       <v-col class="d-flex justify-center">
         <v-progress-circular
           :size="50"
@@ -67,7 +73,14 @@
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="folder in foldersInCurrentDirectory" :key="folder.id" :resource="folder" resource-type="folder" @refresh="refresh()" />
+              <Resource
+                v-for="folder in foldersInCurrentDirectory"
+                :key="folder.id"
+                :resource="folder"
+                resource-type="folder"
+                @refresh="refresh(parent.id)"
+                @changeDirectory="refresh(folder.id)"
+              />
             </v-container>
           </v-col>
         </v-row>
@@ -75,7 +88,7 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resource-type="file" @refresh="refresh()" />
+              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resource-type="file" @refresh="refresh(parent.id)" />
             </v-container>
           </v-col>
         </v-row>
@@ -97,7 +110,7 @@
         </v-row>
       </v-container>
     </v-row>
-    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refresh()" />
+    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refresh(parent.id)" />
   </v-card>
 </template>
 <script>
@@ -119,7 +132,7 @@ export default {
       parent: [],
       children: [],
       projectId: this.$route.query.id,
-      isLoading: false,
+      loading: false,
       addFolderOverlay: false,
       BUTTON_OPTIONS: [
         { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { this.addFolderOverlay = !this.addFolderOverlay } },
@@ -287,7 +300,7 @@ export default {
       }
     },
     async getProjectFolder () {
-      this.isLoading = true
+      this.loading = true
       const projectTitle = this.project.title
       try {
         const rootFolder = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', {})
@@ -305,10 +318,10 @@ export default {
         // error snackbar popup
         console.log(e)
       }
-      this.isLoading = false
+      this.loading = false
     },
     async getChildrenFolder (folderId) {
-      this.isLoading = true
+      this.loading = true
       try {
         const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: folderId })
         this.children = childrenFiles.data.files
@@ -316,11 +329,20 @@ export default {
         // error snackbar popup
         console.log(e)
       }
-      this.isLoading = false
+      this.loading = false
     },
-    refresh () {
-      this.getChildrenFolder(this.parent.id)
+    refresh (newParentId) {
+      this.loading = true
+      console.log(this.loading)
+      setTimeout(async () => {
+        const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: newParentId })
+        console.log(childrenFiles)
+        this.children = childrenFiles.data.files
+        this.loading = false
+        console.log(this.loading)
+      }, 2000)
     }
   }
+
 }
 </script>
