@@ -6,7 +6,7 @@
       <v-col lg="6" cols="12">
         <v-row class="d-flex align-center">
           <v-col>
-            <span>Project Details</span>
+            <span class="section-title">Project Details</span>
           </v-col>
           <v-col class="d-flex justify-end">
             <EditResourceModal
@@ -39,7 +39,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <span>People Involved</span>
+            <span class="section-title">People Involved</span>
           </v-col>
         </v-row>
         <v-row>
