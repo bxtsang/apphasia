@@ -11,6 +11,7 @@
     <StaffForm v-if="resourceType === 'staffs'" @closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" @closeForm="isOpen = false" />
     <ProjectForm v-if="resourceType === 'projects'" @closeForm="isOpen = false" />
+    <EventForm v-if="resourceType === 'events'" @closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
@@ -25,10 +26,6 @@ export default {
     resourceType: {
       type: String,
       default: null
-    },
-    size: {
-      type: String,
-      default: ''
     }
   },
   data () {
@@ -46,6 +43,9 @@ export default {
       }
       if (this.resourceType === 'projects') {
         return 'Project'
+      }
+      if (this.resourceType === 'events') {
+        return 'Event'
       }
       return 'Resource'
     }
