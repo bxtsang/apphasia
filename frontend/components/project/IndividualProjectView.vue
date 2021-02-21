@@ -68,17 +68,6 @@
             </div>
           </template>
         </ApolloQuery>
-        <!--
-        <v-row>
-          <v-col lg="6" md="6" sm="12">
-            <ProjectDetails :isLoading="isLoading" :project="project" />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <ResourceDirectory />
-          </v-col>
-        </v-row> -->
       </v-card>
     </v-col>
   </v-row>
