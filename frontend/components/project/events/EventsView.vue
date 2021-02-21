@@ -2,8 +2,9 @@
   <v-container class="pa-0 ma-0" fluid>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <AddResourceModal :resourceType="resourceType" />
-        <ListingQuery :resourceType="resourceType" :eventParams="{ project_id: projectId }" :customNavigation="goToSingleEvent" />
+        <v-card outlined>
+          <ListingQuery :resourceType="resourceType" :eventParams="{ project_id: projectId }" :customNavigation="goToSingleEvent" />
+        </v-card>
       </v-tab-item>
       <v-tab-item>
         <SingleEventView @home="tab = 0; event = null" :event="singleEvent"/>
