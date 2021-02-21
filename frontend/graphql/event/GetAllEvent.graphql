@@ -17,6 +17,7 @@ query GetAllEvents($project_id: Int!) {
       infinite
       day
       week
+      interval
     }
     pwas {
       pwa {
