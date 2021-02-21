@@ -1,0 +1,62 @@
+mutation UpdateAllEvents($id: Int!, $recurring: recurring_set_input!, $pwas) {
+  update_recurring_by_pk(pk_columns: {id: $id}, _set: $recurring) {
+    day
+    end_date
+    end_time
+    frequency
+    id
+    infinite
+    interval
+    name
+    start_time
+    week
+    project_id
+    start_date
+  }
+
+  insert_recurring_pwas(objects: $pwas_to_add) {
+    affected_rows
+  }
+  
+  delete_recurring_pwas(where: {
+    _and: [{
+      pwa_id: {_in: $pwas_to_remove},
+      recurring_id: {_eq: $id}
+    }]
+  }) {
+    affected_rows
+  }
+
+  insert_recurring_vols(objects: $vols_to_add) {
+    affected_rows
+  }
+  
+  delete_recurring_vols(where: {
+    _and: [{
+      vol_id: {_in: $vols_to_remove},
+      recurring_id: {_eq: $id}
+    }]
+  }) {
+    affected_rows
+  }
+}
+
+
+  # ID is recurring_id
+  # Unable to change frequency, interval, project_id, infinite and start_date
+  # PWA & Volunteers added must be a project pwa/vol associated to that recurring ID
+  # {
+  #   "id": 1,
+  #   "recurring": {
+  #     "day": 1,
+  #     "week": 1,
+  #     "start_time": "22:00:00",
+  #     "end_time": "23:00:00",
+  #     "end_date": "2021-02-14",
+  #     "name": "Hello Name"
+  #   },
+  #   "pwas_to_add": [{"pwa_id": 1,"project_id": 2}],
+  #   "pwas_to_remove": [1],
+  #   "vols_to_add": [{"vol_id": 2, "project_id": 2}],
+  #   "vols_to_remove": [2]
+  # }

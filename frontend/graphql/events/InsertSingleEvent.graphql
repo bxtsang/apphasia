@@ -1,0 +1,51 @@
+mutation InsertSingleEvent($event: events_insert_input!) {
+  insert_events_one(object: $event) {
+		date
+    name
+    start_time
+    end_time
+    project_id
+    recurr_id
+    note
+		id
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+
+  }
+}
+
+
+# {
+#   "event": {
+#     "date": "2021-02-18",
+#     "name": "Doing Testing",
+#     "start_time": "12:30:00",
+#     "end_time": "13:30:00",
+#     "project_id": 1,
+#     "note": "Cool cat",
+#     "pwas": {
+#       "data": [{
+#         "pwa_id": 25
+#       }]
+#     },
+#     "volunteers": {
+#       "data": [{
+#         "vol_id": 77
+#       }]
+#     }
+#   }
+# }

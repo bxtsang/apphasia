@@ -7,3 +7,4 @@ mutation DeleteEvent($id: Int!) {
 # {
 #   "id": 1
 # }
+# }
