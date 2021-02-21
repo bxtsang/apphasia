@@ -127,8 +127,6 @@ export const TABLE_HEADERS = {
   events: [
     { text: 'Name', value: 'project.title' },
     { text: 'Upcoming Date', value: 'date' },
-    { text: 'Is Recurring?', value: 'is_recurring' },
-    { text: 'Staff Involved', value: 'staffs' },
     { text: 'Notes', value: 'note' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
@@ -182,5 +180,6 @@ export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
   volunteers: ['core_team', 'intern'],
   pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern']
+  projects: ['core_team', 'intern'],
+  events: ['core_team', 'intern']
 }
