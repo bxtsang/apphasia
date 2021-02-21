@@ -125,9 +125,9 @@ export const TABLE_HEADERS = {
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   events: [
-    { text: 'Name', value: 'project.title' },
-    { text: 'Upcoming Date', value: 'date' },
-    { text: 'Notes', value: 'note' },
+    { text: 'Name', value: 'name' },
+    { text: 'Date', value: 'date' },
+    { text: 'Time', value: 'event_time' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
@@ -183,3 +183,14 @@ export const EDIT_RESOURCE_PERMISSIONS = {
   projects: ['core_team', 'intern'],
   events: ['core_team', 'intern']
 }
+
+// EVENT DATA
+export const DAY = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+]
