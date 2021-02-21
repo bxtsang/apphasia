@@ -96,6 +96,7 @@
                 resource-type="file"
                 @refresh="refreshWithDelay(parent.id)"
                 @deleteResource="deleteFile(file.id)"
+                @changeDirectory="openFile(file.webViewLink)"
               />
             </v-container>
           </v-col>
@@ -235,7 +236,7 @@ export default {
         return false
       }
     },
-    upload () {
+    async upload () {
       const vm = this
       const f = document.getElementById('files')
       this.loading = true
@@ -256,23 +257,43 @@ export default {
 
           try {
             for (const file of f.files) {
-              const fr = new FileReader()
-              fr.onload = async (e) => {
-                const data = e.target.result.split(',')
-                const obj = { fileName: file.name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
-                const contentType = obj.mimeType
+              await this.uploadHelper(file, parentId)
+            }
+          } catch (e) {
+            // insert error snackbar
+            console.log(e)
+          } finally {
+            vm.refreshWithDelay(parentId)
+            f.value = null
+          }
+        } else {
+          // insert error snackbar
+          console.log('unauthorized')
+          f.value = null
+          this.loading = false
+        }
+      }
+    },
+    uploadHelper (file, parentId) {
+      return new Promise(function (resolve, reject) {
+        try {
+          const fr = new FileReader()
+          fr.onload = async (e) => {
+            const data = e.target.result.split(',')
+            const obj = { fileName: file.name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
+            const contentType = obj.mimeType
 
-                const boundary = '287032381131322'
-                const delimiter = '\r\n--' + boundary + '\r\n'
-                const closeDelim = '\r\n--' + boundary + '--'
-                const fileData = obj.data
-                const metadata = {
-                  name: obj.fileName,
-                  mimeType: contentType,
-                  parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
-                }
+            const boundary = '287032381131322'
+            const delimiter = '\r\n--' + boundary + '\r\n'
+            const closeDelim = '\r\n--' + boundary + '--'
+            const fileData = obj.data
+            const metadata = {
+              name: obj.fileName,
+              mimeType: contentType,
+              parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
+            }
 
-                const multipartRequestBody =
+            const multipartRequestBody =
           delimiter +
           'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
           JSON.stringify(metadata) +
@@ -282,38 +303,26 @@ export default {
           fileData + '\r\n' +
           closeDelim
 
-                const request = window.gapi.client.request({
-                  path: 'https://www.googleapis.com/upload/drive/v3/files',
-                  method: 'POST',
-                  params: { uploadType: 'multipart' },
-                  headers: {
-                    'Content-Type': 'multipart/related; boundary=' + boundary + ''
-                  },
-                  body: multipartRequestBody
-                })
-                await request.execute(function (file) {
-                  console.log(file)
-                })
-              }
-              fr.readAsDataURL(file)
-            }
-          } catch (e) {
-            // insert error snackbar
-            console.log(e)
-          } finally {
-            f.value = null
-            vm.refreshWithDelay(parentId)
-            console.log('no way hose')
-
-            this.loading = false
+            const request = window.gapi.client.request({
+              path: 'https://www.googleapis.com/upload/drive/v3/files',
+              method: 'POST',
+              params: { uploadType: 'multipart' },
+              headers: {
+                'Content-Type': 'multipart/related; boundary=' + boundary + ''
+              },
+              body: multipartRequestBody
+            })
+            await request.execute(function (file) {
+              console.log(file)
+              resolve('success')
+            })
           }
-        } else {
-          // insert error snackbar
-          console.log('unauthorized')
-          f.value = null
-          this.loading = false
+          fr.readAsDataURL(file)
+        } catch (e) {
+          console.log(e)
+          reject(e)
         }
-      }
+      })
     },
     async getProjectFolder () {
       this.loading = true
@@ -407,6 +416,9 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    openFile (link) {
+      window.open(link)
     }
   }
 

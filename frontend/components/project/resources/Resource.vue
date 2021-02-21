@@ -23,6 +23,7 @@
       height="150"
       width="200"
       @contextmenu="show"
+      @dblclick="changeDirectory"
     >
       <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
       <v-icon v-else x-large class="ma-4">
