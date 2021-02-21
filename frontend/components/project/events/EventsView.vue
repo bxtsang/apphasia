@@ -2,8 +2,7 @@
   <v-container class="pa-0 ma-0" fluid>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <ListingQuery :resourceType="resourceType"/>
-        <v-btn @click="tab = 1">next</v-btn>
+        <ListingQuery :resourceType="resourceType" :eventParams="{ project_id: projectId }"/>
       </v-tab-item>
       <v-tab-item>
         <SingleEventView @home="tab = 0"/>
@@ -17,7 +16,8 @@ export default {
     return {
       tab: 0,
       singleEvent: -1,
-      resourceType: 'events'
+      resourceType: 'events',
+      projectId: this.$route.query.id
     }
   }
 }
