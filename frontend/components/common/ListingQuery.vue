@@ -107,7 +107,12 @@
 
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
-            <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
+            <v-btn v-if="resourceType === 'events'" @click="() => customNavigation(item.id)" icon>
+              <v-icon large>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+            <v-btn v-else :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
               </v-icon>
@@ -136,6 +141,10 @@ export default {
     eventParams: {
       type: Object,
       default: null
+    },
+    customNavigation: {
+      type: Function,
+      default: () => {}
     }
   },
 
