@@ -28,8 +28,11 @@
           <template v-slot:top>
             <v-container class="py-0" fluid>
               <v-row>
-                <v-col>
+                <v-col class="d-flex align-center">
                   <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
+                </v-col>
+                <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
+                  <AddResourceModal :resourceType="resourceType" />
                 </v-col>
               </v-row>
               <v-row v-if="resourceType === 'staffs'">
