@@ -58,7 +58,9 @@
                       </v-tab-item>
 
                       <!-- Project Events -->
-                      <v-tab-item :key="2" transition="fade" />
+                      <v-tab-item :key="2" transition="fade" >
+                        <EventsView :project="data.projects_by_pk" />
+                      </v-tab-item>
                     </v-tabs-items>
                   </v-col>
                 </v-row>
