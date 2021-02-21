@@ -123,6 +123,14 @@ export const TABLE_HEADERS = {
     { text: 'Staff Involved', value: 'staffs' },
     { text: 'Notes', value: 'description' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  events: [
+    { text: 'Name', value: 'project.title' },
+    { text: 'Upcoming Date', value: 'date' },
+    { text: 'Is Recurring?', value: 'is_recurring' },
+    { text: 'Staff Involved', value: 'staffs' },
+    { text: 'Notes', value: 'note' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
 
