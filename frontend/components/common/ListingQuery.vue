@@ -107,7 +107,7 @@
 
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
-            <v-btn v-if="resourceType === 'events'" @click="() => customNavigation(item.id)" icon>
+            <v-btn v-if="resourceType === 'events'" @click="() => customNavigation(item)" icon>
               <v-icon large>
                 mdi-chevron-right
               </v-icon>
