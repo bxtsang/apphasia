@@ -76,7 +76,11 @@
             </v-row>
             <v-row v-if="eventData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
-                Interval
+                <IntervalInput
+                  v-model="eventData.interval"
+                  label="Every"
+                  required
+                />
               </v-col>
             </v-row>
             <v-row v-if="eventData.frequency == 'Monthly'">
@@ -86,7 +90,11 @@
             </v-row>
             <v-row v-if="eventData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
-                Day
+                <DayInput
+                  v-model="eventData.day"
+                  label="Day"
+                  required
+                />
               </v-col>
             </v-row>
             <v-row class="mt-3">
