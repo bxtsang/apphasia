@@ -66,8 +66,27 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="py-0">
-                Repeat
+              <v-col class="py-0" cols="6">
+                <FrequencyInput
+                  v-model="eventData.frequency"
+                  label="Repeat"
+                  required
+                />
+              </v-col>
+            </v-row>
+            <v-row v-if="eventData.frequency !== 'None'">
+              <v-col class="py-0" cols="6">
+                Interval
+              </v-col>
+            </v-row>
+            <v-row v-if="eventData.frequency == 'Monthly'">
+              <v-col class="py-0" cols="6">
+                Week
+              </v-col>
+            </v-row>
+            <v-row v-if="eventData.frequency !== 'None'">
+              <v-col class="py-0" cols="6">
+                Day
               </v-col>
             </v-row>
             <v-row class="mt-3">
@@ -136,7 +155,10 @@ export default {
         end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
         start_time: this.event ? this.event.start_time : '',
         end_time: this.event ? this.event.end_time : '',
-        frequency: '',
+        frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
+        interval: '',
+        week: '',
+        day: '',
         volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
       }
