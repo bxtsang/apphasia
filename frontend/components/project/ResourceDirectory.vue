@@ -29,9 +29,6 @@
               >
                 {{ item.text }}
               </v-breadcrumbs-item>
-              <!-- <v-breadcrumbs-item v-for="path in paths" :key="path.id" @click="changeDirectory(path.id, path.name)">
-                {{ path.name }}
-              </v-breadcrumbs-item> -->
             </v-breadcrumbs>
           </div>
         </template>
@@ -129,9 +126,9 @@
     </v-row>
     <NewFolderModal
       :is-open="addFolderOverlay"
-      :parent-id="parent.id"
+      :parent-id="currentFolder.id"
       @closeForm="addFolderOverlay = false"
-      @refresh="refreshWithDelay(parent.id)"
+      @refresh="refreshWithDelay(currentFolder.id)"
     />
   </v-card>
 </template>
@@ -285,17 +282,16 @@ export default {
               await this.uploadHelper(file, parentId)
             }
           } catch (e) {
-            // insert error snackbar
+            vm.error()
             console.log(e)
           } finally {
             vm.refreshWithDelay(parentId)
             f.value = null
           }
         } else {
-          // insert error snackbar
-          console.log('unauthorized')
+          vm.error()
           f.value = null
-          this.loading = false
+          vm.loading = false
         }
       }
     },
@@ -371,14 +367,15 @@ export default {
             return obj.name === projectTitle
           })
           this.parent = projFolder
+          this.currentFolder = projFolder
           this.paths.push({ id: projFolder.id, text: projFolder.name })
           this.getChildrenFolder(projFolder.id)
         } else {
           console.log('error')
-          // error snackbar popup
+          this.error()
         }
       } catch (e) {
-        // error snackbar popup
+        this.error()
         console.log(e)
       }
       this.loading = false
@@ -392,7 +389,7 @@ export default {
         )
         this.children = childrenFiles.data.files
       } catch (e) {
-        // error snackbar popup
+        this.error()
         console.log(e)
       }
       this.loading = false
@@ -410,11 +407,17 @@ export default {
     },
     async refresh (newParentId) {
       this.loading = true
-      const childrenFiles = await this.$axios.post(
-        'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
-        { parent_folder: newParentId }
-      )
-      this.children = childrenFiles.data.files
+      try {
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
+        )
+        this.children = childrenFiles.data.files
+      } catch (e) {
+        console.log(e)
+        this.error()
+      }
+
       this.loading = false
     },
     changeDirectory (folderId, folderName) {
@@ -454,9 +457,9 @@ export default {
         )
         if (rootFolder.data.status !== 'success') {
           console.log('error')
-          // insert error snackbar here
+          vm.error()
         } else {
-          this.refreshWithDelay(vm.currentFolder.id)
+          vm.refreshWithDelay(vm.currentFolder.id)
         }
       } catch (e) {
         try {
@@ -467,15 +470,16 @@ export default {
           })
           await request.execute(function (response) {
             console.log(response)
+            if (response && (response.error !== null || response.error !== undefined)) {
+              vm.error()
+            }
             vm.refreshWithDelay(vm.currentFolder.id)
           })
         } catch (e2) {
           console.log(e2)
+          vm.error()
         }
         console.log(e)
-        // insert error snackbar here
-      } finally {
-        this.loading = false
       }
     },
     async deleteFile (fileId) {
@@ -488,17 +492,21 @@ export default {
         })
         await request.execute(function (response) {
           console.log(response)
+          if (response && (response.error !== null || response.error !== undefined)) {
+            vm.error()
+          }
           vm.refreshWithDelay(vm.currentFolder.id)
         })
       } catch (e) {
+        vm.error()
         console.log(e)
       }
     },
     openFile (link) {
       window.open(link)
     },
-    test () {
-      console.log('clicked!')
+    error () {
+      this.$store.commit('notification/newNotification', ['Something went wrong, please try again.', 'error'])
     }
   }
 }
