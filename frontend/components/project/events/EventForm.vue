@@ -17,28 +17,47 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                Event Name
+                <EventNameInput
+                  v-model="eventData.name"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                Event Notes
+                <EventNotesInput
+                  v-model="eventData.note"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                Start Date
+                <DateInput
+                  label="Start Date"
+                  v-model="eventData.date"
+                  required
+                />
               </v-col>
               <v-col class="py-0">
-                End Date
+                <DateInput
+                  label="End Date"
+                  v-model="eventData.end_date"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                Start Time
+                <TimeInput
+                  v-model="eventData.start_time"
+                  label="Start Time"
+                  required
+                />
               </v-col>
               <v-col class="py-0">
-                End Time
+                <TimeInput
+                  v-model="eventData.end_time"
+                  label="End Time"
+                  required
+                />
               </v-col>
             </v-row>
             <v-row class="mt-3">
@@ -58,12 +77,22 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                Volunteer Involved
+                <EventPersonMultiSelector
+                  v-model="eventData.volunteers.data"
+                  label="Volunteers Involved"
+                  type="volunteers"
+                  :projectId="projectId"
+                />
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                PWA Involved
+                <EventPersonMultiSelector
+                  v-model="eventData.pwas.data"
+                  label="PWAs Involved"
+                  type="pwas"
+                  :projectId="projectId"
+                />
               </v-col>
             </v-row>
             <v-row>
@@ -82,6 +111,7 @@
             </v-row>
           </v-col>
         </v-row>
+        {{ eventData }}
       </v-container>
     </v-form>
   </v-card>
@@ -97,7 +127,19 @@ export default {
   data () {
     return {
       valid: true,
-      isSubmitting: false
+      isSubmitting: false,
+      projectId: this.$route.query.id,
+      eventData: {
+        name: this.event ? this.event.name : '',
+        note: this.event ? this.event.note : '',
+        date: this.event ? this.event.start_date : '',
+        end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
+        start_time: this.event ? this.event.start_time : '',
+        end_time: this.event ? this.event.end_time : '',
+        frequency: '',
+        volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
+        pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
+      }
     }
   },
   computed: {
@@ -116,6 +158,6 @@ export default {
     editEvent () {
       return ''
     }
-  },
+  }
 }
 </script>
