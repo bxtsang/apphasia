@@ -33,7 +33,6 @@ export default {
       FREQUENCY_OPTIONS: [
         'None',
         'Weekly',
-        'Biweekly',
         'Monthly'
       ],
       validation: [...(this.required ? [v => !!v || 'Frequency is required'] : [])]
