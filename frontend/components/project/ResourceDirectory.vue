@@ -7,11 +7,7 @@
       >
         <template v-slot="{ result: { error, data }, isLoading }">
           <div v-if="isLoading" class="d-flex justify-center">
-            <v-progress-circular
-              :size="50"
-              color="primary"
-              indeterminate
-            />
+            <v-progress-circular :size="50" color="primary" indeterminate />
           </div>
 
           <!-- Error -->
@@ -20,9 +16,20 @@
           </div>
 
           <div v-else-if="data && data.projects_by_pk">
-            <v-col>
-              <span class="section-title">{{ data.projects_by_pk.title }}</span>
-            </v-col>
+            <v-tabs>
+              <v-tab active-class="test">
+                {{ data.projects_by_pk.title }}
+              </v-tab>
+              <v-icon>
+                mdi-chevron-right
+              </v-icon>
+              <span v-if="paths.length != 0" >
+                <v-tab v-for="path in paths" :key="path.id"/>
+                  {{ path.name }}
+                </v-tab>
+              </span>
+
+            </v-tabs>
           </div>
         </template>
       </ApolloQuery>
@@ -43,7 +50,12 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="options in BUTTON_OPTIONS" :key="options.title" link @click="options.action">
+              <v-list-item
+                v-for="options in BUTTON_OPTIONS"
+                :key="options.title"
+                link
+                @click="options.action"
+              >
                 <v-icon left>
                   {{ options.icon }}
                 </v-icon>
@@ -57,14 +69,15 @@
 
     <v-row v-if="loading">
       <v-col class="d-flex justify-center">
-        <v-progress-circular
-          :size="50"
-          color="primary"
-          indeterminate
-        />
+        <v-progress-circular :size="50" color="primary" indeterminate />
       </v-col>
     </v-row>
-    <v-row v-else-if="filesInCurrentDirectory.length == 0 && foldersInCurrentDirectory.length == 0">
+    <v-row
+      v-else-if="
+        filesInCurrentDirectory.length == 0 &&
+          foldersInCurrentDirectory.length == 0
+      "
+    >
       <Empty />
     </v-row>
     <v-row v-else>
@@ -80,7 +93,7 @@
                 resource-type="folder"
                 @deleteResource="deleteResource(folder.id)"
                 @refresh="refreshWithDelay(parent.id)"
-                @changeDirectory="refresh(folder.id)"
+                @changeDirectory="changeDirectory(folder.id, folder.name)"
               />
             </v-container>
           </v-col>
@@ -111,14 +124,20 @@
         >
       </v-container>
     </v-row>
-    <NewFolderModal :is-open="addFolderOverlay" :parent-id="parent.id" @closeForm="addFolderOverlay = false" @refresh="refreshWithDelay(parent.id)" />
+    <NewFolderModal
+      :is-open="addFolderOverlay"
+      :parent-id="parent.id"
+      @closeForm="addFolderOverlay = false"
+      @refresh="refreshWithDelay(parent.id)"
+    />
   </v-card>
 </template>
 <script>
 import Empty from './resources/Empty'
 import Resource from './resources/Resource'
 const SCOPE = 'https://www.googleapis.com/auth/drive'
-const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+const discoveryUrl =
+  'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
 export default {
   components: { Empty, Resource },
@@ -130,14 +149,27 @@ export default {
   },
   data () {
     return {
+      paths: [],
       parent: [],
       children: [],
       projectId: this.$route.query.id,
       loading: false,
       addFolderOverlay: false,
       BUTTON_OPTIONS: [
-        { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { this.addFolderOverlay = !this.addFolderOverlay } },
-        { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { document.getElementById('files').click() } }
+        {
+          title: 'Add Folder',
+          icon: 'mdi-folder-plus',
+          action: () => {
+            this.addFolderOverlay = !this.addFolderOverlay
+          }
+        },
+        {
+          title: 'Upload File/Folder',
+          icon: 'mdi-upload',
+          action: () => {
+            document.getElementById('files').click()
+          }
+        }
       ],
       currentDirectory: '/',
       resources: this.BASE_RESOURCE
@@ -189,15 +221,18 @@ export default {
     initClient () {
       const vm = this
       try {
-        window.gapi.client.init({
-          apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
-          clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
-          scope: 'https://www.googleapis.com/auth/drive',
-          discoveryDocs: [discoveryUrl]
-        }).then(() => {
-          vm.googleAuth = window.gapi.auth2.getAuthInstance()
-          vm.googleAuth.isSignedIn.listen(vm.updateSigninStatus)
-        })
+        window.gapi.client
+          .init({
+            apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
+            clientId:
+              '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
+            scope: 'https://www.googleapis.com/auth/drive',
+            discoveryDocs: [discoveryUrl]
+          })
+          .then(() => {
+            vm.googleAuth = window.gapi.auth2.getAuthInstance()
+            vm.googleAuth.isSignedIn.listen(vm.updateSigninStatus)
+          })
       } catch (e) {
         console.log(e)
       }
@@ -224,7 +259,10 @@ export default {
           if (response.error !== null || response.error !== undefined) {
             return false
           }
-          if (response.capabilities === null || response.capabilities === undefined) {
+          if (
+            response.capabilities === null ||
+            response.capabilities === undefined
+          ) {
             return false
           } else {
             console.log(response.capabilities.canAddChildren)
@@ -280,7 +318,11 @@ export default {
           const fr = new FileReader()
           fr.onload = async (e) => {
             const data = e.target.result.split(',')
-            const obj = { fileName: file.name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
+            const obj = {
+              fileName: file.name,
+              mimeType: data[0].match(/:(\w.+);/)[1],
+              data: data[1]
+            }
             const contentType = obj.mimeType
 
             const boundary = '287032381131322'
@@ -294,14 +336,19 @@ export default {
             }
 
             const multipartRequestBody =
-          delimiter +
-          'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-          JSON.stringify(metadata) +
-          delimiter +
-          'Content-Type: ' + contentType + '\r\n' +
-          'Content-Transfer-Encoding: ' + ' base64' + '\r\n\r\n' +
-          fileData + '\r\n' +
-          closeDelim
+              delimiter +
+              'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+              JSON.stringify(metadata) +
+              delimiter +
+              'Content-Type: ' +
+              contentType +
+              '\r\n' +
+              'Content-Transfer-Encoding: ' +
+              ' base64' +
+              '\r\n\r\n' +
+              fileData +
+              '\r\n' +
+              closeDelim
 
             const request = window.gapi.client.request({
               path: 'https://www.googleapis.com/upload/drive/v3/files',
@@ -328,7 +375,10 @@ export default {
       this.loading = true
       const projectTitle = this.project.title
       try {
-        const rootFolder = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', {})
+        const rootFolder = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          {}
+        )
         if (rootFolder.data.status === 'success') {
           const projFolder = rootFolder.data.files.find((obj) => {
             return obj.name === projectTitle
@@ -348,7 +398,10 @@ export default {
     async getChildrenFolder (folderId) {
       this.loading = true
       try {
-        const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: folderId })
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: folderId }
+        )
         this.children = childrenFiles.data.files
       } catch (e) {
         // error snackbar popup
@@ -359,22 +412,39 @@ export default {
     refreshWithDelay (newParentId) {
       this.loading = true
       setTimeout(async () => {
-        const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: newParentId })
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
+        )
         this.children = childrenFiles.data.files
         this.loading = false
       }, 2000)
     },
     async refresh (newParentId) {
       this.loading = true
-      const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: newParentId })
+      const childrenFiles = await this.$axios.post(
+        'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+        { parent_folder: newParentId }
+      )
       this.children = childrenFiles.data.files
       this.loading = false
+    },
+    changeDirectory (folderId, folderName) {
+      const path = { id: folderId, name: folderName }
+      this.paths.push(path)
+      for (const path2 of this.paths) {
+        console.log(path2.name)
+      }
+      this.refresh(folderId)
     },
     async deleteResource (fileId) {
       this.loading = true
       const vm = this
       try {
-        const rootFolder = await this.$axios.post('https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev', { file_id: fileId })
+        const rootFolder = await this.$axios.post(
+          'https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { file_id: fileId }
+        )
         if (rootFolder.data.status !== 'success') {
           console.log('error')
           // insert error snackbar here
@@ -419,8 +489,12 @@ export default {
     },
     openFile (link) {
       window.open(link)
+    },
+    test () {
+      console.log('clicked!')
     }
   }
-
 }
 </script>
+
+<style></style>
