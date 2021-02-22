@@ -43,8 +43,8 @@
       </v-col>
       <v-col cols="6" class="py-0">
         <v-text-field
-          label="End Data"
-          :value="event.recurring.end_date ? event.recurring.end_date : '-'"
+          label="End Date"
+          :value="event.recurring && event.recurring.end_date ? event.recurring.end_date : '-'"
         />
       </v-col>
     </v-row>
@@ -69,25 +69,28 @@
     </v-row>
     <v-row>
       <v-col cols="6" class="py-0">
-        <v-text-field
+        <v-select
           label="Repeat"
-          :value="event.recurring.frequency"
+          :value="event.recurring ? event.recurring.frequency : 'None'"
+          :items="[event.recurring ? event.recurring.frequency : 'None']"
         />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="event.recurring">
       <v-col cols="6" class="py-0">
-        <v-text-field
+        <v-select
           label="Every"
           :value="event.recurring.interval"
+          :items="[event.recurring.interval]"
         />
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="event.recurring">
       <v-col cols="6" class="py-0">
-        <v-text-field
+        <v-select
           label="On"
           :value="DAY[event.recurring.day]"
+          :items="[DAY[event.recurring.day]]"
         />
       </v-col>
     </v-row>
@@ -102,10 +105,10 @@
           label="Volunteers Involved"
           chips
           multiple
-          :items="[]"
-          item-text="pwa.general_info.name"
-          item-value="pwa.general_info.id"
-          :value="event.pwas.map(item => item.pwa.general_info.id)"
+          :items="event.volunteers"
+          item-text="volunteer.general_info.name"
+          item-value="volunteer.general_info.id"
+          :value="event.volunteers.map(item => item.volunteer.general_info.id)"
           readonly
         />
       </v-col>
@@ -116,7 +119,7 @@
           label="PWAs Involved"
           chips
           multiple
-          :items="[]"
+          :items="event.pwas"
           item-text="pwa.general_info.name"
           item-value="pwa.general_info.id"
           :value="event.pwas.map(item => item.pwa.general_info.id)"
@@ -124,7 +127,6 @@
         />
       </v-col>
     </v-row>
-    {{ event }}
   </v-container>
 </template>
 <script>
