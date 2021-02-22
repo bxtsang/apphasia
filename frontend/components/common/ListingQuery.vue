@@ -100,7 +100,7 @@
           </template>
 
           <template v-slot:[`item.is_recurring`]="{ item }">
-            <IsRecurringChip :value="item.is_recurring"/>
+            <IsRecurringChip :value="item.is_recurring" />
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
