@@ -13,7 +13,6 @@ def get_secret():
         SecretId = secret_name
     )
 
-
     return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
 
 # ENV VARIABLES
@@ -22,42 +21,69 @@ hasura_url = os.environ['HASURA_URI']
 hasura_admin_secret = get_secret()
 def lambda_handler(event, context):
     
-    # GIVEN VARIABLES
-    # project_id = 2
+    # GIVEN VARIABLES 
+    # project_id = 2 OR null
     # recurrence_id = 7
+    # day = 1
+    # week = 2 OR null
+    # interval = 1
+    # name = Test
+    # frequency = "Weekly" OR "Monthly" OR null
     # start_date = "2021-02-16"
-    # new_recurrence = False
+    # end_date = "2022-02-14"
+    # start_time = "13:00:00+00"
+    # end_time = 14:00:00+00"
+    # infinite = false
+    recurrence = json.loads(event['body'])['event']['data']['new']
     result = {}
     statusCode = 500
-    parameters = json.loads(event['body'])['input']
-    project_id = parameters['project_id']
-    recurrence_id = parameters['recurrence_id'] if 'recurrence_id' in parameters else None
-    start_date = parameters['start_date']
-    new_recurrence = parameters['new_recurrence']
-    end_date = date(*[int(ch) for ch in parameters['end_date'].split("-")]) if 'end_date' in parameters else None
-    previous_end_date = parameters['previous_end_date'] if 'previous_end_date' in parameters else None
-    recurrence = parameters['recurrence'] if 'recurrence' in parameters else None
+    recurrence['start_date'] = date(*[int(ch) for ch in recurrence['start_date'].split("-")])
+    recurrence['project_id'] = recurrence['project_id'] if recurrence['project_id'] else "NULL"
 
-    # For existing recurrence
-    # previous_end_date = "2021-06-10" # OR "YYYY-MM-DD"
-    # recurrence = {
-    #     "day": 2,
-    #     "week": 2,
-    #     "interval": 1,
-    #     "name": "Doing Dishes",
-    #     "frequency": "Monthly",
-    #     "end_date": "2021-06-10",
-    #     "start_time": "10:00:00",
-    #     "end_time": "10:30:00"
-    # }
-
-    # CREATE RECURRENCE
-    if new_recurrence:
-        sql = f"INSERT INTO recurring(day,week,interval,name,frequency,end_date,start_time,end_time) VALUES ({recurrence['day']},{recurrence['week']},{recurrence['interval']},'{recurrence['name']}','{recurrence['frequency']}','{recurrence['end_date']}','{recurrence['start_time']}','{recurrence['end_time']}') RETURNING *;"
+    if recurrence['end_date']:
+        recurrence['end_date'] = date(*[int(ch) for ch in recurrence['end_date'].split("-")])
     else:
-    # SELECT RECURRENCE
-        sql = f"SELECT * FROM recurring WHERE id = {recurrence_id};"
+        recurrence['end_date'] = recurrence['start_date'] + relativedelta(years=1)
+        sql = f"UPDATE recurring SET end_date = '{recurrence['end_date'].strftime('%m-%d-%Y')}', infinite = true WHERE id = {recurrence['id']};"
+        data = json.dumps({
+            "type": "run_sql",
+            "args": {"sql": sql}
+        })
+        res = requests.post(hasura_url,data=data, headers={
+        "x-hasura-admin-secret": hasura_admin_secret,
+        "Content-Type": "application/json"
+        })
+        if res.status_code != 200:
+            result['status'] = "failed"
+            result['message'] = "failed to update end_date"
+            return {
+                "statusCode": statusCode,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*"
+                },
+                "body": json.dumps(result)
+            }
 
+    #COMPUTED VARIABLES
+    events = []
+
+    # Create list of events based on its frequency
+    if recurrence["frequency"] in ["Weekly","Biweekly"]:
+        events = list(rrule(freq=WEEKLY, dtstart=recurrence['start_date'], until=recurrence['end_date'], interval=int(recurrence["interval"])))
+    elif recurrence["frequency"] == "Monthly":
+        events = list(rrule(freq=MONTHLY, bysetpos=int(recurrence["week"]),byweekday=int(recurrence["day"]), dtstart=recurrence['start_date'], until=recurrence['end_date'], interval=int(recurrence["interval"])))
+
+    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
+
+    # Create SQL statement for insertion
+
+    for event in events:
+        event = event.strftime("%m-%d-%Y")
+        sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
+
+    # Send SQL to database query
+    sql = sql[:-2] + ";"
     data = json.dumps({
         "type": "run_sql",
         "args": {
@@ -69,80 +95,16 @@ def lambda_handler(event, context):
     "Content-Type": "application/json"
     })
 
+    # result['message'] = json.dumps(res.json())
+    # statusCode = 200
     if res.status_code != 200:
         statusCode = res.status_code
         result['status'] = "failed"
-        result['message'] = "failed to select/insert recurring"
-        return {
-            "statusCode": statusCode,
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": json.dumps(result)
-        }
-
-    recurrence = dict(zip(*res.json()["result"]))
-
-    #COMPUTED VARIABLES
-    start_date = date(*[int(ch) for ch in start_date.split("-")])
-    if 'end_date' not in parameters:
-        end_date = start_date + relativedelta(years=1) if "end_date" not in recurrence or recurrence['end_date'] is None else date(*[int(ch) for ch in recurrence["end_date"].split("-")])
-    events = []
-    send = True
-
-    # Create list of events based on its frequency
-    if recurrence["frequency"] in ["Weekly","Biweekly"]:
-        events = list(rrule(freq=WEEKLY, dtstart=start_date, until=end_date, interval=int(recurrence["interval"])))
-    elif recurrence["frequency"] == "Monthly":
-        events = list(rrule(freq=MONTHLY, bysetpos=int(recurrence["week"]),byweekday=int(recurrence["day"]), dtstart=start_date, until=end_date ))
-
-    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
-
-    # Create SQL statement for insertion
-    if previous_end_date:
-        previous_end_date = date(*[int(ch) for ch in previous_end_date.split("-")])
-        count = 0
-        for event in events:
-            event = event.date()
-            if event > previous_end_date:
-                count += 1
-                event = event.strftime("%m-%d-%Y")
-                sql += f"({project_id},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
-        if count == 0:
-            send = False
+        result['message'] = "Failed to insert into Events."
     else:
-        for event in events:
-            event = event.strftime("%m-%d-%Y")
-            sql += f"({project_id},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
-
-    # Send SQL to database query
-    if send:
-        sql = sql[:-2] + ";"
-        data = json.dumps({
-            "type": "run_sql",
-            "args": {
-                "sql": sql
-            }
-        })
-        res = requests.post(hasura_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret,
-        "Content-Type": "application/json"
-        })
-
-        # result['message'] = json.dumps(res.json())
-        # statusCode = 200
-        if res.status_code != 200:
-            statusCode = res.status_code
-            result['status'] = "failed"
-            result['message'] = "Failed to insert into Events."
-        else:
-            statusCode = res.status_code
-            result['status'] = "sent"
-            result['message'] = "Successfully added events"
-    else:
-        statusCode = 200
+        statusCode = res.status_code
         result['status'] = "sent"
-        result['message'] = "No new events to add"
+        result['message'] = "Successfully added events" 
 
     return {
         "statusCode": statusCode,
