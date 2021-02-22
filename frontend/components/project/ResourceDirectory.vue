@@ -4,6 +4,7 @@
       <ApolloQuery
         :query="require('./../../graphql/project/GetSingleProject.graphql')"
         :variables="{ id: projectId }"
+        class="d-flex justify-start align-center col-8"
       >
         <template v-slot="{ result: { error, data }, isLoading }">
           <div v-if="isLoading" class="d-flex justify-center">
@@ -16,26 +17,28 @@
           </div>
 
           <div v-else-if="data && data.projects_by_pk">
-            <v-tabs>
-              <v-tab active-class="test">
-                {{ data.projects_by_pk.title }}
-              </v-tab>
-              <v-icon>
-                mdi-chevron-right
-              </v-icon>
-              <span v-if="paths.length != 0" >
-                <v-tab v-for="path in paths" :key="path.id"/>
-                  {{ path.name }}
-                </v-tab>
-              </span>
-
-            </v-tabs>
+            <v-breadcrumbs large :items="paths">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+              <v-breadcrumbs-item
+                slot="item"
+                slot-scope="{ item }"
+                class="breadcrumbsItem"
+                @click="changeDirectory(item.id, item.text)"
+              >
+                {{ item.text }}
+              </v-breadcrumbs-item>
+              <!-- <v-breadcrumbs-item v-for="path in paths" :key="path.id" @click="changeDirectory(path.id, path.name)">
+                {{ path.name }}
+              </v-breadcrumbs-item> -->
+            </v-breadcrumbs>
           </div>
         </template>
       </ApolloQuery>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-end align-center col-4">
         <div class="text-center">
-          <v-btn color="" class="mr-4" @click="refresh(parent.id)">
+          <v-btn color="" class="mr-4" @click="refresh(currentFolder.id)">
             refresh
           </v-btn>
         </div>
@@ -151,6 +154,7 @@ export default {
     return {
       paths: [],
       parent: [],
+      currentFolder: '',
       children: [],
       projectId: this.$route.query.id,
       loading: false,
@@ -195,26 +199,9 @@ export default {
     script.onload = this.handleClientLoad
     script.src = 'https://apis.google.com/js/api.js'
     document.body.appendChild(script)
-
     this.getProjectFolder()
-
-    // setTimeout(this.getProjectResources, 2000)
-
-    // this.getProjectResources()
   },
   methods: {
-    // async getProjectResources () {
-    //   this.resources = this.BASE_RESOURCE
-    //   this.isLoading = true
-    //   try {
-    //     const response = await this.$axios.get(`${process.env.BASE_API_URL}/resources/${this.projectId}`)
-    //     this.resources = response.data.resources
-    //   } catch (error) {
-    //     this.resources = this.BASE_RESOURCE
-    //   } finally {
-    //     this.isLoading = false
-    //   }
-    // },
     handleClientLoad () {
       window.gapi.load('client:auth2', this.initClient)
     },
@@ -287,7 +274,7 @@ export default {
       if (user.uc == null) {
         this.signInFunction()
       } else {
-        const parentId = this.parent.id // parent Id of folder to upload file in
+        const parentId = this.currentFolder.id // parent Id of folder to upload file in
         const isAnEditor = this.checkIfEditor(parentId)
         const isAuthorized = user.hasGrantedScopes(SCOPE)
         if (isAnEditor && isAuthorized) {
@@ -332,7 +319,7 @@ export default {
             const metadata = {
               name: obj.fileName,
               mimeType: contentType,
-              parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
+              parents: [parentId]
             }
 
             const multipartRequestBody =
@@ -384,6 +371,7 @@ export default {
             return obj.name === projectTitle
           })
           this.parent = projFolder
+          this.paths.push({ id: projFolder.id, text: projFolder.name })
           this.getChildrenFolder(projFolder.id)
         } else {
           console.log('error')
@@ -430,12 +418,31 @@ export default {
       this.loading = false
     },
     changeDirectory (folderId, folderName) {
-      const path = { id: folderId, name: folderName }
-      this.paths.push(path)
-      for (const path2 of this.paths) {
-        console.log(path2.name)
+      const paths = this.paths
+      const path = { id: folderId, text: folderName }
+      const duplicateIndex = this.existsInPaths(folderId)
+      if (duplicateIndex !== -1) {
+        if (paths.length > 0 && folderId === paths[paths.length - 1].id) {
+          console.log(1)
+          return
+        } else {
+          paths.splice(parseInt(duplicateIndex) + 1)
+        }
+      } else if (folderId === this.parent.id) {
+        this.paths = []
+      } else {
+        paths.push(path)
       }
+      this.currentFolder = path
       this.refresh(folderId)
+    },
+    existsInPaths (folderId) {
+      for (const index in this.paths) {
+        if (this.paths[index].id === folderId) {
+          return index
+        }
+      }
+      return -1
     },
     async deleteResource (fileId) {
       this.loading = true
@@ -449,7 +456,7 @@ export default {
           console.log('error')
           // insert error snackbar here
         } else {
-          this.refreshWithDelay(fileId)
+          this.refreshWithDelay(vm.currentFolder.id)
         }
       } catch (e) {
         try {
@@ -460,7 +467,7 @@ export default {
           })
           await request.execute(function (response) {
             console.log(response)
-            vm.refreshWithDelay(vm.parent.id)
+            vm.refreshWithDelay(vm.currentFolder.id)
           })
         } catch (e2) {
           console.log(e2)
@@ -481,7 +488,7 @@ export default {
         })
         await request.execute(function (response) {
           console.log(response)
-          vm.refreshWithDelay(vm.parent.id)
+          vm.refreshWithDelay(vm.currentFolder.id)
         })
       } catch (e) {
         console.log(e)
@@ -497,4 +504,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  .breadcrumbsItem {
+    cursor: pointer;
+  }
+</style>

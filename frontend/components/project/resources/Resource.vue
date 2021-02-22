@@ -25,11 +25,21 @@
       @contextmenu="show"
       @dblclick="changeDirectory"
     >
-      <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
-      <v-icon v-else x-large class="ma-4">
+      <v-img v-if="resource.thumbnailLink" :src="resource.webContentLink" />
+      <v-img
+        v-else
+        :src="resource.iconLink"
+        contain
+        height="30"
+        width="30"
+      />
+      <!-- <v-icon v-else x-large class="
+        ma-4"
+      >
         mdi-file
-      </v-icon>
+        </v-icon> -->
       <span> {{ resource.name }}</span>
+      </v-img>
     </v-card>
 
     <!-- Context Menu -->
