@@ -158,6 +158,7 @@ input UpdateRecurringDataInput {
   vols_to_remove : [Int!]
   pwas_to_add : [EventPwaInput]
   pwas_to_remove : [Int!]
+  is_all : Boolean
 }
 
 input UpdateEventOrRecurringInput {
@@ -169,10 +170,8 @@ input UpdateEventOrRecurringInput {
   start_time : time!
   end_time : time!
   name : String!
-  vols_to_add : [EventVolInput]
-  vols_to_remove : [Int!]
-  pwas_to_add : [EventPwaInput]
-  pwas_to_remove : [Int!]
+  volunteers : EventVolunteerInput
+  pwas : EventPWAInput
   recurringData : UpdateRecurringDataInput
 }
 
