@@ -49,7 +49,7 @@
                     <v-tabs-items v-model="selectedTab">
                       <!-- Project Details -->
                       <v-tab-item :key="0" transition="fade">
-                        <ProjectDetails :project="data.projects_by_pk" :resource-type="resourceType" />
+                        <ProjectDetails :project="data.projects_by_pk" :resourceType="resourceType" />
                       </v-tab-item>
 
                       <!-- Project Resources -->
