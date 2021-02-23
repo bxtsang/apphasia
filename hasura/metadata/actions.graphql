@@ -154,11 +154,13 @@ input UpdateRecurringDataInput {
   end_date : date
   start_time : time
   end_time : time
-  vols_to_add : [EventVolInput]
-  vols_to_remove : [Int!]
-  pwas_to_add : [EventPwaInput]
-  pwas_to_remove : [Int!]
-  is_all : Boolean
+  vols_to_add : [EventVolInput]!
+  vols_to_remove : [Int!]!
+  pwas_to_add : [EventPwaInput]!
+  pwas_to_remove : [Int!]!
+  pwas : [Int!]!
+  volunteers : [Int!]!
+  is_all : Boolean!
 }
 
 input UpdateEventOrRecurringInput {
