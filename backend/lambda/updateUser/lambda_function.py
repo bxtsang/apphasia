@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             update_staffs (
                 where: {{ id: {{_eq: {user_id} }} }},
                 _set: {{
-                role: {current_role}
+                role: "{current_role}"
                 }}
             ) {{
                 affected_rows
