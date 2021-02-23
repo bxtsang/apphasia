@@ -25,7 +25,7 @@
       @contextmenu="show"
       @dblclick="changeDirectory"
     >
-      <v-img v-if="resource.thumbnailLink" :src="resource.webContentLink" />
+      <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
       <v-img
         v-else
         :src="resource.iconLink"
