@@ -20,6 +20,7 @@ def lambda_handler(event, context):
     print(event['date'])
 
     try:
+        #delete event and onwards
         if (event['date'] != None):
             print('recurrence')
             recurrence_id = event['recurrence_id']
@@ -36,7 +37,8 @@ def lambda_handler(event, context):
                 }}
                 }}
             """
-        else:
+        #delete one event
+        elif (event['event_id'] != None):
             print('event')
             target = 'event'
             event_id = event['event_id']
@@ -53,7 +55,9 @@ def lambda_handler(event, context):
                 }}
             }}
             """
-
+        #delete ALL events
+        else:
+            print('delete all events')
         headers = {
             "Content-Type": "application/json",
             "x-hasura-admin-secret": hasura_secret
@@ -72,6 +76,7 @@ def lambda_handler(event, context):
             result['code'] = r.status_code
             result['status'] = "error"
             result['message'] = "failed to delete " + target
+            
 
     except Exception as e:
         result['code'] = 400
