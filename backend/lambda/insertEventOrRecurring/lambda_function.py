@@ -43,16 +43,21 @@ def lambda_handler(event, context):
         }}
         """
 
-    r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)
-    print(r.status_code)
-    print(r.text)
-    json_response = json.loads(r.text)
+    try:
+        r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)
+        print(r.status_code)
+        print(r.text)
+        json_response = json.loads(r.text)
 
-    if "errors" not in json_response:
-        statusCode = 200
-        result['status'] = "sent"
-        result['message'] = "query successfully sent to hasura"
-    else:
+        if "errors" not in json_response:
+            statusCode = 200
+            result['status'] = "sent"
+            result['message'] = "query successfully sent to hasura"
+        else:
+            statusCode = 400
+            result['code'] = r.status_code
+            result['message'] = r.text
+    except Exception as e:
         statusCode = 400
         result['code'] = r.status_code
         result['message'] = r.text

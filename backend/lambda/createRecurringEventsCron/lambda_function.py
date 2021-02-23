@@ -100,16 +100,19 @@ def createRecurringEvents (recurrence):
         "type": "run_sql",
         "args": {"sql": sql}
     })
-    res = requests.post(query_url,data=data, headers={
-    "x-hasura-admin-secret": hasura_admin_secret,
-    "Content-Type": "application/json"
-    })
 
-    if res.status_code != 200:
-        result['status_code'] = res.status_code
+    try:
+        res = requests.post(query_url,data=data, headers={
+        "x-hasura-admin-secret": hasura_admin_secret,
+        "Content-Type": "application/json"
+        })
+    except Exception as e:
+        statusCode = 400
         result['status'] = "failed"
         result['message'] = "Failed to get latest events date"
+        result['error'] = str(e)
         return result
+
 
     last_event_date = date(*[int(ch) for ch in res.json()['result'][1][0].split("-")]) if  len(res.json()['result']) > 1 else end_date
 
@@ -122,7 +125,7 @@ def createRecurringEvents (recurrence):
     elif recurrence["frequency"] == "Monthly":
         events = list(rrule(freq=MONTHLY, bysetpos=int(recurrence["week"]),byweekday=int(recurrence["day"]), dtstart=recurrence['start_date'], until=new_end_date, interval=int(recurrence["interval"])))
 
-    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
+    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name,note) VALUES "
 
     # Create SQL statement for insertion
 
@@ -133,7 +136,7 @@ def createRecurringEvents (recurrence):
         if event > last_event_date:
             count += 1
             event = event.strftime("%m-%d-%Y")
-            sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
+            sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}','{recurrence['note']}'), "
 
     send = True if count != 0 else False
     if send:
@@ -145,22 +148,29 @@ def createRecurringEvents (recurrence):
                 "sql": sql
             }
         })
-        res = requests.post(query_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret,
-        "Content-Type": "application/json"
-        })
 
-        # result['message'] = json.dumps(res.json())
-        # statusCode = 200
-        if res.status_code != 200:
-            statusCode = res.status_code
+        try:
+            res = requests.post(query_url,data=data, headers={
+            "x-hasura-admin-secret": hasura_admin_secret,
+            "Content-Type": "application/json"
+            })
+            json_response = json.loads(res.text)
+
+            if "errors" not in json_response:
+                statusCode = 200
+                result['status'] = "sent"
+                result['message'] = "Successfully added events"
+            else:
+                statusCode = 400
+                result['code'] = res.status_code
+                result['message'] = res.text
+        except Exception as e:
+            statusCode = 400
             result['status'] = "failed"
-            result['message'] = "Failed to insert into Events."
-        else:
-            statusCode = 200
-            statusCode = res.status_code
-            result['status'] = "sent"
-            result['message'] = "Successfully added events" 
+            result['message'] = 'failed to insert into events'
+            result['error'] = str(e)
+            print(str(e))
+
     else:
         statusCode = 200
         result['status'] = "sent"
