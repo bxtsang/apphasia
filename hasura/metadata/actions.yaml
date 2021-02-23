@@ -11,6 +11,10 @@ actions:
     handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
+- name: InsertEventOrRecurring
+  definition:
+    kind: synchronous
+    handler: https://lh1hdfcdf6.execute-api.ap-southeast-1.amazonaws.com/dev
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -24,9 +28,18 @@ custom_types:
   - name: SupervisorData
   - name: recurrence
   - name: dateTimes
+  - name: insertEventOrRecurringInput
+  - name: VolIDInput
+  - name: EventVolunteerInput
+  - name: PWAIDInput
+  - name: EventPWAInput
+  - name: RecurringDataInput
+  - name: InsertEventOrRecurringInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
   - name: DeleteUserResponse
   - name: EventsResponse
+  - name: insertResponse
+  - name: InsertResponse
   scalars: []
