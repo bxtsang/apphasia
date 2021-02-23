@@ -127,7 +127,7 @@ def lambda_handler(event, context):
 
 
 
-    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
+    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name,note) VALUES "
 
     # Create SQL statement for insertion
 
@@ -137,7 +137,7 @@ def lambda_handler(event, context):
         if event > previous_end_date:
             count += 1
             event = event.strftime("%m-%d-%Y")
-            sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
+            sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}','{recurrence['note']}'), "
 
     send = True if count != 0 else False
     if send:
@@ -154,17 +154,16 @@ def lambda_handler(event, context):
         "Content-Type": "application/json"
         })
 
-        # result['message'] = json.dumps(res.json())
-        # statusCode = 200
-        if res.status_code != 200:
-            statusCode = res.status_code
-            result['status'] = "failed"
-            result['message'] = "Failed to insert into Events."
-        else:
+        json_response = json.loads(res.text)
+
+        if "errors" not in json_response:
             statusCode = 200
-            statusCode = res.status_code
             result['status'] = "sent"
-            result['message'] = "Successfully added events" 
+            result['message'] = "Successfully added events"
+        else:
+            statusCode = 400
+            result['code'] = res.status_code
+            result['message'] = res.text
     else:
         statusCode = 200
         result['status'] = "sent"
