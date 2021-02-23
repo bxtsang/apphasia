@@ -33,20 +33,6 @@ export default {
   data () {
     return {
       data: this.value,
-      INTERVAL_OPTIONS: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12
-      ],
       validation: [...(this.required ? [v => !!v || 'Interval is required'] : [])]
     }
   },
@@ -62,6 +48,22 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
+    }
+  },
+  computed: {
+    INTERVAL_OPTIONS () {
+      const unit = this.type === 'Monthly' ? 'month' : 'week'
+      let options = []
+      const limit = this.type === 'Monthly' ? 12 : 4
+      console.log(Array(limit))
+      for (const index of Array(limit).keys()) {
+        options = [...options, {
+          value: index + 1,
+          text: `${index + 1} ${unit}${index + 1 > 1 ? 's' : ''}`
+        }]
+      }
+      console.log(options)
+      return options
     }
   }
 }
