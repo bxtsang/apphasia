@@ -35,9 +35,9 @@
                   <v-col class="py-0">
                     <v-tabs>
                       <v-tab
-                        v-for="(tab, index) in tabs"
+                        v-for="tab in tabs"
                         :key="tab"
-                        @click="selectedTab = index"
+                        :to="`/projects?id=${projectId}&tab=${tab}`"
                       >
                         {{ tab }}
                       </v-tab>
@@ -68,6 +68,7 @@
             </div>
           </template>
         </ApolloQuery>
+        {{ selectedTab }}
       </v-card>
     </v-col>
   </v-row>
@@ -90,6 +91,13 @@ export default {
         'Resources',
         'Events'
       ]
+    }
+  },
+  watch: {
+    '$route.query.tab': {
+      handler (newValue, oldValue) {
+        this.selectedTab = this.tabs.indexOf(newValue)
+      }
     }
   }
 }
