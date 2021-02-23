@@ -1,5 +1,5 @@
 <template>
-  <v-card class="px-6 py-3">
+  <v-card>
     <v-row>
       <ApolloQuery
         :query="require('./../../graphql/project/GetSingleProject.graphql')"

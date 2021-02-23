@@ -2,7 +2,7 @@
   <div>
     <v-row class="d-flex align-center px-0">
       <v-col>
-        <span>Project Assignment</span>
+        <span class="section-title">Project Assignment</span>
       </v-col>
       <v-col class="d-flex justify-end">
         <ProjectAssignmentModal :project="project" />

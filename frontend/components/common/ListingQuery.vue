@@ -28,8 +28,11 @@
           <template v-slot:top>
             <v-container class="py-0" fluid>
               <v-row>
-                <v-col>
+                <v-col class="d-flex align-center">
                   <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
+                </v-col>
+                <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
+                  <AddResourceModal :resourceType="resourceType" />
                 </v-col>
               </v-row>
               <v-row v-if="resourceType === 'staffs'">
@@ -103,9 +106,16 @@
             <IsRecurringChip :value="item.is_recurring" />
           </template>
 
+          <!-- Event Specific Columns -->
+
           <template v-slot:[`item.actions`]="{ item }">
-            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" :size="resourceType === 'projects' ? 'long' : ''" />
-            <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
+            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
+            <v-btn v-if="resourceType === 'events'" @click="() => customNavigation(item)" icon>
+              <v-icon large>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+            <v-btn v-else :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
               </v-icon>
@@ -130,6 +140,14 @@ export default {
     resourceType: {
       type: String,
       default: null
+    },
+    eventParams: {
+      type: Object,
+      default: null
+    },
+    customNavigation: {
+      type: Function,
+      default: () => {}
     }
   },
 
@@ -149,9 +167,12 @@ export default {
       return LIST_QUERY_PATHS[this.resourceType]
     },
     queryVariables () {
-      const variables = {}
+      let variables = {}
       if (this.resourceType === 'staffs') {
         variables.isCoreTeam = this.$auth.user['custom:role'] === 'core_team'
+      }
+      if (this.resourceType === 'events') {
+        variables = { ...variables, ...this.eventParams }
       }
       return variables
     },
@@ -179,7 +200,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -33,11 +33,11 @@
                 </v-row>
                 <v-row>
                   <v-col class="py-0">
-                    <v-tabs>
+                    <v-tabs  v-model="selectedTab">
                       <v-tab
                         v-for="(tab, index) in tabs"
-                        :key="tab"
-                        @click="selectedTab = index"
+                        :key="index"
+                        @click="$router.push({query: {id: projectId, tab: index}})"
                       >
                         {{ tab }}
                       </v-tab>
@@ -49,7 +49,7 @@
                     <v-tabs-items v-model="selectedTab">
                       <!-- Project Details -->
                       <v-tab-item :key="0" transition="fade">
-                        <ProjectDetails :project="data.projects_by_pk" :resourceType="resourceType" />
+                        <ProjectDetails :project="data.projects_by_pk" :resource-type="resourceType" />
                       </v-tab-item>
 
                       <!-- Project Resources -->
@@ -58,7 +58,9 @@
                       </v-tab-item>
 
                       <!-- Project Events -->
-                      <v-tab-item :key="2" transition="fade" />
+                      <v-tab-item :key="2" transition="fade" >
+                        <EventsView :project="data.projects_by_pk" />
+                      </v-tab-item>
                     </v-tabs-items>
                   </v-col>
                 </v-row>
@@ -66,17 +68,6 @@
             </div>
           </template>
         </ApolloQuery>
-        <!--
-        <v-row>
-          <v-col lg="6" md="6" sm="12">
-            <ProjectDetails :isLoading="isLoading" :project="project" />
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <ResourceDirectory />
-          </v-col>
-        </v-row> -->
       </v-card>
     </v-col>
   </v-row>
@@ -93,7 +84,7 @@ export default {
   data () {
     return {
       projectId: this.$route.query.id,
-      selectedTab: 0,
+      selectedTab: this.$route.query.tab ? Number(this.$route.query.tab) : 0,
       tabs: [
         'Details',
         'Resources',

@@ -85,7 +85,7 @@ export const LIST_QUERY_PATHS = {
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
-  staffVolPWA: require('./../graphql/project/GetStaffVolPWA.graphql')
+  events: require('./../graphql/event/GetAllEvent.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -122,6 +122,12 @@ export const TABLE_HEADERS = {
     { text: 'Is Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs' },
     { text: 'Notes', value: 'description' },
+    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+  ],
+  events: [
+    { text: 'Name', value: 'name' },
+    { text: 'Date', value: 'date' },
+    { text: 'Time', value: 'event_time' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ]
 }
@@ -174,5 +180,17 @@ export const EDIT_RESOURCE_PERMISSIONS = {
   staffs: ['core_team'],
   volunteers: ['core_team', 'intern'],
   pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern']
+  projects: ['core_team', 'intern'],
+  events: ['core_team', 'intern']
 }
+
+// EVENT DATA
+export const DAY = [
+  { value: 0, text: 'Monday' },
+  { value: 1, text: 'Tuesday' },
+  { value: 2, text: 'Wednesday' },
+  { value: 3, text: 'Thursday' },
+  { value: 4, text: 'Friday' },
+  { value: 5, text: 'Saturday' },
+  { value: 6, text: 'Sunday' }
+]
