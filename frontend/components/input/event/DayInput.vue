@@ -31,7 +31,7 @@ export default {
     return {
       data: this.value,
       DAY,
-      validation: [...(this.required ? [v => !!v || 'Day is required'] : [])]
+      validation: [...(this.required ? [v => (v > 0 & v < 7) || 'Day is required'] : [])]
     }
   },
 
