@@ -27,7 +27,7 @@ def lambda_handler(event, context):
             target = 'reccurrence'
             query = f"""
             mutation {{
-                delete_events ( where: {{ _and: {{ recurr_id: {{ _eq: { recurrence_id } }}, date: {{ _gt: "{ date }" }} }} }}
+                delete_events ( where: {{ _and: {{ recurr_id: {{ _eq: { recurrence_id } }}, date: {{ _gte: "{ date }" }} }} }}
                 ) {{
                     affected_rows
                     returning {{
