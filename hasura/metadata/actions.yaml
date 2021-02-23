@@ -11,6 +11,10 @@ actions:
     handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
+- name: DeleteEvents
+  definition:
+    kind: synchronous
+    handler: https://750a9vn0z1.execute-api.ap-southeast-1.amazonaws.com/dev
 - name: InsertEventOrRecurring
   definition:
     kind: synchronous
@@ -35,6 +39,7 @@ custom_types:
   - name: EventPWAInput
   - name: RecurringDataInput
   - name: InsertEventOrRecurringInput
+  - name: DeleteEventsInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -42,4 +47,5 @@ custom_types:
   - name: EventsResponse
   - name: insertResponse
   - name: InsertResponse
+  - name: DeleteResponse
   scalars: []
