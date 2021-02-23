@@ -35,7 +35,7 @@ actions:
 - name: UpdateEventOrRecurring
   definition:
     kind: synchronous
-    handler: http://host.docker.internal:3000
+    handler: https://x4bbv8b153.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
   - role: intern
