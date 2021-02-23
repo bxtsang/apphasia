@@ -20,6 +20,7 @@
         <v-text-field
           label="Event Name"
           :value="event.name"
+          readonly
         />
       </v-col>
     </v-row>
@@ -39,12 +40,14 @@
         <v-text-field
           label="Start Date"
           :value="event.date"
+          readonly
         />
       </v-col>
       <v-col cols="6" class="py-0">
         <v-text-field
           label="End Date"
           :value="event.recurring && event.recurring.end_date ? event.recurring.end_date : '-'"
+          readonly
         />
       </v-col>
     </v-row>
@@ -53,12 +56,14 @@
         <v-text-field
           label="Start Time"
           :value="event.start_time.split('+')[0]"
+          readonly
         />
       </v-col>
       <v-col cols="6" class="py-0">
         <v-text-field
           label="End Time"
           :value="event.end_time.split('+')[0]"
+          readonly
         />
       </v-col>
     </v-row>
@@ -73,6 +78,7 @@
           label="Repeat"
           :value="event.recurring ? event.recurring.frequency : 'None'"
           :items="[event.recurring ? event.recurring.frequency : 'None']"
+          readonly
         />
       </v-col>
     </v-row>
@@ -82,6 +88,7 @@
           label="Every"
           :value="event.recurring.interval"
           :items="[event.recurring.interval]"
+          readonly
         />
       </v-col>
     </v-row>
@@ -89,8 +96,9 @@
       <v-col cols="6" class="py-0">
         <v-select
           label="On"
-          :value="DAY[event.recurring.day]"
-          :items="[DAY[event.recurring.day]]"
+          :value="event.recurring.day"
+          :items="DAY"
+          readonly
         />
       </v-col>
     </v-row>
