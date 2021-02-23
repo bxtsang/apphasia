@@ -4,14 +4,11 @@
       <ApolloQuery
         :query="require('./../../graphql/project/GetSingleProject.graphql')"
         :variables="{ id: projectId }"
+        class="d-flex justify-start align-center col-8"
       >
         <template v-slot="{ result: { error, data }, isLoading }">
           <div v-if="isLoading" class="d-flex justify-center">
-            <v-progress-circular
-              :size="50"
-              color="primary"
-              indeterminate
-            />
+            <v-progress-circular :size="50" color="primary" indeterminate />
           </div>
 
           <!-- Error -->
@@ -20,13 +17,28 @@
           </div>
 
           <div v-else-if="data && data.projects_by_pk">
-            <v-col>
-              <span class="section-title">{{ data.projects_by_pk.title }}</span>
-            </v-col>
+            <v-breadcrumbs large :items="paths" class="pl-0">
+              <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+              </template>
+              <v-breadcrumbs-item
+                slot="item"
+                slot-scope="{ item }"
+                class="breadcrumbsItem"
+                @click="changeDirectory(item.id, item.text)"
+              >
+                {{ item.text }}
+              </v-breadcrumbs-item>
+            </v-breadcrumbs>
           </div>
         </template>
       </ApolloQuery>
-      <v-col class="d-flex justify-end">
+      <v-col class="d-flex justify-end align-center col-4">
+        <div class="text-center">
+          <v-btn color="" class="mr-4" @click="refresh(currentFolder.id)">
+            refresh
+          </v-btn>
+        </div>
         <div class="text-center">
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
@@ -38,7 +50,12 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item v-for="options in BUTTON_OPTIONS" :key="options.title" link @click="options.action">
+              <v-list-item
+                v-for="options in BUTTON_OPTIONS"
+                :key="options.title"
+                link
+                @click="options.action"
+              >
                 <v-icon left>
                   {{ options.icon }}
                 </v-icon>
@@ -49,16 +66,18 @@
         </div>
       </v-col>
     </v-row>
-    <v-row v-if="isLoading">
+
+    <v-row v-if="loading">
       <v-col class="d-flex justify-center">
-        <v-progress-circular
-          :size="50"
-          color="primary"
-          indeterminate
-        />
+        <v-progress-circular :size="50" color="primary" indeterminate />
       </v-col>
     </v-row>
-    <v-row v-else-if="filesInCurrentDirectory.length == 0 && foldersInCurrentDirectory.length == 0">
+    <v-row
+      v-else-if="
+        filesInCurrentDirectory.length == 0 &&
+          foldersInCurrentDirectory.length == 0
+      "
+    >
       <Empty />
     </v-row>
     <v-row v-else>
@@ -67,7 +86,15 @@
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="folder in foldersInCurrentDirectory" :key="folder.id" :resource="folder" resourceType="folder"/>
+              <Resource
+                v-for="folder in foldersInCurrentDirectory"
+                :key="folder.id"
+                :resource="folder"
+                resource-type="folder"
+                @deleteResource="deleteResource(folder.id)"
+                @refresh="refreshWithDelay(parent.id)"
+                @changeDirectory="changeDirectory(folder.id, folder.name)"
+              />
             </v-container>
           </v-col>
         </v-row>
@@ -75,36 +102,42 @@
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
             <v-container class="d-flex flex-wrap pa-0" fluid>
-              <Resource v-for="file in filesInCurrentDirectory" :key="file.id" :resource="file" resourceType="file"/>
+              <Resource
+                v-for="file in filesInCurrentDirectory"
+                :key="file.id"
+                :resource="file"
+                resource-type="file"
+                @refresh="refreshWithDelay(parent.id)"
+                @deleteResource="deleteFile(file.id)"
+                @changeDirectory="openFile(file.webViewLink)"
+              />
             </v-container>
           </v-col>
         </v-row>
-        <v-row>
-          <template>
-            <v-btn id="signout-btn" color="danger" style="margin-left: 25px" @click="signOutFunction">
-              Sign Out
-            </v-btn>
-            <v-btn>
-              <input id="files" name="file" type="file" multiple>
-            </v-btn>
-            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="upload">
-              Upload
-            </v-btn>
-            <v-btn id="signout-btn" color="primary" style="margin-left: 25px" @click="getProjectFolder">
-              Test
-            </v-btn>
-          </template>
-        </v-row>
+        <input
+          id="files"
+          name="file"
+          type="file"
+          multiple
+          hidden
+          @change="upload"
+        >
       </v-container>
     </v-row>
-    <NewFolderModal :isOpen="addFolderOverlay" @closeForm="addFolderOverlay = false" />
+    <NewFolderModal
+      :is-open="addFolderOverlay"
+      :parent-id="currentFolder.id"
+      @closeForm="addFolderOverlay = false"
+      @refresh="refreshWithDelay(currentFolder.id)"
+    />
   </v-card>
 </template>
 <script>
 import Empty from './resources/Empty'
 import Resource from './resources/Resource'
 const SCOPE = 'https://www.googleapis.com/auth/drive'
-const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+const discoveryUrl =
+  'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 
 export default {
   components: { Empty, Resource },
@@ -116,14 +149,28 @@ export default {
   },
   data () {
     return {
+      paths: [],
       parent: [],
+      currentFolder: '',
       children: [],
       projectId: this.$route.query.id,
-      isLoading: false,
+      loading: false,
       addFolderOverlay: false,
       BUTTON_OPTIONS: [
-        { title: 'Add Folder', icon: 'mdi-folder-plus', action: () => { this.addFolderOverlay = !this.addFolderOverlay } },
-        { title: 'Upload File/Folder', icon: 'mdi-upload', action: () => { console.log('hi') } }
+        {
+          title: 'Add Folder',
+          icon: 'mdi-folder-plus',
+          action: () => {
+            this.addFolderOverlay = !this.addFolderOverlay
+          }
+        },
+        {
+          title: 'Upload File/Folder',
+          icon: 'mdi-upload',
+          action: () => {
+            document.getElementById('files').click()
+          }
+        }
       ],
       currentDirectory: '/',
       resources: this.BASE_RESOURCE
@@ -149,41 +196,27 @@ export default {
     script.onload = this.handleClientLoad
     script.src = 'https://apis.google.com/js/api.js'
     document.body.appendChild(script)
-
     this.getProjectFolder()
-
-    // setTimeout(this.getProjectResources, 2000)
-
-    // this.getProjectResources()
   },
   methods: {
-    // async getProjectResources () {
-    //   this.resources = this.BASE_RESOURCE
-    //   this.isLoading = true
-    //   try {
-    //     const response = await this.$axios.get(`${process.env.BASE_API_URL}/resources/${this.projectId}`)
-    //     this.resources = response.data.resources
-    //   } catch (error) {
-    //     this.resources = this.BASE_RESOURCE
-    //   } finally {
-    //     this.isLoading = false
-    //   }
-    // },
     handleClientLoad () {
       window.gapi.load('client:auth2', this.initClient)
     },
     initClient () {
       const vm = this
       try {
-        window.gapi.client.init({
-          apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
-          clientId: '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
-          scope: 'https://www.googleapis.com/auth/drive',
-          discoveryDocs: [discoveryUrl]
-        }).then(() => {
-          vm.googleAuth = window.gapi.auth2.getAuthInstance()
-          vm.googleAuth.isSignedIn.listen(vm.updateSigninStatus)
-        })
+        window.gapi.client
+          .init({
+            apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
+            clientId:
+              '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
+            scope: 'https://www.googleapis.com/auth/drive',
+            discoveryDocs: [discoveryUrl]
+          })
+          .then(() => {
+            vm.googleAuth = window.gapi.auth2.getAuthInstance()
+            vm.googleAuth.isSignedIn.listen(vm.updateSigninStatus)
+          })
       } catch (e) {
         console.log(e)
       }
@@ -210,7 +243,10 @@ export default {
           if (response.error !== null || response.error !== undefined) {
             return false
           }
-          if (response.capabilities === null || response.capabilities === undefined) {
+          if (
+            response.capabilities === null ||
+            response.capabilities === undefined
+          ) {
             return false
           } else {
             console.log(response.capabilities.canAddChildren)
@@ -222,7 +258,10 @@ export default {
         return false
       }
     },
-    upload  () {
+    async upload () {
+      const vm = this
+      const f = document.getElementById('files')
+      this.loading = true
       if (this.googleAuth === undefined || this.googleAuth == null) {
         this.signInFunction()
         return
@@ -232,92 +271,258 @@ export default {
       if (user.uc == null) {
         this.signInFunction()
       } else {
-        const parentId = '15zTqofHz34QuOCXB4_XZXX55aLtEF-eZ' // parent Id of folder to upload file in
+        const parentId = this.currentFolder.id // parent Id of folder to upload file in
         const isAnEditor = this.checkIfEditor(parentId)
         const isAuthorized = user.hasGrantedScopes(SCOPE)
         if (isAnEditor && isAuthorized) {
           // Iterating through the inputted files, as multi upload is allowed
-          const f = document.getElementById('files');
-          [...f.files].forEach((file, i) => {
-            const fr = new FileReader()
 
-            fr.onload = (e) => {
-              const data = e.target.result.split(',')
-              const obj = { fileName: f.files[i].name, mimeType: data[0].match(/:(\w.+);/)[1], data: data[1] }
-              const contentType = obj.mimeType
-
-              const boundary = '287032381131322'
-              const delimiter = '\r\n--' + boundary + '\r\n'
-              const closeDelim = '\r\n--' + boundary + '--'
-              const fileData = obj.data
-              const metadata = {
-                name: obj.fileName,
-                mimeType: contentType,
-                parents: [parentId] // Fill in folder_id where the file should be uplaoded to, can only input ONE parent (altho it expects a list)
-              }
-
-              const multipartRequestBody =
-          delimiter +
-          'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
-          JSON.stringify(metadata) +
-          delimiter +
-          'Content-Type: ' + contentType + '\r\n' +
-          'Content-Transfer-Encoding: ' + ' base64' + '\r\n\r\n' +
-          fileData + '\r\n' +
-          closeDelim
-
-              const request = window.gapi.client.request({
-                path: 'https://www.googleapis.com/upload/drive/v3/files',
-                method: 'POST',
-                params: { uploadType: 'multipart' },
-                headers: {
-                  'Content-Type': 'multipart/related; boundary=' + boundary + ''
-                },
-                body: multipartRequestBody
-              })
-              request.execute(function (file) {
-                console.log(file)
-              })
+          try {
+            for (const file of f.files) {
+              await this.uploadHelper(file, parentId)
             }
-            fr.readAsDataURL(file)
-          })
+          } catch (e) {
+            vm.error()
+            console.log(e)
+          } finally {
+            vm.refreshWithDelay(parentId)
+            f.value = null
+          }
         } else {
-          console.log('unauthorized')
+          vm.error()
+          f.value = null
+          vm.loading = false
         }
       }
     },
+    uploadHelper (file, parentId) {
+      return new Promise(function (resolve, reject) {
+        try {
+          const fr = new FileReader()
+          fr.onload = async (e) => {
+            const data = e.target.result.split(',')
+            const obj = {
+              fileName: file.name,
+              mimeType: data[0].match(/:(\w.+);/)[1],
+              data: data[1]
+            }
+            const contentType = obj.mimeType
+
+            const boundary = '287032381131322'
+            const delimiter = '\r\n--' + boundary + '\r\n'
+            const closeDelim = '\r\n--' + boundary + '--'
+            const fileData = obj.data
+            const metadata = {
+              name: obj.fileName,
+              mimeType: contentType,
+              parents: [parentId]
+            }
+
+            const multipartRequestBody =
+              delimiter +
+              'Content-Type: application/json; charset=UTF-8\r\n\r\n' +
+              JSON.stringify(metadata) +
+              delimiter +
+              'Content-Type: ' +
+              contentType +
+              '\r\n' +
+              'Content-Transfer-Encoding: ' +
+              ' base64' +
+              '\r\n\r\n' +
+              fileData +
+              '\r\n' +
+              closeDelim
+
+            const request = window.gapi.client.request({
+              path: 'https://www.googleapis.com/upload/drive/v3/files',
+              method: 'POST',
+              params: { uploadType: 'multipart' },
+              headers: {
+                'Content-Type': 'multipart/related; boundary=' + boundary + ''
+              },
+              body: multipartRequestBody
+            })
+            await request.execute(function (file) {
+              console.log(file)
+              resolve('success')
+            })
+          }
+          fr.readAsDataURL(file)
+        } catch (e) {
+          console.log(e)
+          reject(e)
+        }
+      })
+    },
     async getProjectFolder () {
-      this.isLoading = true
+      this.loading = true
       const projectTitle = this.project.title
       try {
-        const rootFolder = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', {})
+        const rootFolder = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          {}
+        )
         if (rootFolder.data.status === 'success') {
           const projFolder = rootFolder.data.files.find((obj) => {
             return obj.name === projectTitle
           })
           this.parent = projFolder
+          this.currentFolder = projFolder
+          this.paths.push({ id: projFolder.id, text: projFolder.name })
           this.getChildrenFolder(projFolder.id)
         } else {
           console.log('error')
-          // error snackbar popup
+          this.error()
         }
       } catch (e) {
-        // error snackbar popup
+        this.error()
         console.log(e)
       }
-      this.isLoading = false
+      this.loading = false
     },
     async getChildrenFolder (folderId) {
-      this.isLoading = true
+      this.loading = true
       try {
-        const childrenFiles = await this.$axios.post('https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev', { parent_folder: folderId })
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: folderId }
+        )
         this.children = childrenFiles.data.files
       } catch (e) {
-        // error snackbar popup
+        this.error()
         console.log(e)
       }
-      this.isLoading = false
+      this.loading = false
+    },
+    refreshWithDelay (newParentId) {
+      this.loading = true
+      setTimeout(async () => {
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
+        )
+        this.children = childrenFiles.data.files
+        this.loading = false
+      }, 2000)
+    },
+    async refresh (newParentId) {
+      this.loading = true
+      try {
+        const childrenFiles = await this.$axios.post(
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
+        )
+        this.children = childrenFiles.data.files
+      } catch (e) {
+        console.log(e)
+        this.error()
+      }
+
+      this.loading = false
+    },
+    changeDirectory (folderId, folderName) {
+      const paths = this.paths
+      const path = { id: folderId, text: folderName }
+      const duplicateIndex = this.existsInPaths(folderId)
+      if (duplicateIndex !== -1) {
+        if (paths.length > 0 && folderId === paths[paths.length - 1].id) {
+          console.log(1)
+          return
+        } else {
+          paths.splice(parseInt(duplicateIndex) + 1)
+        }
+      } else if (folderId === this.parent.id) {
+        this.paths = []
+      } else {
+        paths.push(path)
+      }
+      this.currentFolder = path
+      this.refresh(folderId)
+    },
+    existsInPaths (folderId) {
+      for (const index in this.paths) {
+        if (this.paths[index].id === folderId) {
+          return index
+        }
+      }
+      return -1
+    },
+    async deleteResource (fileId) {
+      this.loading = true
+      const vm = this
+      try {
+        const rootFolder = await this.$axios.post(
+          'https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { file_id: fileId }
+        )
+        if (rootFolder.data.status !== 'success') {
+          console.log('error')
+          vm.error()
+        } else {
+          vm.refreshWithDelay(vm.currentFolder.id)
+        }
+      } catch (e) {
+        try {
+          const request = window.gapi.client.request({
+            path: 'https://www.googleapis.com/drive/v3/files/' + fileId,
+            method: 'DELETE',
+            params: { fileId }
+          })
+          await request.execute(function (response) {
+            console.log(response)
+            if (
+              response &&
+              (response.error !== null || response.error !== undefined)
+            ) {
+              vm.error()
+            }
+            vm.refreshWithDelay(vm.currentFolder.id)
+          })
+        } catch (e2) {
+          console.log(e2)
+          vm.error()
+        }
+        console.log(e)
+      }
+    },
+    async deleteFile (fileId) {
+      const vm = this
+      try {
+        const request = window.gapi.client.request({
+          path: 'https://www.googleapis.com/drive/v3/files/' + fileId,
+          method: 'DELETE',
+          params: { fileId }
+        })
+        await request.execute(function (response) {
+          console.log(response)
+          if (
+            response &&
+            (response.error !== null || response.error !== undefined)
+          ) {
+            vm.error()
+          }
+          vm.refreshWithDelay(vm.currentFolder.id)
+        })
+      } catch (e) {
+        vm.error()
+        console.log(e)
+      }
+    },
+    openFile (link) {
+      window.open(link)
+    },
+    error () {
+      this.$store.commit('notification/newNotification', [
+        'Something went wrong, please try again.',
+        'error'
+      ])
     }
   }
 }
 </script>
+
+<style>
+.breadcrumbsItem {
+  cursor: pointer;
+}
+</style>

@@ -7,21 +7,39 @@
       outlined
       width="200"
       @contextmenu="show"
+      @dblclick="changeDirectory"
     >
-      <v-icon class="ma-4">mdi-folder</v-icon>
+      <v-icon class="ma-4">
+        mdi-folder
+      </v-icon>
       <span> {{ resource.name }}</span>
     </v-card>
 
     <!-- Item Card File-->
     <v-card
       v-else
-      class="pa-3 ma-2 d-flex flex-column align-center clickable"
+      class="pa-3 ma-2 d-flex flex-column justify-space-between align-center clickable"
       outlined
+      height="150"
       width="200"
       @contextmenu="show"
+      @dblclick="changeDirectory"
     >
-      <v-icon x-large class="ma-4">mdi-file</v-icon>
-      <span> {{ resource.name }} </span>
+      <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
+      <v-img
+        v-else
+        :src="resource.iconLink"
+        contain
+        height="30"
+        width="30"
+      />
+      <!-- <v-icon v-else x-large class="
+        ma-4"
+      >
+        mdi-file
+        </v-icon> -->
+      <span> {{ resource.name }}</span>
+      </v-img>
     </v-card>
 
     <!-- Context Menu -->
@@ -67,9 +85,13 @@ export default {
       x: 0,
       y: 0,
       RIGHT_CLICK_OPTIONS: [
-        { title: 'Download', icon: 'mdi-download', action: this.downloadResource },
         { title: 'Delete', icon: 'mdi-delete', action: this.deleteResource }
       ]
+    }
+  },
+  mounted () {
+    if (this.resource.webContentLink) {
+      this.RIGHT_CLICK_OPTIONS.push({ title: 'Download', icon: 'mdi-download', action: this.downloadResource })
     }
   },
   methods: {
@@ -83,10 +105,13 @@ export default {
       })
     },
     downloadResource () {
-      console.log('Download ' + this.resourceType + `: ${JSON.stringify(this.resource)}`)
+      window.location.href = this.resource.webContentLink
     },
     deleteResource () {
-      console.log('Delete ' + this.resourceType + `: ${JSON.stringify(this.resource)}`)
+      this.$emit('deleteResource')
+    },
+    changeDirectory () {
+      this.$emit('changeDirectory')
     }
   }
 }

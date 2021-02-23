@@ -17,6 +17,20 @@ type Mutation {
 
 
 type Mutation {
+  DeleteEvents (
+    eventData: DeleteEventsInput
+  ): DeleteResponse
+}
+
+
+type Mutation {
+  InsertEventOrRecurring (
+    newEventData: InsertEventOrRecurringInput!
+  ): InsertResponse
+}
+
+
+type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
@@ -57,6 +71,62 @@ input dateTimes {
   recurrence : recurrence
 }
 
+input insertEventOrRecurringInput {
+  day : Int
+  week : Int
+  interval : Int
+  name : String!
+  frequency : String
+  end_date : date
+  start_date : date
+  start_time : time
+  end_time : time
+  project_id : Int
+  note : String
+}
+
+input VolIDInput {
+  vol_id : Int!
+}
+
+input EventVolunteerInput {
+  data : [VolIDInput]
+}
+
+input PWAIDInput {
+  pwa_id : Int!
+}
+
+input EventPWAInput {
+  data : [PWAIDInput]
+}
+
+input RecurringDataInput {
+  day : Int!
+  week : Int
+  interval : Int!
+  frequency : String!
+  end_date : date
+}
+
+input InsertEventOrRecurringInput {
+  name : String!
+  start_date : date!
+  start_time : time!
+  end_time : time!
+  project_id : Int!
+  note : String
+  volunteers : EventVolunteerInput
+  pwas : EventPWAInput
+  recurringData : RecurringDataInput
+}
+
+input DeleteEventsInput {
+  date : date
+  event_id : Int
+  recurrence_id : Int
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -75,5 +145,20 @@ type DeleteUserResponse {
 type EventsResponse {
   status : String!
   message : String!
+}
+
+type insertResponse {
+  message : String!
+  status : String!
+}
+
+type InsertResponse {
+  message : String!
+  status : String!
+}
+
+type DeleteResponse {
+  message : String!
+  status : String!
 }
 
