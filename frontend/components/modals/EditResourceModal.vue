@@ -30,6 +30,7 @@
     <VolunteerForm v-if="resourceType === 'volunteers'" :volunteer="resource" v-on:closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" :pwa="resource" v-on:closeForm="isOpen = false" />
     <ProjectForm v-if="resourceType === 'projects'" :project="resource" @closeForm="isOpen = false" />
+    <EventForm v-if="resourceType === 'events'" :event="resource" @closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
