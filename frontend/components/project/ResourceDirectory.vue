@@ -17,7 +17,7 @@
           </div>
 
           <div v-else-if="data && data.projects_by_pk">
-            <v-breadcrumbs large :items="paths">
+            <v-breadcrumbs large :items="paths" class="pl-0">
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
               </template>
@@ -470,7 +470,10 @@ export default {
           })
           await request.execute(function (response) {
             console.log(response)
-            if (response && (response.error !== null || response.error !== undefined)) {
+            if (
+              response &&
+              (response.error !== null || response.error !== undefined)
+            ) {
               vm.error()
             }
             vm.refreshWithDelay(vm.currentFolder.id)
@@ -492,7 +495,10 @@ export default {
         })
         await request.execute(function (response) {
           console.log(response)
-          if (response && (response.error !== null || response.error !== undefined)) {
+          if (
+            response &&
+            (response.error !== null || response.error !== undefined)
+          ) {
             vm.error()
           }
           vm.refreshWithDelay(vm.currentFolder.id)
@@ -506,14 +512,17 @@ export default {
       window.open(link)
     },
     error () {
-      this.$store.commit('notification/newNotification', ['Something went wrong, please try again.', 'error'])
+      this.$store.commit('notification/newNotification', [
+        'Something went wrong, please try again.',
+        'error'
+      ])
     }
   }
 }
 </script>
 
 <style>
-  .breadcrumbsItem {
-    cursor: pointer;
-  }
+.breadcrumbsItem {
+  cursor: pointer;
+}
 </style>
