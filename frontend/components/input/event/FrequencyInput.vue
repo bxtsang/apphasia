@@ -1,10 +1,16 @@
 <template>
-  <v-select
-    v-model="data"
-    :items="FREQUENCY_OPTIONS"
-    :label="label"
-    :rules="validation"
-  />
+  <v-row no-gutters>
+      <v-col cols="3" class="d-flex justify-start align-center">
+        <v-subheader class="pa-0">{{ label }}</v-subheader>
+      </v-col>
+      <v-col cols="9">
+        <v-select
+          v-model="data"
+          :items="FREQUENCY_OPTIONS"
+          :rules="validation"
+        />
+      </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -33,14 +33,14 @@
               <v-col class="py-0">
                 <DateInput
                   label="Start Date"
-                  v-model="eventData.date"
+                  v-model="eventData.start_date"
                   required
                 />
               </v-col>
               <v-col class="py-0">
                 <DateInput
                   label="End Date"
-                  v-model="eventData.end_date"
+                  v-model="eventData.recurringData.end_date"
                 />
               </v-col>
             </v-row>
@@ -68,7 +68,7 @@
             <v-row>
               <v-col class="py-0" cols="6">
                 <FrequencyInput
-                  v-model="eventData.frequency"
+                  v-model="eventData.recurringData.frequency"
                   label="Repeat"
                   required
                 />
@@ -77,23 +77,27 @@
             <v-row v-if="eventData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
                 <IntervalInput
-                  v-model="eventData.interval"
+                  v-model="eventData.recurringData.interval"
                   label="Every"
-                  :type="eventData.frequency"
+                  :type="eventData.recurringData.frequency"
                   required
                 />
               </v-col>
             </v-row>
-            <v-row v-if="eventData.frequency == 'Monthly'">
+            <v-row v-if="eventData.recurringData.frequency == 'Monthly'">
               <v-col class="py-0" cols="6">
-                Week
+                <WeekInput
+                  v-model="eventData.recurringData.week"
+                  label="On"
+                  required
+                />
               </v-col>
             </v-row>
-            <v-row v-if="eventData.frequency !== 'None'">
+            <v-row v-if="eventData.recurringData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
                 <DayInput
-                  v-model="eventData.day"
-                  label="Day"
+                  v-model="eventData.recurringData.day"
+                  label="On"
                   required
                 />
               </v-col>
@@ -139,12 +143,14 @@
             </v-row>
           </v-col>
         </v-row>
-        {{ eventData }}
+        <pre>{{ eventData }}</pre>
       </v-container>
     </v-form>
   </v-card>
 </template>
 <script>
+// import InsertEventOrRecurring from './../../../graphql/event/InsertEventOrRecurring.graphql'
+
 export default {
   props: {
     event: {
@@ -158,16 +164,19 @@ export default {
       isSubmitting: false,
       projectId: this.$route.query.id,
       eventData: {
+        project_id: this.$route.query.id,
         name: this.event ? this.event.name : '',
         note: this.event ? this.event.note : '',
-        date: this.event ? this.event.start_date : '',
-        end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
+        start_date: this.event ? this.event.start_date : '',
         start_time: this.event ? this.event.start_time.slice(0, 5) : '',
         end_time: this.event ? this.event.end_time.slice(0, 5) : '',
-        frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
-        interval: '',
-        week: '',
-        day: '',
+        recurringData: {
+          end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
+          frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
+          interval: null,
+          week: null,
+          day: null
+        },
         volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
       }
