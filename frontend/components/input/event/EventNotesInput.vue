@@ -1,7 +1,6 @@
 <template>
   <v-textarea
     v-model="data"
-    :rules="validation"
     :label="label"
     :readonly="readonly"
     auto-grow
@@ -31,7 +30,6 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [v => !!v || 'Project Notes is required']
     }
   },
 
