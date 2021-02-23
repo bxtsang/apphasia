@@ -15,16 +15,30 @@ actions:
   definition:
     kind: synchronous
     handler: https://750a9vn0z1.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+  - role: intern
 - name: InsertEventOrRecurring
   definition:
     kind: synchronous
     handler: https://lh1hdfcdf6.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
     handler: https://2tnogbimkc.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
+- name: UpdateEventOrRecurring
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:3000
+  permissions:
+  - role: core_team
+  - role: intern
 custom_types:
   enums: []
   input_objects:
@@ -40,6 +54,10 @@ custom_types:
   - name: RecurringDataInput
   - name: InsertEventOrRecurringInput
   - name: DeleteEventsInput
+  - name: EventVolInput
+  - name: EventPwaInput
+  - name: UpdateRecurringDataInput
+  - name: UpdateEventOrRecurringInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -48,4 +66,5 @@ custom_types:
   - name: insertResponse
   - name: InsertResponse
   - name: DeleteResponse
+  - name: UpdateEventsResponse
   scalars: []

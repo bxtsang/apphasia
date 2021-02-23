@@ -40,6 +40,13 @@ type Mutation {
 }
 
 
+type Mutation {
+  UpdateEventOrRecurring (
+    updateEventData: UpdateEventOrRecurringInput!
+  ): UpdateEventsResponse
+}
+
+
 
 
 input SupervisorInput {
@@ -127,6 +134,48 @@ input DeleteEventsInput {
   recurrence_id : Int
 }
 
+input EventVolInput {
+  vol_id : Int!
+}
+
+input EventPwaInput {
+  pwa_id : Int!
+}
+
+input UpdateRecurringDataInput {
+  id : Int!
+  day : Int!
+  week : Int
+  interval : Int!
+  name : String
+  note : String
+  frequency : String!
+  start_date : date!
+  end_date : date
+  start_time : time
+  end_time : time
+  vols_to_add : [EventVolInput]
+  vols_to_remove : [Int!]
+  pwas_to_add : [EventPwaInput]
+  pwas_to_remove : [Int!]
+}
+
+input UpdateEventOrRecurringInput {
+  id : Int!
+  project_id : Int!
+  date : date!
+  recurr_id : Int
+  note : String
+  start_time : time!
+  end_time : time!
+  name : String!
+  vols_to_add : [EventVolInput]
+  vols_to_remove : [Int!]
+  pwas_to_add : [EventPwaInput]
+  pwas_to_remove : [Int!]
+  recurringData : UpdateRecurringDataInput
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -160,5 +209,10 @@ type InsertResponse {
 type DeleteResponse {
   message : String!
   status : String!
+}
+
+type UpdateEventsResponse {
+  status : String!
+  message : String!
 }
 
