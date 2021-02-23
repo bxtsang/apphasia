@@ -28,12 +28,13 @@ def lambda_handler(event, context):
     # week = 2 OR null
     # interval = 1
     # name = Test
-    # frequency = "Weekly" OR "Monthly" OR null
+    # frequency = "Weekly" OR "Monthly"
     # start_date = "2021-02-16"
-    # end_date = "2022-02-14"
+    # end_date = "2022-02-14" or NULL
     # start_time = "13:00:00+00"
     # end_time = 14:00:00+00"
     # infinite = false
+    # notes = "test" or ""
     recurrence = json.loads(event['body'])['event']['data']['new']
     result = {}
     statusCode = 500
@@ -74,13 +75,13 @@ def lambda_handler(event, context):
     elif recurrence["frequency"] == "Monthly":
         events = list(rrule(freq=MONTHLY, bysetpos=int(recurrence["week"]),byweekday=int(recurrence["day"]), dtstart=recurrence['start_date'], until=recurrence['end_date'], interval=int(recurrence["interval"])))
 
-    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name) VALUES "
+    sql = "INSERT INTO events(project_id,date,recurr_id,start_time,end_time,name,note) VALUES "
 
     # Create SQL statement for insertion
 
     for event in events:
         event = event.strftime("%m-%d-%Y")
-        sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}'), "
+        sql += f"({recurrence['project_id']},'{event}',{recurrence['id']},'{recurrence['start_time']}','{recurrence['end_time']}','{recurrence['name']}','{recurrence['note']}'), "
 
     # Send SQL to database query
     sql = sql[:-2] + ";"
@@ -95,16 +96,16 @@ def lambda_handler(event, context):
     "Content-Type": "application/json"
     })
 
-    # result['message'] = json.dumps(res.json())
-    # statusCode = 200
-    if res.status_code != 200:
-        statusCode = res.status_code
-        result['status'] = "failed"
-        result['message'] = "Failed to insert into Events."
-    else:
-        statusCode = res.status_code
+    json_response = json.loads(res.text)
+
+    if "errors" not in json_response:
+        statusCode = 200
         result['status'] = "sent"
-        result['message'] = "Successfully added events" 
+        result['message'] = "Successfully added events"
+    else:
+        statusCode = 400
+        result['code'] = res.status_code
+        result['message'] = res.text
 
     return {
         "statusCode": statusCode,

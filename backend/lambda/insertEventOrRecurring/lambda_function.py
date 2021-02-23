@@ -13,13 +13,12 @@ def lambda_handler(event, context):
     eventsOrRecurring = json.loads(event['body'])['input']['newEventData']
     hasura_secret = get_secret()
 
+    headers = {
+            "Content-Type": "application/json",
+            "x-hasura-admin-secret": hasura_secret
+        }
 
     if eventsOrRecurring["recurringData"]['frequency'] == "None":
-
-        headers = {
-                "Content-Type": "application/json",
-                "x-hasura-admin-secret": hasura_secret
-            }
         eventsOrRecurring.pop("recurringData", None)
         eventsOrRecurring['date'] = eventsOrRecurring.pop("start_date", None)
         data = {'event': eventsOrRecurring}
@@ -29,21 +28,34 @@ def lambda_handler(event, context):
                 }}
             }}
               """
-        r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)
-        print(r.status_code)
-        print(r.text)
 
-        if r.status_code == 200:
-            statusCode = 200
-            result['status'] = "sent"
-            result['message'] = "query successfully sent to hasura"
-        else:
-            statusCode = 400
-            result['code'] = r.status_code
-            result['message'] = "query failed to sent to hasura"
-        
     else:
-        pass
+        eventsOrRecurring = {**eventsOrRecurring,**eventsOrRecurring['recurringData']}
+        if eventsOrRecurring['end_date'] == "":
+            eventsOrRecurring["end_date"] = None
+        del eventsOrRecurring['recurringData']
+        data = {'recurring': eventsOrRecurring}
+        query = f"""
+        mutation InsertEvents($recurring: recurring_insert_input!) {{
+            insert_recurring_one(object: $recurring) {{
+                id
+            }}
+        }}
+        """
+
+    r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)
+    print(r.status_code)
+    print(r.text)
+    json_response = json.loads(r.text)
+
+    if "errors" not in json_response:
+        statusCode = 200
+        result['status'] = "sent"
+        result['message'] = "query successfully sent to hasura"
+    else:
+        statusCode = 400
+        result['code'] = r.status_code
+        result['message'] = r.text
 
     return {
         "statusCode": statusCode,
