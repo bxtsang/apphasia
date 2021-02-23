@@ -51,25 +51,29 @@ def lambda_handler(event, context):
             "type": "run_sql",
             "args": {"sql": sql}
         })
-        res = requests.post(hasura_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret,
-        "Content-Type": "application/json"
-        })
-        if res.status_code != 200:
+        try:
+            res = requests.post(hasura_url,data=data, headers={
+            "x-hasura-admin-secret": hasura_admin_secret,
+            "Content-Type": "application/json"
+            })
+
+            if not old_recurrence['end_date']:
+                statusCode = 200
+                result['status'] = "Success"
+                result['message'] = "Updated infinite column"
+                return {
+                    "statusCode": statusCode,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin": "*"
+                    },
+                    "body": json.dumps(result)
+                }
+        except Exception as e:
             result['status'] = "failed"
             result['message'] = "failed to update infinite column"
-            return {
-                "statusCode": statusCode,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Origin": "*"
-                },
-                "body": json.dumps(result)
-            }
-        if not old_recurrence['end_date']:
-            statusCode = 200
-            result['status'] = "Success"
-            result['message'] = "Updated infinite column"
+            result['error'] = str(e)
+
             return {
                 "statusCode": statusCode,
                 "headers": {
@@ -86,13 +90,15 @@ def lambda_handler(event, context):
             "type": "run_sql",
             "args": {"sql": sql}
         })
-        res = requests.post(hasura_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret,
-        "Content-Type": "application/json"
-        })
-        if res.status_code != 200:
+        try:
+            res = requests.post(hasura_url,data=data, headers={
+            "x-hasura-admin-secret": hasura_admin_secret,
+            "Content-Type": "application/json"
+            })
+        except Exception as e:
             result['status'] = "failed"
             result['message'] = "failed to update end_date"
+            result['error'] = str(e)
             return {
                 "statusCode": statusCode,
                 "headers": {
@@ -149,21 +155,26 @@ def lambda_handler(event, context):
                 "sql": sql
             }
         })
-        res = requests.post(hasura_url,data=data, headers={
-        "x-hasura-admin-secret": hasura_admin_secret,
-        "Content-Type": "application/json"
-        })
+        try:
+            res = requests.post(hasura_url,data=data, headers={
+            "x-hasura-admin-secret": hasura_admin_secret,
+            "Content-Type": "application/json"
+            })
 
-        json_response = json.loads(res.text)
+            json_response = json.loads(res.text)
 
-        if "errors" not in json_response:
-            statusCode = 200
-            result['status'] = "sent"
-            result['message'] = "Successfully added events"
-        else:
-            statusCode = 400
-            result['code'] = res.status_code
-            result['message'] = res.text
+            if "errors" not in json_response:
+                statusCode = 200
+                result['status'] = "sent"
+                result['message'] = "Successfully added events"
+            else:
+                statusCode = 400
+                result['code'] = res.status_code
+                result['message'] = res.text
+        except Exception as e:
+            result['status'] = "failed"
+            result['message'] = "Failed to add events"
+            result['error'] = str(e)
     else:
         statusCode = 200
         result['status'] = "sent"
