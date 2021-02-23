@@ -79,6 +79,7 @@
                 <IntervalInput
                   v-model="eventData.interval"
                   label="Every"
+                  :type="eventData.frequency"
                   required
                 />
               </v-col>
@@ -161,8 +162,8 @@ export default {
         note: this.event ? this.event.note : '',
         date: this.event ? this.event.start_date : '',
         end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
-        start_time: this.event ? this.event.start_time : '',
-        end_time: this.event ? this.event.end_time : '',
+        start_time: this.event ? this.event.start_time.slice(0, 5) : '',
+        end_time: this.event ? this.event.end_time.slice(0, 5) : '',
         frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
         interval: '',
         week: '',
