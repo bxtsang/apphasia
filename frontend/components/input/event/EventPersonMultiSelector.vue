@@ -67,8 +67,9 @@ export default {
   apollo: {
     volunteers: {
       query () {
-        return gql`query getProjectVols($id: Int){
+        return gql`query getProjectVols($id: Int!){
           projects_by_pk(id: $id) {
+            id
             volunteers {
               volunteer {
                 general_info {
@@ -87,8 +88,9 @@ export default {
     },
     pwas: {
       query () {
-        return gql`query getProjectPWAs($id: Int) {
+        return gql`query getProjectPWAs($id: Int!) {
           projects_by_pk(id: $id) {
+            id
             pwas {
               pwa {
                 general_info {

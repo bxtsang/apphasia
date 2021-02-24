@@ -3,18 +3,21 @@
     <v-col cols="3" class="d-flex justify-start align-center">
       <v-subheader class="pa-0">{{ label }}</v-subheader>
     </v-col>
-    <v-col cols="9">
+    <v-col cols="6">
       <v-select
         v-model="data"
-        :items="DAY"
+        :items="WEEK"
         :rules="validation"
       />
+    </v-col>
+    <v-col cols="3" class="d-flex justify-center align-center">
+      <v-subheader class="pa-0">Week</v-subheader>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { DAY } from './../../../assets/data'
+import { WEEK } from './../../../assets/data'
 
 export default {
   name: 'DayInput',
@@ -36,8 +39,8 @@ export default {
   data () {
     return {
       data: this.value,
-      DAY,
-      validation: [...(this.required ? [v => (v > 0 & v < 7) || 'Day is required'] : [])]
+      WEEK,
+      validation: [...(this.required ? [v => (v > 0 & v < 7) || 'Week is required'] : [])]
     }
   },
 

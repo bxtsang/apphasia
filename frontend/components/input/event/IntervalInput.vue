@@ -1,10 +1,19 @@
 <template>
-  <v-select
-    v-model="data"
-    :items="INTERVAL_OPTIONS"
-    :label="label"
-    :rules="validation"
-  />
+  <v-row no-gutters>
+    <v-col cols="3" class="d-flex justify-start align-center">
+      <v-subheader class="pa-0">{{ label }}</v-subheader>
+    </v-col>
+    <v-col cols="6">
+      <v-select
+        v-model="data"
+        :items="INTERVAL_OPTIONS"
+        :rules="validation"
+      />
+    </v-col>
+    <v-col cols="3" class="d-flex justify-center align-center">
+      <v-subheader class="pa-0">{{ UNIT_MEASURE }}</v-subheader>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -52,18 +61,15 @@ export default {
   },
   computed: {
     INTERVAL_OPTIONS () {
-      const unit = this.type === 'Monthly' ? 'month' : 'week'
       let options = []
       const limit = this.type === 'Monthly' ? 12 : 4
-      console.log(Array(limit))
       for (const index of Array(limit).keys()) {
-        options = [...options, {
-          value: index + 1,
-          text: `${index + 1} ${unit}${index + 1 > 1 ? 's' : ''}`
-        }]
+        options = [...options, index + 1]
       }
-      console.log(options)
       return options
+    },
+    UNIT_MEASURE () {
+      return this.type === 'Monthly' ? 'Month(s)' : 'Week(s)'
     }
   }
 }

@@ -107,7 +107,9 @@
           </template>
 
           <!-- Event Specific Columns -->
-
+          <template v-slot:[`item.event_time`]="{ item }">
+            {{ item.start_time.slice(0,5) }} - {{ item.end_time.slice(0,5) }}
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
             <v-btn v-if="resourceType === 'events'" @click="() => customNavigation(item)" icon>

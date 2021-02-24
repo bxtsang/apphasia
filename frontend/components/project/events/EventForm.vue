@@ -33,14 +33,14 @@
               <v-col class="py-0">
                 <DateInput
                   label="Start Date"
-                  v-model="eventData.date"
+                  v-model="eventData.start_date"
                   required
                 />
               </v-col>
               <v-col class="py-0">
                 <DateInput
                   label="End Date"
-                  v-model="eventData.end_date"
+                  v-model="eventData.recurringData.end_date"
                 />
               </v-col>
             </v-row>
@@ -68,32 +68,36 @@
             <v-row>
               <v-col class="py-0" cols="6">
                 <FrequencyInput
-                  v-model="eventData.frequency"
+                  v-model="eventData.recurringData.frequency"
                   label="Repeat"
                   required
                 />
               </v-col>
             </v-row>
-            <v-row v-if="eventData.frequency !== 'None'">
+            <v-row v-if="eventData.recurringData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
                 <IntervalInput
-                  v-model="eventData.interval"
+                  v-model="eventData.recurringData.interval"
                   label="Every"
-                  :type="eventData.frequency"
+                  :type="eventData.recurringData.frequency"
                   required
                 />
               </v-col>
             </v-row>
-            <v-row v-if="eventData.frequency == 'Monthly'">
+            <v-row v-if="eventData.recurringData.frequency == 'Monthly'">
               <v-col class="py-0" cols="6">
-                Week
+                <WeekInput
+                  v-model="eventData.recurringData.week"
+                  label="On"
+                  required
+                />
               </v-col>
             </v-row>
-            <v-row v-if="eventData.frequency !== 'None'">
+            <v-row v-if="eventData.recurringData.frequency !== 'None'">
               <v-col class="py-0" cols="6">
                 <DayInput
-                  v-model="eventData.day"
-                  label="Day"
+                  v-model="eventData.recurringData.day"
+                  label="On"
                   required
                 />
               </v-col>
@@ -109,7 +113,7 @@
                   v-model="eventData.volunteers.data"
                   label="Volunteers Involved"
                   type="volunteers"
-                  :projectId="projectId"
+                  :projectId="eventData.project_id"
                 />
               </v-col>
             </v-row>
@@ -119,7 +123,7 @@
                   v-model="eventData.pwas.data"
                   label="PWAs Involved"
                   type="pwas"
-                  :projectId="projectId"
+                  :projectId="eventData.project_id"
                 />
               </v-col>
             </v-row>
@@ -139,12 +143,14 @@
             </v-row>
           </v-col>
         </v-row>
-        {{ eventData }}
+        <pre>{{ eventData }}</pre>
       </v-container>
     </v-form>
   </v-card>
 </template>
 <script>
+import InsertEventOrRecurring from './../../../graphql/event/InsertEventOrRecurring.graphql'
+
 export default {
   props: {
     event: {
@@ -156,18 +162,20 @@ export default {
     return {
       valid: true,
       isSubmitting: false,
-      projectId: this.$route.query.id,
       eventData: {
+        project_id: this.$route.query.id,
         name: this.event ? this.event.name : '',
         note: this.event ? this.event.note : '',
-        date: this.event ? this.event.start_date : '',
-        end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
+        start_date: this.event ? this.event.start_date : '',
         start_time: this.event ? this.event.start_time.slice(0, 5) : '',
         end_time: this.event ? this.event.end_time.slice(0, 5) : '',
-        frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
-        interval: '',
-        week: '',
-        day: '',
+        recurringData: {
+          end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
+          frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
+          interval: -1,
+          week: -1,
+          day: -1
+        },
         volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
       }
@@ -184,7 +192,44 @@ export default {
   },
   methods: {
     submitEvent () {
-      return ''
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const _ = require('lodash')
+        const newEventData = _.cloneDeep(this.eventData)
+        newEventData.pwas.data = newEventData.pwas.data.map((item) => { return { pwa_id: item } })
+        newEventData.volunteers.data = newEventData.volunteers.data.map((item) => { return { vol_id: item } })
+        this.$apollo.mutate({
+          mutation: InsertEventOrRecurring,
+          variables: { newEventData },
+          update: (store, data) => {
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.eventData = {
+            project_id: this.$route.query.id,
+            name: '',
+            note: '',
+            start_date: '',
+            start_time: '',
+            end_time: '',
+            recurringData: {
+              end_date: '',
+              frequency: 'None',
+              interval: -1,
+              week: -1,
+              day: -1
+            },
+            volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
+            pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
+          }
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Event successfully created', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
     },
     editEvent () {
       return ''

@@ -55,14 +55,14 @@
       <v-col cols="6" class="py-0">
         <v-text-field
           label="Start Time"
-          :value="event.start_time.split('+')[0]"
+          :value="event.start_time.slice(0, 5)"
           readonly
         />
       </v-col>
       <v-col cols="6" class="py-0">
         <v-text-field
           label="End Time"
-          :value="event.end_time.split('+')[0]"
+          :value="event.end_time.slice(0, 5)"
           readonly
         />
       </v-col>
