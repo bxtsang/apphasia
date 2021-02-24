@@ -29,7 +29,7 @@ def lambda_handler(event, context):
 
     except Exception as e:
         result['status'] = "failed"
-        result['message'] = "failed to renamed file"
+        result['message'] = "failed to rename file"
         result['error'] = str(e)
         statusCode = 400
 
