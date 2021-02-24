@@ -95,9 +95,7 @@
 </template>
 <script>
 import CreateProject from './../../graphql/project/CreateProject.graphql'
-import GetAllProject from './../../graphql/project/GetAllProject.graphql'
 import UpdateProject from './../../graphql/project/UpdateProject.graphql'
-import GetSingleProject from './../../graphql/project/GetSingleProject.graphql'
 
 export default {
   props: {
