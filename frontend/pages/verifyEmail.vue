@@ -1,6 +1,6 @@
 <template>
   <div>
-  <v-card elevation="2" outlined class="px-6 py-6 mb-6 text-center">
+    <v-card elevation="2" outlined class="px-6 py-6 mb-6 text-center">
       <v-card-title class="justify-center">
         Verify your email address
       </v-card-title>

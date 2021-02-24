@@ -95,9 +95,7 @@
 </template>
 <script>
 import CreateProject from './../../graphql/project/CreateProject.graphql'
-import GetAllProject from './../../graphql/project/GetAllProject.graphql'
 import UpdateProject from './../../graphql/project/UpdateProject.graphql'
-import GetSingleProject from './../../graphql/project/GetSingleProject.graphql'
 
 export default {
   props: {
@@ -143,9 +141,8 @@ export default {
           mutation: CreateProject,
           variables: { project: newProjectData },
           update: (store, { data: { insert_projects_one: newProject } }) => {
-            const data = store.readQuery({ query: GetAllProject })
-            data.projects.push(newProject)
-            store.writeQuery({ query: GetAllProject, data })
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+            this.createGDriveFolder(newProjectData.title)
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -199,15 +196,7 @@ export default {
           mutation: UpdateProject,
           variables: { id: this.project.id, project: newProjectData },
           update: (store, { data: { insert_projects_one: updatedProject } }) => {
-            store.writeQuery({ query: GetSingleProject, data: { projects_by_pk: updatedProject }, variables: { id: this.project.id } })
-            try {
-              const dataAll = store.readQuery({ query: GetAllProject })
-              dataAll.projects = dataAll.projects.filter(item => item.id !== this.project.id)
-              dataAll.projects.push(updatedProject)
-              store.writeQuery({ query: GetAllProject, dataAll })
-            } catch (error) {
-              // GetAllProject Query not in store
-            }
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -218,6 +207,21 @@ export default {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
+    },
+    createGDriveFolder (folderName) {
+      const postHeader = {
+        'Content-Type': 'application/json'
+      }
+      const postBody = {
+        new_folder: folderName
+      }
+      this.$axios.post(
+        'https://67sbpripz3.execute-api.ap-southeast-1.amazonaws.com/dev',
+        JSON.stringify(postBody),
+        { postHeader }
+      ).then((res) => {
+        console.log(res)
+      })
     }
   },
   watch: {
