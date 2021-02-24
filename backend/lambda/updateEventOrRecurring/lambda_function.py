@@ -17,9 +17,55 @@ def lambda_handler(event, context):
             "Content-Type": "application/json",
             "x-hasura-admin-secret": hasura_secret
         }
+    
+    # Single event --> Recurring event
+    if not eventsOrRecurring['recurr_id'] and "id" not in eventsOrRecurring['recurringData']:
+        r = eventsOrRecurring['recurringData']
+        eventsOrRecurring['start_date'] = r.pop("start_date",eventsOrRecurring.pop("date", None))
+        eventsOrRecurring.pop("recurr_id", None)
+        r.pop("name", None)
+        r.pop("note", None)
+        r.pop("start_time", None)
+        r.pop("end_time", None)
+        r.pop("vols_to_add", None)
+        r.pop("vols_to_remove", None)
+        r.pop("pwas_to_add", None)
+        r.pop("pwas_to_remove", None)
+        r.pop("pwas", None)
+        r.pop("volunteers", None)
+        r.pop("is_all", None)
 
+        query = f"""
+        mutation eventToRecurring ($newEventData: InsertEventOrRecurringInput!){{
+        delete_events_by_pk(id: {eventsOrRecurring.pop("id", 0)}) {{
+            id
+        }}
+        
+        InsertEventOrRecurring(newEventData: $newEventData) {{
+            status
+            message
+        }}
+        }}
+        """
+        data = {"newEventData": eventsOrRecurring}
+        
+    # Recurring event --> Single event
+    elif not eventsOrRecurring['recurr_id'] and "id" in eventsOrRecurring['recurringData']:
+        eventsOrRecurring.pop('id', None)
+        r = eventsOrRecurring.pop("recurringData", None)
+        query = f"""
+        mutation RecurringToSingle ($event: events_insert_input!) {{
+        delete_recurring_by_pk(id: {r.pop("id",0)}) {{
+            id
+        }}
+        insert_events_one (object: $event) {{
+            id
+        }}
+        }}
+        """
+        data = {'event': eventsOrRecurring}
     # Adding to event only
-    if eventsOrRecurring["recurringData"]["frequency"] == "None":
+    elif eventsOrRecurring["recurringData"]["frequency"] == "None":
         eventsOrRecurring.pop("recurringData", None)
         event_id = eventsOrRecurring.pop("id", None)
         query = f"""
