@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         }
     
     # Single event --> Recurring event
-    if not eventsOrRecurring['recurr_id'] and "id" not in eventsOrRecurring['recurringData']:
+    if not eventsOrRecurring['recurr_id'] and ("id" not in eventsOrRecurring['recurringData'] or not eventsOrRecurring['recurringData']['id']):
         r = eventsOrRecurring['recurringData']
         eventsOrRecurring['start_date'] = r.pop("start_date",eventsOrRecurring.pop("date", None))
         eventsOrRecurring.pop("recurr_id", None)
