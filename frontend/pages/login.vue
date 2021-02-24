@@ -49,20 +49,21 @@ export default {
   },
   methods: {
     async login () {
-      if (this.email === '' || this.password === '') { return }
-      this.isLoggingIn = true
-      const loginData = { username: this.email, password: this.password }
-      try {
-        const response = await this.$auth.loginWith('cognito', { data: loginData })
-        this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
-        this.$apolloHelpers.onLogin(response.idToken.jwtToken)
-      } catch (error) {
-        this.$store.commit('notification/newNotification', [error.message, 'error'])
-        this.email = ''
-        this.password = ''
-        this.$apolloHelpers.onLogout()
-      } finally {
-        this.isLoggingIn = false
+      if (this.$refs.form.validate()) {
+        this.isLoggingIn = true
+        const loginData = { username: this.email, password: this.password }
+        try {
+          const response = await this.$auth.loginWith('cognito', { data: loginData })
+          this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
+          this.$apolloHelpers.onLogin(response.idToken.jwtToken)
+        } catch (error) {
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+          this.email = ''
+          this.password = ''
+          this.$apolloHelpers.onLogout()
+        } finally {
+          this.isLoggingIn = false
+        }
       }
     }
   }
