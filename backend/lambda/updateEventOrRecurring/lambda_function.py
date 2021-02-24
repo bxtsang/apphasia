@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         }
 
     # Adding to event only
-    if "name" not in eventsOrRecurring["recurringData"] or not eventsOrRecurring["recurringData"]['name']:
+    if eventsOrRecurring["recurringData"]["frequency"] == "None":
         eventsOrRecurring.pop("recurringData", None)
         event_id = eventsOrRecurring.pop("id", None)
         query = f"""
