@@ -16,11 +16,10 @@
   </div>
 </template>
 <script>
-import AddResourceModal from './../components/modals/AddResourceModal'
 import IndividualProjectView from './../components/project/IndividualProjectView'
 
 export default {
-  components: { IndividualProjectView, AddResourceModal },
+  components: { IndividualProjectView },
   data () {
     return {
       isLoading: true,
