@@ -8,23 +8,20 @@ clientSecret = boto3.client('secretsmanager')
 hasura_url = os.environ['HASURA_URI']
 
 
-def lambda_handler(event, context): 
+def lambda_handler(event, context):
     target = ''
     date = ''
     result = {}
     statusCode = 500
     event = json.loads(event['body'])['input']['eventData']
     hasura_secret = get_secret()
-    print(event['recurrence_id'])
-    print(event['event_id'])
-    print(event['date'])
 
     try:
+        #delete event and onwards
         if (event['date'] != None):
-            print('recurrence')
             recurrence_id = event['recurrence_id']
             date = event['date']
-            target = 'reccurrence'
+            target = f'all events of recurrence id {recurrence_id} from {date} and onwards'
             query = f"""
             mutation {{
                 delete_events ( where: {{ _and: {{ recurr_id: {{ _eq: { recurrence_id } }}, date: {{ _gte: "{ date }" }} }} }}
@@ -36,11 +33,10 @@ def lambda_handler(event, context):
                 }}
                 }}
             """
-        else:
-            print('event')
-            target = 'event'
+        #delete one event
+        elif (event['event_id'] != None):
             event_id = event['event_id']
-            print(event_id)
+            target = f'event of event id {event_id}'
             query = f"""
             mutation {{
                 delete_events(
@@ -53,6 +49,34 @@ def lambda_handler(event, context):
                 }}
             }}
             """
+        #delete ALL events
+        elif (event['recurrence_id'] != None):
+            recurrence_id = event['recurrence_id']
+            target = f'all events of recurrence id {recurrence_id}'
+            query = f"""
+            mutation {{
+                delete_events(
+                    where: {{ recurr_id: {{_eq: {recurrence_id} }} }}
+                ) {{
+                    affected_rows
+                    returning {{
+                    id
+                    }}
+                }}
+            }}
+            """
+
+        else:
+            result['status'] = "error"
+            result['message'] = "all fields are null "
+            return {
+            "statusCode": 400,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps(result)
+            }
 
         headers = {
             "Content-Type": "application/json",
@@ -72,6 +96,7 @@ def lambda_handler(event, context):
             result['code'] = r.status_code
             result['status'] = "error"
             result['message'] = "failed to delete " + target
+
 
     except Exception as e:
         result['code'] = 400
