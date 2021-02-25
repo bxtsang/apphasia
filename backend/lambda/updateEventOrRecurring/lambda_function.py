@@ -50,7 +50,7 @@ def lambda_handler(event, context):
         data = {"newEventData": eventsOrRecurring}
         
     # Recurring event --> Single event
-    elif ('recurr_id' in eventsOrRecurring and not eventsOrRecurring['recurr_id']) and "id" in eventsOrRecurring['recurringData']:
+    elif eventsOrRecurring['recurr_id'] is not None and eventsOrRecurring['recurringData']['frequency'] == 'None':
         eventsOrRecurring.pop('id', None)
         r = eventsOrRecurring.pop("recurringData", None)
         query = f"""
