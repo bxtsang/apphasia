@@ -5,7 +5,7 @@
       v-if="resourceType === 'folder'"
       class="ma-2 d-flex align-center clickable"
       outlined
-      width="200"
+      width="270"
       @contextmenu="show"
       @dblclick="changeDirectory"
     >
