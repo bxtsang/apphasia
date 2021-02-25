@@ -1,5 +1,5 @@
-mutation UpdateEventOrRecurring ($newEventData: InsertEventOrRecurringInput!) {
-  InsertEventOrRecurring(newEventData: $newEventData) {
+mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!) {
+  UpdateEventOrRecurring(updateEventData: $updateEventData) {
     status
     message
   }

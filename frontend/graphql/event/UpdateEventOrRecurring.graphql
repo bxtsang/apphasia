@@ -1,10 +1,9 @@
-mutation UpdateEventOrRecurring ($newEventData: InsertEventOrRecurringInput!) {
-  InsertEventOrRecurring(newEventData: $newEventData) {
+mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!) {
+  UpdateEventOrRecurring(updateEventData: $updateEventData) {
     status
     message
   }
 }
-
 # Single To Recurring: event.recurr_id = null, 'id' not in recurringData or null
 # Uses event data, pwas, vols and recurring specific fields from recurringData
 #
