@@ -19,7 +19,7 @@ def lambda_handler(event, context):
         }
     
     # Single event --> Recurring event
-    if not eventsOrRecurring['recurr_id'] and ("id" not in eventsOrRecurring['recurringData'] or not eventsOrRecurring['recurringData']['id']):
+    if ('recurr_id' in eventsOrRecurring and not eventsOrRecurring['recurr_id']) and ("id" not in eventsOrRecurring['recurringData'] or not eventsOrRecurring['recurringData']['id']):
         r = eventsOrRecurring['recurringData']
         eventsOrRecurring['start_date'] = r.pop("start_date",eventsOrRecurring.pop("date", None))
         eventsOrRecurring.pop("recurr_id", None)
@@ -50,7 +50,7 @@ def lambda_handler(event, context):
         data = {"newEventData": eventsOrRecurring}
         
     # Recurring event --> Single event
-    elif not eventsOrRecurring['recurr_id'] and "id" in eventsOrRecurring['recurringData']:
+    elif ('recurr_id' in eventsOrRecurring and not eventsOrRecurring['recurr_id']) and "id" in eventsOrRecurring['recurringData']:
         eventsOrRecurring.pop('id', None)
         r = eventsOrRecurring.pop("recurringData", None)
         query = f"""
@@ -86,7 +86,7 @@ def lambda_handler(event, context):
         id = recurring.pop("id", None)
         recurring.pop("is_all", None)
         recurring.pop("pwas", None)
-        recurring.pop("vols", None)
+        recurring.pop("volunteers", None)
         if recurring['end_date'] == "":
             recurring["end_date"] = None
         for ch in recurring['pwas_to_add']:
