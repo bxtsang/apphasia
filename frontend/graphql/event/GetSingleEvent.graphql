@@ -10,7 +10,6 @@ query getEvent($event_id: Int!) {
     project {
       title
     }
-    recurr_id
     recurring {
       id
       frequency
