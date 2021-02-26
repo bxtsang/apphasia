@@ -1,0 +1,20 @@
+mutation DeleteEvents ($eventData: DeleteEventsInput!) {
+  DeleteEvents (eventData: $eventData) {
+    status
+    message
+  }
+}
+
+#1) delete single event: provide event_id ONLY, input null for recurrence_id and date
+
+#2) delete this and following events: provide recurrence_id and date, input null for event_id
+
+#3) delete all events: input recurrence_id ONLY, input null for event_id and date
+
+# {
+#   "eventData": {
+#     "event_id": null,
+#     "recurrence_id": 41,
+#     "date": "2022-01-27"
+#   }
+# }

@@ -1378,6 +1378,18 @@
   - role: core_team
     permission:
       filter: {}
+  event_triggers:
+  - name: rename_project
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - title
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://klvvk3hcwl.execute-api.ap-southeast-1.amazonaws.com/dev
 - table:
     schema: public
     name: pwa_befriender

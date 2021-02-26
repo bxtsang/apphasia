@@ -1,0 +1,34 @@
+mutation InsertEventOrRecurring ($newEventData: InsertEventOrRecurringInput!) {
+  InsertEventOrRecurring(newEventData: $newEventData) {
+    status
+    message
+  }
+}
+
+# {
+#   "newEventData": {
+#     "start_date": "2021-02-18",
+#     "name": "Washing Dishes",
+#     "start_time": "12:30:00",
+#     "end_time": "13:30:00",
+#     "project_id": 3,
+#     "note": "Cool cat",
+#     "recurringData": {
+#       "day": 1,
+#       "week": 1,
+#       "interval": 1,
+#       "frequency": "Weekly",
+#       "end_date": ""
+#     },
+#     "pwas": {
+#       "data": [{
+#         "pwa_id": 26
+#       }]
+#     },
+#     "volunteers": {
+#       "data": [{
+#         "vol_id": 76
+#       }]
+#     }
+#   }
+# }

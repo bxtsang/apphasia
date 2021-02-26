@@ -161,4 +161,7 @@ export default {
 // mounted () {
 //   this.$apollo.vm.$apolloProvider.defaultClient.cache.data.clear()
 // }
+// Object.keys(cache.data.data).forEach(key =>
+//   key.match(/^Item/) && cache.data.delete(key)
+// )
 </script>

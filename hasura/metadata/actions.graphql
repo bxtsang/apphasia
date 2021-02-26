@@ -143,7 +143,7 @@ input EventPwaInput {
 }
 
 input UpdateRecurringDataInput {
-  id : Int!
+  id : Int
   day : Int!
   week : Int
   interval : Int!
@@ -167,7 +167,6 @@ input UpdateEventOrRecurringInput {
   id : Int!
   project_id : Int!
   date : date!
-  recurr_id : Int
   note : String
   start_time : time!
   end_time : time!

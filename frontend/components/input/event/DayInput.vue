@@ -1,10 +1,16 @@
 <template>
-  <v-select
-    v-model="data"
-    :items="DAY"
-    :label="label"
-    :rules="validation"
-  />
+  <v-row no-gutters>
+    <v-col cols="3" class="d-flex justify-start align-center">
+      <v-subheader class="pa-0">{{ label }}</v-subheader>
+    </v-col>
+    <v-col cols="9">
+      <v-select
+        v-model="data"
+        :items="DAY"
+        :rules="validation"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -15,8 +21,8 @@ export default {
 
   props: {
     value: {
-      type: String,
-      default: 'None'
+      type: Number,
+      default: -1
     },
     required: {
       type: Boolean,
@@ -31,7 +37,7 @@ export default {
     return {
       data: this.value,
       DAY,
-      validation: [...(this.required ? [v => (v > 0 & v < 7) || 'Day is required'] : [])]
+      validation: [...(this.required ? [v => (v > -1 & v < 7) || 'Day is required'] : [])]
     }
   },
 
