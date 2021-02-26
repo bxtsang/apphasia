@@ -15,8 +15,14 @@ describe('Login to Apphasia', () =>  {
     })
 
     it('Check for Invalid Email', () => {
+        cy.get('[data-cy=cy-login-email-input]').type('usernameExample')
+        cy.get('.v-text-field__details').eq(0).contains('E-mail must be valid')
 
+        cy.get('.v-text-field__details').eq(1).should('not.have.value', 'Password is required')
+        cy.get('[data-cy=cy-login-submit-input]').click()
+        cy.get('.v-text-field__details').eq(1).contains('Password is required')
     })
+
 
     it('Successful Login'), () => {
 
