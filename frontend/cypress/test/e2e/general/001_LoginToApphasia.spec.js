@@ -24,8 +24,16 @@ describe('Login to Apphasia', () =>  {
     })
 
 
-    it('Successful Login'), () => {
+    it('Check for Unsuccessful Login', () => {
+        cy.get('[data-cy=cy-login-email-input]').type('doesNotExist@example.com')
+        cy.get('[data-cy=cy-login-password-input]').type('password')
+        
+        cy.get('[data-cy=cy-notification-snackbar]').should('have.value', '')
+        cy.get('[data-cy=cy-login-submit-input]').click()
+        cy.get('[data-cy=cy-notification-snackbar]').contains('Incorrect username or password')
 
-    }
+        cy.get('[data-cy=cy-login-email-input]').should('have.value', '')
+        cy.get('[data-cy=cy-login-password-input]').should('have.value', '')
+    })
 
 })
