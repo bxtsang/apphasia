@@ -172,9 +172,9 @@ export default {
         recurringData: {
           end_date: this.event && this.event.recurring ? this.event.recurring.end_date : '',
           frequency: this.event && this.event.recurring ? this.event.recurring.frequency : 'None',
-          interval: this.event && this.event.recurring ? this.event.recurring.interval : -1,
-          week: this.event && this.event.recurring ? this.event.recurring.week : -1,
-          day: this.event && this.event.recurring ? this.event.recurring.day : -1
+          interval: -1,
+          week: -1,
+          day: -1
         },
         volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
