@@ -34,20 +34,23 @@ def lambda_handler(event, context):
         r.pop("pwas", None)
         r.pop("volunteers", None)
         r.pop("is_all", None)
+        eventsOrRecurring = {**eventsOrRecurring,**eventsOrRecurring['recurringData']}
+        if eventsOrRecurring['end_date'] == "":
+            eventsOrRecurring["end_date"] = None
+        del eventsOrRecurring['recurringData']
 
         query = f"""
-        mutation eventToRecurring ($newEventData: InsertEventOrRecurringInput!){{
-        delete_events_by_pk(id: {eventsOrRecurring.pop("id", 0)}) {{
-            id
-        }}
-        
-        InsertEventOrRecurring(newEventData: $newEventData) {{
-            status
-            message
-        }}
+        mutation eventToRecurring ($recurring: recurring_insert_input!){{
+            delete_events_by_pk(id: {eventsOrRecurring.pop("id", 0)}) {{
+                id
+            }}
+            
+            insert_recurring_one(object: $recurring) {{
+                id
+            }}
         }}
         """
-        data = {"newEventData": eventsOrRecurring}
+        data = {"recurring": eventsOrRecurring}
         
     # Recurring event --> Single event
     elif ('id' in eventsOrRecurring['recurringData'] and eventsOrRecurring['recurringData']['id'] is not None) and eventsOrRecurring['recurringData']['frequency'] == 'None':
