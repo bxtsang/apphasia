@@ -40,7 +40,7 @@ export default {
     return {
       data: this.value,
       WEEK,
-      validation: [...(this.required ? [v => (v > 0 & v < 7) || 'Week is required'] : [])]
+      validation: [...(this.required ? [v => (v > 0 & v < 5) || 'Week is required'] : [])]
     }
   },
 

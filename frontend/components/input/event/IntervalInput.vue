@@ -23,8 +23,8 @@ export default {
 
   props: {
     value: {
-      type: String,
-      default: 'None'
+      type: Number,
+      default: -1
     },
     required: {
       type: Boolean,
@@ -42,7 +42,7 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [...(this.required ? [v => !!v || 'Interval is required'] : [])]
+      validation: [...(this.required ? [v => v > 0 || 'Interval is required'] : [])]
     }
   },
 
