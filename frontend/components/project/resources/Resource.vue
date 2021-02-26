@@ -5,7 +5,7 @@
       v-if="resourceType === 'folder'"
       class="ma-2 d-flex align-center clickable"
       outlined
-      width="200"
+      width="270"
       @contextmenu="show"
       @dblclick="changeDirectory"
     >
@@ -18,28 +18,24 @@
     <!-- Item Card File-->
     <v-card
       v-else
-      class="pa-3 ma-2 d-flex flex-column justify-space-between align-center clickable"
+      class="ma-2 d-flex flex-column justify-space-between align-center clickable"
       outlined
-      height="150"
-      width="200"
+      height="220"
+      width="270"
       @contextmenu="show"
       @dblclick="changeDirectory"
     >
-      <v-img v-if="resource.thumbnailLink" :src="resource.thumbnailLink" />
       <v-img
-        v-else
+        v-if="authorizedResourcesMimeType.includes(resource.mimeType)"
         :src="resource.iconLink"
         contain
         height="30"
         width="30"
       />
-      <!-- <v-icon v-else x-large class="
-        ma-4"
-      >
-        mdi-file
-        </v-icon> -->
-      <span> {{ resource.name }}</span>
-      </v-img>
+      <v-img v-else :src="resource.thumbnailLink" height="120" />
+      <v-card-actions>
+        <span> {{ resource.name }}</span>
+      </v-card-actions>
     </v-card>
 
     <!-- Context Menu -->
@@ -77,6 +73,10 @@ export default {
     resource: {
       type: Object,
       default: null
+    },
+    accessToken: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -86,12 +86,35 @@ export default {
       y: 0,
       RIGHT_CLICK_OPTIONS: [
         { title: 'Delete', icon: 'mdi-delete', action: this.deleteResource }
+      ],
+      authorizedResourcesMimeType: [
+        'application/vnd.google-apps.audio',
+        'application/vnd.google-apps.document',
+        'application/vnd.google-apps.drive-sdk',
+        'application/vnd.google-apps.drawing',
+        'application/vnd.google-apps.file',
+        'application/vnd.google-apps.folder',
+        'application/vnd.google-apps.form',
+        'application/vnd.google-apps.fusiontable',
+        'application/vnd.google-apps.map',
+        'application/vnd.google-apps.photo',
+        'application/vnd.google-apps.presentation',
+        'application/vnd.google-apps.script',
+        'application/vnd.google-apps.shortcut',
+        'application/vnd.google-apps.site',
+        'application/vnd.google-apps.spreadsheet',
+        'application/vnd.google-apps.unknown',
+        'application/vnd.google-apps.video'
       ]
     }
   },
   mounted () {
     if (this.resource.webContentLink) {
-      this.RIGHT_CLICK_OPTIONS.push({ title: 'Download', icon: 'mdi-download', action: this.downloadResource })
+      this.RIGHT_CLICK_OPTIONS.push({
+        title: 'Download',
+        icon: 'mdi-download',
+        action: this.downloadResource
+      })
     }
   },
   methods: {
