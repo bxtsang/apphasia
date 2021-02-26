@@ -36,4 +36,12 @@ describe('Login to Apphasia', () =>  {
         cy.get('[data-cy=cy-login-password-input]').should('have.value', '')
     })
 
+    it('Check for Successful Login', () => {
+        cy.get('[data-cy=cy-login-email-input]').type('arixgg@gmail.com')
+        cy.get('[data-cy=cy-login-password-input]').type('password')
+
+        cy.get('[data-cy=cy-login-submit-input]').click()
+        cy.url().should('not.include', '/login')
+    })
+
 })
