@@ -11,6 +11,7 @@
           :rules="emailRules"
           label="Email"
           required
+          data-cy="cy-login-email-input"
         />
         <v-text-field
           v-model="password"
@@ -20,8 +21,15 @@
           label="Password"
           required
           @click:append="showPassword = !showPassword"
+          data-cy="cy-login-password-input"
         />
-        <v-btn block color="primary" class="my-3" type="submit" :loading="isLoggingIn">
+        <v-btn
+          block
+          color="primary"
+          class="my-3"
+          type="submit"
+          :loading="isLoggingIn"
+          data-cy="cy-login-submit-input">
           Login
         </v-btn>
       </v-form>
