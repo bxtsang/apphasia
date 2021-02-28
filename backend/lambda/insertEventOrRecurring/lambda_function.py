@@ -55,11 +55,11 @@ def lambda_handler(event, context):
             result['message'] = "query successfully sent to hasura"
         else:
             statusCode = 400
-            result['code'] = r.status_code
+            result['code'] = str(r.status_code)
             result['message'] = r.text
     except Exception as e:
         statusCode = 400
-        result['code'] = r.status_code
+        result['code'] = str(r.status_code)
         result['message'] = r.text
 
     return {
