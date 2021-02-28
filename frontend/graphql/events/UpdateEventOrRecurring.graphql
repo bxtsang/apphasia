@@ -5,10 +5,10 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
   }
 }
 
-# Single To Recurring: id in recurringData, recurringData.id = null and recurringData.frequency = "None"
+# Single To Recurring: event.recurr_id = null, 'id' not in recurringData or null
 # Uses event data, pwas, vols and recurring specific fields from recurringData
 #
-# Recurring To Single: id in recurringData, recurringData.id != null and recurringData.frequency = "None"
+# Recurring To Single: event.recurr_id = null, 'id' is in recurringData
 # Uses event data, pwas, vols and recurringData.start_date if found else event.date
 #
 # Updating Single Event: 'frequency' in recurringData = 'None'
@@ -25,6 +25,7 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 #   "updateEventData": {
 #     "id": 1,
 #     "date": "2021-02-18",
+#     "recurr_id": 33,
 #     "name": "Washing Dishes",
 #     "start_time": "12:30:00",
 #     "end_time": "13:30:00",
