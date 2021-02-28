@@ -9,6 +9,7 @@
         class="my-3 mr-3"
         v-bind="attrs"
         v-on="on"
+        :loading="loading"
       >
         Edit
       </v-btn>
@@ -38,7 +39,6 @@
         <v-spacer />
         <v-btn
           color="primary"
-          :loading="isLoading"
           type="submit"
         >
           Confirm
@@ -60,12 +60,15 @@ export default {
     newEventData: {
       type: Object,
       default: null
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       isOpen: false,
-      isLoading: false,
       eventOption: 0,
       valid: true,
       EDIT_OPTIONS: [
