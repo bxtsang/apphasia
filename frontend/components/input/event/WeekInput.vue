@@ -24,8 +24,8 @@ export default {
 
   props: {
     value: {
-      type: String,
-      default: 'None'
+      type: Number,
+      default: -1
     },
     required: {
       type: Boolean,
@@ -40,7 +40,7 @@ export default {
     return {
       data: this.value,
       WEEK,
-      validation: [...(this.required ? [v => (v > 0 & v < 5) || 'Week is required'] : [])]
+      validation: [...(this.required ? [v => (v > 0 && v < 5) || 'Week is required'] : [])]
     }
   },
 
