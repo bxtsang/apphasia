@@ -172,6 +172,7 @@ def lambda_handler(event, context):
         recurring['pwas'] = {"data": recurring.pop("pwas_to_add", [])}
         recurring['volunteers'] = {"data": recurring.pop("vols_to_add", [])}
         data = {"recurring": recurring}
+    # Adds to a single event with recurring
     else:
         recurr = eventsOrRecurring.pop("recurringData", None)
         recurr_id = recurr.pop("id", None)

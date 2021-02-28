@@ -14,7 +14,7 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 # Updating Single Event: 'frequency' in recurringData = 'None'
 # Repopulates event data based on fields in event
 #
-# Update This & Future Events: recurringData.'is_all' == 0
+# Update Single Event with recurring: recurringData.'is_all' == 0
 # Repopulates event data based on fields in event
 #
 # Update This & Future Events: recurringData.'is_all' == 1
