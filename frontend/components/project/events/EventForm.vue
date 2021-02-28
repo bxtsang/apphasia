@@ -137,19 +137,20 @@
                 />
               </div>
               <v-spacer/>
-              <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
-                {{ event ? 'Edit' : 'Save' }}
+              <EditConfirmation v-if="event" :event="event" :newEventData="eventData" @editEvent="editEvent" :loading="isSubmitting"/>
+              <v-btn v-else color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
+                Save
               </v-btn>
             </v-row>
           </v-col>
         </v-row>
-        <pre>{{ eventData }}</pre>
       </v-container>
     </v-form>
   </v-card>
 </template>
 <script>
 import InsertEventOrRecurring from './../../../graphql/event/InsertEventOrRecurring.graphql'
+import UpdateEventOrRecurring from './../../../graphql/event/UpdateEventOrRecurring.graphql'
 
 export default {
   props: {
@@ -166,7 +167,7 @@ export default {
         project_id: this.$route.query.id,
         name: this.event ? this.event.name : '',
         note: this.event ? this.event.note : '',
-        start_date: this.event ? this.event.start_date : '',
+        start_date: this.event ? this.event.date : '',
         start_time: this.event ? this.event.start_time.slice(0, 5) : '',
         end_time: this.event ? this.event.end_time.slice(0, 5) : '',
         recurringData: {
@@ -202,7 +203,7 @@ export default {
           mutation: InsertEventOrRecurring,
           variables: { newEventData },
           update: (store, data) => {
-            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+            setTimeout(this.$apollo.vm.$apolloProvider.defaultClient.resetStore, 2000)
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -220,8 +221,8 @@ export default {
               week: -1,
               day: -1
             },
-            volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
-            pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
+            volunteers: { data: [] },
+            pwas: { data: [] }
           }
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['Event successfully created', 'success'])
@@ -231,8 +232,81 @@ export default {
         })
       }
     },
-    editEvent () {
-      return ''
+    editEvent (eventOption) {
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        const _ = require('lodash')
+        const updatedEventData = _.cloneDeep(this.eventData)
+        updatedEventData.id = this.event.id
+        updatedEventData.project_id = this.event.project_id
+        updatedEventData.date = updatedEventData.start_date
+        delete updatedEventData.start_date
+        updatedEventData.pwas.data = this.eventData.pwas.data.map((item) => { return { pwa_id: item } })
+        updatedEventData.volunteers.data = this.eventData.volunteers.data.map((item) => { return { vol_id: item } })
+        updatedEventData.recurringData.id = this.event.recurring ? this.event.recurring.id : null
+        updatedEventData.recurringData.name = updatedEventData.name
+        updatedEventData.recurringData.note = updatedEventData.note
+        updatedEventData.recurringData.start_date = updatedEventData.date
+        updatedEventData.recurringData.start_time = updatedEventData.start_time
+        updatedEventData.recurringData.end_time = updatedEventData.end_time
+        updatedEventData.recurringData.is_all = eventOption
+
+        const { added: addedVols, removed: removedVols } = this.findChangesInVolPWA('vol')
+        const { added: addedPWAs, removed: removedPWAs } = this.findChangesInVolPWA('pwa')
+
+        updatedEventData.recurringData.vols_to_add = addedVols
+        updatedEventData.recurringData.vols_to_remove = removedVols
+        updatedEventData.recurringData.pwas_to_add = addedPWAs
+        updatedEventData.recurringData.pwas_to_remove = removedPWAs
+
+        updatedEventData.recurringData.pwas = this.eventData.pwas.data
+        updatedEventData.recurringData.volunteers = this.eventData.volunteers.data
+
+        console.log(JSON.stringify(updatedEventData))
+        this.$apollo.mutate({
+          mutation: UpdateEventOrRecurring,
+          variables: { updateEventData: updatedEventData },
+          update: (store, data) => {
+            setTimeout(this.$apollo.vm.$apolloProvider.defaultClient.resetStore, 2000)
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Event successfully Updated', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+    findChangesInVolPWA (type) {
+      const added = []
+      const removed = []
+      let originalArray = []
+      let currentArray = []
+      if (type === 'pwa') {
+        originalArray = this.event.pwas.map(item => item.pwa.general_info.id)
+        currentArray = this.eventData.pwas.data
+      } else if (type === 'vol') {
+        originalArray = this.event.volunteers.map(item => item.volunteer.general_info.id)
+        currentArray = this.eventData.volunteers.data
+      } else {
+        return { added, removed }
+      }
+
+      for (const person of originalArray) {
+        if (!currentArray.find(item => item === person)) {
+          removed.push(person)
+        }
+      }
+      for (const person of currentArray) {
+        if (!originalArray.find(item => item === person)) {
+          const item = {}
+          item[`${type}_id`] = person
+          added.push(item)
+        }
+      }
+      return { added, removed }
     }
   }
 }
