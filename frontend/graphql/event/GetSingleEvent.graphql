@@ -17,6 +17,7 @@ query getEvent($event_id: Int!) {
       infinite
       day
       week
+      interval
     }
     pwas {
       pwa {
