@@ -84,7 +84,7 @@ def lambda_handler(event, context):
         data = {"event": eventsOrRecurring}
 
     # Adding to all events
-    elif eventsOrRecurring['recurringData']['is_all']:
+    elif eventsOrRecurring['recurringData']['is_all'] == 2:
         recurring = eventsOrRecurring["recurringData"]
         id = recurring.pop("id", None)
         recurring.pop("is_all", None)
@@ -141,7 +141,7 @@ def lambda_handler(event, context):
         }
         
     # Adding to this and future events
-    else:
+    elif eventsOrRecurring['recurringData']['is_all'] == 1:
         recurring = eventsOrRecurring['recurringData']
         if recurring['end_date'] == "":
             recurring["end_date"] = None
@@ -172,6 +172,22 @@ def lambda_handler(event, context):
         recurring['pwas'] = {"data": recurring.pop("pwas_to_add", [])}
         recurring['volunteers'] = {"data": recurring.pop("vols_to_add", [])}
         data = {"recurring": recurring}
+    else:
+        recurr = eventsOrRecurring.pop("recurringData", None)
+        recurr_id = recurr.pop("id", None)
+        event_id = eventsOrRecurring.pop("id", None)
+        query = f"""
+        mutation updateSingleEvent($event: events_insert_input!) {{
+            delete_events_by_pk(id: {event_id}) {{
+                id
+            }}
+            insert_events_one(object: $event) {{
+                id
+            }}
+        }}
+        """
+        data = {"event": eventsOrRecurring}
+
     try:
         print(json.dumps(data))
         r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)

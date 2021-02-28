@@ -160,7 +160,7 @@ input UpdateRecurringDataInput {
   pwas_to_remove : [Int!]!
   pwas : [Int!]!
   volunteers : [Int!]!
-  is_all : Boolean!
+  is_all : Int!
 }
 
 input UpdateEventOrRecurringInput {
