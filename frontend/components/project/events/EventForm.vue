@@ -267,7 +267,7 @@ export default {
           mutation: UpdateEventOrRecurring,
           variables: { updateEventData: updatedEventData },
           update: (store, data) => {
-            setTimeout(this.$apollo.vm.$apolloProvider.defaultClient.resetStore, 2000)
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false
