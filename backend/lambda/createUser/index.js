@@ -57,14 +57,13 @@ exports.handler = function (event, context, callback) {
       {
         Name: 'custom:role', /* required */
         Value: body.input.role
+      },
+      {
+        Name: 'custom:hasura_id', /* required */
+        Value: body.input.user_id.toString()
       }
       /* more items */
     ],
-  };
-
-  var confirmParams = {
-    UserPoolId: process.env.USER_POOL_ID, /* required */
-    Username: body.input.email, /* required */
   };
 
   cognitoidentityserviceprovider.signUp(params, async function (err, data) {
@@ -125,5 +124,3 @@ exports.handler = function (event, context, callback) {
 
 
 }
-
-

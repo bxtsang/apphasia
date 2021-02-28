@@ -6,3 +6,4 @@ hasura/hasura.exe
 *.graphqlconfig
 token_drive_v3.pickle
 aphasiasg.json
+frontend/cypress/videos
