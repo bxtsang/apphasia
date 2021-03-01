@@ -166,35 +166,26 @@ export default {
     editProject () {
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
-        const _ = require('lodash')
-        const newProjectData = _.cloneDeep(this.projectData)
-        newProjectData.staffs.data = this.projectData.staffs.data.map((item) => { return { staff_id: item } })
-        newProjectData.volunteers.data = this.projectData.volunteers.data.map((item) => { return { vol_id: item } })
-        newProjectData.pwas.data = this.projectData.pwas.data.map((item) => { return { pwa_id: item } })
-        newProjectData.id = this.project.id
-        newProjectData.pwa_assigned_vols = {
-          data: this.project.pwa_assigned_vols.map((item) => {
-            return {
-              pwa_id: item.pwa.general_info.id,
-              vol_id: item.volunteer.general_info.id
-            }
-          }).filter((item) => {
-            return this.projectData.volunteers.data.includes(item.vol_id) && this.projectData.pwas.data.includes(item.pwa_id)
-          })
-        }
-        newProjectData.pwa_assigned_staffs = {
-          data: this.project.pwa_assigned_staffs.map((item) => {
-            return {
-              pwa_id: item.pwa.general_info.id,
-              staff_id: item.staff.id
-            }
-          }).filter((item) => {
-            return this.projectData.staffs.data.includes(item.staff_id) && this.projectData.pwas.data.includes(item.pwa_id)
-          })
-        }
+        const { added: pwaAdded, removed: pwaRemoved } = this.findChangesInArray('pwa')
+        const { added: volAdded, removed: volRemoved } = this.findChangesInArray('vol')
+        const { added: staffAdded, removed: staffRemoved } = this.findChangesInArray('staff')
         this.$apollo.mutate({
           mutation: UpdateProject,
-          variables: { id: this.project.id, project: newProjectData },
+          variables: {
+            id: this.project.id,
+            pwas_to_add: pwaAdded,
+            pwas_to_remove: pwaRemoved,
+            vols_to_add: volAdded,
+            vols_to_remove: volRemoved,
+            staffs_to_add: staffAdded,
+            staffs_to_remove: staffRemoved,
+            project: {
+              title: this.projectData.title,
+              description: this.projectData.description,
+              owner_id: this.projectData.owner_id,
+              voltypes: this.projectData.voltypes
+            }
+          },
           update: (store, { data: { insert_projects_one: updatedProject } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
@@ -207,6 +198,39 @@ export default {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
+    },
+    findChangesInArray (type) {
+      const added = []
+      const removed = []
+      let originalArray = []
+      let currentArray = []
+      if (type === 'pwa') {
+        originalArray = this.project.pwas.map(item => item.pwa.general_info.id)
+        currentArray = this.projectData.pwas.data
+      } else if (type === 'vol') {
+        originalArray = this.project.volunteers.map(item => item.volunteer.general_info.id)
+        currentArray = this.projectData.volunteers.data
+      } else if (type === 'staff') {
+        originalArray = this.project.staffs.map(item => item.staff.id)
+        currentArray = this.projectData.staffs.data
+      } else {
+        return { added, removed }
+      }
+
+      for (const person of originalArray) {
+        if (!currentArray.find(item => item === person)) {
+          removed.push(person)
+        }
+      }
+      for (const person of currentArray) {
+        if (!originalArray.find(item => item === person)) {
+          const item = {}
+          item[`${type}_id`] = person
+          item.project_id = this.project.id
+          added.push(item)
+        }
+      }
+      return { added, removed }
     },
     createGDriveFolder (folderName) {
       const postHeader = {

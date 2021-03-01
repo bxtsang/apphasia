@@ -5,11 +5,19 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
   delete_project_staffs(where: {_and: [{project_id: {_eq: $id}, staff_id: {_in: $staffs_to_remove}}]}) {
     affected_rows
   }
+
+  delete_project_pwa_staffs(where: {_and: [{project_id: {_eq: $id}, staff_id: {_in: $staffs_to_remove}}]}) {
+    affected_rows
+  }
   
   insert_project_vol(objects: $vols_to_add) {
     affected_rows
   }
   delete_project_vol(where: {_and: [{project_id: {_eq: $id}, vol_id: {_in: $vols_to_remove}}]}) {
+    affected_rows
+  }
+
+  delete_project_pwa_vols(where: {_and: [{project_id: {_eq: $id}, vol_id: {_in: $vols_to_remove}}]}) {
     affected_rows
   }
 
