@@ -13,7 +13,8 @@ mutation (
     $profession: String,
     $role: roles_enum!,
     $supervisors: staff_supervisors_arr_rel_insert_input,
-    $ws_place: String
+    $ws_place: String,
+  	$projects_in: project_staffs_arr_rel_insert_input
 ){
     insert_staffs_one(object: {
         address: $address,#string
@@ -28,7 +29,8 @@ mutation (
         name: $name,#string
         nickname: $nickname,#string
         profession: $profession,#string
-        # projects_in: {
+        projects_in: $projects_in,
+      	# {
         #     data: [ #the whole list can be a variable with each project object inside, can be empty too
         #         {
         #         project_id: $project_id #int
