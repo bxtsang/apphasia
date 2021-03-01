@@ -137,10 +137,10 @@
                 label="Volunteers Involved"
                 chips
                 multiple
-                :items="data.events_by_pk.volunteers"
+                :items="data.events_by_pk.recurring ? data.events_by_pk.recurring.volunteers: data.events_by_pk.volunteers"
                 item-text="volunteer.general_info.name"
                 item-value="volunteer.general_info.id"
-                :value="data.events_by_pk.volunteers.map(item => item.volunteer.general_info.id)"
+                :value="data.events_by_pk.recurring ? data.events_by_pk.recurring.volunteers.map(item => item.volunteer.general_info.id) : data.events_by_pk.volunteers.map(item => item.volunteer.general_info.id)"
                 readonly
               />
             </v-col>
@@ -151,17 +151,16 @@
                 label="PWAs Involved"
                 chips
                 multiple
-                :items="data.events_by_pk.pwas"
+                :items="data.events_by_pk.recurring ? data.events_by_pk.recurring.pwas: data.events_by_pk.pwas"
                 item-text="pwa.general_info.name"
                 item-value="pwa.general_info.id"
-                :value="data.events_by_pk.pwas.map(item => item.pwa.general_info.id)"
+                :value="data.events_by_pk.recurring ? data.events_by_pk.recurring.pwas.map(item => item.pwa.general_info.id) : data.events_by_pk.pwas.map(item => item.pwa.general_info.id)"
                 readonly
               />
             </v-col>
           </v-row>
         </v-container>
       </div>
-      <div v-else> Something Change</div>
     </template>
   </ApolloQuery>
 </template>
