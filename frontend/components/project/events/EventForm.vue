@@ -177,8 +177,12 @@ export default {
           week: this.event && this.event.recurring ? this.event.recurring.week : -1,
           day: this.event && this.event.recurring ? this.event.recurring.day : -1
         },
-        volunteers: { data: this.event ? this.event.volunteers.map(item => item.volunteer.general_info.id) : [] },
-        pwas: { data: this.event ? this.event.pwas.map(item => item.pwa.general_info.id) : [] }
+        volunteers: {
+          data: this.event ? (this.event.recurring ? this.event.recurring.volunteers.map(item => item.volunteer.general_info.id) : this.event.volunteers.map(item => item.volunteer.general_info.id)) : []
+        },
+        pwas: {
+          data: this.event ? (this.event.recurring ? this.event.recurring.pwas.map(item => item.pwa.general_info.id) : this.event.pwas.map(item => item.pwa.general_info.id)) : []
+        }
       }
     }
   },
@@ -251,14 +255,6 @@ export default {
         updatedEventData.recurringData.end_time = updatedEventData.end_time
         updatedEventData.recurringData.is_all = eventOption
 
-        const { added: addedVols, removed: removedVols } = this.findChangesInVolPWA('vol')
-        const { added: addedPWAs, removed: removedPWAs } = this.findChangesInVolPWA('pwa')
-
-        updatedEventData.recurringData.vols_to_add = addedVols
-        updatedEventData.recurringData.vols_to_remove = removedVols
-        updatedEventData.recurringData.pwas_to_add = addedPWAs
-        updatedEventData.recurringData.pwas_to_remove = removedPWAs
-
         updatedEventData.recurringData.pwas = this.eventData.pwas.data
         updatedEventData.recurringData.volunteers = this.eventData.volunteers.data
 
@@ -267,7 +263,7 @@ export default {
           mutation: UpdateEventOrRecurring,
           variables: { updateEventData: updatedEventData },
           update: (store, data) => {
-            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+            setTimeout(this.$apollo.vm.$apolloProvider.defaultClient.resetStore, 2000)
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -278,36 +274,36 @@ export default {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
-    },
-    findChangesInVolPWA (type) {
-      const added = []
-      const removed = []
-      let originalArray = []
-      let currentArray = []
-      if (type === 'pwa') {
-        originalArray = this.event.pwas.map(item => item.pwa.general_info.id)
-        currentArray = this.eventData.pwas.data
-      } else if (type === 'vol') {
-        originalArray = this.event.volunteers.map(item => item.volunteer.general_info.id)
-        currentArray = this.eventData.volunteers.data
-      } else {
-        return { added, removed }
-      }
-
-      for (const person of originalArray) {
-        if (!currentArray.find(item => item === person)) {
-          removed.push(person)
-        }
-      }
-      for (const person of currentArray) {
-        if (!originalArray.find(item => item === person)) {
-          const item = {}
-          item[`${type}_id`] = person
-          added.push(item)
-        }
-      }
-      return { added, removed }
     }
+    // findChangesInVolPWA (type) {
+    //   const added = []
+    //   const removed = []
+    //   let originalArray = []
+    //   let currentArray = []
+    //   if (type === 'pwa') {
+    //     originalArray = this.event.pwas.map(item => item.pwa.general_info.id)
+    //     currentArray = this.eventData.pwas.data
+    //   } else if (type === 'vol') {
+    //     originalArray = this.event.volunteers.map(item => item.volunteer.general_info.id)
+    //     currentArray = this.eventData.volunteers.data
+    //   } else {
+    //     return { added, removed }
+    //   }
+
+    //   for (const person of originalArray) {
+    //     if (!currentArray.find(item => item === person)) {
+    //       removed.push(person)
+    //     }
+    //   }
+    //   for (const person of currentArray) {
+    //     if (!originalArray.find(item => item === person)) {
+    //       const item = {}
+    //       item[`${type}_id`] = person
+    //       added.push(item)
+    //     }
+    //   }
+    //   return { added, removed }
+    // }
   }
 }
 </script>
