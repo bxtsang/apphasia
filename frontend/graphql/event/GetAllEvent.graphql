@@ -19,6 +19,24 @@ query GetAllEvents($project_id: Int!) {
       week
       interval
     }
+    recurring {
+      pwas {
+        pwa {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+      volunteers {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+    }
     pwas {
       pwa {
         general_info {
