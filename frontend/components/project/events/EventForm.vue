@@ -269,41 +269,13 @@ export default {
           this.isSubmitting = false
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['Event successfully Updated', 'success'])
+          this.$router.push(`/projects?id=${this.event.project_id}&tab=2`)
         }).catch((error) => {
           this.isSubmitting = false
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
       }
     }
-    // findChangesInVolPWA (type) {
-    //   const added = []
-    //   const removed = []
-    //   let originalArray = []
-    //   let currentArray = []
-    //   if (type === 'pwa') {
-    //     originalArray = this.event.pwas.map(item => item.pwa.general_info.id)
-    //     currentArray = this.eventData.pwas.data
-    //   } else if (type === 'vol') {
-    //     originalArray = this.event.volunteers.map(item => item.volunteer.general_info.id)
-    //     currentArray = this.eventData.volunteers.data
-    //   } else {
-    //     return { added, removed }
-    //   }
-
-    //   for (const person of originalArray) {
-    //     if (!currentArray.find(item => item === person)) {
-    //       removed.push(person)
-    //     }
-    //   }
-    //   for (const person of currentArray) {
-    //     if (!originalArray.find(item => item === person)) {
-    //       const item = {}
-    //       item[`${type}_id`] = person
-    //       added.push(item)
-    //     }
-    //   }
-    //   return { added, removed }
-    // }
   }
 }
 </script>
