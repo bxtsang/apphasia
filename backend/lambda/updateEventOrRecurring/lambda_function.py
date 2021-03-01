@@ -27,10 +27,6 @@ def lambda_handler(event, context):
         r.pop("note", None)
         r.pop("start_time", None)
         r.pop("end_time", None)
-        r.pop("vols_to_add", None)
-        r.pop("vols_to_remove", None)
-        r.pop("pwas_to_add", None)
-        r.pop("pwas_to_remove", None)
         r.pop("pwas", None)
         r.pop("volunteers", None)
         r.pop("is_all", None)
@@ -84,64 +80,60 @@ def lambda_handler(event, context):
         data = {"event": eventsOrRecurring}
 
     # Adding to all events
-    elif eventsOrRecurring['recurringData']['is_all']:
+    elif eventsOrRecurring['recurringData']['is_all'] == 2:
         recurring = eventsOrRecurring["recurringData"]
         id = recurring.pop("id", None)
         recurring.pop("is_all", None)
-        recurring.pop("pwas", None)
-        recurring.pop("volunteers", None)
+        pwas = []
+        vols = []
+        proj_id = eventsOrRecurring['project_id']
         if recurring['end_date'] == "":
             recurring["end_date"] = None
-        for ch in recurring['pwas_to_add']:
-            ch['project_id'] = eventsOrRecurring['project_id']
-            ch['recurring_id'] = id
-        for ch in recurring['vols_to_add']:
-            ch['project_id'] = eventsOrRecurring['project_id']
-            ch['recurring_id'] = id
+
+        for num in recurring['pwas']:
+            pwa = {"pwa_id": num, "project_id": proj_id, "recurring_id": id}
+            pwas.append(pwa)
+        recurring['pwas'] = pwas
+        for ch in recurring['volunteers']:
+            vol = {"vol_id": ch, "project_id": proj_id, "recurring_id": id}
+            vols.append(vol)
+        recurring['volunteers'] = vols
+
         query = f"""
-        mutation UpdateAllEvents($id: Int!, $recurring: recurring_set_input!, $pwas_to_add: [recurring_pwas_insert_input!]!, $pwas_to_remove: [Int!], $vols_to_add: [recurring_vols_insert_input!]!, $vols_to_remove: [Int!]) {{
-            update_recurring_by_pk(pk_columns: {{id: $id}}, _set: $recurring) {{
-                id
-            }}
+                mutation UpdateAllEvents($id: Int!, $recurring: recurring_set_input!, $pwas: [recurring_pwas_insert_input!]!, $vols: [recurring_vols_insert_input!]!) {{
+                    update_recurring_by_pk(pk_columns: {{id: $id}}, _set: $recurring) {{
+                        id
+                    }}
 
-            insert_recurring_pwas(objects: $pwas_to_add) {{
-                affected_rows
-            }}
-            
-            delete_recurring_pwas(where: {{
-                _and: [{{
-                pwa_id: {{_in: $pwas_to_remove}},
-                recurring_id: {{_eq: $id}}
-                }}]
-            }}) {{
-                affected_rows
-            }}
+                    delete_recurring_pwas(where: {{
+                        _and: [{{recurring_id: {{_eq: $id}}}}]
+                    }}) {{
+                        affected_rows
+                    }}
 
-            insert_recurring_vols(objects: $vols_to_add) {{
-                affected_rows
-            }}
-            
-            delete_recurring_vols(where: {{
-                _and: [{{
-                vol_id: {{_in: $vols_to_remove}},
-                recurring_id: {{_eq: $id}}
-                }}]
-            }}) {{
-                affected_rows
-            }}
-        }}
+                    insert_recurring_pwas(objects: $pwas) {{
+                        affected_rows
+                    }}
+
+                    delete_recurring_vols(where: {{
+                        _and: [{{recurring_id: {{_eq: $id}}}}]
+                    }}) {{
+                        affected_rows
+                    }}
+
+                    insert_recurring_vols(objects: $vols) {{
+                        affected_rows
+                    }}
+                }}
               """
         data = {
             "id": id,
-            "pwas_to_add": recurring.pop("pwas_to_add", []),
-            "pwas_to_remove": recurring.pop("pwas_to_remove", []),
-            "vols_to_add": recurring.pop("vols_to_add", []),
-            "vols_to_remove": recurring.pop("vols_to_remove", []),
+            "pwas": recurring.pop("pwas", []),
+            "vols": recurring.pop("volunteers", []),
             "recurring": recurring
         }
-        
     # Adding to this and future events
-    else:
+    elif eventsOrRecurring['recurringData']['is_all'] == 1:
         recurring = eventsOrRecurring['recurringData']
         if recurring['end_date'] == "":
             recurring["end_date"] = None
@@ -150,14 +142,14 @@ def lambda_handler(event, context):
         event_date = eventsOrRecurring['date']
         recurring.pop("is_all", None)
         recurring['project_id'] = eventsOrRecurring['project_id']
-        for num in recurring['volunteers']:
-            if num not in recurring['vols_to_remove']:
-                recurring['vols_to_add'].append({"vol_id": num})
-        for num in recurring['pwas']:
-            if num not in recurring['pwas_to_remove']:
-                recurring['pwas_to_add'].append({"pwa_id": num})
-        recurring.pop("pwas_to_remove", None)
-        recurring.pop("vols_to_remove", None)
+
+        for i in range(len(recurring['volunteers'])):
+            vol = recurring['volunteers'][i]
+            recurring['volunteers'][i] = {"vol_id": vol}
+        for i in range(len(recurring['pwas'])):
+            pwa = recurring['pwas'][i]
+            recurring['pwas'][i] = {"pwa_id": pwa}
+
         query = f"""
         mutation UpdateThisAndFutureEvent($recurring: recurring_insert_input!) {{
             update_recurring_by_pk(pk_columns: 	{{id: {recurring_id}}}, _set: {{end_date: "{event_date}"}}) {{
@@ -169,9 +161,26 @@ def lambda_handler(event, context):
             }}
         }}
         """
-        recurring['pwas'] = {"data": recurring.pop("pwas_to_add", [])}
-        recurring['volunteers'] = {"data": recurring.pop("vols_to_add", [])}
+        recurring['pwas'] = {"data": recurring["pwas"]}
+        recurring['volunteers'] = {"data": recurring["volunteers"]}
         data = {"recurring": recurring}
+    # Adds to a single event with recurring
+    else:
+        recurr = eventsOrRecurring.pop("recurringData", None)
+        recurr_id = recurr.pop("id", None)
+        event_id = eventsOrRecurring.pop("id", None)
+        query = f"""
+        mutation updateSingleEvent($event: events_insert_input!) {{
+            delete_events_by_pk(id: {event_id}) {{
+                id
+            }}
+            insert_events_one(object: $event) {{
+                id
+            }}
+        }}
+        """
+        data = {"event": eventsOrRecurring}
+
     try:
         print(json.dumps(data))
         r = requests.post(hasura_url, json={'query': query, "variables": data}, headers=headers)

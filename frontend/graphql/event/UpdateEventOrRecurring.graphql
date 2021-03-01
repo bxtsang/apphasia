@@ -4,6 +4,7 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
     message
   }
 }
+
 # Single To Recurring: id in recurringData, recurringData.id = null and recurringData.frequency = "None"
 # Uses event data, pwas, vols and recurring specific fields from recurringData
 #
@@ -13,13 +14,17 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 # Updating Single Event: 'frequency' in recurringData = 'None'
 # Repopulates event data based on fields in event
 #
-# Updating All Events: recurringData.'is_all' is True
-# Updates the specific values given within the recurringData
-# Adds/removes the vols and pwas based on the 4 fields within recurringData
+# Update Single Event with recurring: recurringData.'is_all' == 0
+# Repopulates event data based on fields in event
 #
-# Update This & Future Events: recurringData.'is_all' is False
+# Update This & Future Events: recurringData.'is_all' == 1
 # Sets end_date of recurrence to event.date and repopulates this & future events
 # Adds vols and pwas based on the 4 fields within recurringData + pwa and volunteers fields
+#
+# Updating All Events: recurringData.'is_all' == 2
+# Updates the specific values given within the recurringData
+# Removes the current recurr_vols & recurr_pwas and repopulates them
+#
 # {
 #   "updateEventData": {
 #     "id": 1,
@@ -41,10 +46,6 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 #       "frequency": "Weekly",
 #       "start_date": "2021-01-14",
 #       "end_date": "",
-#       "vols_to_add": [{"vol_id": 4}],
-#       "vols_to_remove": [1,2,4],
-#       "pwas_to_add": [{"pwa_id": 4}],
-#       "pwas_to_remove": [1,2,4],
 #       "pwas": [3],
 #       "volunteers": [6],
 #       "is_all": true
