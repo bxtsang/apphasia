@@ -23,7 +23,7 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 #
 # Updating All Events: recurringData.'is_all' == 2
 # Updates the specific values given within the recurringData
-# Adds/removes the vols and pwas based on the 4 fields within recurringData
+# Removes the current recurr_vols & recurr_pwas and repopulates them
 #
 # {
 #   "updateEventData": {
@@ -46,10 +46,6 @@ mutation UpdateEventOrRecurring ($updateEventData: UpdateEventOrRecurringInput!)
 #       "frequency": "Weekly",
 #       "start_date": "2021-01-14",
 #       "end_date": "",
-#       "vols_to_add": [{"vol_id": 4}],
-#       "vols_to_remove": [1,2,4],
-#       "pwas_to_add": [{"pwa_id": 4}],
-#       "pwas_to_remove": [1,2,4],
 #       "pwas": [3],
 #       "volunteers": [6],
 #       "is_all": true
