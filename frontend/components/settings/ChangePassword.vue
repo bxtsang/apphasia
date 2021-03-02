@@ -84,7 +84,7 @@ export default {
           .catch((error) => {
             console.log('error: ' + error.response.data.error)
             this.$store.commit('notification/newNotification', [
-              error.response.data.message,
+              error.response.data.message.charAt(0).toUpperCase() + error.response.data.message.slice(1),
               'error'
             ])
           })
