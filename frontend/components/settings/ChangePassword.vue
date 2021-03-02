@@ -11,7 +11,7 @@
     <v-text-field
       v-model="password.new"
       :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="passwordRules"
+      :rules="newPasswordRules"
       :type="showNewPassword ? 'text' : 'password'"
       label="New Password"
       @click:append="showNewPassword = !showNewPassword"
@@ -33,7 +33,15 @@ export default {
         current: '',
         new: ''
       },
-      passwordRules: [v => !!v || 'Field Required']
+      passwordRules: [v => !!v || 'Field Required'],
+      newPasswordRules: [
+        v => !!v || 'Field Required',
+        v => v.length > 8 || 'Password should be longer than 8 characters',
+        v => /(?=.*[A-Z])/.test(v) || 'Password should have at least one uppercase letter',
+        v => /(?=.*[a-z])/.test(v) || 'Password should have at least one lowercase letter',
+        v => /(?=.*\d)/.test(v) || 'Password should have at least one digit',
+        v => /(?=.*[-+_!@#$%^&*.,?])/.test(v) || 'Password should have at least one special character'
+      ]
     }
   },
   methods: {
