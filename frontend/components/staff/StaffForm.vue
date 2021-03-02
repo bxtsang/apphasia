@@ -211,7 +211,7 @@ export default {
         profession: this.staff ? this.staff.profession : '',
         is_speech_therapist: this.staff ? this.staff.is_speech_therapist : false,
         date_joined: this.staff ? this.staff.date_joined : '',
-        projects_in: [],
+        projects_in: this.staff ? this.staff.projects_in.map(item => item.project.id) : [],
         languages: this.staff ? this.staff.languages.map(item => item.language) : [],
         supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor.id) : [],
         is_active: this.staff ? this.staff.is_active : true
