@@ -1,16 +1,12 @@
 <template>
   <v-card class="pa-8">
+    <span v-if="project" class="section-title">Edit Project</span>
+    <span v-else class="section-title">Add Project</span>
     <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col class="py-0">
-            <span v-if="project" class="section-title">Edit Project</span>
-            <span v-else class="section-title">Add Project</span>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col class="py-0">
-            <v-row class="mt-3">
+            <v-row>
               <v-col cols="12" class="py-0">
                 <span class="font-weight-bold">Project Details</span>
               </v-col>
@@ -25,7 +21,7 @@
                 <ProjectNotesInput v-model="projectData.description"/>
               </v-col>
             </v-row>
-            <v-row class="mt-3">
+            <v-row class="mt-8">
               <v-col cols="12" class="py-0">
                 <span class="font-weight-bold">People Involved</span>
               </v-col>
