@@ -178,9 +178,18 @@ export default {
           this.$emit('deleteSuccess')
           const displayResourceName = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
           this.$store.commit('notification/newNotification', [`${displayResourceName.slice(0, -1)} successfully deleted`, 'success'])
+          this.$router.push(this.redirectLink())
         }).catch((error) => {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
         })
+      }
+    },
+    redirectLink () {
+      switch (this.resourceType) {
+        case 'events':
+          return `/projects?id=${this.resource.project_id}&tab=2`
+        default:
+          return `/${this.resourceType}`
       }
     },
     updateCache (store) {
