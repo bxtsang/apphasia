@@ -64,6 +64,12 @@ export default {
         })
       }
     }
+  },
+  mounted () {
+    // Set append icon to be non selectable via tab
+    for (const button of document.querySelectorAll('[aria-label="append icon"]')) {
+      button.setAttribute('tabindex', '-1')
+    }
   }
 }
 </script>
