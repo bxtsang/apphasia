@@ -30,6 +30,7 @@ query GetAllStaff($isCoreTeam: Boolean!) {
     projects_in {
       project {
         title
+        id
       }
     }
   }
