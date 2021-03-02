@@ -2,7 +2,7 @@
   <v-switch
     v-model="data"
     :rules="validation"
-    label="Speech Therapist?"
+    :label="message"
     :required="required"
     :readonly="readonly"
   />
@@ -32,6 +32,15 @@ export default {
     return {
       data: this.value,
       validation: []
+    }
+  },
+
+  computed: {
+    message () {
+      const label = 'Speech Therapist: '
+      if (this.data) {
+        return label + 'Yes'
+      } return label + 'No'
     }
   },
 
