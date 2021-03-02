@@ -259,7 +259,7 @@ export default {
               mutation: CreateCognitoUser,
               variables: {
                 email: newStaff.email,
-                password: 'aphasiapassword',
+                password: 'Password1!',
                 role: newStaff.role_description.role,
                 user_id: newStaff.id
               },
