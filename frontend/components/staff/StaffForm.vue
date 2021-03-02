@@ -143,16 +143,13 @@
         </v-row>
       </v-container>
     </v-form>
-    {{ staffData.projects_in }}
   </v-card>
 </template>
 <script>
-import GetAllStaff from './../../graphql/staff/GetAllStaff.graphql'
 import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
-import GetSingleStaff from './../../graphql/staff/GetSingleStaff.graphql'
 
 import RoleInput from './../input/RoleInput'
 import NameInput from './../input/NameInput'
@@ -253,9 +250,7 @@ export default {
             // projects_in: this.staffData.projects_in,
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
-            const data = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
-            data.staffs.push(newStaff)
-            store.writeQuery({ query: GetAllStaff, data, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
             this.$apollo.mutate({
               mutation: CreateCognitoUser,
               variables: {
@@ -332,17 +327,7 @@ export default {
             projects_to_remove: projectChanges.removed
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
-            store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id, isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
-            try {
-              const dataAll = store.readQuery({ query: GetAllStaff, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
-              dataAll.staffs = dataAll.staffs.filter(item => item.id !== this.staff.id)
-              dataAll.staffs.push(updatedStaff)
-              store.writeQuery({ query: GetAllStaff, dataAll, variables: { isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
-            } catch (error) {
-              // GetAllStaff Query not in store
-            }
-            console.log('Is the error here??')
-            // Call UpdateCognitoUser action
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
             if (this.staffData.role !== this.staff.role_description.role) {
               this.$apollo.mutate({
                 mutation: UpdateCognitoUser,
