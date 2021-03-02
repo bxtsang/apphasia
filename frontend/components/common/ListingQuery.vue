@@ -191,10 +191,7 @@ export default {
       return header
     },
     editPermission () {
-      if (this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])) {
-        return true
-      }
-      return false
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
     },
     computedItems () {
       if (this.resourceType === 'staffs') {
