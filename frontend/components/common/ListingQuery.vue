@@ -2,6 +2,7 @@
   <ApolloQuery
     :query="query"
     :variables="queryVariables"
+    @result="initItems"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -20,7 +21,7 @@
       <div v-else-if="data">
         <v-data-table
           :headers="TABLE_HEADERS[resourceType]"
-          :items="filterItems(data[resourceType])"
+          :items="computedItems"
           :search="search"
           item-key="id"
           class="elevation-1"
@@ -50,7 +51,7 @@
                       :key="role.value"
                       @click="staffRoleFilter = role.value"
                     >
-                      {{ role.label}}
+                      {{ role.label }}
                     </v-tab>
                   </v-tabs>
                 </v-col>
@@ -97,7 +98,7 @@
           </template>
 
           <template v-slot:[`item.nok`]="{ item }">
-            {{ item.nok[0] ? item.nok[0].name : ''  }}
+            {{ item.nok[0] ? item.nok[0].name : '' }}
           </template>
 
           <template v-slot:[`item.contact_status`]="{ item }">
@@ -106,7 +107,7 @@
 
           <!-- Project Specific Columns -->
           <template v-slot:[`item.staffs`]="{ item }">
-            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ')  }}
+            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ') }}
           </template>
 
           <template v-slot:[`item.is_recurring`]="{ item }">
@@ -164,7 +165,9 @@ export default {
       EDIT_RESOURCE_PERMISSIONS,
       staffRoleFilter: 'core_team',
       search: '',
-      staffArchive: false
+      staffArchive: false,
+      items: [],
+      hiddenItems: []
     }
   },
 
@@ -192,16 +195,19 @@ export default {
         return true
       }
       return false
+    },
+    computedItems () {
+      if (this.resourceType === 'staffs') {
+        if (this.staffArchive) {
+          return this.items.filter(item => item.role_description.role === this.staffRoleFilter && !item.is_active)
+        } return this.items.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
+      } return this.items
     }
   },
 
   methods: {
-    filterItems (data) {
-      if (this.resourceType === 'staffs') {
-        return data.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
-      } else {
-        return data
-      }
+    initItems (result) {
+      this.items = result.data[this.resourceType]
     }
   }
 }
