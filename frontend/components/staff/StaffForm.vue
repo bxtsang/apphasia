@@ -306,6 +306,7 @@ export default {
         this.isSubmitting = true
         const languageChanges = this.findChangesInLanguages()
         const supervisorChanges = this.findChangesInSupervisor()
+        const projectChanges = this.findChangesInProjects()
         this.$apollo.mutate({
           mutation: UpdateStaff,
           variables: {
@@ -325,9 +326,9 @@ export default {
             supervisors_to_add: supervisorChanges.added,
             supervisors_to_remove: supervisorChanges.removed,
             languages_to_add: languageChanges.added,
-            languages_to_remove: languageChanges.removed
-            // projects_to_add: ,
-            // projects_to_remove:
+            languages_to_remove: languageChanges.removed,
+            projects_to_add: projectChanges.added,
+            projects_to_remove: projectChanges.removed
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
             store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.staff.id, isCoreTeam: this.$auth.user['custom:role'] === 'core_team' } })
@@ -399,6 +400,23 @@ export default {
       for (const supervisor of currentArray) {
         if (!originalArray.find(item => item === supervisor)) {
           added.push({ supervisor_id: supervisor, staff_id: this.staff.id })
+        }
+      }
+      return { added, removed }
+    },
+    findChangesInProjects () {
+      const originalArray = this.staff.projects_in.map(item => item.project.id)
+      const currentArray = this.staffData.projects_in
+      const added = []
+      const removed = []
+      for (const project of originalArray) {
+        if (!currentArray.find(item => item === project)) {
+          removed.push(project)
+        }
+      }
+      for (const project of originalArray) {
+        if (!originalArray.find(item => item === project)) {
+          added.push({ project_id: project, staff_id: this.staff.id })
         }
       }
       return { added, removed }
