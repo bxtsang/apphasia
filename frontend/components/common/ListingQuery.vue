@@ -31,6 +31,13 @@
                 <v-col class="d-flex align-center">
                   <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
                 </v-col>
+                <v-col v-if="resourceType === 'staffs'" class="d-flex justify-end align-center">
+                  <v-switch
+                    v-model="staffArchive"
+                    class="pr-2"
+                    label="See Archived"
+                  />
+                </v-col>
                 <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
                   <AddResourceModal :resourceType="resourceType" />
                 </v-col>
@@ -156,7 +163,8 @@ export default {
       ROLE_OPTIONS,
       EDIT_RESOURCE_PERMISSIONS,
       staffRoleFilter: 'core_team',
-      search: ''
+      search: '',
+      staffArchive: false
     }
   },
 
