@@ -94,7 +94,7 @@ export const TABLE_HEADERS = {
     { text: 'Date Joined', value: 'date_joined' },
     { text: 'Profession', value: 'profession' },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
-    { text: 'Projects Involved', value: '' },
+    { text: 'Projects Involved', value: '', sortable: false },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
@@ -102,17 +102,17 @@ export const TABLE_HEADERS = {
     { text: 'Gender', value: 'general_info.gender' },
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Programmes Interested  ', value: 'project_vols' },
+    { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
     { text: 'Speech Therapist?', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
-    { text: 'Communication Difficulties', value: 'comm_diff' },
-    { text: 'Programmes Involved In', value: 'projects' },
-    { text: 'NOK', value: 'nok' },
-    { text: 'Languages understand/speak', value: 'languages' },
+    { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
+    { text: 'Programmes Involved In', value: 'projects', sortable: false },
+    { text: 'NOK', value: 'nok', sortable: false },
+    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
@@ -120,7 +120,7 @@ export const TABLE_HEADERS = {
     { text: 'Project Name', value: 'title' },
     { text: 'Upcoming DateTime', value: 'upcoming_date' },
     { text: 'Is Recurring?', value: 'is_recurring' },
-    { text: 'Staff Involved', value: 'staffs' },
+    { text: 'Staff Involved', value: 'staffs', sortable: false },
     { text: 'Notes', value: 'description' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
