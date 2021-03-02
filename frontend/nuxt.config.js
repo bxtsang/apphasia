@@ -78,7 +78,8 @@ export default {
         refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
         fetchUserCallback: false // Can be used to put more information into the user object
       }
-    }
+    },
+    cookie: false
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
