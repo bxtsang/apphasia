@@ -143,6 +143,7 @@
         </v-row>
       </v-container>
     </v-form>
+    {{ staffData.projects_in }}
   </v-card>
 </template>
 <script>
@@ -414,7 +415,7 @@ export default {
           removed.push(project)
         }
       }
-      for (const project of originalArray) {
+      for (const project of currentArray) {
         if (!originalArray.find(item => item === project)) {
           added.push({ project_id: project, staff_id: this.staff.id })
         }
