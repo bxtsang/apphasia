@@ -129,8 +129,8 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-select
-                      :value="data.staffs[0].projects_in"
-                      :items="data.staffs[0].projects_in"
+                      :value="data.staffs[0].projects_in.map(item => item.project.title)"
+                      :items="data.staffs[0].projects_in.map(item => item.project.title)"
                       label="Projects Involved"
                       multiple
                       readonly
