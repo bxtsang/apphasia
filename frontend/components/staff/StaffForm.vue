@@ -362,6 +362,7 @@ export default {
           this.isSubmitting = false
           this.$emit('closeForm')
           this.$store.commit('notification/newNotification', ['User successfully updated', 'success'])
+          if (archive) { this.$router.push('/staffs') }
         }).catch((error) => {
           this.isSubmitting = false
           console.log(error.message)
