@@ -108,6 +108,13 @@ export default {
       ]
     }
   },
+  created () {
+    this.$nuxt.$on('open-menu', (id) => {
+      if (id !== this.resource) {
+        this.showMenu = false
+      }
+    })
+  },
   mounted () {
     if (this.resource.webContentLink) {
       this.RIGHT_CLICK_OPTIONS.push({
@@ -126,6 +133,7 @@ export default {
       this.$nextTick(() => {
         this.showMenu = true
       })
+      this.$nuxt.$emit('open-menu', this.resource.id)
     },
     downloadResource () {
       window.location.href = this.resource.webContentLink

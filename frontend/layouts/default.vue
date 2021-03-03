@@ -6,8 +6,9 @@
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">
-              Hello, {{ fullname || 'User' }}
+            <v-list-item-title class="title d-flex flex-column">
+              <span v-if="fullname">Hello, {{ fullname }}</span>
+              <v-progress-circular v-else indeterminate color="primary" class="align-self-center"/>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>

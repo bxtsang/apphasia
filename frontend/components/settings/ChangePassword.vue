@@ -16,7 +16,7 @@
     <v-text-field
       v-model="password.new"
       :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
-      :rules="passwordRules"
+      :rules="newPasswordRules"
       :type="showNewPassword ? 'text' : 'password'"
       label="New Password"
       @click:append="showNewPassword = !showNewPassword"
@@ -43,13 +43,14 @@ export default {
         current: '',
         new: ''
       },
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 8) || 'Password must have 8 or more characters',
-        v => /(?=.*[A-Z])/.test(v) || 'Must have one uppercase character',
-        v => /(?=.*[a-z])/.test(v) || 'Must have one lower character',
-        v => /(?=.*\d)/.test(v) || 'Must have one number',
-        v => /([!@$%])/.test(v) || 'Must have one special character [!@#$%]'
+      passwordRules: [v => !!v || 'Field Required'],
+      newPasswordRules: [
+        v => !!v || 'Field Required',
+        v => v.length > 8 || 'Password should be longer than 8 characters',
+        v => /(?=.*[A-Z])/.test(v) || 'Password should have at least one uppercase letter',
+        v => /(?=.*[a-z])/.test(v) || 'Password should have at least one lowercase letter',
+        v => /(?=.*\d)/.test(v) || 'Password should have at least one digit',
+        v => /(?=.*[-+_!@#$%^&*.,?])/.test(v) || 'Password should have at least one special character'
       ]
     }
   },
@@ -83,7 +84,7 @@ export default {
           .catch((error) => {
             console.log('error: ' + error.response.data.error)
             this.$store.commit('notification/newNotification', [
-              error.response.data.message,
+              error.response.data.message.charAt(0).toUpperCase() + error.response.data.message.slice(1),
               'error'
             ])
           })
@@ -92,6 +93,12 @@ export default {
             this.$refs.passwordform.reset()
           })
       }
+    }
+  },
+  mounted () {
+    // Set append icon to be non selectable via tab
+    for (const button of document.querySelectorAll('[aria-label="append icon"]')) {
+      button.setAttribute('tabindex', '-1')
     }
   }
 }

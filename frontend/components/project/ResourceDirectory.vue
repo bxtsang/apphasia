@@ -78,7 +78,7 @@
           foldersInCurrentDirectory.length == 0
       "
     >
-      <Empty />
+      <Empty :folder-exist="folderExist" />
     </v-row>
     <v-row v-else>
       <v-container class="pa-0" fluid>
@@ -101,7 +101,7 @@
         <v-row v-if="filesInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
-            <v-container class="d-flex flex-wrap pa-0" fluid>
+            <v-container class="d-flex flex-wrap px-2" fluid>
               <Resource
                 v-for="file in filesInCurrentDirectory"
                 :key="file.id"
@@ -156,6 +156,7 @@ export default {
       projectId: this.$route.query.id,
       loading: false,
       addFolderOverlay: false,
+      folderExist: false,
       BUTTON_OPTIONS: [
         {
           title: 'Add Folder',
@@ -197,6 +198,7 @@ export default {
     script.src = 'https://apis.google.com/js/api.js'
     document.body.appendChild(script)
     this.getProjectFolder()
+    console.log(this.folderExist)
   },
   methods: {
     handleClientLoad () {
@@ -366,10 +368,15 @@ export default {
           const projFolder = rootFolder.data.files.find((obj) => {
             return obj.name === projectTitle
           })
-          this.parent = projFolder
-          this.currentFolder = projFolder
-          this.paths.push({ id: projFolder.id, text: projFolder.name })
-          this.getChildrenFolder(projFolder.id)
+          if (projFolder !== undefined && projFolder !== null) {
+            this.parent = projFolder
+            this.currentFolder = projFolder
+            this.paths.push({ id: projFolder.id, text: projFolder.name })
+            this.getChildrenFolder(projFolder.id)
+            this.folderExist = true
+          } else {
+            this.folderExist = false
+          }
         } else {
           console.log('error')
           this.error()
@@ -378,6 +385,7 @@ export default {
         this.error()
         console.log(e)
       }
+      console.log('real: ' + this.folderExist)
       this.loading = false
     },
     async getChildrenFolder (folderId) {

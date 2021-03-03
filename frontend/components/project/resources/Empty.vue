@@ -4,11 +4,29 @@
       <v-icon x-large color="#D4D4D4">
         mdi-folder-upload
       </v-icon>
-      <span class="title">Drop files here</span>
-      <span class="subtitle">or use the "New" Button</span>
+      <div v-if="folderExist" class="d-flex flex-column text-center">
+        <span class="title">Folder empty</span>
+        <span class="subtitle">Use the "New" Button</span>
+      </div>
+      <div v-else class="text-center">
+        <span class="subtitle">Folder does not exist on Google Drive</span>
+      </div>
     </div>
   </v-col>
 </template>
+<script>
+export default {
+  props: {
+    folderExist: {
+      type: Boolean,
+      default: false
+    }
+  },
+  mounted () {
+    console.log('inside resource: ' + this.folderExist)
+  }
+}
+</script>
 <style scoped>
 .circle {
   height: 250px;
