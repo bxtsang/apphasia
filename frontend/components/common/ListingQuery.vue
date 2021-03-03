@@ -75,6 +75,10 @@
             <v-chip v-else color="error">No</v-chip>
           </template>
 
+          <template v-slot:[`item.projects_in`]="{ item }">
+            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}
+          </template>
+
           <!-- Volunteer Specific Columns -->
           <template v-slot:[`item.status`]="{ item }">
             <VolunteerStatusChip :value="item.status" />
