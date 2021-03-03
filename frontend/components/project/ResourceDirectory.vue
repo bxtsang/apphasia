@@ -101,7 +101,7 @@
         <v-row v-if="filesInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Files</v-subheader>
-            <v-container class="d-flex flex-wrap pa-0" fluid>
+            <v-container class="d-flex flex-wrap px-2" fluid>
               <Resource
                 v-for="file in filesInCurrentDirectory"
                 :key="file.id"
