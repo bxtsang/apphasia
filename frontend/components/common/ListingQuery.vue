@@ -2,6 +2,7 @@
   <ApolloQuery
     :query="query"
     :variables="queryVariables"
+    @result="initItems"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -20,7 +21,7 @@
       <div v-else-if="data">
         <v-data-table
           :headers="TABLE_HEADERS[resourceType]"
-          :items="filterItems(data[resourceType])"
+          :items="computedItems"
           :search="search"
           item-key="id"
           class="elevation-1"
@@ -30,6 +31,13 @@
               <v-row>
                 <v-col class="d-flex align-center">
                   <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
+                </v-col>
+                <v-col v-if="resourceType === 'staffs'" class="d-flex justify-end align-center">
+                  <v-switch
+                    v-model="staffArchive"
+                    class="pr-2"
+                    label="See Archived"
+                  />
                 </v-col>
                 <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
                   <AddResourceModal :resourceType="resourceType" />
@@ -43,7 +51,7 @@
                       :key="role.value"
                       @click="staffRoleFilter = role.value"
                     >
-                      {{ role.label}}
+                      {{ role.label }}
                     </v-tab>
                   </v-tabs>
                 </v-col>
@@ -65,6 +73,10 @@
           <template v-if="resourceType === 'staffs' || resourceType === 'volunteers'" v-slot:[`item.is_speech_therapist`]="{ item }">
             <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
             <v-chip v-else color="error">No</v-chip>
+          </template>
+
+          <template v-slot:[`item.projects_in`]="{ item }">
+            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -90,7 +102,7 @@
           </template>
 
           <template v-slot:[`item.nok`]="{ item }">
-            {{ item.nok[0] ? item.nok[0].name : ''  }}
+            {{ item.nok[0] ? item.nok[0].name : '' }}
           </template>
 
           <template v-slot:[`item.contact_status`]="{ item }">
@@ -99,7 +111,7 @@
 
           <!-- Project Specific Columns -->
           <template v-slot:[`item.staffs`]="{ item }">
-            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ')  }}
+            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ') }}
           </template>
 
           <template v-slot:[`item.is_recurring`]="{ item }">
@@ -156,7 +168,10 @@ export default {
       ROLE_OPTIONS,
       EDIT_RESOURCE_PERMISSIONS,
       staffRoleFilter: 'core_team',
-      search: ''
+      search: '',
+      staffArchive: false,
+      items: [],
+      hiddenItems: []
     }
   },
 
@@ -185,20 +200,20 @@ export default {
       return header
     },
     editPermission () {
-      if (this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])) {
-        return true
-      }
-      return false
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
+    },
+    computedItems () {
+      if (this.resourceType === 'staffs') {
+        if (this.staffArchive) {
+          return this.items.filter(item => item.role_description.role === this.staffRoleFilter && !item.is_active)
+        } return this.items.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
+      } return this.items
     }
   },
 
   methods: {
-    filterItems (data) {
-      if (this.resourceType === 'staffs') {
-        return data.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
-      } else {
-        return data
-      }
+    initItems (result) {
+      this.items = result.data[this.resourceType]
     }
   }
 }

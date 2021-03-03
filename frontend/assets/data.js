@@ -94,7 +94,7 @@ export const TABLE_HEADERS = {
     { text: 'Date Joined', value: 'date_joined' },
     { text: 'Profession', value: 'profession' },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
-    { text: 'Projects Involved', value: '', sortable: false },
+    { text: 'Projects Involved', value: 'projects_in', sortable: false },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
