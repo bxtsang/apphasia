@@ -64,6 +64,7 @@ export default {
           const response = await this.$auth.loginWith('cognito', { data: loginData })
           this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
           this.$apolloHelpers.onLogin(response.idToken.jwtToken)
+          this.$store.commit('token_expiry/updateExpiration', response.idToken.payload.exp * 1000)
         } catch (error) {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
           this.email = ''
