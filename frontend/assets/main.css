@@ -26,3 +26,7 @@ html { overflow-y: auto !important}
 .v-input--is-readonly:hover .v-input__control div.v-input__slot::before {
     border-color: rgba(0 , 0 , 0, 0.42) !important;
 }
+
+.v-input--is-readonly.primary--text .v-icon {
+    color: rgba(0 , 0 , 0, 0.6) !important;
+}
