@@ -46,7 +46,7 @@ export default {
       passwordRules: [v => !!v || 'Field Required'],
       newPasswordRules: [
         v => !!v || 'Field Required',
-        v => v.length > 8 || 'Password should be longer than 8 characters',
+        v => (v && v.length > 8) || 'Password should be longer than 8 characters',
         v => /(?=.*[A-Z])/.test(v) || 'Password should have at least one uppercase letter',
         v => /(?=.*[a-z])/.test(v) || 'Password should have at least one lowercase letter',
         v => /(?=.*\d)/.test(v) || 'Password should have at least one digit',
