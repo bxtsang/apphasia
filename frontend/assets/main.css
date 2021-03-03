@@ -3,3 +3,26 @@ html { overflow-y: auto !important}
 .section-title{
     font-size: 24px;
 }
+
+.v-select__selection--disabled {
+    color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.v-chip--disabled {
+    opacity: 1 !important;
+}
+
+.v-input--is-readonly label.primary--text {
+    color: rgba(0 , 0 , 0, 0.6) !important;
+}
+
+.v-input--is-readonly.primary--text div.v-input__slot::after {
+    color: rgba(0 , 0 , 0, 0.87) !important;
+    height: 0 !important;
+    width: 0 !important;
+    transform: scale(0) !important;
+}
+
+.v-input--is-readonly:hover .v-input__control div.v-input__slot::before {
+    border-color: rgba(0 , 0 , 0, 0.42) !important;
+}

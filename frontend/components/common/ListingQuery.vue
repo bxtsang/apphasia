@@ -175,7 +175,12 @@ export default {
       return variables
     },
     listingHeader () {
-      const type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+      let type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+      switch (this.resourceType) {
+        case 'pwas':
+          type = 'PWAs'
+          break
+      }
       const header = `Manage ${type}`
       return header
     },
