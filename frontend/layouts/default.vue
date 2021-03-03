@@ -135,6 +135,18 @@ export default {
     logout () {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
+    },
+    checkToken () {
+      if (
+        this.$store.state.token_expiry.expiration === null ||
+        new Date(this.$store.state.token_expiry.expiration) <= new Date()
+      ) {
+        console.log('force out')
+        this.logout()
+        this.$nuxt.$emit('new-notification', 'Token expired. Please login again.')
+      } else {
+        console.log(new Date(this.$store.state.token_expiry.expiration))
+      }
     }
   },
   apollo: {
@@ -151,9 +163,23 @@ export default {
           email: this.$auth.user.email
         }
       },
-      update: data => data.staffs[0].name,
-      error (e) {
-        this.logout()
+      update: data => data.staffs[0].name
+    }
+  },
+  created () {
+    this.$nuxt.$on('new-notification', (message) => {
+      console.log('trigger default')
+      this.$store.commit('notification/newNotification', [message, 'error'])
+    })
+  },
+  mounted () {
+    this.checkToken()
+    setInterval(this.checkToken, 60000)
+  },
+  watch: {
+    '$route.query': {
+      handler (newVal, old) {
+        this.checkToken()
       }
     }
   }
