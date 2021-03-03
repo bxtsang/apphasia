@@ -214,7 +214,9 @@ export default {
             supervisors_to_add: [],
             supervisors_to_remove: [],
             languages_to_add: languageChanges.added,
-            languages_to_remove: languageChanges.removed
+            languages_to_remove: languageChanges.removed,
+            projects_to_add: [],
+            projects_to_remove: []
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
             store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.$auth.user['custom:hasura_id'], isCoreTeam: true } })
