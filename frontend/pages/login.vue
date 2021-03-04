@@ -11,6 +11,7 @@
           :rules="emailRules"
           label="Email"
           required
+          data-cy="cy-login-email-input"
         />
         <v-text-field
           v-model="password"
@@ -20,8 +21,15 @@
           label="Password"
           required
           @click:append="showPassword = !showPassword"
+          data-cy="cy-login-password-input"
         />
-        <v-btn block color="primary" class="my-3" type="submit" :loading="isLoggingIn">
+        <v-btn
+          block
+          color="primary"
+          class="my-3"
+          type="submit"
+          :loading="isLoggingIn"
+          data-cy="cy-login-submit-input">
           Login
         </v-btn>
       </v-form>
@@ -49,20 +57,21 @@ export default {
   },
   methods: {
     async login () {
-      if (this.email === '' || this.password === '') { return }
-      this.isLoggingIn = true
-      const loginData = { username: this.email, password: this.password }
-      try {
-        const response = await this.$auth.loginWith('cognito', { data: loginData })
-        this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
-        this.$apolloHelpers.onLogin(response.idToken.jwtToken)
-      } catch (error) {
-        this.$store.commit('notification/newNotification', [error.message, 'error'])
-        this.email = ''
-        this.password = ''
-        this.$apolloHelpers.onLogout()
-      } finally {
-        this.isLoggingIn = false
+      if (this.$refs.form.validate()) {
+        this.isLoggingIn = true
+        const loginData = { username: this.email, password: this.password }
+        try {
+          const response = await this.$auth.loginWith('cognito', { data: loginData })
+          this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
+          this.$apolloHelpers.onLogin(response.idToken.jwtToken)
+        } catch (error) {
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+          this.email = ''
+          this.password = ''
+          this.$apolloHelpers.onLogout()
+        } finally {
+          this.isLoggingIn = false
+        }
       }
     }
   }

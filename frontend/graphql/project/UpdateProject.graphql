@@ -1,0 +1,78 @@
+mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add: [project_staffs_insert_input!]!, $staffs_to_remove: [Int!], $vols_to_add: [project_vol_insert_input!]!, $vols_to_remove: [Int!], $pwas_to_add: [project_pwa_insert_input!]!, $pwas_to_remove: [Int!]) {
+  insert_project_staffs(objects: $staffs_to_add) {
+    affected_rows
+  }
+  delete_project_staffs(where: {_and: [{project_id: {_eq: $id}, staff_id: {_in: $staffs_to_remove}}]}) {
+    affected_rows
+  }
+
+  delete_project_pwa_staffs(where: {_and: [{project_id: {_eq: $id}, staff_id: {_in: $staffs_to_remove}}]}) {
+    affected_rows
+  }
+  
+  insert_project_vol(objects: $vols_to_add) {
+    affected_rows
+  }
+  delete_project_vol(where: {_and: [{project_id: {_eq: $id}, vol_id: {_in: $vols_to_remove}}]}) {
+    affected_rows
+  }
+
+  delete_project_pwa_vols(where: {_and: [{project_id: {_eq: $id}, vol_id: {_in: $vols_to_remove}}]}) {
+    affected_rows
+  }
+
+  insert_project_pwa(objects: $pwas_to_add) {
+    affected_rows
+  }
+  delete_project_pwa(where: {_and: [{project_id: {_eq: $id}, pwa_id: {_in: $pwas_to_remove}}]}) {
+    affected_rows
+  }
+
+  update_projects_by_pk(pk_columns: {id: $id}, _set: $project) {
+    description
+    id
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    staffs {
+      staff {
+        id
+        name
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    title
+    voltypes
+    is_recurring
+    upcoming_date
+  }
+}
+
+# The parameters within project are all optional, depends on what you wanna edit
+# {
+#   "id": 1,
+#   "pwas_to_add": [{"pwa_id": 11, "project_id": 1}],
+#   "pwas_to_remove": [11],
+#   "vols_to_add": [{"vol_id": 5, "project_id": 1}],
+#   "vols_to_remove": [5],
+#   "staffs_to_add": [{ "staff_id": 7, "project_id": 1}],
+#   "staffs_to_remove": [7],
+#   "project": {
+#     "title": "Aphasia SG Choir",
+#     "description": "Sing some songs!",
+#     "owner_id": 2,
+#     "voltypes": "Project_Volunteer"
+#   }
+# }

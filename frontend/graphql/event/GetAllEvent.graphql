@@ -1,0 +1,59 @@
+query GetAllEvents($project_id: Int!) {
+  events(where: {project_id: {_eq: $project_id}}) {
+    date
+    start_time
+    end_time
+    id
+    name
+    note
+    project_id
+    project {
+      title
+    }
+    recurring {
+      id
+      frequency
+      end_date
+      infinite
+      day
+      week
+      interval
+      pwas {
+        pwa {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+      volunteers {
+        volunteer {
+          general_info {
+            id
+            name
+          }
+        }
+      }
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+# {
+#   "project_id": 2
+# }

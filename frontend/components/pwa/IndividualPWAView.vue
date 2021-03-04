@@ -94,7 +94,7 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
+                <v-row class="mt-8">
                   <v-col cols="12" class="py-0">
                     <span class="font-weight-bold">Additional Information</span>
                   </v-col>
@@ -222,7 +222,7 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row class="mt-3">
+                <v-row class="mt-8">
                   <v-col cols="12" class="py-0">
                     <span class="font-weight-bold">Speech Therapist Details</span>
                   </v-col>
@@ -243,45 +243,49 @@
                     />
                   </v-col>
                 </v-row>
-                <div v-for="(nok, index) in data.pwas_by_pk.nok" :key="index">
-                  <v-row class="mt-3" >
-                    <v-col cols="12" class="py-0 d-flex">
-                      <span class="font-weight-bold">({{ index + 1 }}) Next-of-Kin Information</span>
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" class="py-0">
-                      <v-text-field
-                        :value="nok.name"
-                        label="Name of Caregiver / NOK"
-                        readonly
-                      />
-                    </v-col>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="4" class="py-0">
-                      <v-text-field
-                        :value="nok.relationship"
-                        label="Relationship with PWA"
-                        readonly
-                      />
-                    </v-col>
-                    <v-col cols="4" class="py-0">
-                      <v-text-field
-                        :value="nok.contact_num"
-                        label="Contact Number"
-                        readonly
-                      />
-                    </v-col>
-                    <v-col cols="4" class="py-0">
-                      <v-text-field
-                        :value="nok.email"
-                        label="Email Address"
-                        readonly
-                      />
-                    </v-col>
-                  </v-row>
-                </div>
+                <v-row>
+                  <v-col>
+                    <div v-for="(nok, index) in data.pwas_by_pk.nok" :key="index">
+                      <v-row>
+                        <v-col cols="12" class="py-0 d-flex">
+                          <span class="font-weight-bold">({{ index + 1 }}) Next-of-Kin Information</span>
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="12" class="py-0">
+                          <v-text-field
+                            :value="nok.name"
+                            label="Name of Caregiver / NOK"
+                            readonly
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col cols="4" class="py-0">
+                          <v-text-field
+                            :value="nok.relationship"
+                            label="Relationship with PWA"
+                            readonly
+                          />
+                        </v-col>
+                        <v-col cols="4" class="py-0">
+                          <v-text-field
+                            :value="nok.contact_num"
+                            label="Contact Number"
+                            readonly
+                          />
+                        </v-col>
+                        <v-col cols="4" class="py-0">
+                          <v-text-field
+                            :value="nok.email"
+                            label="Email Address"
+                            readonly
+                          />
+                        </v-col>
+                      </v-row>
+                    </div>
+                  </v-col>
+                </v-row>
               </v-container>
             </div>
           </template>

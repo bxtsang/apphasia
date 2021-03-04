@@ -1,0 +1,1 @@
+CREATE TABLE "public"."events"("id" serial NOT NULL, "project_id" integer NOT NULL, "date" date NOT NULL, "recurr_id" integer, "note" text, "start_time" timetz NOT NULL, "end_time" timetz NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON UPDATE restrict ON DELETE cascade);

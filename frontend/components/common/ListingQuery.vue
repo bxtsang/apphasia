@@ -2,6 +2,7 @@
   <ApolloQuery
     :query="query"
     :variables="queryVariables"
+    @result="initItems"
   >
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -20,7 +21,7 @@
       <div v-else-if="data">
         <v-data-table
           :headers="TABLE_HEADERS[resourceType]"
-          :items="filterItems(data[resourceType])"
+          :items="computedItems"
           :search="search"
           item-key="id"
           class="elevation-1"
@@ -28,8 +29,18 @@
           <template v-slot:top>
             <v-container class="py-0" fluid>
               <v-row>
-                <v-col>
+                <v-col class="d-flex align-center">
                   <h1 class="title pt-3 px-3">{{ listingHeader }}</h1>
+                </v-col>
+                <v-col v-if="resourceType === 'staffs'" class="d-flex justify-end align-center">
+                  <v-switch
+                    v-model="staffArchive"
+                    class="pr-2"
+                    label="See Archived"
+                  />
+                </v-col>
+                <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
+                  <AddResourceModal :resourceType="resourceType" />
                 </v-col>
               </v-row>
               <v-row v-if="resourceType === 'staffs'">
@@ -40,7 +51,7 @@
                       :key="role.value"
                       @click="staffRoleFilter = role.value"
                     >
-                      {{ role.label}}
+                      {{ role.label }}
                     </v-tab>
                   </v-tabs>
                 </v-col>
@@ -62,6 +73,10 @@
           <template v-if="resourceType === 'staffs' || resourceType === 'volunteers'" v-slot:[`item.is_speech_therapist`]="{ item }">
             <v-chip v-if="item.is_speech_therapist" color="success">Yes</v-chip>
             <v-chip v-else color="error">No</v-chip>
+          </template>
+
+          <template v-slot:[`item.projects_in`]="{ item }">
+            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -87,16 +102,34 @@
           </template>
 
           <template v-slot:[`item.nok`]="{ item }">
-            {{ item.nok[0] ? item.nok[0].name : ''  }}
+            {{ item.nok[0] ? item.nok[0].name : '' }}
           </template>
 
           <template v-slot:[`item.contact_status`]="{ item }">
             <ContactStatusChip :value="item.contact_status" />
           </template>
 
+          <!-- Project Specific Columns -->
+          <template v-slot:[`item.staffs`]="{ item }">
+            {{ item.staffs.map(item => item.staff.name).toString().replaceAll(',', ', ') }}
+          </template>
+
+          <template v-slot:[`item.is_recurring`]="{ item }">
+            <IsRecurringChip :value="item.is_recurring" />
+          </template>
+
+          <!-- Event Specific Columns -->
+          <template v-slot:[`item.event_time`]="{ item }">
+            {{ item.start_time.slice(0,5) }} - {{ item.end_time.slice(0,5) }}
+          </template>
           <template v-slot:[`item.actions`]="{ item }">
             <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
-            <v-btn :to="`/${resourceType}?id=${item.id}`" icon>
+            <v-btn v-if="resourceType === 'events'" :to="`/projects?id=${item.project_id}&tab=2&event=${item.id}`" icon>
+              <v-icon large>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
+            <v-btn v-else :to="`/${resourceType}?id=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
               </v-icon>
@@ -121,6 +154,10 @@ export default {
     resourceType: {
       type: String,
       default: null
+    },
+    eventParams: {
+      type: Object,
+      default: null
     }
   },
 
@@ -131,7 +168,10 @@ export default {
       ROLE_OPTIONS,
       EDIT_RESOURCE_PERMISSIONS,
       staffRoleFilter: 'core_team',
-      search: ''
+      search: '',
+      staffArchive: false,
+      items: [],
+      hiddenItems: []
     }
   },
 
@@ -140,37 +180,41 @@ export default {
       return LIST_QUERY_PATHS[this.resourceType]
     },
     queryVariables () {
-      const variables = {}
+      let variables = {}
       if (this.resourceType === 'staffs') {
         variables.isCoreTeam = this.$auth.user['custom:role'] === 'core_team'
+      }
+      if (this.resourceType === 'events') {
+        variables = { ...variables, ...this.eventParams }
       }
       return variables
     },
     listingHeader () {
-      const type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+      let type = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+      switch (this.resourceType) {
+        case 'pwas':
+          type = 'PWAs'
+          break
+      }
       const header = `Manage ${type}`
       return header
     },
     editPermission () {
-      if (this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])) {
-        return true
-      }
-      return false
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
+    },
+    computedItems () {
+      if (this.resourceType === 'staffs') {
+        if (this.staffArchive) {
+          return this.items.filter(item => item.role_description.role === this.staffRoleFilter && !item.is_active)
+        } return this.items.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
+      } return this.items
     }
   },
 
   methods: {
-    filterItems (data) {
-      if (this.resourceType === 'staffs') {
-        return data.filter(item => item.role_description.role === this.staffRoleFilter && item.is_active)
-      } else {
-        return data
-      }
+    initItems (result) {
+      this.items = result.data[this.resourceType]
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>

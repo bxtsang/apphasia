@@ -13,23 +13,35 @@
       </v-btn>
     </template>
     <v-card>
+      <v-form ref="form" v-model="valid" @submit.prevent="deleteResource">
       <v-card-title class="headline">
         Confirm delete?
       </v-card-title>
       <v-divider />
-      <v-card-text class="mt-4">
+      <div class="mt-4 pa-3">
         Deleting {{ resourceType.substr(0, resourceType.length - 1) }}: <span class="font-weight-bold">{{ identifier }}</span>
-      </v-card-text>
+        <div class="mt-4" v-if="resourceType === 'events' && resource.recurring !== null">
+          <v-radio-group v-model="eventOption" class="mt-0">
+            <v-radio
+              v-for="option in DELETE_OPTIONS"
+              :key="option.value"
+              :label="option.text"
+              :value="option.value"
+            />
+          </v-radio-group>
+        </div>
+      </div>
       <v-card-actions>
         <v-spacer />
         <v-btn
           color="error"
           :loading="isLoading"
-          @click="deleteResource()"
+          type="submit"
         >
           Confirm
         </v-btn>
       </v-card-actions>
+      </v-form>
     </v-card>
   </v-dialog>
 </template>
@@ -41,6 +53,10 @@ import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
 import DeletePWA from './../../graphql/pwa/DeletePWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
+import DeleteProject from './../../graphql/project/DeleteProject.graphql'
+import GetSingleProject from './../../graphql/project/GetSingleProject.graphql'
+import GetAllProject from './../../graphql/project/GetAllProject.graphql'
+import DeleteEvents from './../../graphql/event/DeleteEvents.graphql'
 
 export default {
   props: {
@@ -56,13 +72,26 @@ export default {
   data () {
     return {
       isOpen: false,
-      isLoading: false
+      isLoading: false,
+      eventOption: 0,
+      valid: true,
+      DELETE_OPTIONS: [
+        { text: 'This event', value: 0 },
+        { text: 'This and future recurring events', value: 1 },
+        { text: 'All recurring events', value: 2 }
+      ]
     }
   },
   computed: {
     identifier () {
       if (this.resourceType === 'volunteers' || this.resourceType === 'pwas') {
         return this.resource.general_info.name
+      }
+      if (this.resourceType === 'projects') {
+        return this.resource.title
+      }
+      if (this.resourceType === 'events') {
+        return this.resource.name
       }
       return null
     },
@@ -71,6 +100,10 @@ export default {
         return DeleteVol
       } else if (this.resourceType === 'pwas') {
         return DeletePWA
+      } else if (this.resourceType === 'projects') {
+        return DeleteProject
+      } else if (this.resourceType === 'events') {
+        return DeleteEvents
       }
       return null
     },
@@ -79,6 +112,8 @@ export default {
         return GetSingleVol
       } else if (this.resourceType === 'pwas') {
         return GetSinglePWA
+      } else if (this.resourceType === 'projects') {
+        return GetSingleProject
       }
       return null
     },
@@ -87,29 +122,75 @@ export default {
         return GetAllVol
       } else if (this.resourceType === 'pwas') {
         return GetAllPWA
+      } else if (this.resourceType === 'projects') {
+        return GetAllProject
       }
       return null
     }
   },
   methods: {
     deleteResource () {
-      this.isLoading = true
-      this.$apollo.mutate({
-        mutation: this.deleteMutation,
-        variables: {
+      if (this.$refs.form.validate()) {
+        this.isLoading = true
+        let variables = {
           id: this.resource.id
-        },
-        update: (store, { data: obj }) => {
-          this.updateCache(store)
         }
-      }).then((data) => {
-        this.isLoading = false
-        this.isOpen = false
-        this.$emit('deleteSuccess')
-        this.$store.commit('notification/newNotification', ['Volunteer successfully deleted', 'success'])
-      }).catch((error) => {
-        this.$store.commit('notification/newNotification', [error.message, 'error'])
-      })
+        if (this.resourceType === 'events') {
+          switch (this.eventOption) {
+            case 1:
+              variables = {
+                eventData: {
+                  recurrence_id: this.resource.recurring.id,
+                  date: this.resource.date,
+                  event_id: null
+                }
+              }
+              break
+            case 2:
+              variables = {
+                eventData: {
+                  recurrence_id: this.resource.recurring.id,
+                  date: null,
+                  event_id: null
+                }
+              }
+              break
+            default:
+              variables = {
+                eventData: {
+                  event_id: this.resource.id,
+                  recurrence_id: null,
+                  date: null
+                }
+              }
+          }
+        }
+        this.$apollo.mutate({
+          mutation: this.deleteMutation,
+          variables,
+          update: (store, data) => {
+            // this.updateCache(store)
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+          }
+        }).then((data) => {
+          this.isLoading = false
+          this.isOpen = false
+          this.$emit('deleteSuccess')
+          const displayResourceName = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1)
+          this.$store.commit('notification/newNotification', [`${displayResourceName.slice(0, -1)} successfully deleted`, 'success'])
+          this.$router.push(this.redirectLink())
+        }).catch((error) => {
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+    redirectLink () {
+      switch (this.resourceType) {
+        case 'events':
+          return `/projects?id=${this.resource.project_id}&tab=2`
+        default:
+          return `/${this.resourceType}`
+      }
     },
     updateCache (store) {
       const singleResourceData = {}
@@ -117,6 +198,8 @@ export default {
         singleResourceData.volunteers_by_pk = null
       } else if (this.resourceType === 'pwas') {
         singleResourceData.pwas_by_pk = null
+      } else if (this.resourceType === 'projects') {
+        singleResourceData.projects_by_pk = null
       }
 
       store.writeQuery({
@@ -142,7 +225,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

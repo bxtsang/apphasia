@@ -50,7 +50,7 @@
             />
           </v-col>
         </v-row>
-        <v-row class="mt-3">
+        <v-row class="mt-8">
           <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Additional Information</span>
           </v-col>
@@ -146,7 +146,7 @@
             />
           </v-col>
         </v-row>
-        <v-row class="mt-3">
+        <v-row class="mt-8">
           <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Speech Therapist Details</span>
           </v-col>
@@ -165,9 +165,13 @@
             />
           </v-col>
         </v-row>
-        <NOKInput
-          v-model="pwaData.nok.data"
-        />
+        <v-row class="mt-8">
+          <v-col class="py-0">
+            <NOKInput
+              v-model="pwaData.nok.data"
+            />
+          </v-col>
+        </v-row>
         <v-row>
           <DeleteResourceModal
             v-if="$auth.user['custom:role'] === 'core_team' && pwa"
@@ -175,7 +179,7 @@
             :resourceType="'pwas'"
             @deleteSuccess="$emit('closeForm')"
           />
-          <v-spacer/>
+          <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ pwa ? 'Edit' : 'Save' }}
           </v-btn>

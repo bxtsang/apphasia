@@ -274,7 +274,6 @@ export default {
           variables: { pwa: newPwaData }
         }).then((data) => {
           this.isSubmitting = false
-          this.$store.commit('notification/newNotification', ['Your registration has been created', 'success'])
           registerSuccessful()
         }).catch((error) => {
           this.isSubmitting = false

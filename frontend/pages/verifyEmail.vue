@@ -1,6 +1,6 @@
 <template>
   <div>
-  <v-card elevation="2" outlined class="px-6 py-6 mb-6 text-center">
+    <v-card elevation="2" outlined class="px-6 py-6 mb-6 text-center">
       <v-card-title class="justify-center">
         Verify your email address
       </v-card-title>
@@ -90,6 +90,7 @@ export default {
         if (resp.data.status === 'success') {
           this.$store.$auth.$state.user.email_verified = 'true'
           this.emailVerified()
+          this.$router.push('/')
         } else if (resp.data.status === 'failed') {
           this.reject()
         }
@@ -121,7 +122,7 @@ export default {
       this.$store.commit('notification/newNotification', ['Email successfully verified!', 'success'])
     },
     reject () {
-      this.$store.commit('notification/newNotification', ['Something went wrong, please try again.', 'error'])
+      this.$store.commit('notification/newNotification', ['Email verification failed, please try again.', 'error'])
     }
   }
 }

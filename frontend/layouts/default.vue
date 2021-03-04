@@ -6,8 +6,9 @@
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="title">
-              Hello, {{ fullname || 'User' }}
+            <v-list-item-title class="title d-flex flex-column">
+              <span v-if="fullname">Hello, {{ fullname }}</span>
+              <v-progress-circular v-else indeterminate color="primary" class="align-self-center"/>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -150,8 +151,18 @@ export default {
           email: this.$auth.user.email
         }
       },
-      update: data => data.staffs[0].name
+      update: data => data.staffs[0].name,
+      error (e) {
+        this.logout()
+      }
     }
   }
 }
+// cache clear code
+// mounted () {
+//   this.$apollo.vm.$apolloProvider.defaultClient.cache.data.clear()
+// }
+// Object.keys(cache.data.data).forEach(key =>
+//   key.match(/^Item/) && cache.data.delete(key)
+// )
 </script>

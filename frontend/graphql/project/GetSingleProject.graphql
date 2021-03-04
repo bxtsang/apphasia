@@ -1,0 +1,66 @@
+query getSingleProject($id: Int!) {
+  projects_by_pk(id: $id) {
+    owner {
+      id
+      name
+    }
+    pwas {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    upcoming_date
+    is_recurring
+    description
+    id
+    staffs {
+      staff {
+        id
+        name
+      }
+    }
+    volunteers {
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    pwa_assigned_vols {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      volunteer {
+        general_info {
+          id
+          name
+        }
+      }
+    }
+    pwa_assigned_staffs {
+      pwa {
+        general_info {
+          id
+          name
+        }
+      }
+      staff {
+        id
+        name
+      }
+    }
+    title
+    voltypes
+  }
+}
+
+# {
+#   "id": 1
+# }

@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="isOpen"
-    width="800"
+    :width="800"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -29,15 +29,18 @@
     <StaffForm v-if="resourceType === 'staffs'" :staff="resource" v-on:closeForm="isOpen = false" />
     <VolunteerForm v-if="resourceType === 'volunteers'" :volunteer="resource" v-on:closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" :pwa="resource" v-on:closeForm="isOpen = false" />
+    <ProjectForm v-if="resourceType === 'projects'" :project="resource" @closeForm="isOpen = false" />
+    <EventForm v-if="resourceType === 'events'" :event="resource" @closeForm="isOpen = false" />
   </v-dialog>
 </template>
 <script>
 import StaffForm from './../staff/StaffForm'
 import VolunteerForm from './../volunteer/VolunteerForm'
 import PWAForm from './../pwa/PWAForm'
+import ProjectForm from './../project/ProjectForm'
 
 export default {
-  components: { StaffForm, VolunteerForm, PWAForm },
+  components: { StaffForm, VolunteerForm, PWAForm, ProjectForm },
   props: {
     text: Boolean,
     resource: {
