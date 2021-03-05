@@ -135,17 +135,17 @@ export default {
     logout () {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
+      localStorage.removeItem('token_expiry')
     },
     checkToken () {
+      const expiry = localStorage.getItem('token_expiry') ? new Date(Number(localStorage.getItem('token_expiry'))) : null
       if (
-        this.$store.state.token_expiry.expiration === null ||
-        new Date(this.$store.state.token_expiry.expiration) <= new Date()
+        expiry === null ||
+        expiry <= new Date()
       ) {
-        console.log('force out')
         this.logout()
-        this.$nuxt.$emit('new-notification', 'Token expired. Please login again.')
       } else {
-        console.log(new Date(this.$store.state.token_expiry.expiration))
+        // console.log(expiry)
       }
     }
   },
@@ -165,12 +165,6 @@ export default {
       },
       update: data => data.staffs[0].name
     }
-  },
-  created () {
-    this.$nuxt.$on('new-notification', (message) => {
-      console.log('trigger default')
-      this.$store.commit('notification/newNotification', [message, 'error'])
-    })
   },
   mounted () {
     this.checkToken()
