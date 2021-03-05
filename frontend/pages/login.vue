@@ -55,6 +55,14 @@ export default {
       showPassword: false
     }
   },
+  mounted () {
+    const tokenExpiry = localStorage.getItem('token_expiry') ? new Date(Number(localStorage.getItem('token_expiry'))) : null
+
+    if (tokenExpiry != null && tokenExpiry <= new Date()) {
+      localStorage.removeItem('token_expiry')
+      this.$store.commit('notification/newNotification', ['Token has expired. Please login again', 'error'])
+    }
+  },
   methods: {
     async login () {
       if (this.$refs.form.validate()) {
@@ -64,6 +72,7 @@ export default {
           const response = await this.$auth.loginWith('cognito', { data: loginData })
           this.$store.commit('email_verified/updateVerification', response.idToken.payload.email_verified)
           this.$apolloHelpers.onLogin(response.idToken.jwtToken)
+          localStorage.setItem('token_expiry', response.idToken.payload.exp * 1000)
         } catch (error) {
           this.$store.commit('notification/newNotification', [error.message, 'error'])
           this.email = ''

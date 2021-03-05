@@ -135,6 +135,18 @@ export default {
     logout () {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
+      localStorage.removeItem('token_expiry')
+    },
+    checkToken () {
+      const expiry = localStorage.getItem('token_expiry') ? new Date(Number(localStorage.getItem('token_expiry'))) : null
+      if (
+        expiry === null ||
+        expiry <= new Date()
+      ) {
+        this.logout()
+      } else {
+        // console.log(expiry)
+      }
     }
   },
   apollo: {
@@ -151,9 +163,17 @@ export default {
           email: this.$auth.user.email
         }
       },
-      update: data => data.staffs[0].name,
-      error (e) {
-        this.logout()
+      update: data => data.staffs[0].name
+    }
+  },
+  mounted () {
+    this.checkToken()
+    setInterval(this.checkToken, 60000)
+  },
+  watch: {
+    '$route.query': {
+      handler (newVal, old) {
+        this.checkToken()
       }
     }
   }
