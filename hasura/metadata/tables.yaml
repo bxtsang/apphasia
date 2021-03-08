@@ -837,14 +837,6 @@
     schema: public
     name: project_task_staffs
   object_relationships:
-  - name: project
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: projects
-        column_mapping:
-          project_id: id
   - name: staff
     using:
       manual_configuration:
@@ -855,19 +847,12 @@
           staff_id: id
   - name: task
     using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: project_tasks
-        column_mapping:
-          task_id: id
-          project_id: project_id
+      foreign_key_constraint_on: task_id
   insert_permissions:
   - role: core_team
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - staff_id
       backend_only: false
@@ -875,7 +860,6 @@
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - staff_id
       backend_only: false
@@ -883,21 +867,18 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
   - role: intern
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
@@ -905,7 +886,6 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
@@ -956,90 +936,6 @@
       filter: {}
 - table:
     schema: public
-    name: project_task_vols
-  object_relationships:
-  - name: project
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: projects
-        column_mapping:
-          project_id: id
-  - name: task
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: project_tasks
-        column_mapping:
-          task_id: id
-          project_id: project_id
-  - name: volunteer
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: volunteers
-        column_mapping:
-          vol_id: id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - project_id
-      - task_id
-      - vol_id
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_tasks
   object_relationships:
   - name: project
@@ -1048,22 +944,11 @@
   array_relationships:
   - name: assigned_staffs
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: task_id
+        table:
           schema: public
           name: project_task_staffs
-        column_mapping:
-          project_id: project_id
-          id: task_id
-  - name: assigned_vols
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: project_task_vols
-        column_mapping:
-          project_id: project_id
-          id: task_id
   insert_permissions:
   - role: core_team
     permission:
@@ -1075,7 +960,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       backend_only: false
   - role: intern
@@ -1088,7 +972,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       backend_only: false
   select_permissions:
@@ -1101,7 +984,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   - role: core_volunteer
@@ -1113,7 +995,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   - role: intern
@@ -1125,7 +1006,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   update_permissions:
@@ -1138,7 +1018,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
       check: {}
@@ -1158,7 +1037,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
       check: {}
