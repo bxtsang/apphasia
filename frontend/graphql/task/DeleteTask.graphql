@@ -1,0 +1,11 @@
+mutation DeleteTask ($id: Int!) {
+  delete_project_tasks_by_pk(id: $id) {
+    id
+    title
+  }
+}
+
+
+# {
+#   "id": 1
+# }

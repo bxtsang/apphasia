@@ -1,0 +1,33 @@
+mutation UpdateTask($id: Int!, $task: project_tasks_insert_input!) {
+  delete_project_tasks_by_pk(id: $id) {
+    id
+    title
+  }
+  insert_project_tasks_one(object: $task) {
+    description
+    due_date
+    id
+    notes
+    project_id
+    status
+    title
+    assigned_staffs {
+      staff_id
+    }
+  }
+}
+
+# {
+#   "id": 6,
+#   "task": {
+#     "title": "Hello",
+#     "description": "My desc",
+#     "due_date": "2021-03-12",
+#     "notes": "Notes on status",
+#     "project_id": 1,
+#     "status": "To-do",
+#     "assigned_staffs": {
+#       "data": [{"staff_id": 1}]
+#     }
+#   }
+# }

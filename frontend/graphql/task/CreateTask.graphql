@@ -1,0 +1,30 @@
+mutation CreateTask ($task: project_tasks_insert_input!) {
+  insert_project_tasks_one(object: $task) {
+    description
+    due_date
+    id
+    notes
+    project_id
+    status
+    title
+    assigned_staffs {
+      staff_id
+    }
+  }
+}
+
+
+# Status is by default to-do, optional to add
+# {
+#   "task": {
+#     "title": "Hello",
+#     "description": "My desc",
+#     "due_date": "2021-03-10",
+#     "notes": "Notes on status",
+#     "project_id": 1,
+#     "status": "To-do",
+#     "assigned_staffs": {
+#       "data": [{"staff_id": 1}]
+#     }
+#   }
+# }

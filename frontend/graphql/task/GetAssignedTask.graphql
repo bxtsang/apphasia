@@ -1,0 +1,20 @@
+query GetAssignedTask($staff_id: Int) {
+  project_tasks(where: { assigned_staffs: {staff_id: {_eq: $staff_id}}}) {
+    assigned_staffs {
+      staff {
+        id
+        name
+      }
+    }
+    description
+    due_date
+    notes
+    status
+    title
+    id
+  }
+}
+
+# {
+# "staff_id":  1
+# }
