@@ -837,14 +837,6 @@
     schema: public
     name: project_task_staffs
   object_relationships:
-  - name: project
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: projects
-        column_mapping:
-          project_id: id
   - name: staff
     using:
       manual_configuration:
@@ -855,19 +847,12 @@
           staff_id: id
   - name: task
     using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: project_tasks
-        column_mapping:
-          task_id: id
-          project_id: project_id
+      foreign_key_constraint_on: task_id
   insert_permissions:
   - role: core_team
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - staff_id
       backend_only: false
@@ -875,7 +860,6 @@
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - staff_id
       backend_only: false
@@ -883,21 +867,18 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
   - role: intern
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
@@ -905,7 +886,6 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - staff_id
       filter: {}
@@ -958,23 +938,9 @@
     schema: public
     name: project_task_vols
   object_relationships:
-  - name: project
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: projects
-        column_mapping:
-          project_id: id
   - name: task
     using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: project_tasks
-        column_mapping:
-          task_id: id
-          project_id: project_id
+      foreign_key_constraint_on: task_id
   - name: volunteer
     using:
       manual_configuration:
@@ -988,7 +954,6 @@
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - vol_id
       backend_only: false
@@ -996,7 +961,6 @@
     permission:
       check: {}
       columns:
-      - project_id
       - task_id
       - vol_id
       backend_only: false
@@ -1004,21 +968,18 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - vol_id
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - project_id
       - task_id
       - vol_id
       filter: {}
   - role: intern
     permission:
       columns:
-      - project_id
       - task_id
       - vol_id
       filter: {}
@@ -1026,7 +987,6 @@
   - role: core_team
     permission:
       columns:
-      - project_id
       - task_id
       - vol_id
       filter: {}
@@ -1048,22 +1008,18 @@
   array_relationships:
   - name: assigned_staffs
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: task_id
+        table:
           schema: public
           name: project_task_staffs
-        column_mapping:
-          project_id: project_id
-          id: task_id
   - name: assigned_vols
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: task_id
+        table:
           schema: public
           name: project_task_vols
-        column_mapping:
-          project_id: project_id
-          id: task_id
   insert_permissions:
   - role: core_team
     permission:
