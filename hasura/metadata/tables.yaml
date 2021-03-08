@@ -936,70 +936,6 @@
       filter: {}
 - table:
     schema: public
-    name: project_task_vols
-  object_relationships:
-  - name: task
-    using:
-      foreign_key_constraint_on: task_id
-  - name: volunteer
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: volunteers
-        column_mapping:
-          vol_id: id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - task_id
-      - vol_id
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - task_id
-      - vol_id
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - task_id
-      - vol_id
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - task_id
-      - vol_id
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - task_id
-      - vol_id
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - task_id
-      - vol_id
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: project_tasks
   object_relationships:
   - name: project
@@ -1013,13 +949,6 @@
         table:
           schema: public
           name: project_task_staffs
-  - name: assigned_vols
-    using:
-      foreign_key_constraint_on:
-        column: task_id
-        table:
-          schema: public
-          name: project_task_vols
   insert_permissions:
   - role: core_team
     permission:
@@ -1031,7 +960,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       backend_only: false
   - role: intern
@@ -1044,7 +972,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       backend_only: false
   select_permissions:
@@ -1057,7 +984,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   - role: core_volunteer
@@ -1069,7 +995,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   - role: intern
@@ -1081,7 +1006,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
   update_permissions:
@@ -1094,7 +1018,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
       check: {}
@@ -1114,7 +1037,6 @@
       - description
       - status
       - due_date
-      - updated_at
       - notes
       filter: {}
       check: {}
