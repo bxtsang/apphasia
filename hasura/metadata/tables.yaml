@@ -919,6 +919,9 @@
       filter: {}
 - table:
     schema: public
+    name: project_task_status
+- table:
+    schema: public
     name: project_task_vols
   object_relationships:
   - name: project
@@ -1034,7 +1037,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1048,7 +1050,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1062,7 +1063,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1075,7 +1075,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1088,7 +1087,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1102,7 +1100,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1114,6 +1111,7 @@
   - role: core_volunteer
     permission:
       columns:
+      - notes
       - status
       filter: {}
       check: null
@@ -1122,7 +1120,6 @@
       columns:
       - project_id
       - id
-      - owner_id
       - title
       - description
       - status
@@ -1133,9 +1130,6 @@
       check: {}
   delete_permissions:
   - role: core_team
-    permission:
-      filter: {}
-  - role: intern
     permission:
       filter: {}
 - table:
