@@ -1,6 +1,7 @@
 query GetAllStaff($isCoreTeam: Boolean!) {
   staffs {
     address @include(if: $isCoreTeam)
+    archive_reason
     bio
     contact_num
     date_joined
