@@ -2459,89 +2459,94 @@
     permission:
       check: {}
       columns:
-      - id
-      - email
-      - name
-      - created_at
-      - nickname
-      - dob
-      - gender
       - address
-      - is_active
-      - date_joined
-      - contact_num
-      - is_speech_therapist
-      - profession
-      - ws_place
+      - archive_reason
       - bio
+      - contact_num
+      - created_at
+      - date_joined
+      - dob
+      - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
+      - name
+      - nickname
+      - profession
       - role
+      - ws_place
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
+      - address
+      - archive_reason
+      - bio
+      - contact_num
+      - created_at
       - date_joined
       - dob
-      - contact_num
-      - id
-      - address
-      - bio
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - profession
       - role
       - ws_place
-      - created_at
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
+      - address
+      - archive_reason
+      - bio
+      - contact_num
+      - created_at
       - date_joined
       - dob
-      - contact_num
-      - id
-      - address
-      - bio
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - profession
       - role
       - ws_place
-      - created_at
       filter: {}
   - role: intern
     permission:
       columns:
-      - is_active
-      - is_speech_therapist
-      - gender
+      - address
+      - archive_reason
+      - bio
+      - contact_num
+      - created_at
       - date_joined
       - dob
-      - contact_num
-      - id
-      - address
-      - bio
       - email
+      - gender
+      - id
+      - is_active
+      - is_speech_therapist
       - name
       - nickname
       - profession
       - role
       - ws_place
-      - created_at
       filter: {}
   update_permissions:
   - role: core_team
     permission:
       columns:
       - address
+      - archive_reason
       - bio
       - contact_num
       - dob
@@ -2566,6 +2571,7 @@
     permission:
       columns:
       - address
+      - archive_reason
       - bio
       - contact_num
       - dob
@@ -2585,6 +2591,7 @@
     permission:
       columns:
       - address
+      - archive_reason
       - bio
       - contact_num
       - dob
