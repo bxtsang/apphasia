@@ -920,6 +920,40 @@
 - table:
     schema: public
     name: project_task_status
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - status
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - status
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - status
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - status
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: project_task_vols
