@@ -136,6 +136,7 @@ export default {
       this.$apolloHelpers.onLogout()
       this.$auth.logout()
       localStorage.removeItem('token_expiry')
+      this.$store.commit('email_verified/updateInform', false)
     },
     checkToken () {
       const expiry = localStorage.getItem('token_expiry') ? new Date(Number(localStorage.getItem('token_expiry'))) : null
