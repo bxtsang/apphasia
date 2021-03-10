@@ -229,12 +229,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.hover-underline > a {
-  color: inherit;
-  text-decoration: none !important;
-}
-.hover-underline > a:hover {
-  text-decoration: underline !important;
-}
-</style>

@@ -1,5 +1,6 @@
 mutation (
     $address: String!,
+    $archive_reason: String,
     $bio: String,
     $contact_num: Int!,
     $dob: date!,
@@ -64,10 +65,11 @@ mutation (
        affected_rows
     }
 
-    update_staffs(_set: {address: $address, bio: $bio, contact_num: $contact_num, dob: $dob, gender: $gender, is_active: $is_active, is_speech_therapist: $is_speech_therapist, name: $name, nickname: $nickname, profession: $profession, role: $role, ws_place: $ws_place}, where: {id: {_eq: $staff_id}}) {
+    update_staffs(_set: {address: $address, archive_reason: $archive_reason, bio: $bio, contact_num: $contact_num, dob: $dob, gender: $gender, is_active: $is_active, is_speech_therapist: $is_speech_therapist, name: $name, nickname: $nickname, profession: $profession, role: $role, ws_place: $ws_place}, where: {id: {_eq: $staff_id}}) {
         affected_rows
         returning {
             address
+            archive_reason
             bio
             contact_num
             date_joined
@@ -105,6 +107,7 @@ mutation (
 
 #{
 #    "address": "4 Road road",
+#    "archive_reason": null,
 #    "bio": "",
 #    "contact_num": 1,
 #    "dob": "1999-09-09",

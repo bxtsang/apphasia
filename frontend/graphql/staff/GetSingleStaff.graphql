@@ -1,6 +1,7 @@
 query GetSingleStaff($id: Int!, $isCoreTeam: Boolean!) {
   staffs(where: {id: {_eq: $id}}) {
     address @include(if: $isCoreTeam)
+    archive_reason
     bio
     contact_num
     date_joined
