@@ -1192,34 +1192,40 @@
     permission:
       check: {}
       columns:
-      - description
       - id
-      - owner_id
       - title
+      - owner_id
+      - description
       - updated_at
       - voltypes
+      - archive_reason
+      - is_active
       backend_only: false
   - role: intern
     permission:
       check: {}
       columns:
-      - description
       - id
-      - owner_id
       - title
+      - owner_id
+      - description
       - updated_at
       - voltypes
+      - archive_reason
+      - is_active
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - id
-      - owner_id
+      - archive_reason
       - description
+      - id
+      - is_active
+      - owner_id
       - title
-      - voltypes
       - updated_at
+      - voltypes
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1227,12 +1233,14 @@
   - role: core_volunteer
     permission:
       columns:
-      - id
-      - owner_id
+      - archive_reason
       - description
+      - id
+      - is_active
+      - owner_id
       - title
-      - voltypes
       - updated_at
+      - voltypes
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1240,12 +1248,14 @@
   - role: intern
     permission:
       columns:
-      - id
-      - owner_id
+      - archive_reason
       - description
+      - id
+      - is_active
+      - owner_id
       - title
-      - voltypes
       - updated_at
+      - voltypes
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1261,23 +1271,27 @@
   - role: core_team
     permission:
       columns:
-      - description
       - id
-      - owner_id
       - title
+      - owner_id
+      - description
       - updated_at
       - voltypes
+      - archive_reason
+      - is_active
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
-      - description
       - id
-      - owner_id
       - title
+      - owner_id
+      - description
       - updated_at
       - voltypes
+      - archive_reason
+      - is_active
       filter: {}
       check: {}
   delete_permissions:
@@ -1718,6 +1732,8 @@
       - wheelchair
       - last_contact_details
       - comm_mode
+      - is_active
+      - archive_reason
   - role: intern
     permission:
       check: {}
@@ -1732,63 +1748,73 @@
       - wheelchair
       - last_contact_details
       - comm_mode
+      - is_active
+      - archive_reason
   - role: public
     permission:
       check: {}
       columns:
+      - is_active
+      - media_willingness
+      - wheelchair
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
       - contact_status
       - hospital
-      - id
       - last_contact_details
       - media_engagement_details
-      - media_willingness
       - speech_therapist
-      - stroke_date
-      - wheelchair
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - id
-      - contact_status
-      - media_engagement_details
-      - hospital
-      - speech_therapist
+      - is_active
       - media_willingness
-      - stroke_date
       - wheelchair
-      - last_contact_details
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - id
-      - contact_status
-      - media_engagement_details
-      - hospital
-      - speech_therapist
+      - is_active
       - media_willingness
-      - stroke_date
       - wheelchair
-      - last_contact_details
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
       filter: {}
   - role: intern
     permission:
       columns:
-      - id
-      - contact_status
-      - media_engagement_details
-      - hospital
-      - speech_therapist
+      - is_active
       - media_willingness
-      - stroke_date
       - wheelchair
-      - last_contact_details
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
       filter: {}
   - role: public
     permission:
@@ -1799,31 +1825,35 @@
   - role: core_team
     permission:
       columns:
-      - id
-      - contact_status
-      - media_engagement_details
-      - hospital
-      - speech_therapist
+      - is_active
       - media_willingness
-      - stroke_date
       - wheelchair
-      - last_contact_details
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
-      - id
-      - contact_status
-      - media_engagement_details
-      - hospital
-      - speech_therapist
+      - is_active
       - media_willingness
-      - stroke_date
       - wheelchair
-      - last_contact_details
+      - stroke_date
+      - id
+      - archive_reason
       - comm_mode
+      - contact_status
+      - hospital
+      - last_contact_details
+      - media_engagement_details
+      - speech_therapist
       filter: {}
       check: {}
   delete_permissions:
@@ -2917,6 +2947,8 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
   - role: intern
     permission:
       check: {}
@@ -2929,13 +2961,22 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
   - role: public
     permission:
       check: {}
       columns:
+      - id
       - nickname
+      - is_speech_therapist
       - profession
       - ws_place
+      - status_reason
+      - rejected_date
+      - status
+      - is_active
+      - archive_reason
       backend_only: false
   select_permissions:
   - role: core_team
@@ -2949,6 +2990,8 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
       filter: {}
   - role: core_volunteer
     permission:
@@ -2961,6 +3004,8 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
       filter: {}
   - role: intern
     permission:
@@ -2973,6 +3018,8 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
       filter: {}
   - role: public
     permission:
@@ -2991,8 +3038,10 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
       filter: {}
-      check: null
+      check: {}
   - role: intern
     permission:
       columns:
@@ -3004,8 +3053,10 @@
       - status_reason
       - rejected_date
       - status
+      - is_active
+      - archive_reason
       filter: {}
-      check: null
+      check: {}
   delete_permissions:
   - role: core_team
     permission:
