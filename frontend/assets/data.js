@@ -103,14 +103,14 @@ export const TABLE_HEADERS = {
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
     { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
-    { text: 'Speech Therapist?', value: 'is_speech_therapist' },
+    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
     { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
-    { text: 'Programmes Involved In', value: 'projects', sortable: false },
+    { text: 'Programmes Involved', value: 'projects', sortable: false },
     { text: 'NOK', value: 'nok', sortable: false },
     { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
@@ -119,7 +119,7 @@ export const TABLE_HEADERS = {
   projects: [
     { text: 'Project Name', value: 'title' },
     { text: 'Upcoming DateTime', value: 'upcoming_date' },
-    { text: 'Is Recurring?', value: 'is_recurring' },
+    { text: 'Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs', sortable: false },
     { text: 'Notes', value: 'description' },
     { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
