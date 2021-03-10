@@ -75,6 +75,8 @@ mutation CreateAndUpdateProjectAssignment(
         }
         title
         voltypes
+        is_active
+        archive_reason
       }
     }
   }

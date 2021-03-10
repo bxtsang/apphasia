@@ -57,6 +57,8 @@ mutation CreateProject($project: projects_insert_input!) {
     title
     voltypes
     is_recurring
+    is_active
+    archive_reason
     upcoming_date
   }
 }

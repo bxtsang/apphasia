@@ -21,6 +21,8 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
     }
     contact_status
     hospital
+    is_active
+    archive_reason
     languages {
       language
     }
@@ -81,6 +83,8 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 #    ]},
 #    "contact_status": "Contacted",
 #    "hospital": "Tan Tock Seng",
+#    "is_active": true,
+#    "archive_reason": null,
 #    "languages": { "data": [
 #      {
 #        "language": "English"

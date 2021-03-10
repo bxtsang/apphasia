@@ -24,6 +24,8 @@ query GetSingleVol($id: Int!) {
     }
     id
     is_speech_therapist
+    is_active
+    archive_reason
     nickname
     profession
     project_vols {
