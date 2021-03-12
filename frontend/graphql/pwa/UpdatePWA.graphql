@@ -7,14 +7,6 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
   }
 
   insert_pwas_one(object: $pwa) {
-    befrienders {
-      volunteer {
-        id
-        general_info {
-          name
-        }
-      }
-    }
     comm_mode
     comm_diff {
       difficulty
@@ -37,12 +29,6 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
       project {
         id
         title
-      }
-    }
-    pwa_befriender_cores {
-      core_volunteer {
-        id
-        name
       }
     }
     speech_therapist
@@ -72,7 +58,6 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 #    "address": "10 Sirat Place"
 #  },
 #  "pwa": { #THIS VARIABLE IS EXACTLY THE SAME AS THE PWA OBJECT INSIDE INSERT
-#    "befrienders": {"data": []},
 #    "comm_mode": "Whatsapp",
 #    "comm_diff": {"data": [
 #      {
@@ -97,7 +82,6 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 #      }
 #    ]},
 #    "projects": {"data": []},
-#    "pwa_befriender_cores": {"data": []},
 #    "speech_therapist": "Evelyn",
 #    "stroke_date": "2020-01-01",
 #    "wheelchair": true,

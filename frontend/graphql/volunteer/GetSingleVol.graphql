@@ -13,15 +13,6 @@ query GetSingleVol($id: Int!) {
       name
       notes
     }
-    befrienders {
-      pwa_id
-      pwa {
-        general_info {
-          name
-        }
-        id
-      }
-    }
     id
     is_speech_therapist
     nickname

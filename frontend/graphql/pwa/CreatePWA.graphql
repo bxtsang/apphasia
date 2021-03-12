@@ -1,13 +1,5 @@
 mutation CreatePWA($pwa: pwas_insert_input!) {
   insert_pwas_one(object: $pwa) {
-    befrienders {
-      volunteer {
-        id
-        general_info {
-          name
-        }
-      }
-    }
     comm_mode
     comm_diff {
       difficulty
@@ -32,12 +24,6 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
         title
       }
     }
-    pwa_befriender_cores {
-      core_volunteer {
-        id
-        name
-      }
-    }
     speech_therapist
     stroke_date
     wheelchair
@@ -60,7 +46,6 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
 
 #{
 #  "pwa": {
-#    "befrienders": {"data": []},
 #    "comm_diff": {"data": [
 #      {
 #        "difficulty": "Speech"
@@ -84,7 +69,6 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
 #      }
 #    ]},
 #    "projects": {"data": []},
-#    "pwa_befriender_cores": {"data": []},
 #    "speech_therapist": "Evelyn",
 #    "stroke_date": "2020-01-01",
 #    "wheelchair": true,
