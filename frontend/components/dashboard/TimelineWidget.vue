@@ -67,13 +67,4 @@ export default {
 .v-timeline-item__body > .item::before, .v-timeline-item__body > .item::after {
   display: none !important;
 }
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #C4C4C4;
-  border-radius: 100vh;
-}
 </style>
