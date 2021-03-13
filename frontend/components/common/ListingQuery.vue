@@ -4,13 +4,14 @@
     :variables="queryVariables"
     @result="initItems"
   >
-    <template v-slot="{ result: { error, data }, isLoading }">
+    <template v-slot="{ result: { error, data }, isLoading, query }">
       <!-- Loading -->
       <div v-if="isLoading" class="d-flex justify-center">
         <v-progress-circular
           :size="50"
           color="primary"
           indeterminate
+          class="ma-6"
         />
       </div>
 
@@ -41,6 +42,9 @@
                 </v-col>
                 <v-col v-if="resourceType === 'events'" class="d-flex justify-end align-center">
                   <AddResourceModal :resourceType="resourceType" />
+                  <v-btn @click="query.refetch()" color="primary" outlined class="ml-3">
+                    <v-icon>mdi-reload</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
               <v-row v-if="resourceType === 'staffs'">
