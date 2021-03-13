@@ -24,15 +24,6 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
       name
       notes
     }
-    befrienders {
-      pwa_id
-      pwa {
-        general_info {
-          name
-        }
-        id
-      }
-    }
     id
     is_speech_therapist
     nickname

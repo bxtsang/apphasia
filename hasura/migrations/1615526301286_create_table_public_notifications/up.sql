@@ -1,0 +1,1 @@
+CREATE TABLE "public"."notifications"("id" serial NOT NULL, "staff_id" integer NOT NULL, "is_read" boolean NOT NULL DEFAULT false, "message" text NOT NULL, "type" text, PRIMARY KEY ("id") , FOREIGN KEY ("staff_id") REFERENCES "public"."staffs"("id") ON UPDATE restrict ON DELETE cascade);
