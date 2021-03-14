@@ -25,7 +25,8 @@
           :items="computedItems"
           :search="search"
           item-key="id"
-          class="elevation-1"
+          class="elevation-1 row-pointer"
+          @click:row="rowClickHandler"
         >
           <template v-slot:top>
             <v-container class="py-0" fluid>
@@ -127,7 +128,7 @@
             {{ item.start_time.slice(0,5) }} - {{ item.end_time.slice(0,5) }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
-            <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" />
+            <!-- <EditResourceModal v-if="editPermission" :resourceType="resourceType" :resource="item" :text="false" /> -->
             <v-btn v-if="resourceType === 'events'" :to="`/projects?id=${item.project_id}&tab=2&event=${item.id}`" icon>
               <v-icon large>
                 mdi-chevron-right
@@ -148,12 +149,11 @@
 
 <script>
 import { LIST_QUERY_PATHS, TABLE_HEADERS, ROLE_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from '../../assets/data'
-import EditResourceModal from './../modals/EditResourceModal'
 import VolunteerStatusChip from './../common/components/VolunteerStatusChip'
 import ContactStatusChip from './../common/components/ContactStatusChip'
 
 export default {
-  components: { EditResourceModal, VolunteerStatusChip, ContactStatusChip },
+  components: { VolunteerStatusChip, ContactStatusChip },
   props: {
     resourceType: {
       type: String,
@@ -218,7 +218,19 @@ export default {
   methods: {
     initItems (result) {
       this.items = result.data[this.resourceType]
+    },
+    rowClickHandler (item) {
+      if (this.resourceType === 'events') {
+        this.$router.push(`/projects?id=${item.project_id}&tab=2&event=${item.id}`)
+      } else {
+        this.$router.push(`/${this.resourceType}?id=${item.id}`)
+      }
     }
   }
 }
 </script>
+<style>
+.row-pointer div.v-data-table__wrapper table tbody tr:hover {
+  cursor: pointer;
+}
+</style>
