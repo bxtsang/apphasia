@@ -26,9 +26,6 @@ export default {
       }
     }
   },
-  mounted () {
-    console.log(this.$vuetify.theme.themes.light)
-  },
   computed: {
     color () {
       switch (this.notification.type) {
