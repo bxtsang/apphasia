@@ -38,8 +38,8 @@
             <v-col class="py-0">
               <v-autocomplete
                 v-model="assignmentData.id"
-                :label="vonlunteerLabel"
-                :items="vonlunteerItems"
+                :label="volunteerLabel"
+                :items="volunteerItems"
                 item-text="name"
                 item-value="id"
               />
@@ -142,7 +142,7 @@ export default {
     }
   },
   computed: {
-    vonlunteerLabel () {
+    volunteerLabel () {
       if (this.assignmentData.role === 'staff') {
         return 'Staff'
       }
@@ -151,7 +151,7 @@ export default {
       }
       return ''
     },
-    vonlunteerItems () {
+    volunteerItems () {
       if (this.assignmentData.role === 'staff') {
         return this.project.staffs.map((item) => {
           return {
