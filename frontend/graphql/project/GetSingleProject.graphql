@@ -57,6 +57,8 @@ query getSingleProject($id: Int!) {
       }
     }
     title
+    is_active
+    archive_reason
     voltypes
   }
 }
