@@ -181,7 +181,7 @@
           />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
-            {{ pwa ? 'Edit' : 'Save' }}
+            {{ pwa ? 'Save' : 'Add' }}
           </v-btn>
         </v-row>
       </v-container>

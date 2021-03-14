@@ -59,11 +59,11 @@
             </v-col>
           </v-row>
           <v-row v-if="assignmentData.id !== -1 && assignmentData.pwas.length > 0">
-            <v-spacer/>
+            <v-spacer />
             <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
-              {{ assignment ? 'Edit' : 'Save' }}
+              {{ assignment ? 'Save' : 'Add' }}
             </v-btn>
-            </v-row>
+          </v-row>
         </v-container>
       </v-form>
     </v-card>
