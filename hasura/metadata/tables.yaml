@@ -553,6 +553,24 @@
     using:
       foreign_key_constraint_on: pwa_id
   array_relationships:
+  - name: event_pwas
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_pwas
+        column_mapping:
+          pwa_id: pwa_id
+          project_id: project_id
+  - name: recurring_pwas
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring_pwas
+        column_mapping:
+          pwa_id: pwa_id
+          project_id: project_id
   - name: staffs_assigned
     using:
       manual_configuration:
@@ -1057,6 +1075,25 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
+  array_relationships:
+  - name: event_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: event_vols
+        column_mapping:
+          vol_id: vol_id
+          project_id: project_id
+  - name: recurring_vols
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: recurring_vols
+        column_mapping:
+          vol_id: vol_id
+          project_id: project_id
   insert_permissions:
   - role: core_team
     permission:
