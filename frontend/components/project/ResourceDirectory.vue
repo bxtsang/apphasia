@@ -265,7 +265,6 @@ export default {
     async upload () {
       const vm = this
       const f = document.getElementById('files')
-      this.loading = true
       if (this.googleAuth === undefined || this.googleAuth == null) {
         this.signInFunction()
         return
