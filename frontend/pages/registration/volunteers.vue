@@ -85,7 +85,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Consent</span>
+                <span class="input-label">Consent for Marketing Purposes</span>
                 <ConsentInput v-model="volunteer.general_info.data.consent" />
               </v-card>
             </v-col>
