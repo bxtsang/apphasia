@@ -1,6 +1,0 @@
-version: 2
-endpoint: http://HasuraGraphQLAPI-LoadBalancer-1395753423.ap-southeast-1.elb.amazonaws.com
-metadata_directory: metadata
-actions:
-  kind: synchronous
-  handler_webhook_baseurl: http://localhost:3000
