@@ -1240,6 +1240,7 @@
       - voltypes
       - archive_reason
       - is_active
+      - colour
       backend_only: false
   - role: intern
     permission:
@@ -1253,19 +1254,21 @@
       - voltypes
       - archive_reason
       - is_active
+      - colour
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - archive_reason
-      - description
-      - id
       - is_active
+      - id
       - owner_id
+      - archive_reason
+      - colour
+      - description
       - title
-      - updated_at
       - voltypes
+      - updated_at
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1273,14 +1276,15 @@
   - role: core_volunteer
     permission:
       columns:
-      - archive_reason
-      - description
-      - id
       - is_active
+      - id
       - owner_id
+      - archive_reason
+      - colour
+      - description
       - title
-      - updated_at
       - voltypes
+      - updated_at
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1288,14 +1292,15 @@
   - role: intern
     permission:
       columns:
-      - archive_reason
-      - description
-      - id
       - is_active
+      - id
       - owner_id
+      - archive_reason
+      - colour
+      - description
       - title
-      - updated_at
       - voltypes
+      - updated_at
       computed_fields:
       - is_recurring
       - upcoming_date
@@ -1319,6 +1324,7 @@
       - voltypes
       - archive_reason
       - is_active
+      - colour
       filter: {}
       check: {}
   - role: intern
@@ -1332,6 +1338,7 @@
       - voltypes
       - archive_reason
       - is_active
+      - colour
       filter: {}
       check: {}
   delete_permissions:
