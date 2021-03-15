@@ -7,5 +7,5 @@ hasura/hasura.exe
 token_drive_v3.pickle
 aphasiasg.json
 frontend/cypress/videos
-.tfvars
+*.tfvars
 .terraform
