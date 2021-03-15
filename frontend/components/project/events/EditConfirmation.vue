@@ -11,39 +11,39 @@
         v-on="on"
         :loading="loading"
       >
-        Edit
+        Save
       </v-btn>
     </template>
     <v-card>
       <v-form ref="form" v-model="valid" @submit.prevent="triggerEdit">
-      <v-card-title class="headline">
-        Confirm changes?
-      </v-card-title>
-      <v-divider />
-      <div class="mt-4 pa-3">
-        Editing Event: <span class="font-weight-bold">{{ event.name }}</span>
-        <div class="mt-4">
-          <span v-if="event.recurring === null && newEventData.recurringData.frequency !== 'None'">Converting to a recurring event</span>
-          <span v-else-if="event.recurring !== null && newEventData.recurringData.frequency === 'None'">Converting to a single event</span>
-          <v-radio-group v-else-if="event.recurring !== null" v-model="eventOption" class="mt-0">
-            <v-radio
-              v-for="option in EDIT_OPTIONS"
-              :key="option.value"
-              :label="option.text"
-              :value="option.value"
-            />
-          </v-radio-group>
+        <v-card-title class="headline">
+          Confirm changes?
+        </v-card-title>
+        <v-divider />
+        <div class="mt-4 pa-3">
+          Editing Event: <span class="font-weight-bold">{{ event.name }}</span>
+          <div class="mt-4">
+            <span v-if="event.recurring === null && newEventData.recurringData.frequency !== 'None'">Converting to a recurring event</span>
+            <span v-else-if="event.recurring !== null && newEventData.recurringData.frequency === 'None'">Converting to a single event</span>
+            <v-radio-group v-else-if="event.recurring !== null" v-model="eventOption" class="mt-0">
+              <v-radio
+                v-for="option in EDIT_OPTIONS"
+                :key="option.value"
+                :label="option.text"
+                :value="option.value"
+              />
+            </v-radio-group>
+          </div>
         </div>
-      </div>
-      <v-card-actions>
-        <v-spacer />
-        <v-btn
-          color="primary"
-          type="submit"
-        >
-          Confirm
-        </v-btn>
-      </v-card-actions>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="primary"
+            type="submit"
+          >
+            Confirm
+          </v-btn>
+        </v-card-actions>
       </v-form>
     </v-card>
   </v-dialog>

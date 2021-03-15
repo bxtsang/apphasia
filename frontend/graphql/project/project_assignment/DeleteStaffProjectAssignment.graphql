@@ -66,6 +66,8 @@ mutation DeleteStaffProjectAssignment(
         }
         title
         voltypes
+        is_active
+        archive_reason
       }
     }
   }

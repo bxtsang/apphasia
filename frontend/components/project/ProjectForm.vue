@@ -80,7 +80,7 @@
               </div>
               <v-spacer/>
               <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
-                {{ project ? 'Edit' : 'Save' }}
+                {{ project ? 'Save' : 'Add' }}
               </v-btn>
             </v-row>
           </v-col>

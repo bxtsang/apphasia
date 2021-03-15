@@ -95,7 +95,7 @@ export const TABLE_HEADERS = {
     { text: 'Profession', value: 'profession' },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: 'projects_in', sortable: false },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
@@ -105,7 +105,7 @@ export const TABLE_HEADERS = {
     { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
@@ -114,7 +114,7 @@ export const TABLE_HEADERS = {
     { text: 'NOK', value: 'nok', sortable: false },
     { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   projects: [
     { text: 'Project Name', value: 'title' },
@@ -122,13 +122,13 @@ export const TABLE_HEADERS = {
     { text: 'Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs', sortable: false },
     { text: 'Notes', value: 'description' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   events: [
     { text: 'Name', value: 'name' },
     { text: 'Date', value: 'date' },
     { text: 'Time', value: 'event_time' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ]
 }
 

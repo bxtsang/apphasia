@@ -138,7 +138,7 @@
           </v-btn>
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
-            {{ staff ? 'Edit' : 'Save' }}
+            {{ staff ? 'Save' : 'Add' }}
           </v-btn>
         </v-row>
       </v-container>

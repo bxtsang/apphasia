@@ -57,6 +57,8 @@ query getAllProjects {
       }
     }
     title
+    is_active
+    archive_reason
     voltypes
   }
 }
