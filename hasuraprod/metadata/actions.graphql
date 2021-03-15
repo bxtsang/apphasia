@@ -1,2 +1,214 @@
+type Mutation {
+  CreateCognitoUser (
+    email: String!
+    password: String!
+    role: String!
+    user_id: Int!
+  ): CreateUserResponse
+}
 
+
+type Mutation {
+  DeleteCognitoUser (
+    email: String!
+    user_id: Int!
+  ): DeleteUserResponse
+}
+
+
+type Mutation {
+  DeleteEvents (
+    eventData: DeleteEventsInput
+  ): DeleteResponse
+}
+
+
+type Mutation {
+  InsertEventOrRecurring (
+    newEventData: InsertEventOrRecurringInput!
+  ): InsertResponse
+}
+
+
+type Mutation {
+  UpdateCognitoUser (
+    email: String!
+    user_id: Int!
+    current_role: String!
+    new_role: String!
+  ): UpdateUserResponse
+}
+
+
+type Mutation {
+  UpdateEventOrRecurring (
+    updateEventData: UpdateEventOrRecurringInput!
+  ): UpdateEventsResponse
+}
+
+
+
+
+input SupervisorInput {
+  supervisor_id : Int!
+}
+
+input SupervisorData {
+  data : SupervisorInput!
+}
+
+input recurrence {
+  day : Int!
+  week : Int
+  interval : Int!
+  name : String!
+  frequency : String!
+  end_date : date
+  start_time : time!
+  end_time : time!
+}
+
+input dateTimes {
+  project_id : Int!
+  recurrence_id : Int
+  start_date : date!
+  new_recurrence : Boolean!
+  end_date : date
+  previous_end_date : date
+  recurrence : recurrence
+}
+
+input insertEventOrRecurringInput {
+  day : Int
+  week : Int
+  interval : Int
+  name : String!
+  frequency : String
+  end_date : date
+  start_date : date
+  start_time : time
+  end_time : time
+  project_id : Int
+  note : String
+}
+
+input VolIDInput {
+  vol_id : Int!
+}
+
+input EventVolunteerInput {
+  data : [VolIDInput]
+}
+
+input PWAIDInput {
+  pwa_id : Int!
+}
+
+input EventPWAInput {
+  data : [PWAIDInput]
+}
+
+input RecurringDataInput {
+  day : Int!
+  week : Int
+  interval : Int!
+  frequency : String!
+  end_date : date
+}
+
+input InsertEventOrRecurringInput {
+  name : String!
+  start_date : date!
+  start_time : time!
+  end_time : time!
+  project_id : Int!
+  note : String
+  volunteers : EventVolunteerInput
+  pwas : EventPWAInput
+  recurringData : RecurringDataInput
+}
+
+input DeleteEventsInput {
+  date : date
+  event_id : Int
+  recurrence_id : Int
+}
+
+input EventVolInput {
+  vol_id : Int!
+}
+
+input EventPwaInput {
+  pwa_id : Int!
+}
+
+input UpdateRecurringDataInput {
+  id : Int
+  day : Int!
+  week : Int
+  interval : Int!
+  name : String
+  note : String
+  frequency : String!
+  start_date : date!
+  end_date : date
+  start_time : time
+  end_time : time
+  pwas : [Int!]!
+  volunteers : [Int!]!
+  is_all : Int!
+}
+
+input UpdateEventOrRecurringInput {
+  id : Int!
+  project_id : Int!
+  date : date!
+  note : String
+  start_time : time!
+  end_time : time!
+  name : String!
+  volunteers : EventVolunteerInput
+  pwas : EventPWAInput
+  recurringData : UpdateRecurringDataInput
+}
+
+type CreateUserResponse {
+  status : String!
+  message : String!
+}
+
+type UpdateUserResponse {
+  status : String!
+  message : String!
+}
+
+type DeleteUserResponse {
+  status : String!
+  message : String!
+}
+
+type EventsResponse {
+  status : String!
+  message : String!
+}
+
+type insertResponse {
+  message : String!
+  status : String!
+}
+
+type InsertResponse {
+  message : String!
+  status : String!
+}
+
+type DeleteResponse {
+  message : String!
+  status : String!
+}
+
+type UpdateEventsResponse {
+  status : String!
+  message : String!
+}
 

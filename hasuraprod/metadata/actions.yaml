@@ -1,6 +1,70 @@
-actions: []
+actions:
+- name: CreateCognitoUser
+  definition:
+    kind: synchronous
+    handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
+  permissions:
+  - role: core_team
+- name: DeleteCognitoUser
+  definition:
+    kind: synchronous
+    handler: https://bnpzp70foh.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+- name: DeleteEvents
+  definition:
+    kind: synchronous
+    handler: https://750a9vn0z1.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+  - role: intern
+- name: InsertEventOrRecurring
+  definition:
+    kind: synchronous
+    handler: https://lh1hdfcdf6.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
+- name: UpdateCognitoUser
+  definition:
+    kind: synchronous
+    handler: https://2tnogbimkc.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+- name: UpdateEventOrRecurring
+  definition:
+    kind: synchronous
+    handler: https://x4bbv8b153.execute-api.ap-southeast-1.amazonaws.com/dev
+  permissions:
+  - role: core_team
+  - role: intern
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+  - name: SupervisorInput
+  - name: SupervisorData
+  - name: recurrence
+  - name: dateTimes
+  - name: insertEventOrRecurringInput
+  - name: VolIDInput
+  - name: EventVolunteerInput
+  - name: PWAIDInput
+  - name: EventPWAInput
+  - name: RecurringDataInput
+  - name: InsertEventOrRecurringInput
+  - name: DeleteEventsInput
+  - name: EventVolInput
+  - name: EventPwaInput
+  - name: UpdateRecurringDataInput
+  - name: UpdateEventOrRecurringInput
+  objects:
+  - name: CreateUserResponse
+  - name: UpdateUserResponse
+  - name: DeleteUserResponse
+  - name: EventsResponse
+  - name: insertResponse
+  - name: InsertResponse
+  - name: DeleteResponse
+  - name: UpdateEventsResponse
   scalars: []
