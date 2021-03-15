@@ -6,6 +6,8 @@ mutation CreatePWA($pwa: pwas_insert_input!) {
     }
     contact_status
     hospital
+    is_active
+    archive_reason
     languages {
       language
     }

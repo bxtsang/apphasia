@@ -6,6 +6,8 @@ query GetSinglePWA ($id: Int!) {
     }
     contact_status
     hospital
+    is_active
+    archive_reason
     languages {
       language
     }
