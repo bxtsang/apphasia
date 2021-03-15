@@ -12,6 +12,7 @@ query getAllProjects {
         }
       }
     }
+    colour
     upcoming_date
     is_recurring
     description

@@ -12,6 +12,7 @@ query getSingleProject($id: Int!) {
         }
       }
     }
+    colour
     upcoming_date
     is_recurring
     description
