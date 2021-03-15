@@ -1,3 +1,12 @@
+variable "region" {}
+variable "domain" {}
+variable "hasura_admin_secret" {}
+variable "hasura_jwt_secret_algo" {}
+variable "hasura_jwt_secret_key" {}
+variable "rds_username" {}
+variable "rds_password" {}
+variable "ecs_cluster_name" {}
+
 module "hasura" {
   source                          = "Rayraegah/hasura/aws"
   version                         = "3.1.1"
@@ -17,6 +26,7 @@ module "hasura" {
   vpc_enable_dns_hostnames        = "false"
   ecs_cluster_name                = var.ecs_cluster_name
   create_iam_service_linked_role = false
+
 }
 
 provider "aws" {
