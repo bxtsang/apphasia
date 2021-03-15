@@ -1,5 +1,6 @@
 mutation CreateProject($project: projects_insert_input!) {
   insert_projects_one(object: $project) {
+    colour
     description
     id
     owner {
@@ -66,6 +67,7 @@ mutation CreateProject($project: projects_insert_input!) {
 # {
 #   "project": {
 #     "title": "New title",
+#     "colour": "blue",
 #     "description": "My new project",
 #     "owner_id": 1,
 #     "pwas": {"data": [
