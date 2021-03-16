@@ -4,6 +4,8 @@
     :label="label"
     :items="vol_voltypes"
     :readonly="readonly"
+    hint="Select the type of volunteers that can be qualified for this project (e.g. befrienders: only befrienders can volunteer)"
+    persistent-hint
   />
 </template>
 <script>
