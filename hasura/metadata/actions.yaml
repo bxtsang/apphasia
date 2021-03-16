@@ -26,6 +26,10 @@ actions:
   - role: core_team
   - role: core_volunteer
   - role: intern
+- name: notify
+  definition:
+    kind: synchronous
+    handler: https://9z4qx4o0aa.execute-api.ap-southeast-1.amazonaws.com/dev/notifyStaff
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -67,4 +71,5 @@ custom_types:
   - name: InsertResponse
   - name: DeleteResponse
   - name: UpdateEventsResponse
+  - name: notifyResponse
   scalars: []
