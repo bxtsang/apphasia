@@ -55,6 +55,7 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
     }
     title
     voltypes
+    colour
     is_recurring
     is_active
     archive_reason
@@ -73,6 +74,7 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
 #   "staffs_to_remove": [7],
 #   "project": {
 #     "title": "Aphasia SG Choir",
+#     "colour": "blue",
 #     "description": "Sing some songs!",
 #     "owner_id": 2,
 #     "voltypes": "Project_Volunteer",

@@ -31,6 +31,18 @@ type Mutation {
 
 
 type Mutation {
+  notify (
+    table: String!
+    operation: String!
+    entity_id: Int!
+    project_title: String
+    people_num: Int
+    staff_id: Int
+  ): notifyResponse
+}
+
+
+type Mutation {
   UpdateCognitoUser (
     email: String!
     user_id: Int!
@@ -208,6 +220,11 @@ type DeleteResponse {
 }
 
 type UpdateEventsResponse {
+  status : String!
+  message : String!
+}
+
+type notifyResponse {
   status : String!
   message : String!
 }
