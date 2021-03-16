@@ -34,7 +34,7 @@
                   </v-col>
                   <v-col class="d-flex justify-end">
                     <EditResourceModal
-                      v-if="$auth.user['custom:role'] === 'core_team'"
+                      v-if="editPermission"
                       :resourceType="resourceType"
                       :resource="data.staffs[0]"
                       :text="true"
@@ -209,7 +209,7 @@
   </v-row>
 </template>
 <script>
-import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
+import { ROLE_OPTIONS, GENDER_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from './../../assets/data'
 import EditResourceModal from './../modals/EditResourceModal'
 
 export default {
@@ -224,7 +224,14 @@ export default {
     return {
       staffId: Number(this.$route.query.id),
       ROLE_OPTIONS,
-      GENDER_OPTIONS
+      GENDER_OPTIONS,
+      EDIT_RESOURCE_PERMISSIONS
+    }
+  },
+
+  computed: {
+    editPermission () {
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
     }
   }
 }
