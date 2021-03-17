@@ -41,7 +41,19 @@
                     />
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row v-if="!data.staffs[0].is_active" class="mt-2">
+                  <v-col class="py-0">
+                    <v-chip color="error">
+                      Archived
+                    </v-chip>
+                  </v-col>
+                </v-row>
+                <v-row v-if="!data.staffs[0].is_active">
+                  <v-col class="py-0 mt-1">
+                    <span class="font-italic">Reason for archiving: {{ data.staffs[0].archive_reason }}</span>
+                  </v-col>
+                </v-row>
+                <v-row class="mt-4">
                   <v-col cols="12" class="py-0">
                     <span>Role</span>
                   </v-col>
