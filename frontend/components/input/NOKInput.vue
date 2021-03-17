@@ -3,7 +3,7 @@
     <div v-for="(nok, index) in data" :key="index">
       <v-row>
         <v-col cols="12" class="py-0 d-flex">
-          <span class="font-weight-bold">({{ index + 1 }}) Next-of-Kin Information</span>
+          <span class="font-weight-bold">({{ index + 1 }}) Caregiver Information</span>
           <v-spacer />
           <v-btn icon small @click="() => { removeNOK(index) }"><v-icon>mdi-close</v-icon></v-btn>
         </v-col>
@@ -50,7 +50,7 @@
 
     <v-row class="mt-3" v-if="data.length < 3">
       <v-col cols="12" class="py-0 d-flex justify-center">
-        <v-btn color="warning" class="my-3" @click="addNOK">Add Next-of-Kin</v-btn>
+        <v-btn color="warning" class="my-3" @click="addNOK">Add Caregiver</v-btn>
       </v-col>
     </v-row>
 
