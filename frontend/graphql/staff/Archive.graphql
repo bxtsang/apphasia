@@ -1,0 +1,11 @@
+mutation ($id: Int!, $archive_reason: String) {
+  update_staffs_by_pk (
+    pk_columns: {id: $id}
+    _set: {
+      is_active: false,
+      archive_reason: $archive_reason
+    }
+  ) {
+    id
+  }
+}
