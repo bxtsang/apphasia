@@ -31,14 +31,9 @@ type Mutation {
 
 
 type Mutation {
-  notify (
-    table: String!
-    operation: String!
-    entity_id: Int!
-    project_title: String
-    people_num: Int
-    staff_id: Int
-  ): notifyResponse
+  Notify (
+    notifyData: NotifyInput!
+  ): NotifyResponse
 }
 
 
@@ -184,6 +179,16 @@ input UpdateEventOrRecurringInput {
   recurringData : UpdateRecurringDataInput
 }
 
+input NotifyInput {
+  table : String!
+  operation : String!
+  entity_id : Int!
+  project_title : String
+  people_num : Int
+  staff_id : Int
+  staffs : json
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -225,6 +230,11 @@ type UpdateEventsResponse {
 }
 
 type notifyResponse {
+  status : String!
+  message : String!
+}
+
+type NotifyResponse {
   status : String!
   message : String!
 }

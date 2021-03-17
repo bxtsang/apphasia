@@ -398,6 +398,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       backend_only: false
   select_permissions:
   - role: core_team
@@ -410,6 +411,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   - role: core_volunteer
     permission:
@@ -421,6 +423,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   - role: intern
     permission:
@@ -432,6 +435,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   update_permissions:
   - role: core_team
@@ -444,6 +448,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
   - role: core_volunteer
@@ -456,6 +461,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
   - role: intern
@@ -468,8 +474,13 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: people_external
