@@ -133,7 +133,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <ArchiveResourceDialog :staff="staff" />
+          <ArchiveResourceDialog :resource="staff" resource-type="staffs" />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}

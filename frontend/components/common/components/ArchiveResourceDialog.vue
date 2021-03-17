@@ -17,11 +17,11 @@
     <v-card>
       <v-form ref="form" v-model="valid" @submit.prevent="triggerEdit">
         <v-card-title class="headline">
-          Archive Staff
+          Archive {{ resourceType.charAt(0).toUpperCase() + resourceType.substr(1, resourceType.length-2) }}
         </v-card-title>
         <v-divider />
         <div class="mt-4 pa-3">
-          Archiving staff: <span class="font-weight-bold">{{ staff.name }}</span>
+          Archiving {{ resourceType.substr(0, resourceType.length - 1) }}: <span class="font-weight-bold">{{ resource.name }}</span>
           <div class="mt-4">
             <v-text-field
               v-model="archiveReason"
@@ -48,8 +48,12 @@ export default {
   name: 'ArchiveResourceDialog',
 
   props: {
-    staff: {
+    resource: {
       type: Object,
+      default: null
+    },
+    resourceType: {
+      type: String,
       default: null
     }
   },
