@@ -75,7 +75,8 @@ export default {
         mutation,
         variables: {
           id: this.resource.id,
-          archive_reason: this.archiveReason
+          archive_reason: null,
+          is_active: false
         },
         update: (store, { data: { id: resourceId } }) => {
           this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
@@ -83,7 +84,6 @@ export default {
       }).then((data) => {
         this.isSubmitting = false
         this.isOpen = false
-        this.$emit('archived')
         this.$store.commit('notification/newNotification', ['Staff successfully archived', 'success'])
       }).catch((error) => {
         this.isSubmitting = false

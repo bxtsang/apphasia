@@ -133,7 +133,8 @@
       </v-container>
       <v-container>
         <v-row>
-          <ArchiveResourceDialog v-if="staff" :resource="staff" resource-type="staffs" @archived="$emit('closeForm')" />
+          <ArchiveResourceDialog v-if="staff && staff.is_active" :resource="staff" resource-type="staffs" />
+          <UnarchiveResourceDialog v-else-if="staff && !staff.is_active" :resource="staff" resource-type="staffs" />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}
@@ -211,7 +212,8 @@ export default {
         languages: this.staff ? this.staff.languages.map(item => item.language) : [],
         supervisors: this.staff ? this.staff.supervisors.map(item => item.supervisor.id) : [],
         is_active: this.staff ? this.staff.is_active : true
-      }
+      },
+      archiveDialog: true
     }
   },
   computed: {
