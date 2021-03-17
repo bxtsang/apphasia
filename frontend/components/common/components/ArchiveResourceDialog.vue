@@ -75,7 +75,7 @@ export default {
         mutation,
         variables: {
           id: this.resource.id,
-          archive_reason: null,
+          archive_reason: this.archiveReason,
           is_active: false
         },
         update: (store, { data: { id: resourceId } }) => {

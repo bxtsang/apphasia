@@ -50,7 +50,7 @@
                 </v-row>
                 <v-row v-if="!data.staffs[0].is_active">
                   <v-col class="py-0 mt-1">
-                    <span class="font-italic">Reason for archiving: {{ data.staffs[0].archive_reason }}</span>
+                    <span class="font-italic">Reason for archiving: {{ data.staffs[0].archive_reason ? data.staffs[0].archive_reason : 'None' }}</span>
                   </v-col>
                 </v-row>
                 <v-row class="mt-4">
