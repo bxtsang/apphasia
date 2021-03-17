@@ -133,9 +133,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-btn v-if="staff" color="error" class="my-3" @click="() => {editStaff(true)}">
-            Archive
-          </v-btn>
+          <ArchiveResourceDialog :staff="staff" />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}
