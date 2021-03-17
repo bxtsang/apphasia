@@ -82,6 +82,9 @@ def calculate_mean(my_list):
 
 def lambda_handler(event, context):
     try:
+        print(event)
+        event_body = json.loads(event['body']) if "body" in event and event['body'] else {"resources": "pwas"}
+        resources = event_body['resources'] if 'resources' in event_body else "pwas" 
         today = datetime.now()
         year_ago = today - timedelta(days=365)
         six_months_ago = today - timedelta(days=365/2)
@@ -257,22 +260,31 @@ def lambda_handler(event, context):
                 else:
                     pwa_languages[pwa_lang] = [name]
 
-        pwas_list.sort(key=lambda x:x[2])
-        mean_pwa_age = calculate_mean(pwas_list)
-
         project_events = {}
-        pwa_capture_age = {
-            "Mean age of PWAs overall": mean_pwa_age,
-            "Name of youngest PWAs overall": pwas_list[0][1],
-            "Name of oldest PWAs overall": pwas_list[-1][1],
-            "Age range of PWAs overall": f"{pwas_list[0][2]} - {pwas_list[-1][2]}"
-        }
-        vol_capture_age = {
-            "Mean age of volunteers overall": mean_vol_age,
-            "Name of youngest volunteer overall": volunteers_list[0][1],
-            "Name of oldest volunteer overall": volunteers_list[-1][1],
-            "Age range of volunteers overall": f"{volunteers_list[0][2]} - {volunteers_list[-1][2]}"
-        }
+        if pwas_list:
+            pwas_list.sort(key=lambda x:x[2])
+            mean_pwa_age = calculate_mean(pwas_list)
+    
+            
+            pwa_capture_age = {
+                "Mean age of PWAs overall": mean_pwa_age,
+                "Name of youngest PWAs overall": pwas_list[0][1],
+                "Name of oldest PWAs overall": pwas_list[-1][1],
+                "Age range of PWAs overall": f"{pwas_list[0][2]} - {pwas_list[-1][2]}"
+            }
+        else:
+            pwa_capture_age = {}
+
+        if volunteers_list:
+            vol_capture_age = {
+                "Mean age of volunteers overall": mean_vol_age,
+                "Name of youngest volunteer overall": volunteers_list[0][1],
+                "Name of oldest volunteer overall": volunteers_list[-1][1],
+                "Age range of volunteers overall": f"{volunteers_list[0][2]} - {volunteers_list[-1][2]}"
+            }
+        else:
+            vol_capture_age = {}
+
         for proj in projects:
             title = proj['title']
             title_year_key = f"# of {title} sessions attended this year"
@@ -290,22 +302,26 @@ def lambda_handler(event, context):
             for vol in proj['volunteers']:
                 vol_id = vol['vol_id']
                 volunteers.append(volunteers_dict[vol_id])
-            volunteers.sort(key=lambda x:x[2])
-            vol_capture_age[f"Mean age of volunteers for {proj['title']}"] = calculate_mean(volunteers)
-            vol_capture_age[f"Name of youngest volunteer for {proj['title']}"] = volunteers[0][1]
-            vol_capture_age[f"Name of oldest volunteer for {proj['title']}"] = volunteers[-1][1]
-            vol_capture_age[f"Age range of volunteers for {proj['title']}"] = f"{volunteers[0][2]} - {volunteers[-1][2]}"
+            
+            if volunteers:
+                volunteers.sort(key=lambda x:x[2])
+                vol_capture_age[f"Mean age of volunteers for {proj['title']}"] = calculate_mean(volunteers)
+                vol_capture_age[f"Name of youngest volunteer for {proj['title']}"] = volunteers[0][1]
+                vol_capture_age[f"Name of oldest volunteer for {proj['title']}"] = volunteers[-1][1]
+                vol_capture_age[f"Age range of volunteers for {proj['title']}"] = f"{volunteers[0][2]} - {volunteers[-1][2]}"
 
             # Generate project PWAs details
             pwas = []
             for pwa in proj['pwas']:
                 pwa_id = pwa['pwa_id']
                 pwas.append(pwas_dict[pwa_id])
-            pwas.sort(key=lambda x:x[2])
-            pwa_capture_age[f"Mean age of PWAs for {proj['title']}"] = calculate_mean(pwas)
-            pwa_capture_age[f"Name of youngest PWAs for {proj['title']}"] = pwas[0][1]
-            pwa_capture_age[f"Name of oldest PWAs for {proj['title']}"] = pwas[-1][1]
-            pwa_capture_age[f"Age range of PWAs for {proj['title']}"] = f"{pwas[0][2]} - {pwas[-1][2]}"
+            
+            if pwas:
+                pwas.sort(key=lambda x:x[2])
+                pwa_capture_age[f"Mean age of PWAs for {proj['title']}"] = calculate_mean(pwas)
+                pwa_capture_age[f"Name of youngest PWAs for {proj['title']}"] = pwas[0][1]
+                pwa_capture_age[f"Name of oldest PWAs for {proj['title']}"] = pwas[-1][1]
+                pwa_capture_age[f"Age range of PWAs for {proj['title']}"] = f"{pwas[0][2]} - {pwas[-1][2]}"
 
         # Generate event details
         for event in result_events:
@@ -429,10 +445,11 @@ def lambda_handler(event, context):
         }
         return {
             'statusCode': 200,
-            'body': json.dumps(result)
+            'body': json.dumps(result[resources] if resources in result else result['pwas'])
         }
     except Exception as e:
+        raise e
         return {
             'statusCode': 500,
-            'body': json.dumps(e.message)
+            'body': "Internal server error"
         }
