@@ -248,7 +248,7 @@
                     <div v-for="(nok, index) in data.pwas_by_pk.nok" :key="index">
                       <v-row>
                         <v-col cols="12" class="py-0 d-flex">
-                          <span class="font-weight-bold">({{ index + 1 }}) Next-of-Kin Information</span>
+                          <span class="font-weight-bold">({{ index + 1 }}) Caregiver Information</span>
                         </v-col>
                       </v-row>
                       <v-row>

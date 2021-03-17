@@ -22,7 +22,7 @@ export const PWA_CONTACT_STATUS_OPTIONS = [
 
 export const PWA_PREFFERED_CONTACTED_OPTIONS = [
   'Whatsapp',
-  'Telegram',
+  'Email',
   'SMS',
   'Call'
 ]
