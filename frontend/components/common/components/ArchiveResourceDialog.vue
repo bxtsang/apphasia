@@ -15,7 +15,7 @@
       </v-btn>
     </template>
     <v-card>
-      <v-form ref="form" v-model="valid" @submit.prevent="triggerEdit">
+      <v-form ref="form" v-model="valid" @submit.prevent="archiveResource">
         <v-card-title class="headline">
           Archive {{ resourceType.charAt(0).toUpperCase() + resourceType.substr(1, resourceType.length-2) }}
         </v-card-title>
@@ -61,6 +61,13 @@ export default {
   data () {
     return {
       archiveReason: ''
+    }
+  },
+
+  methods: {
+    archiveResource () {
+      const path = './../../../graphql/' + this.resourceType.substr(0, this.resourceType.length) + '/Archive.graphql'
+      const mutation = require(path)
     }
   }
 }
