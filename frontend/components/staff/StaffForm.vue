@@ -134,7 +134,7 @@
       <v-container>
         <v-row>
           <ArchiveResourceDialog v-if="staff && staff.is_active" :resource="staff" resource-type="staffs" />
-          <UnarchiveResourceDialog v-else-if="staff && !staff.is_active" :resource="staff" resource-type="staffs" />
+          <RestoreResourceDialog v-else-if="staff && !staff.is_active" :resource="staff" resource-type="staffs" />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}
