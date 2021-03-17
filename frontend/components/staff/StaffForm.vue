@@ -133,7 +133,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <ArchiveResourceDialog :resource="staff" resource-type="staffs" />
+          <ArchiveResourceDialog :resource="staff" resource-type="staffs" @archived="$emit('closeForm')" />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}

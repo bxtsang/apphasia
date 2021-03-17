@@ -9,13 +9,12 @@
         class="my-3 mr-3"
         v-bind="attrs"
         v-on="on"
-        :loading="loading"
       >
         Archive
       </v-btn>
     </template>
     <v-card>
-      <v-form ref="form" v-model="valid" @submit.prevent="archiveResource">
+      <v-form ref="form" @submit.prevent="archiveResource">
         <v-card-title class="headline">
           Archive {{ resourceType.charAt(0).toUpperCase() + resourceType.substr(1, resourceType.length-2) }}
         </v-card-title>
@@ -34,6 +33,7 @@
           <v-btn
             color="error"
             type="submit"
+            :loading="isSubmitting"
           >
             Confirm
           </v-btn>
@@ -60,14 +60,35 @@ export default {
 
   data () {
     return {
-      archiveReason: ''
+      archiveReason: '',
+      isOpen: false,
+      isSubmitting: false
     }
   },
 
   methods: {
     archiveResource () {
-      const path = './../../../graphql/' + this.resourceType.substr(0, this.resourceType.length) + '/Archive.graphql'
-      const mutation = require(path)
+      this.isSubmitting = true
+      const mutation = require('./../../../graphql/staff/Archive.graphql')
+
+      this.$apollo.mutate({
+        mutation,
+        variables: {
+          id: this.resource.id,
+          archive_reason: this.archiveReason
+        },
+        update: (store, { data: { id: resourceId } }) => {
+          this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+        }
+      }).then((data) => {
+        this.isSubmitting = false
+        this.isOpen = false
+        this.$emit('archived')
+        this.$store.commit('notification/newNotification', ['Staff successfully archived', 'success'])
+      }).catch((error) => {
+        this.isSubmitting = false
+        this.$store.commit('notification/newNotification', [error.message, 'error'])
+      })
     }
   }
 }
