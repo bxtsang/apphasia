@@ -1,5 +1,5 @@
 version: 2
-endpoint: http://HasuraGraphQLAPI-LoadBalancer-1395753423.ap-southeast-1.elb.amazonaws.com
+endpoint: https://hasura.apphasia.cf
 metadata_directory: metadata
 actions:
   kind: synchronous
