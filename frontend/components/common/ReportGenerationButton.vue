@@ -24,8 +24,7 @@ export default {
   data () {
     return {
       isLoading: false,
-      generationLink: 'https://cj00d9qd80.execute-api.ap-southeast-1.amazonaws.com/dev',
-      sheets: [{ c: 2 }]
+      generationLink: 'https://cj00d9qd80.execute-api.ap-southeast-1.amazonaws.com/dev'
     }
   },
   methods: {
@@ -42,8 +41,10 @@ export default {
             this.generateProjectsReport(response.data)
             break
           case 'volunteers':
+            this.generateExternalPeopleReport(response.data, 'Volunteer')
             break
           default: // pwas
+            this.generateExternalPeopleReport(response.data, 'PWA')
             break
         }
       }).catch((error) => {
@@ -52,16 +53,61 @@ export default {
     },
     generateProjectsReport (data) {
       const workbook = utils.book_new()
-      const dataArray = [['Project Analytics', ''], ['Project Name', '# of events per year']]
+      const dataArray = [['Project Name', '# of events per year']]
       for (const projectName in data) {
         dataArray.push([projectName, data[projectName]])
       }
       const worksheet = utils.aoa_to_sheet(dataArray)
-      utils.book_append_sheet(workbook, worksheet, 'Sheet 1')
+      utils.book_append_sheet(workbook, worksheet, 'Project Analytics')
       writeFile(workbook, `projects_report_${new Date().toString().substring(4, 15)}.xlsx`)
     },
-    generateExternalPeopleReport (data) {
+    generateExternalPeopleReport (data, type) {
+      const _ = require('lodash')
+      const workbook = utils.book_new()
 
+      // Attendance Tracking
+
+      // Create Age Analytics
+      const ageArray = [Object.keys(data['Capture Age'])]
+      const rowArray = []
+      for (const value in data['Capture Age']) {
+        rowArray.push(data['Capture Age'][value])
+      }
+      ageArray.push(rowArray)
+      const ageWorksheet = utils.aoa_to_sheet(ageArray)
+      utils.book_append_sheet(workbook, ageWorksheet, 'Age Analytics')
+
+      // Capture attrition rate
+      let attritionArray = [Object.keys(data['Capture attrition rate'])]
+      const attritionRowArray = []
+      for (const value in data['Capture attrition rate']) {
+        attritionRowArray.push(data['Capture attrition rate'][value])
+      }
+      attritionArray = [...attritionArray, ..._.zip(...attritionRowArray)]
+      const attritionWorksheet = utils.aoa_to_sheet(attritionArray)
+      utils.book_append_sheet(workbook, attritionWorksheet, 'Attrition Analytics')
+
+      // Language proficiency
+      let languageArray = [Object.keys(data['Language proficiency'])]
+      const languageRowArray = []
+      for (const value in data['Language proficiency']) {
+        languageRowArray.push(data['Language proficiency'][value])
+      }
+      languageArray = [...languageArray, ..._.zip(...languageRowArray)]
+      const languageWorksheet = utils.aoa_to_sheet(languageArray)
+      utils.book_append_sheet(workbook, languageWorksheet, 'Language Analytics')
+
+      // PWA/Volunteer Profile
+      let pwaArray = [Object.keys(data[`${type} profile`])]
+      const pwaRowArray = []
+      for (const value in data[`${type} profile`]) {
+        pwaRowArray.push(data[`${type} profile`][value])
+      }
+      pwaArray = [...pwaArray, ..._.zip(...pwaRowArray)]
+      const pwaWorksheet = utils.aoa_to_sheet(pwaArray)
+      utils.book_append_sheet(workbook, pwaWorksheet, `${type} Analytics`)
+
+      writeFile(workbook, `${type}_report_${new Date().toString().substring(4, 15)}.xlsx`)
     }
   }
 }
