@@ -111,6 +111,21 @@ CREATE TABLE public.languages (
 CREATE TABLE public.latest (
     rc timestamp with time zone
 );
+CREATE TABLE public.notifications (
+    id integer NOT NULL,
+    staff_id integer NOT NULL,
+    is_read boolean DEFAULT false NOT NULL,
+    message text NOT NULL,
+    type text
+);
+CREATE SEQUENCE public.notifications_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 CREATE TABLE public.people_external (
     id integer NOT NULL,
     email text,
@@ -211,7 +226,8 @@ CREATE TABLE public.pwas (
     last_contact_details text,
     comm_mode text DEFAULT 'Whatsapp'::text NOT NULL,
     is_active boolean DEFAULT true NOT NULL,
-    archive_reason text
+    archive_reason text,
+    updated_at timestamp with time zone DEFAULT now()
 );
 CREATE SEQUENCE public.pwa_id_seq
     AS integer
@@ -229,7 +245,7 @@ CREATE TABLE public.pwa_nok (
     pwa_id integer NOT NULL,
     name text NOT NULL,
     contact_num integer NOT NULL,
-    email text NOT NULL,
+    email text,
     relationship text NOT NULL
 );
 CREATE TABLE public.recurring (
@@ -303,7 +319,8 @@ CREATE TABLE public.staffs (
     ws_place text,
     bio text,
     role text NOT NULL,
-    archive_reason text
+    archive_reason text,
+    updated_at timestamp with time zone DEFAULT now()
 );
 CREATE TABLE public.status (
     status text NOT NULL
@@ -367,7 +384,8 @@ CREATE TABLE public.volunteers (
     rejected_date date,
     status text DEFAULT 'Pending Approval'::text NOT NULL,
     is_active boolean DEFAULT true NOT NULL,
-    archive_reason text
+    archive_reason text,
+    updated_at timestamp with time zone DEFAULT now()
 );
 CREATE SEQUENCE public.volunteers_id_seq
     START WITH 1
@@ -376,6 +394,7 @@ CREATE SEQUENCE public.volunteers_id_seq
     NO MAXVALUE
     CACHE 1;
 ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
 ALTER TABLE ONLY public.people_external ALTER COLUMN id SET DEFAULT nextval('public.people_external_id_seq'::regclass);
 ALTER TABLE ONLY public.project_tasks ALTER COLUMN id SET DEFAULT nextval('public.task_id_seq'::regclass);
 ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.projects_id_seq'::regclass);
@@ -393,6 +412,8 @@ ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.languages
     ADD CONSTRAINT languages_pkey PRIMARY KEY (language);
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.people_external
     ADD CONSTRAINT people_external_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.project_pwa_staffs
@@ -424,7 +445,7 @@ ALTER TABLE ONLY public.pwa_contact_status
 ALTER TABLE ONLY public.pwa_languages
     ADD CONSTRAINT pwa_languages_pkey PRIMARY KEY (pwa_id, language);
 ALTER TABLE ONLY public.pwa_nok
-    ADD CONSTRAINT pwa_nok_pkey PRIMARY KEY (pwa_id, email);
+    ADD CONSTRAINT pwa_nok_pkey PRIMARY KEY (pwa_id, contact_num);
 ALTER TABLE ONLY public.pwas
     ADD CONSTRAINT pwa_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.recurring
@@ -465,6 +486,12 @@ CREATE TRIGGER set_public_project_tasks_updated_at BEFORE UPDATE ON public.proje
 COMMENT ON TRIGGER set_public_project_tasks_updated_at ON public.project_tasks IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER set_public_projects_updated_at BEFORE UPDATE ON public.projects FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_projects_updated_at ON public.projects IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+CREATE TRIGGER set_public_pwas_updated_at BEFORE UPDATE ON public.pwas FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+COMMENT ON TRIGGER set_public_pwas_updated_at ON public.pwas IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+CREATE TRIGGER set_public_staffs_updated_at BEFORE UPDATE ON public.staffs FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+COMMENT ON TRIGGER set_public_staffs_updated_at ON public.staffs IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+CREATE TRIGGER set_public_volunteers_updated_at BEFORE UPDATE ON public.volunteers FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+COMMENT ON TRIGGER set_public_volunteers_updated_at ON public.volunteers IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER update_events_values_trigger AFTER UPDATE ON public.recurring FOR EACH ROW EXECUTE PROCEDURE public.update_events_values();
 ALTER TABLE ONLY public.event_pwas
     ADD CONSTRAINT event_pwas_project_id_event_id_fkey FOREIGN KEY (project_id, event_id) REFERENCES public.events(project_id, id) ON UPDATE RESTRICT ON DELETE CASCADE;
@@ -478,6 +505,8 @@ ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_project_id_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_recurr_id_fkey FOREIGN KEY (recurr_id) REFERENCES public.recurring(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_staff_id_fkey FOREIGN KEY (staff_id) REFERENCES public.staffs(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.people_external
     ADD CONSTRAINT people_external_channel_fkey FOREIGN KEY (channel) REFERENCES public.channels(channel) ON UPDATE CASCADE ON DELETE RESTRICT;
 ALTER TABLE ONLY public.project_pwa_staffs

@@ -2002,6 +2002,18 @@
   - role: core_team
     permission:
       filter: {}
+  event_triggers:
+  - name: archive_pwa
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - is_active
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyArchiveEntities
 - table:
     schema: public
     name: recurring
@@ -2783,6 +2795,18 @@
   - role: core_team
     permission:
       filter: {}
+  event_triggers:
+  - name: archive_staff
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - is_active
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyArchiveEntities
 - table:
     schema: public
     name: status
@@ -3206,3 +3230,15 @@
   - role: intern
     permission:
       filter: {}
+  event_triggers:
+  - name: archive_vol
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - is_active
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyArchiveEntities
