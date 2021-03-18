@@ -43,6 +43,14 @@ actions:
   permissions:
   - role: core_team
   - role: intern
+- name: UpdateNotifications
+  definition:
+    kind: synchronous
+    handler: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyUpdateEntities
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
 custom_types:
   enums: []
   input_objects:
@@ -63,6 +71,7 @@ custom_types:
   - name: UpdateRecurringDataInput
   - name: UpdateEventOrRecurringInput
   - name: NotifyInput
+  - name: UpdateNotificationsInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -74,4 +83,5 @@ custom_types:
   - name: UpdateEventsResponse
   - name: notifyResponse
   - name: NotifyResponse
+  - name: UpdateNotificationsResponse
   scalars: []

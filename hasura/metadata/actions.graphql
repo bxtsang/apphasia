@@ -54,6 +54,13 @@ type Mutation {
 }
 
 
+type Mutation {
+  UpdateNotifications (
+    updateNotificationData: UpdateNotificationsInput!
+  ): UpdateNotificationsResponse
+}
+
+
 
 
 input SupervisorInput {
@@ -189,6 +196,12 @@ input NotifyInput {
   staffs : json
 }
 
+input UpdateNotificationsInput {
+  old : json!
+  new : json!
+  general_info : json
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -235,6 +248,11 @@ type notifyResponse {
 }
 
 type NotifyResponse {
+  status : String!
+  message : String!
+}
+
+type UpdateNotificationsResponse {
   status : String!
   message : String!
 }
