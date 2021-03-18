@@ -177,11 +177,11 @@ export const VOLUNTEER_TYPES = {
 }
 
 export const EDIT_RESOURCE_PERMISSIONS = {
-  staffs: ['core_team'],
-  volunteers: ['core_team', 'intern'],
-  pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern'],
-  events: ['core_team', 'intern']
+  staffs: ['admin', 'core_team'],
+  volunteers: ['admin', 'core_team', 'intern'],
+  pwas: ['admin', 'core_team', 'intern'],
+  projects: ['admin', 'core_team', 'intern'],
+  events: ['admin', 'core_team', 'intern']
 }
 
 // EVENT DATA
