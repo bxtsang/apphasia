@@ -31,7 +31,6 @@ def execute_query_with_variables(query, data, sql=False):
         if r.status_code != 200 or "errors" in response:
             success = False
 
-        print(response)
         return  response
 
     except Exception as e:
@@ -51,7 +50,6 @@ def execute_query(query, sql=False):
         if r.status_code != 200 or "errors" in response:
             success = False
 
-        print(response)
         return  response
 
     except Exception as e:
