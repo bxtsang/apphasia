@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     async downloadReport () {
+      this.isLoading = true
       const postHeader = {
         'Content-Type': 'application/json'
       }
@@ -50,6 +51,7 @@ export default {
       }).catch((error) => {
         console.error(error)
       })
+      this.isLoading = false
     },
     generateProjectsReport (data) {
       const workbook = utils.book_new()
@@ -80,7 +82,7 @@ export default {
           }
         })
       }
-      const attendanceWorksheet = utils.json_to_sheet(Object.values(attendanceArray))
+      const attendanceWorksheet = utils.json_to_sheet(Object.values(attendanceArray).sort((a, b) => b['# of total events attended this year'] - a['# of total events attended this year']))
       utils.book_append_sheet(workbook, attendanceWorksheet, 'Attendance Analytics')
 
       // Create Age Analytics
