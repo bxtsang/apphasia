@@ -1,4 +1,4 @@
-mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add: [project_staffs_insert_input!]!, $staffs_to_remove: [Int!], $vols_to_add: [project_vol_insert_input!]!, $vols_to_remove: [Int!], $pwas_to_add: [project_pwa_insert_input!]!, $pwas_to_remove: [Int!]) {
+mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add: [project_staffs_insert_input!]!, $staffs_to_remove: [Int!], $vols_to_add: [project_vol_insert_input!]!, $vols_to_remove: [Int!], $pwas_to_add: [project_pwa_insert_input!]!, $pwas_to_remove: [Int!], $updateNotification: UpdateNotificationsInput!) {
   insert_project_staffs(objects: $staffs_to_add) {
     affected_rows
   }
@@ -61,6 +61,11 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
     archive_reason
     upcoming_date
   }
+  
+  UpdateNotifications (updateNotificationData: $updateNotification) {
+    status
+    message
+  }
 }
 
 # The parameters within project are all optional, depends on what you wanna edit
@@ -78,7 +83,11 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
 #     "description": "Sing some songs!",
 #     "owner_id": 2,
 #     "voltypes": "Project_Volunteer",
-#     "is_active": "true",
+#     "is_active": true,
 #     "archive_reason": null
+#   },
+#   "updateNotification": {
+#     "old": {"JSON of old project": "Hi"},
+#     "new": {"JSON of all the fields above": "Hi"}
 #   }
 # }
