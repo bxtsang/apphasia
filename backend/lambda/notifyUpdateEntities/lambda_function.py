@@ -27,9 +27,7 @@ def execute_query_with_variables(query, data, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
-        print(response)
         return response
 
     except Exception as e:
@@ -48,16 +46,15 @@ def execute_query(query, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
-        # print(response)
         return  response
 
     except Exception as e:
         print(e)
         success = False
         return "error occurred"
-    
+
+# Generate notifications to staffs with the message given
 def generate_notification(staffs, message, table, entity_id, operation="DELETE"):
     data = []
     for staff in staffs:
@@ -72,7 +69,6 @@ def generate_notification(staffs, message, table, entity_id, operation="DELETE")
         data.append(sendee)
 
     # Send notifs to staffs
-    print(data)
     query = """
     mutation ($notifs: [notifications_insert_input!]!) {
       insert_notifications(objects: $notifs) {
@@ -82,6 +78,7 @@ def generate_notification(staffs, message, table, entity_id, operation="DELETE")
     """
     response = execute_query_with_variables(query,{"notifs": data})
 
+# Send archive message to all staffs
 def send_all_staffs(name, table, entity_id):
     message = f"{name} has been archived."
     query = """
@@ -94,6 +91,7 @@ def send_all_staffs(name, table, entity_id):
     staffs = execute_query(query)['data']['staffs']
     generate_notification(staffs, message, table, entity_id)
 
+# Pre process existing objects of PWAs & Volunteers
 def pre_process_old(old,table):
     for k in old:
         if table == "volunteers" and k in ["project","ic"]:
@@ -107,7 +105,7 @@ def pre_process_old(old,table):
             for ch in old[k]:
                 pre_process_old(ch,table)
     return old
-
+# Pre process new objects of PWAs & Volunteers
 def pre_process_new(new):
     for k in new:
         if type(new[k]) is dict:
@@ -120,6 +118,7 @@ def pre_process_new(new):
                     pre_process_new(new[k])
     return new
 
+# Get list of the fields that were updated
 def get_updated_fields(new,old):
     result = []
     for key in old:
@@ -133,6 +132,7 @@ def get_updated_fields(new,old):
                 result.append(key)
     return result
 
+# Pre process list of updated fields to make them look pretty for the message
 def change_details(updated):
     result = []
     change = {
@@ -159,6 +159,7 @@ def change_details(updated):
         result.append(ch)
     return result
 
+# Pre process existing objects of Staffs & Projects
 def pre_process_staff_project(old):
     temp = {}
     if "role_description" in old:
@@ -172,7 +173,8 @@ def pre_process_staff_project(old):
     
     return temp
         
-def get_staff_updated_details(old, new):
+# Get list of the fields that were updated in Staffs and Projects
+def get_staff_project_updated_details(old, new):
     result = []
     if "staff_id" in new:
         new['id'] = new.pop("staff_id")
@@ -183,7 +185,7 @@ def get_staff_updated_details(old, new):
                 if add not in result:
                     result.append(add)
         elif type(new[k]) is dict:
-            result += get_staff_updated_details(old, new[k])
+            result += get_staff_project_updated_details(old, new[k])
         elif k not in old or new[k] != old[k]:
             result.append(k)
     return change_details(result)
@@ -194,13 +196,10 @@ def lambda_handler(event, context):
 
     try:
         event_body = json.loads(event['body'])
-        print(event_body)
         staff_id = event_body['session_variables']['x-hasura-user-id'] if 'x-hasura-user-id' in event_body['session_variables'] else None 
         updateData = event_body['input']['updateNotificationData']
         old = updateData['old']
         new = updateData['new']
-        print(old)
-        print(new)
 
         # Get table of entity
         if "role_description" in old:
@@ -215,6 +214,7 @@ def lambda_handler(event, context):
         # Get id of entity
         entity_id = new["id"] if "id" in new else new["staff_id"]
         
+        # Get message if entity is pwas/volunteers
         if table in ["pwas","volunteers"]:
             old = pre_process_old(old,table)
             new = pre_process_new(new)
@@ -227,7 +227,6 @@ def lambda_handler(event, context):
             
             updated = change_details(get_updated_fields(new,old))
             message = f"{', '.join(updated)} of {name} has been updated."
-            print(message)
             
             # Archive notifications
             if "Archive Status" in updated and not new["is_active"]:
@@ -296,11 +295,14 @@ def lambda_handler(event, context):
                         generate_notification(sendee, message, table, project_id)
 
         if table == "staffs":
+            
+            # Pre process & craft message
             old = pre_process_staff_project(old)
-            updated = get_staff_updated_details(old, new)
+            updated = get_staff_project_updated_details(old, new)
             name = new["name"]
             message = f"{', '.join(updated)} of {name} has been updated."
-            print(updated)
+            
+            # Archive notifications
             if "Archive Status" in updated and not new["is_active"]:
                 send_all_staffs(name,table,entity_id)
                 
@@ -342,6 +344,7 @@ def lambda_handler(event, context):
                     message = f"{name} will be removed from {project['title']} in 30 days."
                     generate_notification(sendee, message, table, project_id)
         
+            # Only send notifications if staff is not part of the core team
             if new['role'] in ["core_volunteer", "intern"]:
                 data = {"staff": entity_id}
                 query = """
@@ -378,6 +381,7 @@ def lambda_handler(event, context):
                 sendees = [{"id": sendee} for sendee in sendees]
                 generate_notification(sendees, message, table, entity_id, "UPDATE")
                 
+                # Notify staff if changes were not made by them
                 if entity_id != staff_id and staff_id:
                     data = {"staff": staff_id}
                     query = """
@@ -394,6 +398,7 @@ def lambda_handler(event, context):
                     
                 
         elif table == "pwas":
+            # Notify befrienders attached to PWA
             data = {"peep": entity_id}
             query = """
             query ($peep: Int!) {
@@ -410,12 +415,12 @@ def lambda_handler(event, context):
             generate_notification(staffs, message, table, entity_id,"UPDATE")
         elif table == "projects":
             old = pre_process_staff_project(old)
-            updated = get_staff_updated_details(old, new)
-            print(updated)
+            updated = get_staff_project_updated_details(old, new)
             
-            # Notify all staffs of new IC
+            
             owner = old["owner_id"]
             title = old["title"]
+            # Notify change of project owner
             if "Owner" in updated:
                 updated.remove("Owner")
                 data = {"staff": new["project"]["owner_id"]}
@@ -438,6 +443,7 @@ def lambda_handler(event, context):
                 staffs = execute_query(query)['data']['staffs']
                 generate_notification(staffs, message, table, entity_id, "UPDATE")
                 
+            # Notify project IC of new project details updated
             if entity_id != staff_id:
                 if staff_id:
                     data = {"staff": staff_id}
