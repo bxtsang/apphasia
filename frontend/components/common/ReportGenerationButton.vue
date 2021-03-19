@@ -59,13 +59,29 @@ export default {
       }
       const worksheet = utils.aoa_to_sheet(dataArray)
       utils.book_append_sheet(workbook, worksheet, 'Project Analytics')
-      writeFile(workbook, `projects_report_${new Date().toString().substring(4, 15)}.xlsx`)
+      writeFile(workbook, `Projects_report_${new Date().toString().substring(4, 15)}.xlsx`)
     },
     generateExternalPeopleReport (data, type) {
       const _ = require('lodash')
       const workbook = utils.book_new()
 
       // Attendance Tracking
+      const attendanceArray = {}
+      for (const category in data['Attendance Tracking']) {
+        Object.keys(data['Attendance Tracking'][category]).map((name) => {
+          if (name in attendanceArray) {
+            const row = _.cloneDeep(attendanceArray[name])
+            row[category] = data['Attendance Tracking'][category][name]
+            attendanceArray[name] = row
+          } else {
+            const row = { Name: name }
+            row[category] = data['Attendance Tracking'][category][name]
+            attendanceArray[name] = row
+          }
+        })
+      }
+      const attendanceWorksheet = utils.json_to_sheet(Object.values(attendanceArray))
+      utils.book_append_sheet(workbook, attendanceWorksheet, 'Attendance Analytics')
 
       // Create Age Analytics
       const ageArray = [Object.keys(data['Capture Age'])]
