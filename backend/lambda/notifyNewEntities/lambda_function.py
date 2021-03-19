@@ -27,9 +27,7 @@ def execute_query_with_variables(query, data, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
-        print(response)
         return response
 
     except Exception as e:
@@ -48,9 +46,7 @@ def execute_query(query, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
-        # print(response)
         return  response
 
     except Exception as e:
@@ -65,16 +61,15 @@ def generate_notification(staffs, message, table, entity_id, exclude=[], operati
         if the_id in exclude:
             continue
         sendee = {
-            "staff_id": the_id, 
-            "message": message, 
-            "type": table, 
-            "entity_id": entity_id, 
+            "staff_id": the_id,
+            "message": message,
+            "type": table,
+            "entity_id": entity_id,
             "operation": operation
         }
         data.append(sendee)
 
     # Send notifs to staffs
-    print(data)
     query = """
     mutation ($notifs: [notifications_insert_input!]!) {
       insert_notifications(objects: $notifs) {
@@ -102,13 +97,13 @@ def lambda_handler(event, context):
     try:
         event_body = json.loads(event['body'])
         insertData = event_body['input']['insertNotificationsData']
-        staff_id = event_body['session_variables']['x-hasura-user-id'] if 'x-hasura-user-id' in event_body['session_variables'] else None 
+        staff_id = event_body['session_variables']['x-hasura-user-id'] if 'x-hasura-user-id' in event_body['session_variables'] else None
         table = insertData['table']
         identifier = insertData['entity_id']
 
         entities = {
-            "pwas": ["people_external","name",""], 
-            "volunteers": ["people_external","name",""], 
+            "pwas": ["people_external","name",""],
+            "volunteers": ["people_external","name",""],
             "staffs": ["staffs","name","role"],
             "projects": ["projects","title","owner_id"]
         }
@@ -124,23 +119,23 @@ def lambda_handler(event, context):
         }}
         """
         entity = execute_query_with_variables(query,data)["data"][f"{entities[table][0]}_by_pk"]
-        
+
         if table == "staffs":
             # Send notification to all staff
             role = " ".join(entity['role'].split("_")).title()
             message = f"A new {role} has been added."
             send_all_staffs(message,table,identifier,[identifier,staff_id])
-            
+
             # Send notification to supervisor
             message = f"You have been tagged as a supervisor to {entity['name']}."
             data = {"staff": identifier}
-            query = """         
+            query = """
             query ($staff: Int!) {
                   staff_supervisors(where: {staff_id: {_eq: $staff}}) {
                     supervisor_id
                   }
             }
-            """ 
+            """
             staffs = execute_query_with_variables(query,data)['data']['staff_supervisors']
             sendees = [{"id": staff['supervisor_id']} for staff in staffs]
             generate_notification(sendees, message, table, identifier, [staff_id])
@@ -148,10 +143,36 @@ def lambda_handler(event, context):
             # Send notification to all staff
             message = "A new PWA has been added."
             send_all_staffs(message,table,identifier,[staff_id])
+
         elif table == "volunteers":
             # Send notification to all staff
             message = "A new Volunteer has been added."
             send_all_staffs(message,table,identifier,[staff_id])
+
+        elif table == "projects":
+
+            # Send notification to core team
+            message = "A new Project has been added."
+            data = {"project": identifier}
+            query = """
+            query ($project: Int!) {
+              staffs(where: {role: {_eq: core_team}}) {
+                id
+              }
+              projects_by_pk(id: $project) {
+                owner_id
+                title
+              }
+            }
+            """
+            response = execute_query_with_variables(query,data)['data']
+            generate_notification(response['staffs'], message, table, identifier, [staff_id])
+
+            # Send notification to new project owner
+            owner_id = response['projects_by_pk']['owner_id']
+            if owner_id != staff_id and not staff_id:
+                message = f"You've been assigned to {response['projects_by_pk']['title']} as project IC"
+                generate_notification([{"id": owner_id}], message, table, identifier)
         result['status'] = "Success"
         result['message'] = "Successfully added notifications"
     except Exception as e:
