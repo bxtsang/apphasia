@@ -58,10 +58,12 @@ def execute_query(query, sql=False):
         success = False
         return "error occurred"
 
-def generate_notification(staffs, message, table, entity_id, operation="DELETE"):
+def generate_notification(staffs, message, table, entity_id, exclude=[], operation="INSERT"):
     data = []
     for staff in staffs:
         the_id = staff['id'] if 'id' in staff else staff['staff_id']
+        if the_id in exclude:
+            continue
         sendee = {
             "staff_id": the_id, 
             "message": message, 
@@ -82,6 +84,17 @@ def generate_notification(staffs, message, table, entity_id, operation="DELETE")
     """
     response = execute_query_with_variables(query,{"notifs": data})
 
+def send_all_staffs(message, table, entity_id, exclude=[]):
+    query = """
+    {
+      staffs {
+        id
+      }
+    }
+    """
+    staffs = execute_query(query)['data']['staffs']
+    generate_notification(staffs, message, table, entity_id, exclude)
+
 def lambda_handler(event, context):
     result = {}
     statusCode = 200
@@ -89,8 +102,10 @@ def lambda_handler(event, context):
     try:
         event_body = json.loads(event['body'])
         insertData = event_body['input']['insertNotificationsData']
+        staff_id = event_body['session_variables']['x-hasura-user-id'] if 'x-hasura-user-id' in event_body['session_variables'] else None 
         table = insertData['table']
         identifier = insertData['entity_id']
+
         entities = {
             "pwas": ["people_external","name",""], 
             "volunteers": ["people_external","name",""], 
@@ -98,6 +113,7 @@ def lambda_handler(event, context):
             "projects": ["projects","title","owner_id"]
         }
 
+        # Get details of entity
         data = {"identifier": identifier}
         query = f"""
         query ($identifier: Int!) {{
@@ -107,10 +123,32 @@ def lambda_handler(event, context):
           }}
         }}
         """
-        entity = execute_query_with_variables(query,data)["data"][f"{entities[table][0]}_by_pk"]        
+        entity = execute_query_with_variables(query,data)["data"][f"{entities[table][0]}_by_pk"]
+        
+        if table == "staffs":
+            # Send notification to all staff
+            print(entity)
+            role = " ".join(entity['role'].split("_")).title()
+            message = f"A new {role} has been added."
+            send_all_staffs(message,table,identifier,[identifier,staff_id])
+            
+            # Send notification to supervisor
+            message = f"You have been tagged as a supervisor to {entity['name']}."
+            data = {"staff": identifier}
+            query = """         
+            query ($staff: Int!) {
+                  staff_supervisors(where: {staff_id: {_eq: $staff}}) {
+                    supervisor_id
+                  }
+            }
+            """ 
+            staffs = execute_query_with_variables(query,data)['data']['staff_supervisors']
+            sendees = [{"id": staff['supervisor_id']} for staff in staffs]
+            generate_notification(sendees, message, table, identifier, [staff_id])
+        
 
         result['status'] = "Success"
-        result['message'] = entity
+        result['message'] = "Successfully added notifications"
     except Exception as e:
         raise e
         result['status'] = "Internal Error"
