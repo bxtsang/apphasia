@@ -22,8 +22,6 @@ HASURA_URI_SQL = HASURA_URI[:-7] + "query"
 HASURA_ADMIN_SECRET = get_secret()
 HASURA_HEADERS = { "Content-Type": "application/json", "x-hasura-admin-secret": HASURA_ADMIN_SECRET }
 
-
-
 def execute_query_with_variables(query, data, sql=False):
     success = True
     try:
@@ -32,7 +30,6 @@ def execute_query_with_variables(query, data, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
         print(response)
         return  response
@@ -41,8 +38,6 @@ def execute_query_with_variables(query, data, sql=False):
         print(e)
         success = False
         return "error occurred"
-
-    # print("Success!") if success else print("Error!")
 
 def execute_query(query, sql=False):
     success = True
@@ -55,17 +50,14 @@ def execute_query(query, sql=False):
         response = json.loads(r.text)
         if r.status_code != 200 or "errors" in response:
             success = False
-            print(response['errors'][0]['message'])
 
-        # print(response)
+        print(response)
         return  response
 
     except Exception as e:
         print(e)
         success = False
         return "error occurred"
-
-    # print("success!") if success else print("error")
 
 def calculate_age(born):
     today = date.today()
@@ -82,7 +74,6 @@ def calculate_mean(my_list):
 
 def lambda_handler(event, context):
     try:
-        print(event)
         event_body = json.loads(event['body']) if "body" in event and event['body'] else {"resources": "pwas"}
         resources = event_body['resources'] if 'resources' in event_body else "pwas" 
         today = datetime.now()
@@ -443,13 +434,32 @@ def lambda_handler(event, context):
             },
             "projects": project_events
         }
+        
+        add_zero = ["volunteers","pwas"]
+        for entity in add_zero:
+            for ch in result[entity]['Attendance Tracking']:
+                header = result[entity]['Attendance Tracking'][ch]
+                loop = volunteers_list
+                if entity == "pwas":
+                    loop = pwas_list
+                for ent in loop:
+                    if ent[1] not in header:
+                        header[ent[1]] = 0
         return {
             'statusCode': 200,
+            'headers': {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+            },
             'body': json.dumps(result[resources] if resources in result else result['pwas'])
         }
     except Exception as e:
         raise e
         return {
             'statusCode': 500,
+            'headers': {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+            },
             'body': "Internal server error"
         }
