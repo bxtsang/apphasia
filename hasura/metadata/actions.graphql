@@ -31,9 +31,9 @@ type Mutation {
 
 
 type Mutation {
-  Notify (
-    notifyData: NotifyInput!
-  ): NotifyResponse
+  InsertNotifications (
+    insertNotificationsData: InsertNotificationsInput!
+  ): InsertNotificationsResponse
 }
 
 
@@ -202,6 +202,12 @@ input UpdateNotificationsInput {
   general_info : json
 }
 
+input InsertNotificationsInput {
+  table : String!
+  project_title : String
+  contact_num : Int
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -253,6 +259,11 @@ type NotifyResponse {
 }
 
 type UpdateNotificationsResponse {
+  status : String!
+  message : String!
+}
+
+type InsertNotificationsResponse {
   status : String!
   message : String!
 }

@@ -26,10 +26,10 @@ actions:
   - role: core_team
   - role: core_volunteer
   - role: intern
-- name: Notify
+- name: InsertNotifications
   definition:
     kind: synchronous
-    handler: https://9z4qx4o0aa.execute-api.ap-southeast-1.amazonaws.com/dev/notifyStaff
+    handler: https://j4y9vex5pd.execute-api.ap-southeast-1.amazonaws.com/dev/
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -72,6 +72,7 @@ custom_types:
   - name: UpdateEventOrRecurringInput
   - name: NotifyInput
   - name: UpdateNotificationsInput
+  - name: InsertNotificationsInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -84,4 +85,5 @@ custom_types:
   - name: notifyResponse
   - name: NotifyResponse
   - name: UpdateNotificationsResponse
+  - name: InsertNotificationsResponse
   scalars: []
