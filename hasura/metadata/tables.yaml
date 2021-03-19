@@ -398,6 +398,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       backend_only: false
   select_permissions:
   - role: core_team
@@ -410,6 +411,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   - role: core_volunteer
     permission:
@@ -421,6 +423,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   - role: intern
     permission:
@@ -432,6 +435,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
   update_permissions:
   - role: core_team
@@ -444,6 +448,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
   - role: core_volunteer
@@ -456,6 +461,7 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
   - role: intern
@@ -468,8 +474,13 @@
       - type
       - entity_id
       - created_at
+      - operation
       filter: {}
       check: {}
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: people_external
@@ -1443,122 +1454,6 @@
     webhook: https://klvvk3hcwl.execute-api.ap-southeast-1.amazonaws.com/dev
 - table:
     schema: public
-    name: pwa_befriender
-  object_relationships:
-  - name: pwa
-    using:
-      foreign_key_constraint_on: pwa_id
-  - name: volunteer
-    using:
-      foreign_key_constraint_on: befriender_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check: {}
-      columns:
-      - befriender_id
-      - pwa_id
-      backend_only: false
-  - role: intern
-    permission:
-      check: {}
-      columns:
-      - befriender_id
-      - pwa_id
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - befriender_id
-      - pwa_id
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - befriender_id
-      - pwa_id
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - befriender_id
-      - pwa_id
-      filter: {}
-  update_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - befriender_id
-      - pwa_id
-      filter: {}
-      check: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
-    name: pwa_befriender_core
-  object_relationships:
-  - name: core_volunteer
-    using:
-      foreign_key_constraint_on: staff_id
-  - name: pwa
-    using:
-      foreign_key_constraint_on: pwa_id
-  insert_permissions:
-  - role: core_team
-    permission:
-      check:
-        core_volunteer:
-          role:
-            _eq: core_volunteer
-      columns:
-      - pwa_id
-      - staff_id
-      backend_only: false
-  - role: intern
-    permission:
-      check:
-        core_volunteer:
-          role:
-            _eq: core_volunteer
-      columns:
-      - pwa_id
-      - staff_id
-      backend_only: false
-  select_permissions:
-  - role: core_team
-    permission:
-      columns:
-      - pwa_id
-      - staff_id
-      filter: {}
-  - role: core_volunteer
-    permission:
-      columns:
-      - pwa_id
-      - staff_id
-      filter: {}
-  - role: intern
-    permission:
-      columns:
-      - pwa_id
-      - staff_id
-      filter: {}
-  delete_permissions:
-  - role: core_team
-    permission:
-      filter: {}
-  - role: intern
-    permission:
-      filter: {}
-- table:
-    schema: public
     name: pwa_comms
   object_relationships:
   - name: pwa
@@ -1806,13 +1701,6 @@
     using:
       foreign_key_constraint_on: contact_status
   array_relationships:
-  - name: befrienders
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_befriender
   - name: comm_diff
     using:
       foreign_key_constraint_on:
@@ -1841,13 +1729,6 @@
         table:
           schema: public
           name: project_pwa
-  - name: pwa_befriender_cores
-    using:
-      foreign_key_constraint_on:
-        column: pwa_id
-        table:
-          schema: public
-          name: pwa_befriender_core
   insert_permissions:
   - role: core_team
     permission:
@@ -1865,6 +1746,7 @@
       - comm_mode
       - is_active
       - archive_reason
+      - updated_at
   - role: intern
     permission:
       check: {}
@@ -1881,71 +1763,76 @@
       - comm_mode
       - is_active
       - archive_reason
+      - updated_at
   - role: public
     permission:
       check: {}
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
-      - id
       - archive_reason
       - comm_mode
       - contact_status
       - hospital
+      - id
+      - is_active
       - last_contact_details
       - media_engagement_details
+      - media_willingness
       - speech_therapist
+      - stroke_date
+      - updated_at
+      - wheelchair
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
       - id
-      - archive_reason
-      - comm_mode
       - contact_status
-      - hospital
-      - last_contact_details
       - media_engagement_details
+      - hospital
       - speech_therapist
+      - media_willingness
+      - stroke_date
+      - wheelchair
+      - last_contact_details
+      - comm_mode
+      - is_active
+      - archive_reason
+      - updated_at
       filter: {}
   - role: core_volunteer
     permission:
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
       - id
-      - archive_reason
-      - comm_mode
       - contact_status
-      - hospital
-      - last_contact_details
       - media_engagement_details
+      - hospital
       - speech_therapist
+      - media_willingness
+      - stroke_date
+      - wheelchair
+      - last_contact_details
+      - comm_mode
+      - is_active
+      - archive_reason
+      - updated_at
       filter: {}
   - role: intern
     permission:
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
       - id
-      - archive_reason
-      - comm_mode
       - contact_status
-      - hospital
-      - last_contact_details
       - media_engagement_details
+      - hospital
       - speech_therapist
+      - media_willingness
+      - stroke_date
+      - wheelchair
+      - last_contact_details
+      - comm_mode
+      - is_active
+      - archive_reason
+      - updated_at
       filter: {}
   - role: public
     permission:
@@ -1956,35 +1843,37 @@
   - role: core_team
     permission:
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
       - id
-      - archive_reason
-      - comm_mode
       - contact_status
-      - hospital
-      - last_contact_details
       - media_engagement_details
+      - hospital
       - speech_therapist
+      - media_willingness
+      - stroke_date
+      - wheelchair
+      - last_contact_details
+      - comm_mode
+      - is_active
+      - archive_reason
+      - updated_at
       filter: {}
       check: {}
   - role: intern
     permission:
       columns:
-      - is_active
-      - media_willingness
-      - wheelchair
-      - stroke_date
       - id
-      - archive_reason
-      - comm_mode
       - contact_status
-      - hospital
-      - last_contact_details
       - media_engagement_details
+      - hospital
       - speech_therapist
+      - media_willingness
+      - stroke_date
+      - wheelchair
+      - last_contact_details
+      - comm_mode
+      - is_active
+      - archive_reason
+      - updated_at
       filter: {}
       check: {}
   delete_permissions:
@@ -2620,87 +2509,91 @@
     permission:
       check: {}
       columns:
-      - address
-      - archive_reason
-      - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
-      - email
-      - gender
       - id
-      - is_active
-      - is_speech_therapist
+      - email
       - name
+      - created_at
       - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
       - profession
-      - role
       - ws_place
+      - bio
+      - role
+      - archive_reason
+      - updated_at
       backend_only: false
   select_permissions:
   - role: core_team
     permission:
       columns:
-      - address
-      - archive_reason
-      - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
-      - email
-      - gender
       - id
-      - is_active
-      - is_speech_therapist
+      - email
       - name
+      - created_at
       - nickname
+      - dob
+      - gender
+      - address
+      - is_active
+      - date_joined
+      - contact_num
+      - is_speech_therapist
       - profession
-      - role
       - ws_place
+      - bio
+      - role
+      - archive_reason
+      - updated_at
       filter: {}
   - role: core_volunteer
     permission:
       columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
       - address
       - archive_reason
       - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
       - email
-      - gender
-      - id
-      - is_active
-      - is_speech_therapist
       - name
       - nickname
       - profession
       - role
       - ws_place
+      - created_at
+      - updated_at
       filter: {}
   - role: intern
     permission:
       columns:
+      - is_active
+      - is_speech_therapist
+      - gender
+      - date_joined
+      - dob
+      - contact_num
+      - id
       - address
       - archive_reason
       - bio
-      - contact_num
-      - created_at
-      - date_joined
-      - dob
       - email
-      - gender
-      - id
-      - is_active
-      - is_speech_therapist
       - name
       - nickname
       - profession
       - role
       - ws_place
+      - created_at
+      - updated_at
       filter: {}
   update_permissions:
   - role: core_team
@@ -2710,7 +2603,9 @@
       - archive_reason
       - bio
       - contact_num
+      - date_joined
       - dob
+      - email
       - gender
       - is_active
       - is_speech_therapist
@@ -2718,16 +2613,10 @@
       - nickname
       - profession
       - role
+      - updated_at
       - ws_place
-      filter:
-        _or:
-        - role:
-            _in:
-            - intern
-            - core_volunteer
-        - id:
-            _eq: X-Hasura-User-Id
-      check: null
+      filter: {}
+      check: {}
   - role: core_volunteer
     permission:
       columns:
@@ -2735,7 +2624,9 @@
       - archive_reason
       - bio
       - contact_num
+      - date_joined
       - dob
+      - email
       - gender
       - is_active
       - is_speech_therapist
@@ -2755,7 +2646,9 @@
       - archive_reason
       - bio
       - contact_num
+      - date_joined
       - dob
+      - email
       - gender
       - is_active
       - is_speech_therapist
@@ -2795,24 +2688,6 @@
   - role: core_team
     permission:
       filter: {}
-- table:
-    schema: public
-    name: test
-  object_relationships:
-  - name: staff
-    using:
-      foreign_key_constraint_on: staff_id
-  event_triggers:
-  - name: test_trigger
-    definition:
-      enable_manual: false
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook: https://aphasia-hasura-dev.herokuapp.com/v1/graphql
 - table:
     schema: public
     name: vol_ic
@@ -3030,13 +2905,6 @@
     using:
       foreign_key_constraint_on: id
   array_relationships:
-  - name: befrienders
-    using:
-      foreign_key_constraint_on:
-        column: befriender_id
-        table:
-          schema: public
-          name: pwa_befriender
   - name: project_vols
     using:
       foreign_key_constraint_on:
@@ -3080,6 +2948,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
   - role: intern
     permission:
       check: {}
@@ -3094,20 +2963,22 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
   - role: public
     permission:
       check: {}
       columns:
+      - archive_reason
       - id
-      - nickname
+      - is_active
       - is_speech_therapist
+      - nickname
       - profession
-      - ws_place
-      - status_reason
       - rejected_date
       - status
-      - is_active
-      - archive_reason
+      - status_reason
+      - updated_at
+      - ws_place
       backend_only: false
   select_permissions:
   - role: core_team
@@ -3123,6 +2994,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
       filter: {}
   - role: core_volunteer
     permission:
@@ -3137,6 +3009,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
       filter: {}
   - role: intern
     permission:
@@ -3151,6 +3024,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
       filter: {}
   - role: public
     permission:
@@ -3171,6 +3045,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
       filter: {}
       check: {}
   - role: intern
@@ -3186,6 +3061,7 @@
       - status
       - is_active
       - archive_reason
+      - updated_at
       filter: {}
       check: {}
   delete_permissions:

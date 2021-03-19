@@ -22,7 +22,7 @@ export const PWA_CONTACT_STATUS_OPTIONS = [
 
 export const PWA_PREFFERED_CONTACTED_OPTIONS = [
   'Whatsapp',
-  'Telegram',
+  'Email',
   'SMS',
   'Call'
 ]
@@ -177,11 +177,11 @@ export const VOLUNTEER_TYPES = {
 }
 
 export const EDIT_RESOURCE_PERMISSIONS = {
-  staffs: ['core_team'],
-  volunteers: ['core_team', 'intern'],
-  pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern'],
-  events: ['core_team', 'intern']
+  staffs: ['admin', 'core_team'],
+  volunteers: ['admin', 'core_team', 'intern'],
+  pwas: ['admin', 'core_team', 'intern'],
+  projects: ['admin', 'core_team', 'intern'],
+  events: ['admin', 'core_team', 'intern']
 }
 
 // EVENT DATA
