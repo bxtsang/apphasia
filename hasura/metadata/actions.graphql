@@ -204,8 +204,7 @@ input UpdateNotificationsInput {
 
 input InsertNotificationsInput {
   table : String!
-  project_title : String
-  contact_num : Int
+  entity_id : Int!
 }
 
 type CreateUserResponse {
