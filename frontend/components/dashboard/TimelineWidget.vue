@@ -3,6 +3,10 @@
     <h1 class="title">Upcoming Events</h1>
     <ApolloQuery
       :query="LIST_QUERY_PATHS[resourceType]"
+      :variables="{
+        fromDate: $moment().format('YYYY-MM-DD'),
+        endDate: $moment().add(31, 'days').format('YYYY-MM-DD')
+      }"
     >
       <template v-slot="{ result: { error, data }, isLoading }">
         <!-- Loading -->

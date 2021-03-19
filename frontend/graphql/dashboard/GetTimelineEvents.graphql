@@ -1,10 +1,10 @@
-query getUpcomingEvents{
+query getUpcomingEvents($fromDate: date, $endDate: date){
     events (
     order_by: {date: asc},
     where: {
         _and: [
-        { date: {_gte: "2021-05-01"} },
-        { date: {_lte: "2021-05-30"} }
+        { date: {_gte: $fromDate} },
+        { date: {_lte: $endDate} }
         ]
     }
     ) {
