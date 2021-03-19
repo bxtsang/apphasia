@@ -127,7 +127,6 @@ def lambda_handler(event, context):
         
         if table == "staffs":
             # Send notification to all staff
-            print(entity)
             role = " ".join(entity['role'].split("_")).title()
             message = f"A new {role} has been added."
             send_all_staffs(message,table,identifier,[identifier,staff_id])
@@ -145,8 +144,14 @@ def lambda_handler(event, context):
             staffs = execute_query_with_variables(query,data)['data']['staff_supervisors']
             sendees = [{"id": staff['supervisor_id']} for staff in staffs]
             generate_notification(sendees, message, table, identifier, [staff_id])
-        
-
+        elif table == "pwas":
+            # Send notification to all staff
+            message = "A new PWA has been added."
+            send_all_staffs(message,table,identifier,[staff_id])
+        elif table == "volunteers":
+            # Send notification to all staff
+            message = "A new Volunteer has been added."
+            send_all_staffs(message,table,identifier,[staff_id])
         result['status'] = "Success"
         result['message'] = "Successfully added notifications"
     except Exception as e:
