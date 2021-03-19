@@ -4,6 +4,11 @@
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
+          <ReportGenerationButton :resourceType="resourceType"/>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
           <ListingQuery :resourceType="resourceType"></ListingQuery>
         </v-col>
       </v-row>
