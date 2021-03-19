@@ -30,6 +30,10 @@ actions:
   definition:
     kind: synchronous
     handler: https://j4y9vex5pd.execute-api.ap-southeast-1.amazonaws.com/dev/
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
