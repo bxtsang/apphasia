@@ -385,9 +385,6 @@
       filter: {}
 - table:
     schema: public
-    name: notifications
-- table:
-    schema: public
     name: people_external
   object_relationships:
   - name: pwa_details
@@ -553,24 +550,6 @@
     using:
       foreign_key_constraint_on: pwa_id
   array_relationships:
-  - name: event_pwas
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: event_pwas
-        column_mapping:
-          pwa_id: pwa_id
-          project_id: project_id
-  - name: recurring_pwas
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: recurring_pwas
-        column_mapping:
-          pwa_id: pwa_id
-          project_id: project_id
   - name: staffs_assigned
     using:
       manual_configuration:
@@ -1075,25 +1054,6 @@
   - name: volunteer
     using:
       foreign_key_constraint_on: vol_id
-  array_relationships:
-  - name: event_vols
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: event_vols
-        column_mapping:
-          vol_id: vol_id
-          project_id: project_id
-  - name: recurring_vols
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: recurring_vols
-        column_mapping:
-          vol_id: vol_id
-          project_id: project_id
   insert_permissions:
   - role: core_team
     permission:
@@ -1900,17 +1860,6 @@
   - role: core_team
     permission:
       filter: {}
-  event_triggers:
-  - name: insert_pwa
-    definition:
-      enable_manual: true
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook: https://9z4qx4o0aa.execute-api.ap-southeast-1.amazonaws.com/dev/notifyStaff
 - table:
     schema: public
     name: recurring
@@ -2692,17 +2641,6 @@
   - role: core_team
     permission:
       filter: {}
-  event_triggers:
-  - name: insert_staff
-    definition:
-      enable_manual: true
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook: https://9z4qx4o0aa.execute-api.ap-southeast-1.amazonaws.com/dev/notifyStaff
 - table:
     schema: public
     name: status
@@ -3126,14 +3064,3 @@
   - role: intern
     permission:
       filter: {}
-  event_triggers:
-  - name: insert_volunteer
-    definition:
-      enable_manual: true
-      insert:
-        columns: '*'
-    retry_conf:
-      num_retries: 0
-      interval_sec: 10
-      timeout_sec: 60
-    webhook: https://9z4qx4o0aa.execute-api.ap-southeast-1.amazonaws.com/dev/notifyStaff

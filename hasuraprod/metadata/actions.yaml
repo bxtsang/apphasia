@@ -29,7 +29,7 @@ actions:
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
-    handler: https://2tnogbimkc.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://10uizqe86l.execute-api.ap-southeast-1.amazonaws.com/updateUser
   permissions:
   - role: core_team
 - name: UpdateEventOrRecurring
