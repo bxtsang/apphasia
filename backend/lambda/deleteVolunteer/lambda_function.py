@@ -21,7 +21,10 @@ def lambda_handler(event, context):
         )
 
         cur = con.cursor()
-        query = "DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - rejected_date) >= 30 RETURNING *"
+        query = """DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - rejected_date) >= 30 RETURNING *;
+                DELETE FROM volunteers WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30 RETURNING *;
+                DELETE FROM projects WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30 RETURNING *;
+                DELETE FROM pwas WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30 RETURNING *;"""
         cur.execute(query)
         con.commit()
 
