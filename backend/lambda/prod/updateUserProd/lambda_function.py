@@ -18,6 +18,7 @@ def get_parameter(parameter):
     return response['Parameter']['Value']
 
 def lambda_handler(event, context):
+    print(event)
     result = {}
     old_role = ""
     statusCode = 500
