@@ -1309,7 +1309,7 @@
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook: https://klvvk3hcwl.execute-api.ap-southeast-1.amazonaws.com/dev
+    webhook: https://10uizqe86l.execute-api.ap-southeast-1.amazonaws.com/prod/renameprojectfolder
 - table:
     schema: public
     name: pwa_befriender

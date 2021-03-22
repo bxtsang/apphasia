@@ -75,7 +75,7 @@ def lambda_handler(event, context):
                 "x-hasura-admin-secret": hasura_secret
             }
 
-            url = get_parameter("HASURA_URI")
+            url = get_parameter("HASURA_URI_PROD")
             r = requests.post(url, json={'query': query}, headers=headers)
             print(r.status_code)
             print(r.text)
