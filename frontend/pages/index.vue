@@ -1,25 +1,17 @@
 <template>
-  <div>
+  <v-container fluid>
     <v-row>
-      <v-col cols="7">
-        <TimelineWidget></TimelineWidget>
-        <TaskList></TaskList>
+      <v-col cols="12" lg="6">
+        <TimelineWidget />
       </v-col>
-      <v-col>
-        <CalendarWidget></CalendarWidget>
+      <v-col cols="12" lg="6">
         <NotificationList></NotificationList>
       </v-col>
     </v-row>
-  </div>
+  </v-container>
 </template>
 <script>
-import TimelineWidget from './../components/dashboard/TimelineWidget'
-import CalendarWidget from './../components/dashboard/CalendarWidget'
-import TaskList from './../components/dashboard/TaskList'
-import NotificationList from './../components/dashboard/NotificationList'
-
 export default {
-  components: { TimelineWidget, CalendarWidget, TaskList, NotificationList },
   middleware: ['isEmailVerified'],
   data () {
     return {

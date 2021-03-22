@@ -85,7 +85,8 @@ export const LIST_QUERY_PATHS = {
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
-  events: require('./../graphql/event/GetAllEvent.graphql')
+  events: require('./../graphql/event/GetAllEvent.graphql'),
+  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql')
 }
 
 export const TABLE_HEADERS = {

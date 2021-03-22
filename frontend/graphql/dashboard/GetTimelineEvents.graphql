@@ -1,0 +1,21 @@
+query getUpcomingEvents($fromDate: date, $endDate: date){
+    events (
+    order_by: {date: asc},
+    where: {
+        _and: [
+        { date: {_gte: $fromDate} },
+        { date: {_lte: $endDate} }
+        ]
+    }
+    ) {
+    id
+    date
+    project {
+        title
+        colour
+    }
+    note
+    start_time
+    end_time
+    }
+}
