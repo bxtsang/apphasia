@@ -21,6 +21,11 @@
                 <ProjectNotesInput v-model="projectData.description"/>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col class="py-0">
+                <ProjectColorInput v-model="projectData.colour"/>
+              </v-col>
+            </v-row>
             <v-row class="mt-8">
               <v-col cols="12" class="py-0">
                 <span class="font-weight-bold">People Involved</span>
@@ -107,6 +112,7 @@ export default {
       projectData: {
         title: this.project ? this.project.title : '',
         description: this.project ? this.project.description : '',
+        colour: this.project ? this.project.colour : '',
         staffs: { data: this.project ? this.project.staffs.map(item => item.staff.id) : [] },
         volunteers: { data: this.project ? this.project.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.project ? this.project.pwas.map(item => item.pwa.general_info.id) : [] },
@@ -179,7 +185,8 @@ export default {
               title: this.projectData.title,
               description: this.projectData.description,
               owner_id: this.projectData.owner_id,
-              voltypes: this.projectData.voltypes
+              voltypes: this.projectData.voltypes,
+              colour: this.projectData.colour
             }
           },
           update: (store, { data: { insert_projects_one: updatedProject } }) => {
