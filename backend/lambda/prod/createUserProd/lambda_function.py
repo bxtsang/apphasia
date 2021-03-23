@@ -54,7 +54,7 @@ def lambda_handler(event, context):
         statusCode = 200
 
     except Exception as e:
-        result['status'] = "failed"
+        result['status'] = "error"
         result['message'] = "failed to create user."
         result['error'] = str(e)
         statusCode = 400
