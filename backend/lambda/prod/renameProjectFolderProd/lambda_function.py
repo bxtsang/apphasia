@@ -23,10 +23,8 @@ def lambda_handler(event, context):
     result = {}
     status_code = 500
     drive_id = get_parameter("DRIVE_ID")
-    folders = []
     new_name = json.loads(event['body'])['event']['data']['new']['title']
     file_id = json.loads(event['body'])['event']['data']['new']['google_drive_id']
-    hasura_secret = get_secret()
 
     print('new_name:', new_name)
     print('file_id:', file_id)
