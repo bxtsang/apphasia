@@ -1,12 +1,11 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" lg="8">
-        <TimelineWidget></TimelineWidget>
-        <NotificationList></NotificationList>
+      <v-col cols="12" lg="6">
+        <TimelineWidget />
       </v-col>
-      <v-col cols="12" lg="4">
-        <CalendarWidget></CalendarWidget>
+      <v-col cols="12" lg="6">
+        <NotificationList></NotificationList>
       </v-col>
     </v-row>
   </v-container>

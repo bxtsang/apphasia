@@ -22,7 +22,7 @@ export const PWA_CONTACT_STATUS_OPTIONS = [
 
 export const PWA_PREFFERED_CONTACTED_OPTIONS = [
   'Whatsapp',
-  'Telegram',
+  'Email',
   'SMS',
   'Call'
 ]
@@ -85,7 +85,8 @@ export const LIST_QUERY_PATHS = {
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
-  events: require('./../graphql/event/GetAllEvent.graphql')
+  events: require('./../graphql/event/GetAllEvent.graphql'),
+  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -177,11 +178,11 @@ export const VOLUNTEER_TYPES = {
 }
 
 export const EDIT_RESOURCE_PERMISSIONS = {
-  staffs: ['core_team'],
-  volunteers: ['core_team', 'intern'],
-  pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern'],
-  events: ['core_team', 'intern']
+  staffs: ['admin', 'core_team'],
+  volunteers: ['admin', 'core_team', 'intern'],
+  pwas: ['admin', 'core_team', 'intern'],
+  projects: ['admin', 'core_team', 'intern'],
+  events: ['admin', 'core_team', 'intern']
 }
 
 // EVENT DATA
