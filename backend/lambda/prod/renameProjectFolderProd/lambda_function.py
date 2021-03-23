@@ -24,63 +24,35 @@ def lambda_handler(event, context):
     status_code = 500
     drive_id = get_parameter("DRIVE_ID")
     folders = []
-    old_name = json.loads(event['body'])['event']['data']['old']['title']
     new_name = json.loads(event['body'])['event']['data']['new']['title']
+    file_id = json.loads(event['body'])['event']['data']['new']['google_drive_id']
+    hasura_secret = get_secret()
 
-    print('old_name:', old_name)
     print('new_name:', new_name)
+    print('file_id:', file_id)
 
     file_metadata = {
         'name': new_name
     }
 
-    try:
-        page_token = None
-
-        while True:
-            response = SERVICE.files().list(q=f"'{drive_id}' in parents",
-                                                spaces='drive',
-                                                fields='nextPageToken, files(id, name, mimeType, webViewLink, webContentLink, thumbnailLink, iconLink)',
-                                                pageToken=page_token).execute()
-            for file in response.get('files', []):
-                # Process change
-                print ('Found file: %s (%s)' % (file.get('name'), file.get('id')))
-                folders.append(file)
-            page_token = response.get('nextPageToken', None)
-            if page_token is None:
-                break
-
-    except Exception as e:
-        result['status'] = "failed"
-        result['message'] = "failed to list files"
-        result['error'] = str(e)
-        status_code = 400
-
-    try:
-        target_file = None
-        for folder in folders:
-            if folder['name'] == old_name:
-                target_file = folder
-                print(target_file)
-
-        if target_file != None:
-            target_file = SERVICE.files().update(fileId = target_file['id'], body = file_metadata).execute()
+    if file_id != "":
+        try:
+            target_file = SERVICE.files().update(fileId = file_id, body = file_metadata).execute()
 
             result['status'] = "success"
             result['message'] = "file renamed successfully!"
             result['file'] = str(target_file)
             status_code = 200
 
-        else:
+        except Exception as e:
             result['status'] = "failed"
-            result['message'] = "file not found"
+            result['message'] = "failed to rename file"
+            result['error'] = str(e)
             status_code = 400
-
-    except Exception as e:
-        result['status'] = "failed"
-        result['message'] = "failed to rename file"
-        result['error'] = str(e)
+    else:
         status_code = 400
+        result['status'] = "error"
+        result['message'] = "empty project id column in database"
 
     return {
         "statusCode": status_code,
