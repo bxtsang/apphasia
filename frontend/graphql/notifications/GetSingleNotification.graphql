@@ -1,0 +1,16 @@
+query ($id: Int!) {
+  notifications_by_pk(id: $id) {
+    created_at
+    entity_id
+    id
+    is_read
+    message
+    operation
+    staff_id
+    type
+  }
+}
+
+# {
+#   "id": 1
+# }

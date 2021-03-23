@@ -1,0 +1,16 @@
+subscription ($staff: Int!) {
+  notifications(where: {staff_id: {_eq: $staff}}) {
+    created_at
+    entity_id
+    id
+    is_read
+    message
+    operation
+    staff_id
+    type
+  }
+}
+
+  # {
+  #   "staff": 1
+  # }
