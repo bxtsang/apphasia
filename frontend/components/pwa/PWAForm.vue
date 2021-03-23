@@ -41,7 +41,6 @@
           <v-col cols="4" class="py-0">
             <EmailInput
               v-model="pwaData.general_info.data.email"
-              :required="true"
             />
           </v-col>
           <v-col cols="8" class="py-0">
@@ -181,7 +180,7 @@
           />
           <v-spacer />
           <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
-            {{ pwa ? 'Edit' : 'Save' }}
+            {{ pwa ? 'Save' : 'Add' }}
           </v-btn>
         </v-row>
       </v-container>

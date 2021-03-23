@@ -22,7 +22,7 @@ export const PWA_CONTACT_STATUS_OPTIONS = [
 
 export const PWA_PREFFERED_CONTACTED_OPTIONS = [
   'Whatsapp',
-  'Telegram',
+  'Email',
   'SMS',
   'Call'
 ]
@@ -85,7 +85,8 @@ export const LIST_QUERY_PATHS = {
   volunteers: require('./../graphql/volunteer/GetAllVol.graphql'),
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
-  events: require('./../graphql/event/GetAllEvent.graphql')
+  events: require('./../graphql/event/GetAllEvent.graphql'),
+  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql')
 }
 
 export const TABLE_HEADERS = {
@@ -95,7 +96,7 @@ export const TABLE_HEADERS = {
     { text: 'Profession', value: 'profession' },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: 'projects_in', sortable: false },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
@@ -105,7 +106,7 @@ export const TABLE_HEADERS = {
     { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
@@ -114,7 +115,7 @@ export const TABLE_HEADERS = {
     { text: 'NOK', value: 'nok', sortable: false },
     { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   projects: [
     { text: 'Project Name', value: 'title' },
@@ -122,13 +123,13 @@ export const TABLE_HEADERS = {
     { text: 'Recurring?', value: 'is_recurring' },
     { text: 'Staff Involved', value: 'staffs', sortable: false },
     { text: 'Notes', value: 'description' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   events: [
     { text: 'Name', value: 'name' },
     { text: 'Date', value: 'date' },
     { text: 'Time', value: 'event_time' },
-    { text: 'Actions', value: 'actions', sortable: false, align: 'end' }
+    { text: '', value: 'actions', sortable: false, align: 'end' }
   ]
 }
 
@@ -177,11 +178,11 @@ export const VOLUNTEER_TYPES = {
 }
 
 export const EDIT_RESOURCE_PERMISSIONS = {
-  staffs: ['core_team'],
-  volunteers: ['core_team', 'intern'],
-  pwas: ['core_team', 'intern'],
-  projects: ['core_team', 'intern'],
-  events: ['core_team', 'intern']
+  staffs: ['admin', 'core_team'],
+  volunteers: ['admin', 'core_team', 'intern'],
+  pwas: ['admin', 'core_team', 'intern'],
+  projects: ['admin', 'core_team', 'intern'],
+  events: ['admin', 'core_team', 'intern']
 }
 
 // EVENT DATA

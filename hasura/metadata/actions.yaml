@@ -26,6 +26,14 @@ actions:
   - role: core_team
   - role: core_volunteer
   - role: intern
+- name: InsertNotifications
+  definition:
+    kind: synchronous
+    handler: https://j4y9vex5pd.execute-api.ap-southeast-1.amazonaws.com/dev/
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -38,6 +46,14 @@ actions:
     handler: https://x4bbv8b153.execute-api.ap-southeast-1.amazonaws.com/dev
   permissions:
   - role: core_team
+  - role: intern
+- name: UpdateNotifications
+  definition:
+    kind: synchronous
+    handler: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyUpdateEntities
+  permissions:
+  - role: core_team
+  - role: core_volunteer
   - role: intern
 custom_types:
   enums: []
@@ -58,6 +74,9 @@ custom_types:
   - name: EventPwaInput
   - name: UpdateRecurringDataInput
   - name: UpdateEventOrRecurringInput
+  - name: NotifyInput
+  - name: UpdateNotificationsInput
+  - name: InsertNotificationsInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -67,4 +86,8 @@ custom_types:
   - name: InsertResponse
   - name: DeleteResponse
   - name: UpdateEventsResponse
+  - name: notifyResponse
+  - name: NotifyResponse
+  - name: UpdateNotificationsResponse
+  - name: InsertNotificationsResponse
   scalars: []

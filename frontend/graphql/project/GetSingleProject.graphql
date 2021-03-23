@@ -12,6 +12,7 @@ query getSingleProject($id: Int!) {
         }
       }
     }
+    colour
     upcoming_date
     is_recurring
     description
@@ -57,6 +58,8 @@ query getSingleProject($id: Int!) {
       }
     }
     title
+    is_active
+    archive_reason
     voltypes
   }
 }

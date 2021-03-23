@@ -139,7 +139,7 @@
               <v-spacer/>
               <EditConfirmation v-if="event" :event="event" :newEventData="eventData" @editEvent="editEvent" :loading="isSubmitting"/>
               <v-btn v-else color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
-                Save
+                Add
               </v-btn>
             </v-row>
           </v-col>

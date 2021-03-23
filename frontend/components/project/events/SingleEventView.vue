@@ -18,7 +18,7 @@
       </div>
 
       <div v-else-if="data && data.events_by_pk">
-        <v-container class="pa-0 ma-0" style="width:800px">
+        <v-container class="pa-0 ma-0" style="width: 50vw;">
           <v-row>
             <v-col class="d-flex align-center">
               <v-btn icon :to="`/projects?id=${data.events_by_pk.project_id}&tab=2`" @click="$emit('home')">
@@ -183,6 +183,7 @@ export default {
   },
   computed: {
     editPermission () {
+      console.log(this.resourceType)
       return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
     }
   }

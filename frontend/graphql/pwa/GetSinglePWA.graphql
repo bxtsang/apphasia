@@ -1,19 +1,13 @@
 query GetSinglePWA ($id: Int!) {
   pwas_by_pk(id: $id) {
-    befrienders {
-      volunteer {
-        id
-        general_info {
-          name
-        }
-      }
-    }
     comm_mode
     comm_diff {
       difficulty
     }
     contact_status
     hospital
+    is_active
+    archive_reason
     languages {
       language
     }
@@ -30,12 +24,6 @@ query GetSinglePWA ($id: Int!) {
       project {
         id
         title
-      }
-    }
-    pwa_befriender_cores {
-      core_volunteer {
-        id
-        name
       }
     }
     speech_therapist

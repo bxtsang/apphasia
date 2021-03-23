@@ -13,16 +13,10 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
       name
       notes
     }
-    befrienders {
-      pwa {
-        general_info {
-          name
-        }
-        id
-      }
-    }
     id
     is_speech_therapist
+    is_active
+    archive_reason
     nickname
     profession
     project_vols {

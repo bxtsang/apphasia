@@ -12,6 +12,7 @@ query getAllProjects {
         }
       }
     }
+    colour
     upcoming_date
     is_recurring
     description
@@ -57,6 +58,8 @@ query getAllProjects {
       }
     }
     title
+    is_active
+    archive_reason
     voltypes
   }
 }

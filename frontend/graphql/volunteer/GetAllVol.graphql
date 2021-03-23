@@ -13,17 +13,10 @@ query GetAllVol {
       name
       notes
     }
-    befrienders {
-      pwa_id
-      pwa {
-        general_info {
-          name
-        }
-        id
-      }
-    }
     id
     is_speech_therapist
+    is_active
+    archive_reason
     nickname
     profession
     project_vols {

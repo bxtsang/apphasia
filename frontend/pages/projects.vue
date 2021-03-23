@@ -5,6 +5,7 @@
       <v-row>
         <v-col>
           <AddResourceModal :resourceType="resourceType" />
+          <ReportGenerationButton :resourceType="resourceType" className="ml-3"/>
         </v-col>
       </v-row>
       <v-row>

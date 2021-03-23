@@ -34,14 +34,26 @@
                   </v-col>
                   <v-col class="d-flex justify-end">
                     <EditResourceModal
-                      v-if="$auth.user['custom:role'] === 'core_team'"
+                      v-if="editPermission"
                       :resourceType="resourceType"
                       :resource="data.staffs[0]"
                       :text="true"
                     />
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row v-if="!data.staffs[0].is_active" class="mt-2">
+                  <v-col class="py-0">
+                    <v-chip color="error">
+                      Archived
+                    </v-chip>
+                  </v-col>
+                </v-row>
+                <v-row v-if="!data.staffs[0].is_active">
+                  <v-col class="py-0 mt-1">
+                    <span class="font-italic">Reason for archiving: {{ data.staffs[0].archive_reason ? data.staffs[0].archive_reason : 'None' }}</span>
+                  </v-col>
+                </v-row>
+                <v-row class="mt-4">
                   <v-col cols="12" class="py-0">
                     <span>Role</span>
                   </v-col>
@@ -209,7 +221,7 @@
   </v-row>
 </template>
 <script>
-import { ROLE_OPTIONS, GENDER_OPTIONS } from './../../assets/data'
+import { ROLE_OPTIONS, GENDER_OPTIONS, EDIT_RESOURCE_PERMISSIONS } from './../../assets/data'
 import EditResourceModal from './../modals/EditResourceModal'
 
 export default {
@@ -224,7 +236,14 @@ export default {
     return {
       staffId: Number(this.$route.query.id),
       ROLE_OPTIONS,
-      GENDER_OPTIONS
+      GENDER_OPTIONS,
+      EDIT_RESOURCE_PERMISSIONS
+    }
+  },
+
+  computed: {
+    editPermission () {
+      return this.EDIT_RESOURCE_PERMISSIONS[this.resourceType].includes(this.$auth.user['custom:role'])
     }
   }
 }

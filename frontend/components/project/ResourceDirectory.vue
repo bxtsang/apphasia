@@ -7,7 +7,7 @@
         class="d-flex justify-start align-center col-8"
       >
         <template v-slot="{ result: { error, data }, isLoading }">
-          <div v-if="isLoading" class="d-flex justify-center">
+          <div v-if="isLoading" class="d-flex justify-center pa-6">
             <v-progress-circular :size="50" color="primary" indeterminate />
           </div>
 
@@ -114,14 +114,6 @@
             </v-container>
           </v-col>
         </v-row>
-        <input
-          id="files"
-          name="file"
-          type="file"
-          multiple
-          hidden
-          @change="upload"
-        >
       </v-container>
     </v-row>
     <NewFolderModal
@@ -130,6 +122,15 @@
       @closeForm="addFolderOverlay = false"
       @refresh="refreshWithDelay(currentFolder.id)"
     />
+    <UploadingSnackbar v-model="showUpload" />
+    <input
+      id="files"
+      name="file"
+      type="file"
+      multiple
+      hidden
+      @change="upload"
+    >
   </v-card>
 </template>
 <script>
@@ -174,7 +175,8 @@ export default {
         }
       ],
       currentDirectory: '/',
-      resources: this.BASE_RESOURCE
+      resources: this.BASE_RESOURCE,
+      showUpload: false
     }
   },
   computed: {
@@ -263,7 +265,6 @@ export default {
     async upload () {
       const vm = this
       const f = document.getElementById('files')
-      this.loading = true
       if (this.googleAuth === undefined || this.googleAuth == null) {
         this.signInFunction()
         return
@@ -278,9 +279,10 @@ export default {
         const isAuthorized = user.hasGrantedScopes(SCOPE)
         if (isAnEditor && isAuthorized) {
           // Iterating through the inputted files, as multi upload is allowed
-
+          this.showUpload = true
           try {
             for (const file of f.files) {
+              this.$nuxt.$emit('uploadingFile', { filename: file.name, completed: false })
               await this.uploadHelper(file, parentId)
             }
           } catch (e) {
@@ -298,6 +300,7 @@ export default {
       }
     },
     uploadHelper (file, parentId) {
+      const nuxtObject = this.$nuxt
       return new Promise(function (resolve, reject) {
         try {
           const fr = new FileReader()
@@ -346,6 +349,7 @@ export default {
             })
             await request.execute(function (file) {
               console.log(file)
+              nuxtObject.$emit('uploadingCompleted', file.name)
               resolve('success')
             })
           }

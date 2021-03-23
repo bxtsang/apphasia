@@ -38,3 +38,16 @@ html { overflow-y: auto !important}
 .v-input--is-readonly.primary--text .v-icon {
     color: rgba(0 , 0 , 0, 0.6) !important;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #FFF;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #C4C4C4;
+    border-radius: 100vh;
+}

@@ -24,17 +24,10 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
       name
       notes
     }
-    befrienders {
-      pwa_id
-      pwa {
-        general_info {
-          name
-        }
-        id
-      }
-    }
     id
     is_speech_therapist
+    is_active
+    archive_reason
     nickname
     profession
     project_vols {
@@ -69,6 +62,8 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
 #{
 #  "volunteer": {
 #    "is_speech_therapist": false,
+#    "is_active": "true",
+#    "archive_reason": null,
 #    "nickname": "bobster",
 #    "profession": "Student",
 #    "project_vols": {
