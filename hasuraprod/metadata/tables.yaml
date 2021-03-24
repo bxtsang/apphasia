@@ -386,6 +386,10 @@
 - table:
     schema: public
     name: notifications
+  object_relationships:
+  - name: staff
+    using:
+      foreign_key_constraint_on: staff_id
   insert_permissions:
   - role: core_team
     permission:
