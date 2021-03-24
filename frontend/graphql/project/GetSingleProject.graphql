@@ -58,6 +58,7 @@ query getSingleProject($id: Int!) {
       }
     }
     title
+    google_drive_id
     is_active
     archive_reason
     voltypes
