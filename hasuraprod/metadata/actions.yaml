@@ -14,7 +14,8 @@ actions:
 - name: DeleteEvents
   definition:
     kind: synchronous
-    handler: https://750a9vn0z1.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/deleteevents
+    forward_client_headers: true
   permissions:
   - role: core_team
   - role: intern
@@ -45,14 +46,16 @@ actions:
 - name: UpdateEventOrRecurring
   definition:
     kind: synchronous
-    handler: https://x4bbv8b153.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/updateeventorrecurring
+    forward_client_headers: true
   permissions:
   - role: core_team
   - role: intern
 - name: UpdateNotifications
   definition:
     kind: synchronous
-    handler: https://c6ukabykf9.execute-api.ap-southeast-1.amazonaws.com/default/notifyUpdateEntities
+    handler: https://api.apphasia.cf/notifyupdateentities
+    forward_client_headers: true
   permissions:
   - role: core_team
   - role: core_volunteer
