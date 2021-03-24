@@ -6,8 +6,6 @@ import requests
 client = boto3.client('cognito-idp')
 clientSecret = boto3.client('secretsmanager')
 client_ssm = boto3.client('ssm')
-hasura_url = get_parameter("HASURA_URI_PROD")
-
 
 def lambda_handler(event, context):
     target = ''
@@ -16,6 +14,8 @@ def lambda_handler(event, context):
     statusCode = 500
     event = json.loads(event['body'])['input']['eventData']
     hasura_secret = get_secret()
+    hasura_url = get_parameter("HASURA_URI_PROD")
+
 
     try:
         #delete event and onwards

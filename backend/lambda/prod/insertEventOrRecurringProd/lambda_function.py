@@ -6,13 +6,14 @@ import requests
 client = boto3.client('cognito-idp')
 clientSecret = boto3.client('secretsmanager')
 client_ssm = boto3.client('ssm')
-hasura_url = get_parameter("HASURA_URI_PROD")
 
 def lambda_handler(event, context):
     result = {}
     statusCode = 500
     eventsOrRecurring = json.loads(event['body'])['input']['newEventData']
     hasura_secret = get_secret()
+    hasura_url = get_parameter("HASURA_URI_PROD")
+
 
     headers = {
             "Content-Type": "application/json",
