@@ -18,7 +18,8 @@ mutation (
     $languages_to_add: [staff_languages_insert_input!]!,
     $languages_to_remove: [languages_enum!],
     $projects_to_add: [project_staffs_insert_input!]!,
-    $projects_to_remove: [Int!]
+    $projects_to_remove: [Int!],
+    $updateNotification: UpdateNotificationsInput!
 ) {
     insert_staff_supervisors(objects: $supervisors_to_add) {
         affected_rows
@@ -103,9 +104,13 @@ mutation (
             }
         }
     }
+  UpdateNotifications (updateNotificationData: $updateNotification) {
+    status
+    message
+  }
 }
 
-#{
+# {
 #    "address": "4 Road road",
 #    "archive_reason": null,
 #    "bio": "",
@@ -125,5 +130,9 @@ mutation (
 #    "languages_to_add": [{"staff_id": 60, "language": "Chinese"}],     #list of objects with staff_id and language fields
 #    "languages_to_remove": ["Chinese"],        #list of strings of languages enums, put all that you want to remove or MORE (not added before but not going to add also can put)
 #    "projects_to_add": [{"staff_id": 60, "project_id": 1}],        #list of objects with staff_id and project_id fields
-#    "projects_to_remove": [1]     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
-#}
+#    "projects_to_remove": [1],     #list of integers of project_id, put all that you want to remove or MORE (not added before but not going to add also can put)
+#    "updateNotification": {
+#     "old": {"JSON of Staff Object": "Hi"},
+#     "new": {"JSON of above fields": "Hi"}
+#   }
+# }
