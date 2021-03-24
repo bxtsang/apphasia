@@ -27,7 +27,7 @@ def get_secret():
 # ENV VARIABLES
 clientSecret = boto3.client('secretsmanager')
 client_ssm = boto3.client('ssm')
-hasura_url = get_parameter("HASURA_URI_PROD")
+hasura_url = get_parameter("HASURA_URI_PROD")[:-7] + "query"
 hasura_admin_secret = get_secret()
 def lambda_handler(event, context):
     
