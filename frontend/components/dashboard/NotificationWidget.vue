@@ -18,7 +18,7 @@
         :key="option"
       >
         <div class="notification-wrapper">
-          <NotificationList />
+          <NotificationList v-if="option === 'unread'"/>
         </div>
       </v-tab-item>
     </v-tabs-items>
