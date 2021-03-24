@@ -5,8 +5,8 @@
       </v-list-item-avatar>
 
       <v-list-item-content>
-        <v-list-item-title class="font-weight-bold pb-1" v-text="notification.description" />
-        <v-list-item-subtitle v-text="notification.user" />
+        <v-list-item-title class="font-weight-bold pb-1" v-text="notification.message" />
+        <v-list-item-subtitle v-text="notification.staff.name" />
       </v-list-item-content>
 
       <v-list-item-action>
@@ -28,24 +28,24 @@ export default {
   },
   computed: {
     color () {
-      switch (this.notification.type) {
-        case 'insert':
+      switch (this.notification.operation) {
+        case 'INSERT':
           return 'success'
-        case 'update':
+        case 'UPDATE':
           return 'warning'
-        case 'delete':
+        case 'DELETE':
           return 'error'
         default:
           return 'warning'
       }
     },
     icon () {
-      switch (this.notification.type) {
-        case 'insert':
+      switch (this.notification.operation) {
+        case 'INSERT':
           return 'mdi-plus-circle-outline'
-        case 'update':
+        case 'UPDATE':
           return 'mdi-alert-circle-outline'
-        case 'delete':
+        case 'DELETE':
           return 'mdi-alert-outline'
         default:
           return 'mdi-alert-circle-outline'
