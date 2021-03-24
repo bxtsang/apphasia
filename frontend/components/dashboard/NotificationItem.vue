@@ -1,5 +1,5 @@
 <template>
-    <v-list-item link class="px-0">
+    <v-list-item link class="px-0" :to="link">
       <v-list-item-avatar :color="color">
         <v-icon dark>{{ icon }}</v-icon>
       </v-list-item-avatar>
@@ -50,6 +50,9 @@ export default {
         default:
           return 'mdi-alert-circle-outline'
       }
+    },
+    link () {
+      return `/${this.notification.type}?id=${this.notification.entity_id}`
     }
   }
 }
