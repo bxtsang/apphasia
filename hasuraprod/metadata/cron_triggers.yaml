@@ -1,5 +1,8 @@
 - name: createRecurringEvents
-  webhook: https://tx7a5lxzed.execute-api.ap-southeast-1.amazonaws.com/dev
+  webhook: https://api.apphasia.cf/createrecurringeventscron
   schedule: 0 0 1 */6 *
   include_in_metadata: true
   payload: {}
+  headers:
+  - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
+    name: x-api-key

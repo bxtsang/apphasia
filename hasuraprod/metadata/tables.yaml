@@ -2090,7 +2090,10 @@
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook: https://56zxv8iy77.execute-api.ap-southeast-1.amazonaws.com/dev
+    webhook: https://api.apphasia.cf/updaterecurring
+    headers:
+    - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
+      name: x-api-key
 - table:
     schema: public
     name: recurring_pwas

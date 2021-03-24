@@ -44,6 +44,7 @@ def lambda_handler(event, context):
                     start_date
                     start_time
                     name
+                    note
                     infinite
                     interval
                     frequency
@@ -96,7 +97,7 @@ def createRecurringEvents (recurrence):
     recurrence['start_date'] = date(*[int(ch) for ch in recurrence['start_date'].split("-")])
     recurrence['project_id'] = recurrence['project_id'] if recurrence['project_id'] else "NULL"
 
-    end_date =  date(*[int(ch) for ch in recurrence['end_date'].split("-")])
+    end_date =  date(*[int(ch) for ch in recurrence['end_date'].split("-")]) if recurrence['end_date'] else datetime.now().date()
     new_end_date = (datetime.now() + relativedelta(months=6)).date()
     if end_date > new_end_date:
         new_end_date = end_date
