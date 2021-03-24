@@ -7,6 +7,10 @@ mutation ($id: Int!, $is_read: Boolean!) {
     message
     operation
     staff_id
+    staff {
+      id
+      name
+    }
     type
   }
 }

@@ -65,7 +65,7 @@ mutation CreateProject($project: projects_insert_input!) {
   }
 }
 
-{
+# {
 #   "project": {
 #     "title": "New title",
 #     "colour": "blue",
