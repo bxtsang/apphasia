@@ -1459,6 +1459,9 @@
       interval_sec: 10
       timeout_sec: 60
     webhook: https://api.apphasia.cf/renameprojectfolder
+    headers:
+    - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
+      name: x-api-key
 - table:
     schema: public
     name: pwa_comms
