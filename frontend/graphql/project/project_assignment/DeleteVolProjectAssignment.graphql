@@ -65,6 +65,7 @@ mutation DeleteVolProjectAssignment(
           }
         }
         title
+        google_drive_id
         voltypes
         is_active
         archive_reason

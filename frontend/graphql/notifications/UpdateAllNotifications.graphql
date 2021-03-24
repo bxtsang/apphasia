@@ -1,0 +1,10 @@
+mutation ($staff: Int!, $is_read: Boolean!) {
+  update_notifications(where: {staff_id: {_eq: $staff}}, _set: {is_read: $is_read}) {
+    affected_rows
+  }
+}
+
+  # {
+  #   "staff": 1,
+  #   "is_read": true
+  # }

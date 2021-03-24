@@ -31,9 +31,9 @@ type Mutation {
 
 
 type Mutation {
-  Notify (
-    notifyData: NotifyInput!
-  ): NotifyResponse
+  InsertNotifications (
+    insertNotificationsData: InsertNotificationsInput!
+  ): InsertNotificationsResponse
 }
 
 
@@ -51,6 +51,13 @@ type Mutation {
   UpdateEventOrRecurring (
     updateEventData: UpdateEventOrRecurringInput!
   ): UpdateEventsResponse
+}
+
+
+type Mutation {
+  UpdateNotifications (
+    updateNotificationData: UpdateNotificationsInput!
+  ): UpdateNotificationsResponse
 }
 
 
@@ -189,6 +196,17 @@ input NotifyInput {
   staffs : json
 }
 
+input UpdateNotificationsInput {
+  old : json!
+  new : json!
+  general_info : json
+}
+
+input InsertNotificationsInput {
+  table : String!
+  entity_id : Int!
+}
+
 type CreateUserResponse {
   status : String!
   message : String!
@@ -235,6 +253,16 @@ type notifyResponse {
 }
 
 type NotifyResponse {
+  status : String!
+  message : String!
+}
+
+type UpdateNotificationsResponse {
+  status : String!
+  message : String!
+}
+
+type InsertNotificationsResponse {
   status : String!
   message : String!
 }

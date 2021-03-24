@@ -3,6 +3,7 @@ mutation CreateProject($project: projects_insert_input!) {
     colour
     description
     id
+    google_drive_id
     owner {
       id
       name
@@ -64,10 +65,11 @@ mutation CreateProject($project: projects_insert_input!) {
   }
 }
 
-# {
+{
 #   "project": {
 #     "title": "New title",
 #     "colour": "blue",
+#     "google_drive_id": "theid",
 #     "description": "My new project",
 #     "owner_id": 1,
 #     "pwas": {"data": [
