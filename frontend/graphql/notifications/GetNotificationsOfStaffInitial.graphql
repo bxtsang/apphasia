@@ -7,6 +7,10 @@ query ($staff: Int!) {
     message
     operation
     staff_id
+    staff {
+      id
+      name
+    }
     type
   }
 }

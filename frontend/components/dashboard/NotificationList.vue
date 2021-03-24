@@ -1,10 +1,14 @@
 <template>
   <ApolloQuery
-    :query="require('./../../graphql/notifications/GetNotificationOfStaffInitial.graphql')"
+    :query="LIST_QUERY_PATHS['notification']['read']"
     :variables="{
       staff: $auth.user['custom:hasura_id']
     }"
     >
+     <ApolloSubscribeToMore
+      :document="LIST_QUERY_PATHS['notification']['readSubscription']"
+      :variables="{ staff: $auth.user['custom:hasura_id'] }"
+    />
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
       <div v-if="isLoading" class="d-flex justify-center">
@@ -19,7 +23,6 @@
       <!-- Error -->
       <div v-else-if="error">An error occurred</div>
       <div v-else-if="data">
-        {{ data.notifications[0]}}
         <v-list>
           <NotificationItem v-for="item in data.notifications" :notification="item" v-bind:key="item.id" />
         </v-list>
@@ -28,10 +31,11 @@
   </ApolloQuery>
 </template>
 <script>
-
+import { LIST_QUERY_PATHS } from './../../assets/data.js'
 export default {
   data () {
     return {
+      LIST_QUERY_PATHS
     }
   }
 }
