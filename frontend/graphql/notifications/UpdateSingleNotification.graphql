@@ -1,0 +1,17 @@
+mutation ($id: Int!, $is_read: Boolean!) {
+  update_notifications_by_pk(pk_columns: {id: $id}, _set: {is_read: $is_read}) {
+    created_at
+    entity_id
+    id
+    is_read
+    message
+    operation
+    staff_id
+    type
+  }
+}
+
+  # {
+  #   "id": 1,
+  #   "is_read": true
+  # }
