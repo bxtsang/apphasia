@@ -47,19 +47,10 @@
                 <v-row>
                   <v-col>
                     <v-tabs-items v-model="selectedTab">
-                      <!-- Project Details -->
-                      <v-tab-item :key="0" transition="fade">
-                        <ProjectDetails :project="data.projects_by_pk" :resource-type="resourceType" />
-                      </v-tab-item>
-
-                      <!-- Project Resources -->
-                      <v-tab-item :key="1" transition="fade">
-                        <ResourceDirectory :project="data.projects_by_pk" />
-                      </v-tab-item>
-
-                      <!-- Project Events -->
-                      <v-tab-item :key="2" transition="fade" >
-                        <EventsView :project="data.projects_by_pk" />
+                      <v-tab-item v-for="(tab, index) in tabs" :key="index">
+                        <EventsView v-if="tab === 'Events'" :project="data.projects_by_pk" />
+                        <ProjectDetails v-if="tab === 'Details'" :project="data.projects_by_pk" :resource-type="resourceType" />
+                        <ResourceDirectory v-if="tab === 'Resources'" :project="data.projects_by_pk" />
                       </v-tab-item>
                     </v-tabs-items>
                   </v-col>
@@ -86,9 +77,9 @@ export default {
       projectId: this.$route.query.id,
       selectedTab: this.$route.query.tab ? Number(this.$route.query.tab) : 0,
       tabs: [
+        'Events',
         'Details',
-        'Resources',
-        'Events'
+        'Resources'
       ]
     }
   }

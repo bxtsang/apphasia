@@ -81,7 +81,17 @@
           </template>
 
           <template v-slot:[`item.projects_in`]="{ item }">
-            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}
+            <v-chip
+              v-for="(project, index) in item.projects_in"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
+<!--            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -90,7 +100,17 @@
           </template>
 
           <template v-slot:[`item.project_vols`]="{ item }">
-            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}
+            <v-chip
+              v-for="(project, index) in item.project_vols"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
+<!--            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- PWA Specific Columns -->
@@ -99,7 +119,17 @@
           </template>
 
           <template v-slot:[`item.projects`]="{ item }">
-            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}
+            <v-chip
+              v-for="(project, index) in item.projects"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
+<!--            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <template v-slot:[`item.languages`]="{ item }">
