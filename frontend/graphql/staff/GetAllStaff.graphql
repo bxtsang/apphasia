@@ -32,6 +32,7 @@ query GetAllStaff($isCoreTeam: Boolean!) {
       project {
         title
         id
+        colour
       }
     }
   }
