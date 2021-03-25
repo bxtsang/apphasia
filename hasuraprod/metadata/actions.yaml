@@ -37,6 +37,7 @@ actions:
   - role: core_team
   - role: core_volunteer
   - role: intern
+  - role: public
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
