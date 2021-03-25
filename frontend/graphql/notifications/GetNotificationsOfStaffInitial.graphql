@@ -2,7 +2,8 @@ query ($staff: Int!) {
   notifications(where: { _and: [
     { staff_id: {_eq: $staff} },
     { is_read: {_eq: false} }
-  ]}
+  ]},
+  order_by: {created_at: desc},
   ) {
     created_at
     entity_id
