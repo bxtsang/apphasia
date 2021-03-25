@@ -205,6 +205,7 @@ import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
 import RegisterPWA from './../../graphql/pwa/RegisterPWA'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
   components: {
@@ -271,7 +272,20 @@ export default {
         newPwaData.stroke_date = `${this.pwa.stroke_date}-01`
         this.$apollo.mutate({
           mutation: RegisterPWA,
-          variables: { pwa: newPwaData }
+          variables: { pwa: newPwaData },
+          update: (store, { data: { insert_pwas_one: newPWA } }) => {
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'pwas',
+                  entity_id: newPWA.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
+          }
         }).then((data) => {
           this.isSubmitting = false
           registerSuccessful()
