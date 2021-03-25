@@ -149,41 +149,9 @@ import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
-
-import RoleInput from './../input/RoleInput'
-import NameInput from './../input/NameInput'
-import AliasInput from './../input/AliasInput'
-import DateOfBirthInput from './../input/DateOfBirthInput'
-import ContactInput from './../input/ContactInput'
-import GenderInput from './../input/GenderInput'
-import EmailInput from './../input/EmailInput'
-import AddressInput from './../input/AddressInput'
-import BioInput from './../input/BioInput'
-import ProjectInput from './../input/ProjectInput'
-import LanguageInput from './../input/LanguageInput'
-import WorkplaceInput from './../input/WorkplaceInput'
-import ProfessionInput from './../input/ProfessionInput'
-import SpeechTherapistInput from './../input/SpeechTherapistInput'
-import SupervisorInput from './../input/SupervisorInput'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
-  components: {
-    RoleInput,
-    NameInput,
-    AliasInput,
-    DateOfBirthInput,
-    ContactInput,
-    GenderInput,
-    EmailInput,
-    AddressInput,
-    BioInput,
-    ProjectInput,
-    LanguageInput,
-    WorkplaceInput,
-    ProfessionInput,
-    SpeechTherapistInput,
-    SupervisorInput
-  },
   props: {
     staff: {
       type: Object,
@@ -262,6 +230,17 @@ export default {
               update: (store, response) => {
                 // Success
                 console.log('Cognito Success')
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'staffs',
+                  entity_id: newStaff.id
+                }
               }
             }).catch((error) => {
               console.log(error)
