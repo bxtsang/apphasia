@@ -11,21 +11,22 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <NameInput v-model="pwa.general_info.data.name" label="Full Name of PWA" :outlined="true"/>
+              <NameInput v-model="pwa.general_info.data.name" label="*Full Name of PWA" :outlined="true"/>
             </v-col>
             <v-col class="px-6">
-              <DateOfBirthInput v-model="pwa.general_info.data.dob" :outlined="true" required/>
+              <DateOfBirthInput v-model="pwa.general_info.data.dob" :outlined="true" label="*Date of Birth" required/>
             </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <GenderInput v-model="pwa.general_info.data.gender" :outlined="true"/>
+              <GenderInput v-model="pwa.general_info.data.gender" :outlined="true" label="*Gender"/>
             </v-col>
             <v-col class="px-6">
               <ContactInput
                 v-model="pwa.general_info.data.contact_num"
-                label="Contact Number (please provide number of caregiver if PWA is not using his/her phone)"
+                label="*Contact Number"
                 :outlined="true"
+                hint="^ Please provide number of caregiver if PWA is not using his/her phone"
               />
             </v-col>
           </v-row>
@@ -45,7 +46,7 @@
             <v-col class="px-6">
               <PWAPreferredCommInput
                 v-model="pwa.comm_mode"
-                label="What is your preferred mode of communication"
+                label="*What is your preferred mode of communication"
                 :required="true"
                 :outlined="true"
                 hint="^ We will be contacting you through this mode of communication"
@@ -54,7 +55,7 @@
             <v-col class="px-6">
               <BioInput
                 v-model="pwa.general_info.data.bio"
-                label="What are your hobbies and interests? We want to get to know you better!"
+                label="Hobbies / Interests"
                 :outlined="true"/>
             </v-col>
           </v-row>
@@ -66,7 +67,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Which activity will you like to attend(Can select more than one)</span>
+                <span class="input-label">* Which activity will you like to attend(Can select more than one)</span>
                 <PWAProjectInterestInput
                   v-model="pwa.projects.data"
                   :required="true"
@@ -77,7 +78,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">When did your stroke / brain injury happen?</span>
+                <span class="input-label">* When did your stroke / brain injury happen?</span>
                 <PWAStrokeDateRegistrationInput
                   v-model="pwa.stroke_date"
                   :required="true"
@@ -88,7 +89,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What are your communication difficulties? (Can select more than one)</span>
+                <span class="input-label">* What are your communication difficulties? (Can select more than one)</span>
                 <CommDiffInput v-model="pwa.comm_diff.data" :placeholderOnly="true" :required="true" />
               </v-card>
             </v-col>
@@ -96,7 +97,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What language(s) can you speak or understand? (Can select more than one)</span>
+                <span class="input-label">* What language(s) can you speak or understand? (Can select more than one)</span>
                 <LanguageInput v-model="pwa.languages.data" :placeholderOnly="true" />
               </v-card>
             </v-col>
@@ -104,7 +105,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Do you need a wheelchair?</span>
+                <span class="input-label">* Do you need a wheelchair?</span>
                 <WheelChairInput
                   v-model="pwa.wheelchair"
                   :required="true"

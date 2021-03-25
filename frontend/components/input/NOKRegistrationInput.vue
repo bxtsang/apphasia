@@ -20,7 +20,7 @@
         <v-col cols="6" class="py-0 pr-6">
           <v-text-field
             v-model="data[index].contact_num"
-            label="Contact Number of caregiver / next-of-kin"
+            label="*Contact Number of caregiver / next-of-kin"
             outlined
             :rules="[INPUT_VALIDATION.contact.valid]"
           />
@@ -30,7 +30,7 @@
         <v-col cols="6" class="py-0 pl-6">
           <v-text-field
             v-model="data[index].email"
-            label="Email Address of caregiver / next-of-kin"
+            label="*Email Address of caregiver / next-of-kin"
             outlined
             :rules="[INPUT_VALIDATION.email.valid]"
           />
