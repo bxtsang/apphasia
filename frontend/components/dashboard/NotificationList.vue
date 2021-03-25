@@ -8,6 +8,7 @@
      <ApolloSubscribeToMore
       :document="LIST_QUERY_PATHS['notification']['readSubscription']"
       :variables="{ staff: $auth.user['custom:hasura_id'] }"
+      :updateQuery="onNotificationAdded"
     />
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
@@ -36,6 +37,11 @@ export default {
   data () {
     return {
       LIST_QUERY_PATHS
+    }
+  },
+  methods: {
+    onNotificationAdded (previousResult, { subscriptionData }) {
+      return subscriptionData.data
     }
   }
 }
