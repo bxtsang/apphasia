@@ -74,11 +74,11 @@ def lambda_handler(event, context):
             "type": "run_sql",
             "args": {
                 "sql": """
-                DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - rejected_date) >= 30;
-                DELETE FROM volunteers WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30;
-                DELETE FROM projects WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30;
-                DELETE FROM pwas WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30;
-                DELETE FROM staffs WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone 'UTC') - updated_at) >= 30 RETURNING email;"""
+                DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone '+08') - rejected_date) >= 30;
+                DELETE FROM volunteers WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
+                DELETE FROM projects WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
+                DELETE FROM pwas WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
+                DELETE FROM staffs WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30 RETURNING email;"""
             }
         }
 
