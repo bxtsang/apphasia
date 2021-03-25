@@ -2,7 +2,7 @@
   <v-select
     v-model="data"
     :items="projects"
-    label="Projects Involved"
+    :label="label"
     :rules="validation"
     :required="required"
     :readonly="readonly"
@@ -36,6 +36,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Projects Involved'
     }
   },
 
