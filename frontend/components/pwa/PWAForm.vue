@@ -188,50 +188,19 @@
   </v-card>
 </template>
 <script>
-import NameInput from './../input/NameInput'
-import DateOfBirthInput from './../input/DateOfBirthInput'
-import ContactInput from './../input/ContactInput'
-import GenderInput from './../input/GenderInput'
-import EmailInput from './../input/EmailInput'
-import AddressInput from './../input/AddressInput'
-import BioInput from './../input/BioInput'
-import WheelChairInput from './../input/WheelChairInput.vue'
-import ProjectInput from './../input/ProjectInput'
-import CommDiffInput from './../input/CommDiffInput'
-import LanguageInput from './../input/LanguageInput'
-import StrokeDateInput from './../input/StrokeDateInput'
-import ChannelInput from './../input/ChannelInput'
-import ConsentInput from './../input/ConsentInput'
-import MediaWillingnessInput from './../input/MediaWillingnessInput'
 import PWAContactStatusInput from './../input/PWAContactStatusInput'
-import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
 import PWAPreferredCommInput from './../input/PWAPreferredCommInput'
 import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
 import UpdatePWA from './../../graphql/pwa/UpdatePWA.graphql'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 const _ = require('lodash')
 
 export default {
   components: {
-    NameInput,
-    DateOfBirthInput,
-    ContactInput,
-    GenderInput,
-    EmailInput,
-    AddressInput,
-    BioInput,
-    WheelChairInput,
-    ProjectInput,
-    CommDiffInput,
-    LanguageInput,
-    StrokeDateInput,
-    ChannelInput,
-    ConsentInput,
-    MediaWillingnessInput,
     PWAContactStatusInput,
-    GeneralOptionalText,
     NOKInput,
     PWAPreferredCommInput
   },
@@ -306,6 +275,17 @@ export default {
             const data = store.readQuery({ query: GetAllPWA })
             data.pwas.push(newPWA)
             store.writeQuery({ query: GetAllPWA, data })
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'pwas',
+                  entity_id: newPWA.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.isSubmitting = false
