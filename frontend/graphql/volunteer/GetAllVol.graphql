@@ -24,6 +24,7 @@ query GetAllVol {
       project {
         id
         title
+        colour
       }
       interested
       approved
