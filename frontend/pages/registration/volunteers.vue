@@ -53,7 +53,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">*How will you like to volunteer with us? (Tick all that applies)</span>
+                <span class="input-label">* How will you like to volunteer with us? (Tick all that applies)</span>
                 <VolunteerProjectInterestInput v-model="projectVols" />
               </v-card>
             </v-col>
@@ -61,7 +61,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">*What language(s) can you speak? (Tick all that applies)</span>
+                <span class="input-label">* What language(s) can you speak? (Tick all that applies)</span>
                 <LanguageInput v-model="languages" :placeholderOnly="true" />
               </v-card>
             </v-col>
@@ -69,7 +69,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">*What is your profession?</span>
+                <span class="input-label">* What is your profession?</span>
                 <MultiProfessionInput v-model="profession" />
               </v-card>
             </v-col>
