@@ -6,7 +6,7 @@
       <v-container class="pa-0">
         <v-row>
           <v-col col="12" class="py-0">
-            <span>Role</span>
+            <span class="font-weight-bold">*Role</span>
           </v-col>
         </v-row>
         <v-row>
@@ -26,6 +26,7 @@
             <NameInput
               v-model="staffData.name"
               :required="true"
+              label="*Full Name"
             />
           </v-col>
           <v-col class="py-0">
@@ -39,17 +40,20 @@
             <DateOfBirthInput
               v-model="staffData.dob"
               :required="true"
+              label="*Date of Birth"
             />
           </v-col>
           <v-col class="py-0">
             <ContactInput
               v-model="staffData.contact_num"
               :required="true"
+              label="*Contact Number"
             />
           </v-col>
           <v-col class="py-0">
             <GenderInput
               v-model="staffData.gender"
+              label="*Gender"
             />
           </v-col>
         </v-row>
@@ -59,12 +63,14 @@
             <EmailInput
               v-model="staffData.email"
               :required="true"
+              label="*Email"
             />
           </v-col>
           <v-col class="py-0" cols="8">
             <AddressInput
               v-model="staffData.address"
               :required="true"
+              label="*Home Address"
             />
           </v-col>
         </v-row>
@@ -90,6 +96,7 @@
             <LanguageInput
               v-model="staffData.languages"
               :required="true"
+              label="*Languages understand and/or speak"
             />
           </v-col>
           <v-col class="py-0">
@@ -102,6 +109,7 @@
           <v-col class="py-0">
             <ProfessionInput
               v-model="staffData.profession"
+              label="*Profession"
             />
           </v-col>
           <v-col class="py-0">
@@ -115,6 +123,7 @@
             <DateJoinedInput
               v-model="staffData.date_joined"
               :required="true"
+              label="*Date Joined"
             />
           </v-col>
         </v-row>

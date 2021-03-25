@@ -34,7 +34,7 @@ export default {
     },
     label: {
       type: String,
-      default: 'Contact'
+      default: 'Contact Number'
     }
   },
 

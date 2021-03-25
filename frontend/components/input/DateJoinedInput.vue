@@ -8,7 +8,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
         v-model="data"
-        label="Date Joined"
+        :label="label"
         v-bind="attrs"
         readonly
         :rules="validation"
@@ -41,6 +41,10 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Date Joined'
     }
   },
 
