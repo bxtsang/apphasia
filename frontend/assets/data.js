@@ -119,6 +119,7 @@ export const TABLE_HEADERS = {
     { text: 'Programmes Involved', value: 'projects', sortable: false },
     { text: 'NOK', value: 'nok', sortable: false },
     { text: 'Languages understand/speak', value: 'languages', sortable: false },
+    { text: 'Contact Number', value: 'general_info.contact_num' },
     { text: 'Status', value: 'contact_status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
