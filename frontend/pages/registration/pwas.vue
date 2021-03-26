@@ -24,7 +24,7 @@
             <v-col class="px-6">
               <ContactInput
                 v-model="pwa.general_info.data.contact_num"
-                label="Contact Number (please provide number of caregiver if PWA is not using his/her phone)"
+                label="Contact Number (or caregiver's contact number)"
                 :outlined="true"
               />
             </v-col>
