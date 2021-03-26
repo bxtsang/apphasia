@@ -91,7 +91,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -110,7 +109,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- PWA Specific Columns -->
@@ -129,7 +127,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <template v-slot:[`item.languages`]="{ item }">
