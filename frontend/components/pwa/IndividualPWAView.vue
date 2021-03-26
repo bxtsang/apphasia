@@ -166,7 +166,13 @@
                     <v-select
                       :value="data.pwas_by_pk.general_info.consent"
                       :items="[{ value: true, text: 'Yes' }, { value: false, text: 'No' }]"
-                      label="Consent"
+                      label="Agreeable to receive "
+                      readonly
+                    />
+                    <ConsentInput
+                      :value="data.pwas_by_pk.general_info.consent"
+                      :required="true"
+                      input-type="select"
                       readonly
                     />
                   </v-col>
