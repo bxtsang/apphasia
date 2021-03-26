@@ -198,7 +198,7 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-switch
-                      :input-value="data.volunteers_by_pk.consent"
+                      :input-value="data.volunteers_by_pk.general_info.consent"
                       label="Consent to Updates?"
                       readonly
                     />
