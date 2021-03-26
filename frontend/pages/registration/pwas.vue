@@ -160,7 +160,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Consent for Marketing Purposes</span>
+                <span class="input-label">Would you like to receive updates about Aphasia SG events and programmes?</span>
                 <ConsentInput v-model="pwa.general_info.data.consent" />
               </v-card>
             </v-col>

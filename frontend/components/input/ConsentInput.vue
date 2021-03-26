@@ -52,7 +52,7 @@ export default {
   data () {
     return {
       CONSENT_OPTIONS: [
-        { text: this.inputType === 'radio' ? 'Yes, I wish to receive updates about Aphasia SG events and programmes!' : 'Yes', value: true },
+        { text: 'Yes', value: true },
         { text: 'No', value: false }
       ],
       data: this.value,
