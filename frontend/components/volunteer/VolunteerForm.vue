@@ -124,6 +124,8 @@
             <v-textarea
               v-model="generalInfo.notes"
               :label="'Notes'"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>

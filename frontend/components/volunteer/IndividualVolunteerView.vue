@@ -218,6 +218,8 @@
                     <v-textarea
                       label="Notes"
                       :value="data.volunteers_by_pk.general_info.notes"
+                      rows="1"
+                      auto-grow
                       readonly
                     />
                   </v-col>

@@ -139,9 +139,11 @@
             />
           </v-col>
           <v-col cols="6" class="py-0">
-            <GeneralOptionalText
+            <v-textarea
               v-model="pwaData.general_info.data.notes"
-              label="Notes"
+              :label="'Notes'"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>
