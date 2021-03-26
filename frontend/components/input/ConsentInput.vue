@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group v-if="inputType === 'radio'" v-model="data" :rules="validation">
+  <v-radio-group v-if="inputType === 'radio'" v-model="data" :rules="validation" label="Agreeable to receive promotional materials?">
     <v-radio
       v-for="role in CONSENT_OPTIONS"
       :key="role.value"
