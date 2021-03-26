@@ -115,9 +115,11 @@
             />
           </v-col>
           <v-col cols="6" class="py-0">
-            <GeneralOptionalText
+            <v-textarea
               v-model="pwaData.media_engagement_details"
-              label="Participated in any media project?"
+              label="Media Engagement Details (if any)"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>
@@ -141,7 +143,7 @@
           <v-col cols="6" class="py-0">
             <v-textarea
               v-model="pwaData.general_info.data.notes"
-              :label="'Notes'"
+              label="Notes"
               rows="1"
               auto-grow
             />
