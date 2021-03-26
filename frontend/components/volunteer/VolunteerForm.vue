@@ -148,7 +148,7 @@
           <v-col class="py-0">
             <v-textarea
               v-model="generalInfo.notes"
-              :label="'Notes'"
+              label="Any additional info of the Volunteer?"
               rows="1"
               auto-grow
             />

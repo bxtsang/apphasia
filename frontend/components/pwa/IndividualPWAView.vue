@@ -216,7 +216,7 @@
                     <v-textarea
                       :value="data.pwas_by_pk.general_info.notes"
                       auto-grow
-                      label="Notes"
+                      label="Any additional info of the PWA?"
                       rows="1"
                       readonly
                     />

@@ -143,7 +143,7 @@
           <v-col cols="6" class="py-0">
             <v-textarea
               v-model="pwaData.general_info.data.notes"
-              label="Notes"
+              label="Any additional info of the PWA?"
               rows="1"
               auto-grow
             />
