@@ -13,7 +13,7 @@
     v-model="data"
     :items="CONSENT_OPTIONS"
     :rules="validation"
-    label="Consent"
+    label="Agreeable to receive promotional materials?"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
