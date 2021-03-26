@@ -127,6 +127,7 @@ import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
 import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
   components: {
@@ -178,6 +179,19 @@ export default {
           mutation: RegisterVol,
           variables: {
             volunteer: this.volunteer
+          },
+          update: (store, { data: { insert_volunteers_one: newVol } }) => {
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'volunteers',
+                  entity_id: newVol.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.isSubmitting = false

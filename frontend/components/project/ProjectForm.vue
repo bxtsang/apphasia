@@ -97,7 +97,7 @@
 <script>
 import CreateProject from './../../graphql/project/CreateProject.graphql'
 import UpdateProject from './../../graphql/project/UpdateProject.graphql'
-
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 export default {
   props: {
     project: {
@@ -145,6 +145,17 @@ export default {
           update: (store, { data: { insert_projects_one: newProject } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
             this.createGDriveFolder(newProjectData.title)
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'projects',
+                  entity_id: newProject.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.isSubmitting = false
