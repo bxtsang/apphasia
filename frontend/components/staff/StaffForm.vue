@@ -214,8 +214,8 @@ export default {
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
             languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
-            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
-            // projects_in: this.staffData.projects_in,
+            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) },
+            projects_in: { data: this.staffData.projects_in.map((item) => { return { project_id: item } }) }
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
