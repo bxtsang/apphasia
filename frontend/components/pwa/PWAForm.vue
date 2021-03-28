@@ -336,7 +336,14 @@ export default {
           variables: {
             id: this.pwa.id,
             general_info: constructedData.generalInfo.data,
-            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData },
+            updateNotification: {
+              old: this.pwa,
+              new: {
+                pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+              },
+              general_info: constructedData.generalInfo.data
+            }
           },
           update: (store, { data: { insert_pwas_one: updatedPWA } }) => {
             store.writeQuery({ query: GetSinglePWA, data: { pwas_by_pk: updatedPWA }, variables: { id: this.pwa.id } })
