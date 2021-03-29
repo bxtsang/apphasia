@@ -340,7 +340,7 @@ export default {
             updateNotification: {
               old: this.pwa,
               new: {
-                pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true
               },
               general_info: constructedData.generalInfo.data
             }
