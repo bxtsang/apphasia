@@ -8,7 +8,9 @@
         <v-list-item-title class="font-weight-bold pb-1">
           <NuxtLink class="black--text notification-link" :to="link">{{ notification.message }}</NuxtLink>
         </v-list-item-title>
-        <v-list-item-subtitle v-text="notification.staff.name" />
+        <v-list-item-subtitle>
+          {{ $moment(notification.created_at.slice(0,10)).format('DD MMM YYYY') }}
+        </v-list-item-subtitle>
       </v-list-item-content>
 
       <v-list-item-action class="pr-3">
@@ -26,9 +28,9 @@
           <v-list>
             <v-list-item link @click="setNotificationRead">
               <v-list-item-avatar>
-                <v-icon>mdi-check</v-icon>
+                <v-icon>{{ notification.is_read ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
               </v-list-item-avatar>
-              <v-list-item-title>Mark as Read</v-list-item-title>
+              <v-list-item-title>Mark as {{ notification.is_read ? 'Unread' : 'Read'}}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -41,6 +43,12 @@ import UpdateSingleNotification from './../../graphql/notifications/UpdateSingle
 export default {
   props: {
     notification: {
+      type: Object,
+      default () {
+        return null
+      }
+    },
+    query: {
       type: Object,
       default () {
         return null
@@ -88,10 +96,15 @@ export default {
         mutation: UpdateSingleNotification,
         variables: {
           id: this.notification.id,
-          is_read: true
+          is_read: !this.notification.is_read
         }
       }).then((data) => {
         this.isLoading = false
+        if (!this.notification.is_read) {
+          this.query.refetch()
+        } else {
+          this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+        }
       }).catch((error) => {
         this.isLoading = false
         this.$store.commit('notification/newNotification', [error.message, 'error'])
@@ -100,3 +113,11 @@ export default {
   }
 }
 </script>
+<style scoped>
+.notification-link{
+  text-decoration: none;
+}
+.notification-link:hover {
+  text-decoration: underline;
+}
+</style>
