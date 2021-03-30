@@ -3,7 +3,7 @@
     v-model="data"
     :items="GENDER_OPTIONS"
     :rules="validation"
-    label="Gender"
+    :label="label"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
@@ -33,6 +33,10 @@ export default {
     outlined: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Gender'
     }
   },
 

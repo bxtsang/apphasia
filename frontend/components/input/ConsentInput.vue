@@ -13,7 +13,7 @@
     v-model="data"
     :items="CONSENT_OPTIONS"
     :rules="validation"
-    label="Consent"
+    :label="label"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
@@ -46,6 +46,10 @@ export default {
     inputType: {
       type: String,
       default: 'radio'
+    },
+    label: {
+      type: String,
+      default: 'Consent for Marketing Purposes'
     }
   },
 

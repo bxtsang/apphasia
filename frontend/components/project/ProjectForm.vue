@@ -13,17 +13,17 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNameInput v-model="projectData.title"/>
+                <ProjectNameInput v-model="projectData.title" label="*Project Name"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNotesInput v-model="projectData.description"/>
+                <ProjectNotesInput v-model="projectData.description" label="*Project Notes"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectColorInput v-model="projectData.colour"/>
+                <ProjectColorInput v-model="projectData.colour" label="*Project Colour"/>
               </v-col>
             </v-row>
             <v-row class="mt-8">
@@ -35,7 +35,7 @@
               <v-col class="py-0">
                 <ProjectStaffSelector
                   v-model="projectData.owner_id"
-                  label="Staff In-Charge"
+                  label="*Staff In-Charge"
                 />
               </v-col>
             </v-row>

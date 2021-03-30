@@ -10,7 +10,7 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <NameInput v-model="volunteer.general_info.data.name" :outlined="true"/>
+              <NameInput v-model="volunteer.general_info.data.name" :outlined="true" label="*Full Name"/>
             </v-col>
             <v-col class="px-6">
               <AliasInput v-model="volunteer.nickname" :outlined="true"/>
@@ -18,7 +18,7 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <ContactInput v-model="volunteer.general_info.data.contact_num" :outlined="true"/>
+              <ContactInput v-model="volunteer.general_info.data.contact_num" :outlined="true" label="*Contact Number"/>
             </v-col>
             <v-col class="px-6 px-6">
               <EmailInput v-model="volunteer.general_info.data.email" :outlined="true"/>
@@ -29,7 +29,7 @@
               <DateOfBirthInput v-model="volunteer.general_info.data.dob" :outlined="true"/>
             </v-col>
             <v-col class="px-6">
-              <GenderInput v-model="volunteer.general_info.data.gender" :outlined="true"/>
+              <GenderInput v-model="volunteer.general_info.data.gender" :outlined="true" label="*Gender"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
@@ -53,7 +53,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">How will you like to volunteer with us? (Tick all that applies)</span>
+                <span class="input-label">* How will you like to volunteer with us? (Tick all that applies)</span>
                 <VolunteerProjectInterestInput v-model="projectVols" />
               </v-card>
             </v-col>
@@ -61,7 +61,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What language(s) can you speak? (Tick all that applies)</span>
+                <span class="input-label">* What language(s) can you speak? (Tick all that applies)</span>
                 <LanguageInput v-model="languages" :placeholderOnly="true" />
               </v-card>
             </v-col>
@@ -69,7 +69,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What is your profession?</span>
+                <span class="input-label">* What is your profession?</span>
                 <MultiProfessionInput v-model="profession" />
               </v-card>
             </v-col>
