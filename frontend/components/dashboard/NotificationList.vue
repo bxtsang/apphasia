@@ -26,8 +26,12 @@
       <div v-else-if="data">
         <v-list>
           <NotificationItem v-for="item in data.notifications" :notification="item" v-bind:key="item.id" />
+          <v-list-item v-if="data.notifications && data.notifications.length === 0" class="d-flex justify-center">
+            No unread notifications
+          </v-list-item>
         </v-list>
       </div>
+
     </template>
   </ApolloQuery>
 </template>
