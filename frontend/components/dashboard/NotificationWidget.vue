@@ -2,7 +2,7 @@
   <v-card class="px-6 py-3">
     <div class="d-flex justify-space-between align-center">
       <h1 class="title">Notifications</h1>
-      <v-btn color="primary" @click="markAllRead" :loading="isLoading">Mark all as read</v-btn>
+      <v-btn v-if="tab === notificationTabOptions.indexOf('unread')" color="primary" @click="markAllRead" :loading="isLoading">Mark all as read</v-btn>
     </div>
     <v-tabs v-model="tab">
       <v-tab
@@ -19,6 +19,7 @@
       >
         <div class="notification-wrapper">
           <NotificationList v-if="option === 'unread'"/>
+          <ReadNotificationList v-if="option === 'read'"/>
         </div>
       </v-tab-item>
     </v-tabs-items>
@@ -30,7 +31,7 @@ import UpdateAllNotifications from './../../graphql/notifications/UpdateAllNotif
 export default {
   data () {
     return {
-      tab: 'read',
+      tab: 'unread',
       notificationTabOptions: [
         'unread', 'read'
       ],

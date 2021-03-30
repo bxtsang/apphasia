@@ -88,9 +88,9 @@ export const LIST_QUERY_PATHS = {
   events: require('./../graphql/event/GetAllEvent.graphql'),
   timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql'),
   notification: {
-    read: require('./../graphql/notifications/GetNotificationsOfStaffInitial.graphql'),
-    readSubscription: require('./../graphql/notifications/GetNotificationsOfStaff.graphql'),
-    unread: ''
+    unread: require('./../graphql/notifications/GetNotificationsOfStaffInitial.graphql'),
+    unreadSubscription: require('./../graphql/notifications/GetNotificationsOfStaff.graphql'),
+    read: require('./../graphql/notifications/GetReadNotificationsOfStaff.graphql')
   }
 }
 
