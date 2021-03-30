@@ -1,4 +1,4 @@
-query ($staff: Int!, $limit: Int, $offset: Int) {
+query ($staff: Int!, $limit: Int!, $offset: Int!) {
   notifications_aggregate(where: { _and: [
     { staff_id: {_eq: $staff} },
     { is_read: {_eq: true} }
@@ -13,7 +13,7 @@ query ($staff: Int!, $limit: Int, $offset: Int) {
     { is_read: {_eq: true} }
   ]},
   order_by: {created_at: desc},
-  limit: $limit,
+  limit: $limit
   offset: $offset
   ) {
     created_at
