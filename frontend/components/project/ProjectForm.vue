@@ -198,6 +198,25 @@ export default {
               owner_id: this.projectData.owner_id,
               voltypes: this.projectData.voltypes,
               colour: this.projectData.colour
+            },
+            updateNotification: {
+              old: this.project,
+              new: {
+                id: this.project.id,
+                pwas_to_add: pwaAdded,
+                pwas_to_remove: pwaRemoved,
+                vols_to_add: volAdded,
+                vols_to_remove: volRemoved,
+                staffs_to_add: staffAdded,
+                staffs_to_remove: staffRemoved,
+                project: {
+                  title: this.projectData.title,
+                  description: this.projectData.description,
+                  owner_id: this.projectData.owner_id,
+                  voltypes: this.projectData.voltypes,
+                  colour: this.projectData.colour
+                }
+              }
             }
           },
           update: (store, { data: { insert_projects_one: updatedProject } }) => {

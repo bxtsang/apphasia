@@ -216,7 +216,31 @@ export default {
             languages_to_add: languageChanges.added,
             languages_to_remove: languageChanges.removed,
             projects_to_add: [],
-            projects_to_remove: []
+            projects_to_remove: [],
+            updateNotification: {
+              old: this.profile,
+              new: {
+                staff_id: this.$auth.user['custom:hasura_id'],
+                address: this.profileData.address,
+                bio: this.profileData.bio,
+                contact_num: this.profileData.contact_num,
+                dob: this.profileData.dob,
+                gender: this.profileData.gender,
+                is_speech_therapist: this.profileData.is_speech_therapist,
+                is_active: true,
+                name: this.profileData.name,
+                nickname: this.profileData.nickname,
+                profession: this.profileData.profession,
+                role: this.profileData.role,
+                ws_place: this.profileData.ws_place,
+                supervisors_to_add: [],
+                supervisors_to_remove: [],
+                languages_to_add: languageChanges.added,
+                languages_to_remove: languageChanges.removed,
+                projects_to_add: [],
+                projects_to_remove: []
+              }
+            }
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
             store.writeQuery({ query: GetSingleStaff, data: { staffs: [updatedStaff] }, variables: { id: this.$auth.user['custom:hasura_id'], isCoreTeam: true } })

@@ -214,8 +214,8 @@ export default {
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
             languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
-            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
-            // projects_in: this.staffData.projects_in,
+            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) },
+            projects_in: { data: this.staffData.projects_in.map((item) => { return { project_id: item } }) }
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
@@ -303,10 +303,33 @@ export default {
             languages_to_add: languageChanges.added,
             languages_to_remove: languageChanges.removed,
             projects_to_add: projectChanges.added,
-            projects_to_remove: projectChanges.removed
+            projects_to_remove: projectChanges.removed,
+            updateNotification: {
+              old: this.staff,
+              new: {
+                staff_id: this.staff.id,
+                address: this.staffData.address,
+                bio: this.staffData.bio,
+                contact_num: this.staffData.contact_num,
+                dob: this.staffData.dob,
+                gender: this.staffData.gender,
+                is_speech_therapist: this.staffData.is_speech_therapist,
+                is_active: !archive,
+                name: this.staffData.name,
+                nickname: this.staffData.nickname,
+                profession: this.staffData.profession,
+                role: this.staffData.role,
+                ws_place: this.staffData.ws_place,
+                supervisors_to_add: supervisorChanges.added,
+                supervisors_to_remove: supervisorChanges.removed,
+                languages_to_add: languageChanges.added,
+                languages_to_remove: languageChanges.removed,
+                projects_to_add: projectChanges.added,
+                projects_to_remove: projectChanges.removed
+              }
+            }
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
-            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
             if (this.staffData.role !== this.staff.role_description.role) {
               this.$apollo.mutate({
                 mutation: UpdateCognitoUser,
@@ -323,6 +346,7 @@ export default {
                 console.log(error)
               })
             }
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false
