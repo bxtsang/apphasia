@@ -2,7 +2,7 @@
   <v-card class="px-6 py-3">
     <div class="d-flex justify-space-between align-center">
       <h1 class="title">Notifications</h1>
-      <v-btn color="primary">Mark all as read</v-btn>
+      <v-btn color="primary" @click="markAllRead" :loading="isLoading">Mark all as read</v-btn>
     </div>
     <v-tabs v-model="tab">
       <v-tab
@@ -25,13 +25,33 @@
   </v-card>
 </template>
 <script>
+import UpdateAllNotifications from './../../graphql/notifications/UpdateAllNotifications.graphql'
+
 export default {
   data () {
     return {
       tab: 'read',
       notificationTabOptions: [
         'unread', 'read'
-      ]
+      ],
+      isLoading: false
+    }
+  },
+  methods: {
+    markAllRead () {
+      this.isLoading = true
+      this.$apollo.mutate({
+        mutation: UpdateAllNotifications,
+        variables: {
+          staff: this.$auth.user['custom:hasura_id'],
+          is_read: true
+        }
+      }).then((data) => {
+        this.isLoading = false
+      }).catch((error) => {
+        this.isLoading = false
+        this.$store.commit('notification/newNotification', [error.message, 'error'])
+      })
     }
   }
 }
