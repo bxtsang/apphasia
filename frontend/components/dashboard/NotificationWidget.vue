@@ -49,6 +49,7 @@ export default {
         }
       }).then((data) => {
         this.isLoading = false
+        this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
       }).catch((error) => {
         this.isLoading = false
         this.$store.commit('notification/newNotification', [error.message, 'error'])
