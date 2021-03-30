@@ -14,6 +14,7 @@
             <NameInput
               v-model="pwaData.general_info.data.name"
               :required="true"
+              label="*Full Name"
             />
           </v-col>
         </v-row>
@@ -22,18 +23,21 @@
             <DateOfBirthInput
               v-model="pwaData.general_info.data.dob"
               :required="true"
+              label="*Date of Birth"
             />
           </v-col>
           <v-col cols="4" class="py-0">
             <ContactInput
               v-model="pwaData.general_info.data.contact_num"
               :required="true"
+              label="*Contact Number"
             />
           </v-col>
           <v-col cols="4" class="py-0">
             <GenderInput
               v-model="pwaData.general_info.data.gender"
               :required="true"
+              label="*Gender"
             />
           </v-col>
         </v-row>
@@ -64,6 +68,7 @@
             <WheelChairInput
               v-model="pwaData.wheelchair"
               :required="true"
+              label="*Wheelchair needed?"
             />
           </v-col>
         </v-row>
@@ -72,12 +77,14 @@
             <ProjectInput
               v-model="pwaData.projects.data"
               :required="true"
+              label="*Projects Involved"
             />
           </v-col>
           <v-col cols="6" class="py-0">
             <CommDiffInput
               v-model="pwaData.comm_diff.data"
               :required="true"
+              label="*Communication Difficulties"
             />
           </v-col>
         </v-row>
@@ -86,6 +93,7 @@
             <LanguageInput
               v-model="pwaData.languages.data"
               :required="true"
+              label="*Languages understand and/or speak"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -105,6 +113,7 @@
               v-model="pwaData.general_info.data.consent"
               :required="true"
               inputType="select"
+              label="*Consent for Marketing Purposes"
             />
           </v-col>
         </v-row>
@@ -336,7 +345,14 @@ export default {
           variables: {
             id: this.pwa.id,
             general_info: constructedData.generalInfo.data,
-            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData },
+            updateNotification: {
+              old: this.pwa,
+              new: {
+                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true
+              },
+              general_info: constructedData.generalInfo.data
+            }
           },
           update: (store, { data: { insert_pwas_one: updatedPWA } }) => {
             store.writeQuery({ query: GetSinglePWA, data: { pwas_by_pk: updatedPWA }, variables: { id: this.pwa.id } })

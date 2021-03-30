@@ -32,7 +32,7 @@ export const INPUT_VALIDATION = {
     required: v => !!v || 'Role is required'
   },
   name: {
-    required: v => !!v || 'Fullname is required'
+    required: v => !!v || 'Full Name is required'
   },
   dob: {
     required: v => !!v || 'Date of Birth is required'

@@ -64,8 +64,8 @@
               <v-row>
                 <v-text-field
                   v-model="search"
-                  label="Search"
-                  append-icon="mdi-magnify"
+                  label="Type to search"
+                  prepend-inner-icon="mdi-magnify"
                   solo
                   dense
                   class="mx-3"

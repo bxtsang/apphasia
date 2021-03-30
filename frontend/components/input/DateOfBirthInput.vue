@@ -8,7 +8,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
         v-model="data"
-        label="Date of Birth"
+        :label="label"
         v-bind="attrs"
         readonly
         :rules="validation"
@@ -47,6 +47,10 @@ export default {
     outlined: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Date of Birth'
     }
   },
 

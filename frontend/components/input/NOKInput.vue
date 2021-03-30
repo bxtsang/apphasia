@@ -30,7 +30,7 @@
         <v-col cols="4" class="py-0">
           <v-text-field
             v-model="data[index].contact_num"
-            label="Contact Number"
+            label="*Contact Number"
             :readonly="readonly"
             :disabled="disabled"
             :rules="[INPUT_VALIDATION.contact.valid]"
@@ -39,7 +39,7 @@
         <v-col cols="4" class="py-0">
           <v-text-field
             v-model="data[index].email"
-            label="Email Address"
+            label="*Email Address"
             :readonly="readonly"
             :disabled="disabled"
             :rules="[INPUT_VALIDATION.email.valid]"

@@ -2,7 +2,7 @@
   <v-text-field
     v-model="data"
     :rules="validation"
-    label="Profession"
+    :label="label"
     :required="required"
     :readonly="readonly"
   />
@@ -26,6 +26,10 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Profession'
     }
   },
 

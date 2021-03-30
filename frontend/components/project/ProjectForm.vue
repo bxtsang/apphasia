@@ -13,17 +13,17 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNameInput v-model="projectData.title"/>
+                <ProjectNameInput v-model="projectData.title" label="*Project Name"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNotesInput v-model="projectData.description"/>
+                <ProjectNotesInput v-model="projectData.description" label="*Project Notes"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectColorInput v-model="projectData.colour"/>
+                <ProjectColorInput v-model="projectData.colour" label="*Project Colour"/>
               </v-col>
             </v-row>
             <v-row class="mt-8">
@@ -35,7 +35,7 @@
               <v-col class="py-0">
                 <ProjectStaffSelector
                   v-model="projectData.owner_id"
-                  label="Staff In-Charge"
+                  label="*Staff In-Charge"
                 />
               </v-col>
             </v-row>
@@ -198,6 +198,25 @@ export default {
               owner_id: this.projectData.owner_id,
               voltypes: this.projectData.voltypes,
               colour: this.projectData.colour
+            },
+            updateNotification: {
+              old: this.project,
+              new: {
+                id: this.project.id,
+                pwas_to_add: pwaAdded,
+                pwas_to_remove: pwaRemoved,
+                vols_to_add: volAdded,
+                vols_to_remove: volRemoved,
+                staffs_to_add: staffAdded,
+                staffs_to_remove: staffRemoved,
+                project: {
+                  title: this.projectData.title,
+                  description: this.projectData.description,
+                  owner_id: this.projectData.owner_id,
+                  voltypes: this.projectData.voltypes,
+                  colour: this.projectData.colour
+                }
+              }
             }
           },
           update: (store, { data: { insert_projects_one: updatedProject } }) => {
