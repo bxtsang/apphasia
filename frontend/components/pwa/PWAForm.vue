@@ -113,7 +113,7 @@
               v-model="pwaData.general_info.data.consent"
               :required="true"
               inputType="select"
-              label="*Consent for Marketing Purposes"
+              label="*Agreeable to receive promotional materials?"
             />
           </v-col>
         </v-row>
