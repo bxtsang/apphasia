@@ -60,6 +60,11 @@ export default {
       isLoading: false
     }
   },
+  data () {
+    return {
+      isLoading: false
+    }
+  },
   computed: {
     color () {
       switch (this.notification.operation) {

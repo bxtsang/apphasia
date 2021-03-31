@@ -198,7 +198,7 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-switch
-                      :input-value="data.volunteers_by_pk.consent"
+                      :input-value="data.volunteers_by_pk.general_info.consent"
                       label="Consent to Updates?"
                       readonly
                     />
@@ -216,8 +216,10 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-textarea
-                      label="Notes"
+                      label="Any additional info of the Volunteer?"
                       :value="data.volunteers_by_pk.general_info.notes"
+                      rows="1"
+                      auto-grow
                       readonly
                     />
                   </v-col>

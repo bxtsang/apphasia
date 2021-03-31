@@ -85,7 +85,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Consent for Marketing Purposes</span>
+                <span class="input-label">Would you like to receive updates about Aphasia SG events and programmes?</span>
                 <ConsentInput v-model="volunteer.general_info.data.consent" />
               </v-card>
             </v-col>
@@ -94,7 +94,7 @@
             <v-col class="px-6">
               <v-card class="card-input dark pa-6" outlined>
                 <span class="input-label">Consent</span>
-                <p class="pt-3">By submitting this form, you agree to receive whatsapp messages and emails from the Aphasia SG. WhatsApp is a main mode of communication for timely dissemination of event info to participants and volunteers. Your privacy is very important to us and we do not share any information with 3rd party sites or affiliate companies. You have the option to opt-out at any time.</p>
+                <p class="pt-3">By submitting this form, you agree to receive whatsapp messages and emails from the Aphasia SG. WhatsApp is a main mode of communication for timely dissemination of event info to participants and volunteers. Your privacy is very important to us and we do not share any information with 3rd party sites or affiliate companies.</p>
               </v-card>
             </v-col>
           </v-row>
