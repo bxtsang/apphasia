@@ -260,7 +260,16 @@ export default {
           variables: {
             volunteer: this.volunteerDetails,
             id: this.volunteerDetails.id,
-            general_info: this.generalInfo
+            general_info: this.generalInfo,
+            updateNotification: {
+              old: this.volunteer,
+              new: {
+                id: this.volunteerDetails.id,
+                ...this.volunteerDetails,
+                is_active: true
+              },
+              general_info: this.generalInfo
+            }
           },
           update: (
             store, {

@@ -6,6 +6,8 @@
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
+    :hint="hint"
+    :persistent-hint="hint ? true : false"
   />
 </template>
 
@@ -35,6 +37,10 @@ export default {
     label: {
       type: String,
       default: 'Contact Number'
+    },
+    hint: {
+      type: String,
+      default: ''
     }
   },
 

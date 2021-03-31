@@ -34,7 +34,7 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [v => !!v || 'Color is Required'],
+      validation: [v => !!v || 'Colour is Required'],
       colors: [
         { value: 'red' },
         { value: 'pink' },

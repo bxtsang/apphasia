@@ -32,7 +32,7 @@ export const INPUT_VALIDATION = {
     required: v => !!v || 'Role is required'
   },
   name: {
-    required: v => !!v || 'Fullname is required'
+    required: v => !!v || 'Full Name is required'
   },
   dob: {
     required: v => !!v || 'Date of Birth is required'
@@ -86,7 +86,12 @@ export const LIST_QUERY_PATHS = {
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
   events: require('./../graphql/event/GetAllEvent.graphql'),
-  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql')
+  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql'),
+  notification: {
+    read: require('./../graphql/notifications/GetNotificationsOfStaffInitial.graphql'),
+    readSubscription: require('./../graphql/notifications/GetNotificationsOfStaff.graphql'),
+    unread: ''
+  }
 }
 
 export const TABLE_HEADERS = {

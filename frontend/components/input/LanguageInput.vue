@@ -2,7 +2,7 @@
   <v-select
     v-model="data"
     :items="languages"
-    :label="!placeholderOnly ? 'Languages understand and/or speak' : ''"
+    :label="!placeholderOnly ? label : ''"
     :placeholder="placeholderOnly ? 'Select language(s)' : ''"
     :rules="validation"
     :required="required"
@@ -36,6 +36,10 @@ export default {
     placeholderOnly: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Languages understand and/or speak'
     }
   },
 

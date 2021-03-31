@@ -6,7 +6,7 @@
       <v-container class="pa-0">
         <v-row>
           <v-col col="12" class="py-0">
-            <span>Role</span>
+            <span class="font-weight-bold">*Role</span>
           </v-col>
         </v-row>
         <v-row>
@@ -26,6 +26,7 @@
             <NameInput
               v-model="staffData.name"
               :required="true"
+              label="*Full Name"
             />
           </v-col>
           <v-col class="py-0">
@@ -39,17 +40,20 @@
             <DateOfBirthInput
               v-model="staffData.dob"
               :required="true"
+              label="*Date of Birth"
             />
           </v-col>
           <v-col class="py-0">
             <ContactInput
               v-model="staffData.contact_num"
               :required="true"
+              label="*Contact Number"
             />
           </v-col>
           <v-col class="py-0">
             <GenderInput
               v-model="staffData.gender"
+              label="*Gender"
             />
           </v-col>
         </v-row>
@@ -59,12 +63,14 @@
             <EmailInput
               v-model="staffData.email"
               :required="true"
+              label="*Email"
             />
           </v-col>
           <v-col class="py-0" cols="8">
             <AddressInput
               v-model="staffData.address"
               :required="true"
+              label="*Home Address"
             />
           </v-col>
         </v-row>
@@ -90,6 +96,7 @@
             <LanguageInput
               v-model="staffData.languages"
               :required="true"
+              label="*Languages understand and/or speak"
             />
           </v-col>
           <v-col class="py-0">
@@ -102,6 +109,7 @@
           <v-col class="py-0">
             <ProfessionInput
               v-model="staffData.profession"
+              label="*Profession"
             />
           </v-col>
           <v-col class="py-0">
@@ -115,6 +123,7 @@
             <DateJoinedInput
               v-model="staffData.date_joined"
               :required="true"
+              label="*Date Joined"
             />
           </v-col>
         </v-row>
@@ -149,41 +158,9 @@ import CreateUser from './../../graphql/staff/CreateUser.graphql'
 import CreateCognitoUser from './../../graphql/staff/CreateCognitoUser.graphql'
 import UpdateCognitoUser from './../../graphql/staff/UpdateCognitoUser.graphql'
 import UpdateStaff from './../../graphql/staff/UpdateStaff.graphql'
-
-import RoleInput from './../input/RoleInput'
-import NameInput from './../input/NameInput'
-import AliasInput from './../input/AliasInput'
-import DateOfBirthInput from './../input/DateOfBirthInput'
-import ContactInput from './../input/ContactInput'
-import GenderInput from './../input/GenderInput'
-import EmailInput from './../input/EmailInput'
-import AddressInput from './../input/AddressInput'
-import BioInput from './../input/BioInput'
-import ProjectInput from './../input/ProjectInput'
-import LanguageInput from './../input/LanguageInput'
-import WorkplaceInput from './../input/WorkplaceInput'
-import ProfessionInput from './../input/ProfessionInput'
-import SpeechTherapistInput from './../input/SpeechTherapistInput'
-import SupervisorInput from './../input/SupervisorInput'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
-  components: {
-    RoleInput,
-    NameInput,
-    AliasInput,
-    DateOfBirthInput,
-    ContactInput,
-    GenderInput,
-    EmailInput,
-    AddressInput,
-    BioInput,
-    ProjectInput,
-    LanguageInput,
-    WorkplaceInput,
-    ProfessionInput,
-    SpeechTherapistInput,
-    SupervisorInput
-  },
   props: {
     staff: {
       type: Object,
@@ -246,8 +223,8 @@ export default {
             role: this.staffData.role,
             ws_place: this.staffData.ws_place,
             languages: { data: this.staffData.languages.map((item) => { return { language: item } }) },
-            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) }
-            // projects_in: this.staffData.projects_in,
+            supervisors: { data: this.staffData.supervisors.map((item) => { return { supervisor_id: item } }) },
+            projects_in: { data: this.staffData.projects_in.map((item) => { return { project_id: item } }) }
           },
           update: (store, { data: { insert_staffs_one: newStaff } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
@@ -262,6 +239,17 @@ export default {
               update: (store, response) => {
                 // Success
                 console.log('Cognito Success')
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'staffs',
+                  entity_id: newStaff.id
+                }
               }
             }).catch((error) => {
               console.log(error)
@@ -324,10 +312,33 @@ export default {
             languages_to_add: languageChanges.added,
             languages_to_remove: languageChanges.removed,
             projects_to_add: projectChanges.added,
-            projects_to_remove: projectChanges.removed
+            projects_to_remove: projectChanges.removed,
+            updateNotification: {
+              old: this.staff,
+              new: {
+                staff_id: this.staff.id,
+                address: this.staffData.address,
+                bio: this.staffData.bio,
+                contact_num: this.staffData.contact_num,
+                dob: this.staffData.dob,
+                gender: this.staffData.gender,
+                is_speech_therapist: this.staffData.is_speech_therapist,
+                is_active: !archive,
+                name: this.staffData.name,
+                nickname: this.staffData.nickname,
+                profession: this.staffData.profession,
+                role: this.staffData.role,
+                ws_place: this.staffData.ws_place,
+                supervisors_to_add: supervisorChanges.added,
+                supervisors_to_remove: supervisorChanges.removed,
+                languages_to_add: languageChanges.added,
+                languages_to_remove: languageChanges.removed,
+                projects_to_add: projectChanges.added,
+                projects_to_remove: projectChanges.removed
+              }
+            }
           },
           update: (store, { data: { update_staffs: { returning: [updatedStaff] } } }) => {
-            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
             if (this.staffData.role !== this.staff.role_description.role) {
               this.$apollo.mutate({
                 mutation: UpdateCognitoUser,
@@ -344,6 +355,7 @@ export default {
                 console.log(error)
               })
             }
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false

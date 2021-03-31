@@ -1,4 +1,4 @@
-subscription ($staff: Int!) {
+query ($staff: Int!) {
   notifications(where: { _and: [
     { staff_id: {_eq: $staff} },
     { is_read: {_eq: false} }
