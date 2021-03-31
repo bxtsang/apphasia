@@ -5,6 +5,31 @@
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" class="py-0">
+            <span class="font-weight-bold">Volunteer Status</span>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6" class="py-0">
+            <VolunteerStatusInput
+              v-model="volunteerDetails.status"
+            />
+          </v-col>
+          <v-col v-if="volunteerDetails.status === 'Approved'" class="py-0">
+            <VolTypeInput
+              v-model="voltypes"
+            />
+          </v-col>
+        </v-row>
+        <v-row v-if="volunteerDetails.status === 'Rejected' || volunteerDetails.status === 'KIV'">
+          <v-col class="py-0">
+            <GeneralOptionalText
+              v-model="volunteerDetails.status_reason"
+              :label="`Reason for ${ volunteerDetails.status }`"
+            />
+          </v-col>
+        </v-row>
+        <v-row class="mt-8">
+          <v-col cols="12" class="py-0">
             <span class="font-weight-bold">Personal Details</span>
           </v-col>
         </v-row>
@@ -123,34 +148,9 @@
           <v-col class="py-0">
             <v-textarea
               v-model="generalInfo.notes"
-              :label="'Notes'"
-            />
-          </v-col>
-        </v-row>
-        <v-row>
-        </v-row>
-        <v-row class="mt-8">
-          <v-col cols="12" class="py-0">
-            <span class="font-weight-bold">Volunteer Status</span>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="6" class="py-0">
-            <VolunteerStatusInput
-              v-model="volunteerDetails.status"
-            />
-          </v-col>
-          <v-col v-if="volunteerDetails.status === 'Approved'" class="py-0">
-            <VolTypeInput
-              v-model="voltypes"
-            />
-          </v-col>
-        </v-row>
-        <v-row v-if="volunteerDetails.status === 'Rejected' || volunteerDetails.status === 'KIV'">
-          <v-col class="py-0">
-            <GeneralOptionalText
-              v-model="volunteerDetails.status_reason"
-              :label="`Reason for ${ volunteerDetails.status }`"
+              label="Any additional info of the Volunteer?"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>
