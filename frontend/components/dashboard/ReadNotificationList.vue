@@ -1,15 +1,12 @@
 <template>
   <ApolloQuery
-    :query="LIST_QUERY_PATHS['notification']['unread']"
+    :query="LIST_QUERY_PATHS['notification']['read']"
     :variables="{
-      staff: $auth.user['custom:hasura_id']
+      staff: $auth.user['custom:hasura_id'],
+      limit: fetchLimit,
+      offset
     }"
     >
-     <ApolloSubscribeToMore
-      :document="LIST_QUERY_PATHS['notification']['unreadSubscription']"
-      :variables="{ staff: $auth.user['custom:hasura_id'] }"
-      :updateQuery="onNotificationAdded"
-    />
     <template v-slot="{ result: { error, data }, isLoading }">
       <!-- Loading -->
       <div v-if="isLoading" class="d-flex justify-center">
@@ -40,12 +37,9 @@ import { LIST_QUERY_PATHS } from './../../assets/data.js'
 export default {
   data () {
     return {
-      LIST_QUERY_PATHS
-    }
-  },
-  methods: {
-    onNotificationAdded (previousResult, { subscriptionData }) {
-      return subscriptionData.data
+      LIST_QUERY_PATHS,
+      fetchLimit: 5,
+      offset: 0
     }
   }
 }
