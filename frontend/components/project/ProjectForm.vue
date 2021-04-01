@@ -107,6 +107,7 @@ export default {
   },
   data () {
     return {
+      accessToken: '',
       valid: true,
       isSubmitting: false,
       projectData: {
@@ -129,6 +130,10 @@ export default {
         return this.submitProject
       }
     }
+  },
+  mounted () {
+    const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
+    this.accessToken = accessToken
   },
   methods: {
     submitProject () {
@@ -237,13 +242,14 @@ export default {
     },
     createGDriveFolder (folderName) {
       const postHeader = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken
       }
       const postBody = {
         new_folder: folderName
       }
       this.$axios.post(
-        'https://67sbpripz3.execute-api.ap-southeast-1.amazonaws.com/dev',
+        'https://api.apphasia.cf/createfolder',
         JSON.stringify(postBody),
         { postHeader }
       ).then((res) => {
