@@ -4,6 +4,7 @@
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
+          <AddResourceModal :resourceType="resourceType" />
           <ReportGenerationButton :resourceType="resourceType"/>
         </v-col>
       </v-row>

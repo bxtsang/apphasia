@@ -9,6 +9,7 @@
       </v-btn>
     </template>
     <StaffForm v-if="resourceType === 'staffs'" @closeForm="isOpen = false" />
+    <VolunteerForm v-if="resourceType === 'volunteers'" @closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" @closeForm="isOpen = false" />
     <ProjectForm v-if="resourceType === 'projects'" @closeForm="isOpen = false" />
     <EventForm v-if="resourceType === 'events'" @closeForm="isOpen = false" />
@@ -46,6 +47,9 @@ export default {
       }
       if (this.resourceType === 'events') {
         return 'Event'
+      }
+      if (this.resourceType === 'volunteers') {
+        return 'Volunteer'
       }
       return 'Resource'
     }
