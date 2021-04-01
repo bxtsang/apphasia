@@ -266,7 +266,8 @@ export default {
               new: {
                 id: this.volunteerDetails.id,
                 ...this.volunteerDetails,
-                is_active: true
+                is_active: true,
+                archive_reason: ''
               },
               general_info: this.generalInfo
             }
