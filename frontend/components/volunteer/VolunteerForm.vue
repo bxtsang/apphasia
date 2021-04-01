@@ -94,21 +94,15 @@
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-select
-              :value="project_vols.filter(item => item.interested).map(item => item.project.title)"
-              :items="project_vols.filter(item => item.interested).map(item => item.project.title)"
-              label="Projects Interested"
-              multiple
-              readonly
+            <ProjectInput
+              v-model="project_vols"
+              label="*Projects Interested In"
             />
           </v-col>
           <v-col class="py-0">
-            <v-select
-              :value="project_vols.filter(item => item.approved).map(item => item.project.title)"
-              :items="project_vols.filter(item => item.approved).map(item => item.project.title)"
-              label="Projects Involved In"
-              multiple
-              readonly
+            <ProjectInput
+              v-model="project_vols"
+              label="*Projects Involved"
             />
           </v-col>
         </v-row>
