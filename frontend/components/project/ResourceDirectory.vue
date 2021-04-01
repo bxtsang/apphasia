@@ -85,7 +85,7 @@
         <v-row v-if="foldersInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
-            <v-container class="d-flex flex-wrap px-2" fluid>
+            <v-container class="d-flex flex-wrap pa-0" fluid>
               <Resource
                 v-for="folder in foldersInCurrentDirectory"
                 :key="folder.id"

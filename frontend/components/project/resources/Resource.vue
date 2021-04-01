@@ -18,7 +18,7 @@
     <!-- Item Card File-->
     <v-card
       v-else
-      class="ma-2 pt-2 d-flex flex-column justify-space-between align-center clickable"
+      class="ma-2 d-flex flex-column justify-space-between align-center clickable"
       outlined
       height="220"
       width="270"
