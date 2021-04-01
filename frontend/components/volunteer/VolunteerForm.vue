@@ -1,7 +1,8 @@
 <template>
   <v-card class="pa-8">
-    <span class="section-title">Edit Volunteer</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
+    <span v-if="volunteer" class="section-title">Edit Volunteer</span>
+    <span v-else class="section-title">Add PWA</span>
+    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" class="py-0">
@@ -243,6 +244,16 @@ export default {
       }
     }
   },
+
+  computed: {
+    formSubmitMethod () {
+      if (this.pwa) {
+        return this.updateVolunteer
+      }
+      return this.addVolunteer
+    }
+  },
+
   methods: {
     removeKeys (item, excessKeys) {
       return Object.keys(item)
@@ -251,6 +262,9 @@ export default {
           newObj[key] = item[key]
           return newObj
         }, {})
+    },
+    addVolunteer () {
+      // implement this shit
     },
     updateVolunteer () {
       if (this.$refs.form.validate()) {
