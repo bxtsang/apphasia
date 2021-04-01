@@ -201,18 +201,18 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: this.removeKeys(this.volunteer.general_info, ['__typename']),
-      volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
-      languages: this.volunteer.vol_languages.map(item => item.language),
-      voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      volIc: this.volunteer.vol_ic.map(item => item.staff_id),
-      project_vols: this.volunteer.project_vols,
+      generalInfo: this.volunteer ? this.removeKeys(this.volunteer.general_info, ['__typename']) : {},
+      volunteerDetails: this.volunteer ? this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']) : {},
+      languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
+      voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
+      volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
+      project_vols: this.volunteer ? this.volunteer.project_vols : [],
       isSubmitting: false
     }
   },
   watch: {
     languages: {
-      immediate: true,
+      immediate: !!this.volunteer,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_languages = {
           data: newValue.map((item) => { return { language: item } })
@@ -220,7 +220,7 @@ export default {
       }
     },
     voltypes: {
-      immediate: true,
+      immediate: !!this.volunteer,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_voltypes = {
           data: newValue.map((item) => { return { voltype: item } })
@@ -228,7 +228,7 @@ export default {
       }
     },
     volIc: {
-      immediate: true,
+      immediate: !!this.volunteer,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
           data: newValue.map((item) => { return { staff_id: item } })
@@ -236,7 +236,7 @@ export default {
       }
     },
     project_vols: {
-      immediate: true,
+      immediate: !!this.volunteer,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
           data: newValue.map((item) => { return { project_id: item.project_id } })
