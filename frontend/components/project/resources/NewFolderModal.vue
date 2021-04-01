@@ -55,13 +55,10 @@ export default {
     async createNewFolder () {
       if (this.$refs.form.validate()) {
         this.isLoading = true
-        const postHeader = {
-          'Content-Type': 'application/json',
-          Authorization: this.accessToken
-        }
+
         // CALL API HERE
         try {
-          const response = await this.$axios.post('https://api.apphasia.cf/createfolder', { new_folder: this.folderName, parent_folder: this.parentId }, { postHeader })
+          const response = await this.$axios.post('https://67sbpripz3.execute-api.ap-southeast-1.amazonaws.com/dev', { new_folder: this.folderName, parent_folder: this.parentId })
           if (response.data.status !== 'success') {
           // call error snackbar
             console.log('error')
