@@ -1,41 +1,41 @@
 <template>
-    <v-list-item class="px-0">
-      <v-list-item-avatar :color="color">
-        <v-icon dark>{{ icon }}</v-icon>
-      </v-list-item-avatar>
+  <v-list-item class="px-0">
+    <v-list-item-avatar :color="color">
+      <v-icon dark>{{ icon }}</v-icon>
+    </v-list-item-avatar>
 
-      <v-list-item-content>
-        <v-list-item-title class="font-weight-bold pb-1">
-          <NuxtLink class="black--text notification-link" :to="link">{{ notification.message }}</NuxtLink>
-        </v-list-item-title>
-        <v-list-item-subtitle>
-          {{ $moment(notification.created_at.slice(0,10)).format('DD MMM YYYY') }}
-        </v-list-item-subtitle>
-      </v-list-item-content>
+    <v-list-item-content>
+      <v-list-item-title class="font-weight-bold pb-1">
+        <NuxtLink class="black--text notification-link" :to="link">{{ notification.message }}</NuxtLink>
+      </v-list-item-title>
+      <v-list-item-subtitle>
+        {{ $moment(notification.created_at.slice(0,10)).format('DD MMM YYYY') }}
+      </v-list-item-subtitle>
+    </v-list-item-content>
 
-      <v-list-item-action class="pr-3">
-        <v-menu bottom left offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              v-on="on"
-              icon
-              :loading="isLoading"
-            >
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item link @click="setNotificationRead">
-              <v-list-item-avatar>
-                <v-icon>{{ notification.is_read ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-title>Mark as {{ notification.is_read ? 'Unread' : 'Read'}}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item-action>
-    </v-list-item>
+    <v-list-item-action class="pr-3">
+      <v-menu bottom left offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            icon
+            :loading="isLoading"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item link @click="setNotificationRead">
+            <v-list-item-avatar>
+              <v-icon>{{ notification.is_read ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Mark as {{ notification.is_read ? 'Unread' : 'Read'}}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-list-item-action>
+  </v-list-item>
 </template>
 <script>
 import UpdateSingleNotification from './../../graphql/notifications/UpdateSingleNotification.graphql'
@@ -53,11 +53,6 @@ export default {
       default () {
         return null
       }
-    }
-  },
-  data () {
-    return {
-      isLoading: false
     }
   },
   data () {
