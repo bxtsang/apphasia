@@ -95,8 +95,8 @@
         <v-row>
           <v-col class="py-0">
             <v-select
-              :value="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
-              :items="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
+              :value="project_vols.filter(item => item.interested).map(item => item.project.title)"
+              :items="project_vols.filter(item => item.interested).map(item => item.project.title)"
               label="Projects Interested"
               multiple
               readonly
@@ -104,8 +104,8 @@
           </v-col>
           <v-col class="py-0">
             <v-select
-              :value="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
-              :items="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
+              :value="project_vols.filter(item => item.approved).map(item => item.project.title)"
+              :items="project_vols.filter(item => item.approved).map(item => item.project.title)"
               label="Projects Involved In"
               multiple
               readonly
@@ -200,12 +200,17 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: this.removeKeys(this.volunteer.general_info, ['__typename']),
-      volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
-      languages: this.volunteer.vol_languages.map(item => item.language),
-      voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      volIc: this.volunteer.vol_ic.map(item => item.staff_id),
-      project_vols: this.volunteer.project_vols,
+      generalInfo: this.volunteer ? this.removeKeys(this.volunteer.general_info, ['__typename']) : {},
+      volunteerDetails: this.volunteer ? this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']) : {
+        vol_languages: [],
+        voltypes: [],
+        vol_ic: [],
+        project_vols: []
+      },
+      languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
+      voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
+      volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
+      project_vols: this.volunteer ? this.volunteer.project_vols : [],
       isSubmitting: false
     }
   },
