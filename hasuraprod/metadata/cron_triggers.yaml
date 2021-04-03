@@ -1,6 +1,6 @@
 - name: deleteArchiveEntities
   webhook: https://api.apphasia.cf/deletearchiveentities
-  schedule: 0 0 * * *
+  schedule: 0 16 * * *
   include_in_metadata: true
   payload: {}
   headers:
@@ -8,7 +8,7 @@
     name: x-api-key
 - name: createRecurringEvents
   webhook: https://api.apphasia.cf/createrecurringeventscron
-  schedule: 0 0 * * *
+  schedule: 0 16 * * *
   include_in_metadata: true
   payload: {}
   headers:
