@@ -84,6 +84,7 @@ def lambda_handler(event, context):
 
         response = execute_query(query, True)
         staffs = response['result']
+        print(staffs)
         if len(staffs) > 1:
             for staff in staffs[1:]:
                 try:
@@ -100,7 +101,7 @@ def lambda_handler(event, context):
                     print(e)
         statusCode = 200
         result['status'] = 'success'
-        result['message'] = str(staffs)
+        result['message'] = "Sucessfully executed SQL query to delete rejected volunteers and archived entities"
 
     except Exception as e:
         print(e)
