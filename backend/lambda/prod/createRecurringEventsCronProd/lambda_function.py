@@ -64,18 +64,17 @@ def lambda_handler(event, context):
 
         recurrences = json.loads(r.text)['data']['recurring']
         for recurrence in recurrences:
-            print(recurrence)
             if recurrence['infinite']:
                 print(createRecurringEvents(recurrence))
 
         statusCode = 200
         result['status2'] = "success"
-        result['message2'] = "successfully generated events!"
+        result['message2'] = "Successfully generated events for all recurrences!"
 
     except Exception as e:
         statusCode = 400
         result['status1'] = "failed"
-        result['message1'] = 'failed to query for recurrences'
+        result['message1'] = 'Failed to query for recurrences'
         result['error1'] = str(e)
         print(str(e))
 
@@ -119,7 +118,7 @@ def createRecurringEvents (recurrence):
     except Exception as e:
         statusCode = 400
         result['status'] = "failed"
-        result['message'] = "Failed to get latest events date"
+        result['message'] = f"Failed to get latest events date of recurring id {recurrence['id']}"
         result['error'] = str(e)
         return result
 
@@ -169,7 +168,7 @@ def createRecurringEvents (recurrence):
             if "errors" not in json_response:
                 statusCode = 200
                 result['status'] = "sent"
-                result['message'] = "Successfully added events"
+                result['message'] = f"Successfully added events for recurring id {recurrence['id']}"
             else:
                 statusCode = 400
                 result['code'] = res.status_code
@@ -177,13 +176,13 @@ def createRecurringEvents (recurrence):
         except Exception as e:
             statusCode = 400
             result['status'] = "failed"
-            result['message'] = 'failed to insert into events'
+            result['message'] = f"failed to insert into events for recurring id {recurrence['id']}"
             result['error'] = str(e)
             print(str(e))
 
     else:
         statusCode = 200
         result['status'] = "sent"
-        result['message'] = "No new events to add"
+        result['message'] = f"No new events to add for recurring id {recurrence['id']}"
 
     return result
