@@ -59,23 +59,24 @@ def lambda_handler(event, context):
         }
 
         r = requests.post(hasura_url, json={'query': query}, headers=headers)
-        result['status1'] = "success"
-        result['message1'] = "successfully queried for recurrences"
+        result['status'] = "success"
+        result['message'] = "successfully queried for recurrences"
 
         recurrences = json.loads(r.text)['data']['recurring']
         for recurrence in recurrences:
             if recurrence['infinite']:
-                print(createRecurringEvents(recurrence))
+                response = createRecurringEvents(recurrence)
+                print(response)
+                result[f"recurrence {recurrence['id']}"] = response
+
 
         statusCode = 200
-        result['status2'] = "success"
-        result['message2'] = "Successfully generated events for all recurrences!"
 
     except Exception as e:
         statusCode = 400
-        result['status1'] = "failed"
-        result['message1'] = 'Failed to query for recurrences'
-        result['error1'] = str(e)
+        result['status'] = "failed"
+        result['message'] = 'Failed to query for recurrences'
+        result['error'] = str(e)
         print(str(e))
 
 
