@@ -70,38 +70,75 @@ def lambda_handler(event, context):
 
     try :
         secret = get_secret()
-        query = {
-            "type": "run_sql",
-            "args": {
-                "sql": """
-                DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone '+08') - rejected_date) >= 30;
-                DELETE FROM volunteers WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
-                DELETE FROM projects WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
-                DELETE FROM pwas WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30;
-                DELETE FROM staffs WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30 RETURNING email;"""
-            }
-        }
+        entities = ["volunteers", "projects", "pwas", "staffs", "rejected volunteers"]
 
-        response = execute_query(query, True)
-        staffs = response['result']
-        print(staffs)
-        if len(staffs) > 1:
-            for staff in staffs[1:]:
-                try:
-                    response = client.admin_delete_user(
-                        UserPoolId=get_parameter("USER_POOL_ID"),
-                        Username=staff[0]
-                    )
-                    if response['ResponseMetadata']['HTTPStatusCode'] != 200:
-                        print(response)
-                        success = False
+        for entity in entities:
+            returning = "id"
+            if entity == "staffs":
+                returning += ", email"
+
+            sql = f"DELETE FROM {entity} WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 0 RETURNING {returning};"
+            if entity == "rejected volunteers":
+                sql = f"DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone '+08') - rejected_date) >= 30 RETURNING id;"
+
+            query = {
+                "type": "run_sql",
+                "args": {
+                    "sql": sql
+                }
+            }
+            response = execute_query(query, True)
+
+            # Error occurred
+            if "result" not in response:
+                result[entity] = json.dumps(response)
+                continue
+
+            res_ids = response['result']
+            result[entity] = res_ids
+            print(entity,res_ids)
+
+            if len(res_ids) <= 1:
+                result[entity] = f"No {entity}(s) to remove."
+                continue
+
+            message = ", ".join([e_id[0] for e_id in res_ids[1:]])
+            result[entity] = f" {entity} id(s) {message} has/have been removed."
+            # Remove staffs from AWS Cognito
+            if entity == "staffs":
+                message = ""
+                for staff in res_ids[1:]:
+                    try:
+                        response = client.admin_delete_user(
+                            UserPoolId=get_parameter("USER_POOL_ID"),
+                            Username=staff[1]
+                        )
+                        if response['ResponseMetadata']['HTTPStatusCode'] != 200:
+                            print(response)
+                            success = False
+                        message += str(staff[0]) + ", "
                 
-            
-                except Exception as e:
-                    print(e)
+                    except Exception as e:
+                        print(e)
+                message = message[:-2]
+                result[entity] = f" staff id(s) {message} has/have been removed."
+
+            # Remove pwa/vol from people_external table
+            if entity in ["pwas", "volunteers", "rejected volunteers"]:
+                people = f"({message})"
+                sql = f"DELETE FROM people_external WHERE id IN {people} RETURNING id;"
+                query = {
+                    "type": "run_sql",
+                    "args": {
+                        "sql": sql
+                    }
+                }
+                response = execute_query(query, True)
+                if "result" not in response:
+                    result[entity] = json.dumps(response)
+
         statusCode = 200
         result['status'] = 'success'
-        result['message'] = "Sucessfully executed SQL query to delete rejected volunteers and archived entities"
 
     except Exception as e:
         print(e)
