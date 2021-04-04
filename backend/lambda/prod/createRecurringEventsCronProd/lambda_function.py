@@ -150,7 +150,7 @@ def createRecurringEvents (recurrence):
     send = True if count != 0 else False
     if send:
         # Send SQL to database query
-        sql = sql[:-2] + ";"
+        sql = sql[:-2] + " RETURNING id;"
         data = json.dumps({
             "type": "run_sql",
             "args": {
@@ -164,11 +164,18 @@ def createRecurringEvents (recurrence):
             "Content-Type": "application/json"
             })
             json_response = json.loads(res.text)
+            
 
             if "errors" not in json_response:
+                message = "Successfully added events id "
+                events_id = json_response['result']
+
+                for e_id in events_id[1:]:
+                    message += e_id[0] + ", "
+                message = message[:-2]
                 statusCode = 200
                 result['status'] = "sent"
-                result['message'] = f"Successfully added events for recurring id {recurrence['id']}"
+                result['message'] = message + f" for recurring id {recurrence['id']}"
             else:
                 statusCode = 400
                 result['code'] = res.status_code
