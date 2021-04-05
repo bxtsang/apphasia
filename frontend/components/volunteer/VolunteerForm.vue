@@ -101,7 +101,7 @@
           </v-col>
           <v-col class="py-0">
             <ProjectInput
-              v-model="project_vols"
+              v-model="projects_interested"
               label="*Projects Involved"
             />
           </v-col>
@@ -199,12 +199,14 @@ export default {
         vol_languages: [],
         voltypes: [],
         vol_ic: [],
-        project_vols: []
+        project_vols: [],
+        projects_interested: []
       },
       languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
       voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
       volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
-      project_vols: this.volunteer ? this.volunteer.project_vols : [],
+      project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.title) : [],
+      projects_interested: this.volunteer ? this.volunteer.project_vols.filter(project => project.interested).map(item => item.project.title) : [],
       isSubmitting: false
     }
   },
