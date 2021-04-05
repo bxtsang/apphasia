@@ -1273,6 +1273,72 @@
       filter: {}
 - table:
     schema: public
+    name: project_vol_interested
+  object_relationships:
+  - name: project
+    using:
+      foreign_key_constraint_on: project_id
+  - name: volunteer
+    using:
+      foreign_key_constraint_on: vol_id
+  insert_permissions:
+  - role: core_team
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
+      backend_only: false
+  - role: intern
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
+      backend_only: false
+  - role: public
+    permission:
+      check: {}
+      columns:
+      - project_id
+      - vol_id
+      backend_only: false
+  select_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: core_volunteer
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  - role: intern
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+  update_permissions:
+  - role: core_team
+    permission:
+      columns:
+      - project_id
+      - vol_id
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: core_team
+    permission:
+      filter: {}
+  - role: intern
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: projects
   object_relationships:
   - name: owner
@@ -2919,6 +2985,13 @@
     using:
       foreign_key_constraint_on: id
   array_relationships:
+  - name: interested_projects
+    using:
+      foreign_key_constraint_on:
+        column: vol_id
+        table:
+          schema: public
+          name: project_vol_interested
   - name: project_vols
     using:
       foreign_key_constraint_on:
