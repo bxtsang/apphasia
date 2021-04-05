@@ -175,6 +175,8 @@
           </v-btn>
         </v-row>
       </v-container>
+
+      {{ project_vols }}
     </v-form>
   </v-card>
 </template>
@@ -205,8 +207,8 @@ export default {
       languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
       voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
       volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
-      project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.title) : [],
-      projects_interested: this.volunteer ? this.volunteer.project_vols.filter(project => project.interested).map(item => item.project.title) : [],
+      project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.id) : [],
+      projects_interested: this.volunteer ? this.volunteer.project_vols.filter(project => project.interested).map(item => item.project.id) : [],
       isSubmitting: false
     }
   },
