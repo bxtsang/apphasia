@@ -77,7 +77,8 @@ def lambda_handler(event, context):
             if entity == "staffs":
                 returning += ", email"
 
-            sql = f"DELETE FROM {entity} WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 0 RETURNING {returning};"
+            sql = f"DELETE FROM {entity} WHERE is_active = FALSE AND EXTRACT(DAY FROM (current_date at time zone '+08') - updated_at) >= 30 RETURNING {returning};"
+
             if entity == "rejected volunteers":
                 sql = f"DELETE FROM volunteers WHERE rejected_date IS NOT NULL AND status ='Rejected' AND EXTRACT(DAY FROM (current_date at time zone '+08') - rejected_date) >= 30 RETURNING id;"
 
