@@ -417,6 +417,7 @@
       - created_at
       - operation
       filter: {}
+      allow_aggregations: true
   - role: core_volunteer
     permission:
       columns:
@@ -429,6 +430,7 @@
       - created_at
       - operation
       filter: {}
+      allow_aggregations: true
   - role: intern
     permission:
       columns:
@@ -441,6 +443,7 @@
       - created_at
       - operation
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: core_team
     permission:
