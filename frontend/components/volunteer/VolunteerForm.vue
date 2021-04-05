@@ -95,13 +95,13 @@
         <v-row>
           <v-col class="py-0">
             <ProjectInput
-              v-model="project_vols"
+              v-model="projects_interested"
               label="*Projects Interested In"
             />
           </v-col>
           <v-col class="py-0">
             <ProjectInput
-              v-model="projects_interested"
+              v-model="project_vols"
               label="*Projects Involved"
             />
           </v-col>
@@ -175,8 +175,6 @@
           </v-btn>
         </v-row>
       </v-container>
-
-      {{ project_vols }}
     </v-form>
   </v-card>
 </template>
