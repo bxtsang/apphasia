@@ -239,7 +239,7 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
-          data: newValue.map((item) => { return { project_id: item.project_id } })
+          data: newValue.map((item) => { return { project_id: item, interested: true } })
         }
       }
     }
