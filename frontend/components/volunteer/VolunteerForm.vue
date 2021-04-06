@@ -102,7 +102,8 @@
           <v-col class="py-0">
             <ProjectInput
               v-model="project_vols"
-              label="*Projects Involved"
+              label="*Projects Involved (assign only in projects page)"
+              readonly
             />
           </v-col>
         </v-row>
