@@ -99,9 +99,9 @@
             <VolunteerStatusChip :value="item.status" />
           </template>
 
-          <template v-slot:[`item.project_vols`]="{ item }">
+          <template v-slot:[`item.interested_projects`]="{ item }">
             <v-chip
-              v-for="(project, index) in item.project_vols"
+              v-for="(project, index) in item.interested_projects"
               :key="index"
               label
               outlined
@@ -248,6 +248,7 @@ export default {
   methods: {
     initItems (result) {
       this.items = result.data[this.resourceType]
+      console.log(result.data[this.resourceType])
     },
     rowClickHandler (item) {
       if (this.resourceType === 'events') {
