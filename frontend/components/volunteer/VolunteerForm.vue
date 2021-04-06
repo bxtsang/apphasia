@@ -95,7 +95,7 @@
         <v-row>
           <v-col class="py-0">
             <ProjectInput
-              v-model="projects_interested"
+              v-model="interested_projects"
               label="*Projects Interested In"
             />
           </v-col>
@@ -181,8 +181,6 @@
 
 <script>
 import UpdateVol from './../../graphql/volunteer/UpdateVol.graphql'
-import GetSingleVol from './../../graphql/volunteer/GetSingleVol.graphql'
-import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
 
 export default {
   props: {
@@ -200,13 +198,13 @@ export default {
         voltypes: [],
         vol_ic: [],
         project_vols: [],
-        projects_interested: []
+        interested_projects: []
       },
       languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
       voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
       volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
       project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.id) : [],
-      projects_interested: this.volunteer ? this.volunteer.interested_projects.map(item => item.project.id) : [],
+      interested_projects: this.volunteer ? this.volunteer.interested_projects.map(item => item.project.id) : [],
       isSubmitting: false
     }
   },
@@ -287,26 +285,7 @@ export default {
               }
             }
           ) => {
-            store.writeQuery({
-              query: GetSingleVol,
-              data: { volunteers_by_pk: updatedVolunteer },
-              variables: { id: this.volunteerDetails.id }
-            })
-            try {
-              const allVol = store.readQuery({
-                query: GetAllVol,
-                variables: {}
-              })
-              allVol.volunteers = allVol.volunteers.filter(item => item.id !== this.volunteer.id)
-              allVol.volunteers.push(updatedVolunteer)
-              store.writeQuery({
-                query: GetAllVol,
-                allVol,
-                variables: {}
-              })
-            } catch (error) {
-              // Handle if GetAllVols query not in store
-            }
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false
