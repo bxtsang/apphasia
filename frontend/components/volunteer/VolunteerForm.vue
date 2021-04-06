@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-8">
     <span class="section-title">Edit Volunteer</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
+    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" class="py-0">
@@ -181,6 +181,7 @@
 
 <script>
 import UpdateVol from './../../graphql/volunteer/UpdateVol.graphql'
+import CreateVol from './../../graphql/volunteer/CreateVol.graphql'
 
 export default {
   props: {
@@ -195,7 +196,7 @@ export default {
       generalInfo: this.volunteer ? this.removeKeys(this.volunteer.general_info, ['__typename']) : {},
       volunteerDetails: this.volunteer ? this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']) : {
         vol_languages: [],
-        voltypes: [],
+        vol_voltypes: [],
         vol_ic: [],
         project_vols: [],
         interested_projects: []
@@ -208,6 +209,17 @@ export default {
       isSubmitting: false
     }
   },
+
+  computed: {
+    formSubmitMethod () {
+      if (this.volunteer) {
+        return this.updateVolunteer
+      } else {
+        return this.addVolunteer
+      }
+    }
+  },
+
   watch: {
     languages: {
       immediate: true,
@@ -259,6 +271,43 @@ export default {
           return newObj
         }, {})
     },
+
+    addVolunteer () {
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        this.volunteerDetails.general_info = { data: this.generalInfo }
+
+        this.$apollo.mutate({
+          mutation: CreateVol,
+          variables: { volunteer: this.volunteerDetails },
+          update: (store, { data: { insert_volunteers_one: newVol } }) => {
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.languages = []
+          this.voltypes = []
+          this.volIc = []
+          this.project_vols = []
+          this.interested_projects = []
+          this.generalInfo = {}
+          this.volunteerDetails = {
+            vol_languages: [],
+            vol_voltypes: [],
+            vol_ic: [],
+            project_vols: [],
+            interested_projects: []
+          }
+
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Volunteer successfully created', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+
     updateVolunteer () {
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
