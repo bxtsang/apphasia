@@ -137,8 +137,8 @@
                 <v-row>
                   <v-col class="py-0">
                     <v-select
-                      :value="data.volunteers_by_pk.project_vols.filter(item => item.interested).map(item => item.project.title)"
-                      :items="data.volunteers_by_pk.project_vols.filter(item => item.interested).map(item => item.project.title)"
+                      :value="data.volunteers_by_pk.interested_projects.map(item => item.project.title)"
+                      :items="data.volunteers_by_pk.interested_projects.map(item => item.project.title)"
                       label="Projects Interested"
                       multiple
                       readonly
@@ -146,8 +146,8 @@
                   </v-col>
                   <v-col class="py-0">
                     <v-select
-                      :value="data.volunteers_by_pk.project_vols.filter(item => item.approved).map(item => item.project.title)"
-                      :items="data.volunteers_by_pk.project_vols.filter(item => item.approved).map(item => item.project.title)"
+                      :value="data.volunteers_by_pk.project_vols.map(item => item.project.title)"
+                      :items="data.volunteers_by_pk.project_vols.map(item => item.project.title)"
                       label="Projects Involved"
                       multiple
                       readonly
