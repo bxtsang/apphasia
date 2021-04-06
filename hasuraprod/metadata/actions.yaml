@@ -14,18 +14,30 @@ actions:
 - name: DeleteEvents
   definition:
     kind: synchronous
-    handler: https://750a9vn0z1.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/deleteevents
+    forward_client_headers: true
   permissions:
   - role: core_team
   - role: intern
 - name: InsertEventOrRecurring
   definition:
     kind: synchronous
-    handler: https://lh1hdfcdf6.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/inserteventorrecurring
+    forward_client_headers: true
   permissions:
   - role: core_team
   - role: core_volunteer
   - role: intern
+- name: InsertNotifications
+  definition:
+    kind: synchronous
+    handler: https://api.apphasia.cf/notifynewentities
+    forward_client_headers: true
+  permissions:
+  - role: core_team
+  - role: core_volunteer
+  - role: intern
+  - role: public
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
@@ -35,9 +47,19 @@ actions:
 - name: UpdateEventOrRecurring
   definition:
     kind: synchronous
-    handler: https://x4bbv8b153.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/updateeventorrecurring
+    forward_client_headers: true
   permissions:
   - role: core_team
+  - role: intern
+- name: UpdateNotifications
+  definition:
+    kind: synchronous
+    handler: https://api.apphasia.cf/notifyupdateentities
+    forward_client_headers: true
+  permissions:
+  - role: core_team
+  - role: core_volunteer
   - role: intern
 custom_types:
   enums: []
@@ -58,6 +80,9 @@ custom_types:
   - name: EventPwaInput
   - name: UpdateRecurringDataInput
   - name: UpdateEventOrRecurringInput
+  - name: NotifyInput
+  - name: UpdateNotificationsInput
+  - name: InsertNotificationsInput
   objects:
   - name: CreateUserResponse
   - name: UpdateUserResponse
@@ -67,4 +92,8 @@ custom_types:
   - name: InsertResponse
   - name: DeleteResponse
   - name: UpdateEventsResponse
+  - name: notifyResponse
+  - name: NotifyResponse
+  - name: UpdateNotificationsResponse
+  - name: InsertNotificationsResponse
   scalars: []
