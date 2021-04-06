@@ -206,7 +206,7 @@ export default {
       voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
       volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
       project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.id) : [],
-      projects_interested: this.volunteer ? this.volunteer.project_vols.filter(project => project.interested).map(item => item.project.id) : [],
+      projects_interested: this.volunteer ? this.volunteer.interested_projects.map(item => item.project.id) : [],
       isSubmitting: false
     }
   },
@@ -239,7 +239,15 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
-          data: newValue.map((item) => { return { project_id: item, interested: true } })
+          data: newValue.map((item) => { return { project_id: item } })
+        }
+      }
+    },
+    interested_projects: {
+      immediate: true,
+      handler (newValue) {
+        this.volunteerDetails.interested_projects = {
+          data: newValue.map((item) => { return { project_id: item } })
         }
       }
     }
