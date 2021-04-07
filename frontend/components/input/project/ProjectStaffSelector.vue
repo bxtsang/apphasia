@@ -7,6 +7,8 @@
     item-value="id"
     :readonly="readonly"
     :rules="validation"
+    :searchInput.sync="searchInput"
+    @change="searchInput=''"
   />
 </template>
 <script>
@@ -16,7 +18,8 @@ export default {
   data () {
     return {
       data: this.value,
-      validation: [v => v !== -1 || 'Staff is Required']
+      validation: [v => v !== -1 || 'Staff is Required'],
+      searchInput: ''
     }
   },
   props: {
