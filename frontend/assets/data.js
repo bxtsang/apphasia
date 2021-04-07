@@ -108,7 +108,7 @@ export const TABLE_HEADERS = {
     { text: 'Gender', value: 'general_info.gender' },
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
+    { text: 'Programmes Interested  ', value: 'interested_projects', sortable: false },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }

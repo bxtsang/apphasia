@@ -17,9 +17,9 @@ export default {
   name: 'VolunteerStatusInput',
   props: {
     value: {
-      type: Array,
+      type: String,
       default () {
-        return []
+        return ''
       }
     },
     required: {
