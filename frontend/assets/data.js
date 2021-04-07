@@ -99,8 +99,8 @@ export const TABLE_HEADERS = {
     { text: 'Name', value: 'name', align: 'start' },
     { text: 'Date Joined', value: 'date_joined' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: 'projects_in', sortable: false },
+    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
@@ -115,10 +115,11 @@ export const TABLE_HEADERS = {
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
+    { text: 'Contact Number', value: 'general_info.contact_num' },
     { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
+    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Programmes Involved', value: 'projects', sortable: false },
     { text: 'NOK', value: 'nok', sortable: false },
-    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
