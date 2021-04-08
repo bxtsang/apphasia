@@ -24,8 +24,12 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
         id
         title
       }
-      interested
-      approved
+    }
+    interested_projects {
+      project {
+        id
+        title
+      }
     }
     rejected_date
     status
@@ -46,7 +50,8 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
   }
 }
 
-#{
+
+# {
 #  "volunteer": {
 #    "general_info": {
 #      "data": {
@@ -54,7 +59,7 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
 #        "bio": "Hello my name is Bob",
 #        "channel": "Facebook",
 #        "consent": true,
-#        "contact_num": 94837171,
+#        "contact_num": "94837171",
 #        "dob": "1997-06-12",
 #        "email": "bob@aphasia.sg",
 #        "gender": "M",
@@ -67,10 +72,14 @@ mutation CreateVolunteer($volunteer: volunteers_insert_input!) {
 #    "profession": "Student",
 #    "project_vols": {
 #      "data": {
-#        "project_id": 1,
-#        "interested": true
+#        "project_id": 1
 #      }
 #    },
+#   	"interested_projects": {
+#       "data": [{
+#         "project_id": 1
+#       }]
+#     },
 #    "ws_place": "Singapore Management University"
 #  }
-#}
+# }

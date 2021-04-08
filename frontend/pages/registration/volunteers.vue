@@ -54,7 +54,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">* How will you like to volunteer with us? (Tick all that applies)</span>
-                <VolunteerProjectInterestInput v-model="projectVols" />
+                <VolunteerProjectInterestInput v-model="interested_projects" />
               </v-card>
             </v-col>
           </v-row>
@@ -158,7 +158,7 @@ export default {
         general_info: {
           data: {}
         },
-        project_vols: {
+        interested_projects: {
           data: []
         },
         vol_languages: {
@@ -166,7 +166,7 @@ export default {
         }
       },
       profession: [],
-      projectVols: [],
+      interested_projects: [],
       languages: []
     }
   },
@@ -203,7 +203,7 @@ export default {
       }
     },
     transformData () {
-      this.volunteer.project_vols = { data: this.projectVols.map((item) => { return { project_id: item } }) }
+      this.volunteer.interested_projects = { data: this.interested_projects.map((item) => { return { project_id: item } }) }
       this.volunteer.vol_languages = { data: this.languages.map((item) => { return { language: item } }) }
       this.volunteer.profession = this.profession.join(',')
     }

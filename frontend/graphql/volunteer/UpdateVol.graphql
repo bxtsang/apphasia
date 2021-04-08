@@ -36,8 +36,13 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
         id
         title
       }
-      interested
-      approved
+    }
+    interested_projects {
+      project_id
+      project {
+        id
+        title
+      }
     }
     rejected_date
     status
@@ -72,10 +77,14 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
 #    "profession": "Student",
 #    "project_vols": {
 #      "data": {
-#        "project_id": 1,
-#        "interested": true
+#        "project_id": 1
 #      }
 #    },
+#   "interested_projects": {
+#     "data": [{
+#       "project_id": 1
+#     }]
+#   },
 #    "ws_place": "Singapore Management University",
 #    "id": 17
 #  },
@@ -98,4 +107,3 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
 #     "general_info": {"JSON of people_external_set_input": "Hi"}
 #   }
 # }
-
