@@ -2,7 +2,7 @@ mutation (
     $address: String!,
     $archive_reason: String,
     $bio: String,
-    $contact_num: Int!,
+    $contact_num: String!,
     $dob: date!,
     $gender: bpchar!,
     $is_active: Boolean!,
