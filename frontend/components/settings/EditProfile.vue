@@ -107,7 +107,7 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-text-field
-            :value="ROLE_OPTIONS.filter(item => item.value === profileData.role)[0].label"
+            :value="userRole(profileData.role)"
             label="Role"
             disabled
           />
@@ -271,6 +271,14 @@ export default {
         }
       }
       return { added, removed }
+    },
+    userRole (role) {
+      const filteredRoles = ROLE_OPTIONS.filter(item => item.value === role)
+      if (filteredRoles.length > 0) {
+        return filteredRoles[0].label
+      } else {
+        return 'Admin'
+      }
     }
   }
 }
