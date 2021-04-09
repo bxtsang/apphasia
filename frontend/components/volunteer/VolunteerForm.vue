@@ -165,7 +165,7 @@
       <v-container>
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team'"
+            v-if="($auth.user['custom:role'] === 'core_team' || $auth.user['custom:role'] === 'admin') && volunteer"
             :resource="volunteer"
             :resourceType="'volunteers'"
             @deleteSuccess="$emit('closeForm')"
