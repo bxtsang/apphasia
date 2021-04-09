@@ -353,7 +353,7 @@ export default {
             updateNotification: {
               old: this.pwa,
               new: {
-                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true
+                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true, archive_reason: ''
               },
               general_info: constructedData.generalInfo.data
             }
