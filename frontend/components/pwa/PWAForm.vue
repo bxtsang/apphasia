@@ -186,7 +186,7 @@
         </v-row>
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team' && pwa"
+            v-if="($auth.user['custom:role'] === 'core_team' || $auth.user['custom:role'] === 'admin') && pwa"
             :resource="pwa"
             :resourceType="'pwas'"
             @deleteSuccess="$emit('closeForm')"
