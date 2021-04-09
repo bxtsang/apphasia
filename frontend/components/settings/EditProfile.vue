@@ -274,7 +274,7 @@ export default {
     },
     userRole (role) {
       const filteredRoles = ROLE_OPTIONS.filter(item => item.value === role)
-      if (filteredRoles.length > 1) {
+      if (filteredRoles.length > 0) {
         return filteredRoles[0].label
       } else {
         return 'Admin'
