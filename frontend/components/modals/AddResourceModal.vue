@@ -4,7 +4,7 @@
     width="800"
   >
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="primary" v-bind="attrs" v-on="on">
+      <v-btn color="primary" v-bind="attrs" v-on="on" data-cy="cy-add-resource-btn">
         Add {{ resource }}
       </v-btn>
     </template>
