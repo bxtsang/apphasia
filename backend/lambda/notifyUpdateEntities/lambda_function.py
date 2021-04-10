@@ -264,7 +264,7 @@ def lambda_handler(event, context):
                 data = {"peep": entity_id}
                 query = """
                 query ($peep: Int!) {
-                  project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {title: {_eq: "Befrienders"}}}}) {
+                  project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {voltypes: {_eq: Befriender}}}}) {
                     staff_id
                   }
                 }
@@ -276,7 +276,7 @@ def lambda_handler(event, context):
                 data = {"peep": entity_id}
                 query = """
                 query ($peep: Int!) {
-                  project_pwa(where: {_and: {project: {title: {_neq: "Befrienders"}}, pwa_id: {_eq: $peep}}}) {
+                  project_pwa(where: {_and: {project: {voltypes: {_eq: Project_Volunteer}}, pwa_id: {_eq: $peep}}}) {
                     project {
                       id
                       owner_id
@@ -420,7 +420,7 @@ def lambda_handler(event, context):
             data = {"peep": entity_id}
             query = """
             query ($peep: Int!) {
-              project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {title: {_eq: "Befrienders"}}}}) {
+              project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {voltypes: {_eq: Befriender}}}}) {
                 staff_id
               }
             }
