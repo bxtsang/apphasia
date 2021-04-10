@@ -1203,16 +1203,12 @@
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
   - role: intern
     permission:
       check: {}
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
   - role: public
     permission:
       check: {}
@@ -1226,24 +1222,18 @@
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
       filter: {}
   - role: core_volunteer
     permission:
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
       filter: {}
   - role: intern
     permission:
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
       filter: {}
   update_permissions:
   - role: core_team
@@ -1251,8 +1241,6 @@
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
       filter: {}
       check: null
   - role: intern
@@ -1260,8 +1248,6 @@
       columns:
       - project_id
       - vol_id
-      - approved
-      - interested
       filter: {}
       check: null
   delete_permissions:

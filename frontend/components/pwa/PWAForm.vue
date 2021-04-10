@@ -186,7 +186,7 @@
         </v-row>
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team' && pwa"
+            v-if="($auth.user['custom:role'] === 'core_team' || $auth.user['custom:role'] === 'admin') && pwa"
             :resource="pwa"
             :resourceType="'pwas'"
             @deleteSuccess="$emit('closeForm')"
@@ -353,7 +353,7 @@ export default {
             updateNotification: {
               old: this.pwa,
               new: {
-                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true
+                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true, archive_reason: ''
               },
               general_info: constructedData.generalInfo.data
             }

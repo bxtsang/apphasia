@@ -1,0 +1,1 @@
+CREATE TABLE "public"."project_vol_interested"("project_id" integer NOT NULL, "vol_id" integer NOT NULL, PRIMARY KEY ("project_id","vol_id") , FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("vol_id") REFERENCES "public"."volunteers"("id") ON UPDATE restrict ON DELETE cascade);

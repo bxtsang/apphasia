@@ -91,7 +91,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -99,9 +98,9 @@
             <VolunteerStatusChip :value="item.status" />
           </template>
 
-          <template v-slot:[`item.project_vols`]="{ item }">
+          <template v-slot:[`item.interested_projects`]="{ item }">
             <v-chip
-              v-for="(project, index) in item.project_vols"
+              v-for="(project, index) in item.interested_projects"
               :key="index"
               label
               outlined
@@ -110,7 +109,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <!-- PWA Specific Columns -->
@@ -129,7 +127,6 @@
             >
               {{ project.project.title }}
             </v-chip>
-<!--            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}-->
           </template>
 
           <template v-slot:[`item.languages`]="{ item }">
@@ -248,6 +245,7 @@ export default {
   methods: {
     initItems (result) {
       this.items = result.data[this.resourceType]
+      console.log(result.data[this.resourceType])
     },
     rowClickHandler (item) {
       if (this.resourceType === 'events') {

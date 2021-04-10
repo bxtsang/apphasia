@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-8">
     <span class="section-title">Edit Volunteer</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="updateVolunteer">
+    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" class="py-0">
@@ -94,20 +94,15 @@
         </v-row>
         <v-row>
           <v-col class="py-0">
-            <v-select
-              :value="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
-              :items="volunteer.project_vols.filter(item => item.interested).map(item => item.project.title)"
-              label="Projects Interested"
-              multiple
-              readonly
+            <ProjectInput
+              v-model="interested_projects"
+              label="*Projects Interested In"
             />
           </v-col>
           <v-col class="py-0">
-            <v-select
-              :value="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
-              :items="volunteer.project_vols.filter(item => item.approved).map(item => item.project.title)"
-              label="Projects Involved In"
-              multiple
+            <ProjectInput
+              v-model="project_vols"
+              label="*Projects Involved (assign only in projects page)"
               readonly
             />
           </v-col>
@@ -170,7 +165,7 @@
       <v-container>
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team'"
+            v-if="($auth.user['custom:role'] === 'core_team' || $auth.user['custom:role'] === 'admin') && volunteer"
             :resource="volunteer"
             :resourceType="'volunteers'"
             @deleteSuccess="$emit('closeForm')"
@@ -187,8 +182,7 @@
 
 <script>
 import UpdateVol from './../../graphql/volunteer/UpdateVol.graphql'
-import GetSingleVol from './../../graphql/volunteer/GetSingleVol.graphql'
-import GetAllVol from './../../graphql/volunteer/GetAllVol.graphql'
+import CreateVol from './../../graphql/volunteer/CreateVol.graphql'
 
 export default {
   props: {
@@ -200,15 +194,33 @@ export default {
   data () {
     return {
       valid: true,
-      generalInfo: this.removeKeys(this.volunteer.general_info, ['__typename']),
-      volunteerDetails: this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']),
-      languages: this.volunteer.vol_languages.map(item => item.language),
-      voltypes: this.volunteer.vol_voltypes.map(item => item.voltype),
-      volIc: this.volunteer.vol_ic.map(item => item.staff_id),
-      project_vols: this.volunteer.project_vols,
+      generalInfo: this.volunteer ? this.removeKeys(this.volunteer.general_info, ['__typename']) : {},
+      volunteerDetails: this.volunteer ? this.removeKeys(this.volunteer, ['general_info', '__typename', 'befrienders']) : {
+        vol_languages: [],
+        vol_voltypes: [],
+        vol_ic: [],
+        project_vols: [],
+        interested_projects: []
+      },
+      languages: this.volunteer ? this.volunteer.vol_languages.map(item => item.language) : [],
+      voltypes: this.volunteer ? this.volunteer.vol_voltypes.map(item => item.voltype) : [],
+      volIc: this.volunteer ? this.volunteer.vol_ic.map(item => item.staff_id) : [],
+      project_vols: this.volunteer ? this.volunteer.project_vols.map(item => item.project.id) : [],
+      interested_projects: this.volunteer ? this.volunteer.interested_projects.map(item => item.project.id) : [],
       isSubmitting: false
     }
   },
+
+  computed: {
+    formSubmitMethod () {
+      if (this.volunteer) {
+        return this.updateVolunteer
+      } else {
+        return this.addVolunteer
+      }
+    }
+  },
+
   watch: {
     languages: {
       immediate: true,
@@ -238,7 +250,15 @@ export default {
       immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
-          data: newValue.map((item) => { return { project_id: item.project_id } })
+          data: newValue.map((item) => { return { project_id: item } })
+        }
+      }
+    },
+    interested_projects: {
+      immediate: true,
+      handler (newValue) {
+        this.volunteerDetails.interested_projects = {
+          data: newValue.map((item) => { return { project_id: item } })
         }
       }
     }
@@ -252,6 +272,43 @@ export default {
           return newObj
         }, {})
     },
+
+    addVolunteer () {
+      if (this.$refs.form.validate()) {
+        this.isSubmitting = true
+        this.volunteerDetails.general_info = { data: this.generalInfo }
+
+        this.$apollo.mutate({
+          mutation: CreateVol,
+          variables: { volunteer: this.volunteerDetails },
+          update: (store, { data: { insert_volunteers_one: newVol } }) => {
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+          }
+        }).then((data) => {
+          this.isSubmitting = false
+          this.languages = []
+          this.voltypes = []
+          this.volIc = []
+          this.project_vols = []
+          this.interested_projects = []
+          this.generalInfo = {}
+          this.volunteerDetails = {
+            vol_languages: [],
+            vol_voltypes: [],
+            vol_ic: [],
+            project_vols: [],
+            interested_projects: []
+          }
+
+          this.$emit('closeForm')
+          this.$store.commit('notification/newNotification', ['Volunteer successfully created', 'success'])
+        }).catch((error) => {
+          this.isSubmitting = false
+          this.$store.commit('notification/newNotification', [error.message, 'error'])
+        })
+      }
+    },
+
     updateVolunteer () {
       if (this.$refs.form.validate()) {
         this.isSubmitting = true
@@ -266,7 +323,8 @@ export default {
               new: {
                 id: this.volunteerDetails.id,
                 ...this.volunteerDetails,
-                is_active: true
+                is_active: true,
+                archive_reason: ''
               },
               general_info: this.generalInfo
             }
@@ -278,26 +336,7 @@ export default {
               }
             }
           ) => {
-            store.writeQuery({
-              query: GetSingleVol,
-              data: { volunteers_by_pk: updatedVolunteer },
-              variables: { id: this.volunteerDetails.id }
-            })
-            try {
-              const allVol = store.readQuery({
-                query: GetAllVol,
-                variables: {}
-              })
-              allVol.volunteers = allVol.volunteers.filter(item => item.id !== this.volunteer.id)
-              allVol.volunteers.push(updatedVolunteer)
-              store.writeQuery({
-                query: GetAllVol,
-                allVol,
-                variables: {}
-              })
-            } catch (error) {
-              // Handle if GetAllVols query not in store
-            }
+            this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
           }
         }).then((data) => {
           this.isSubmitting = false
