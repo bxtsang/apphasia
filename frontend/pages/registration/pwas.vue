@@ -1,5 +1,119 @@
 <template>
-  <RegistrationBanner :resourceType="resourceType">
+  <v-container class="pb-12">
+    <v-row>
+      <v-col>
+        <v-img src="/asg.png" max-width="400" contain/>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-card max-width="1200" width="100%">
+
+        <v-container v-bind:class="{ hide: e1 === 1 }" class="py-0 mt-6 rounded-0" style="background-color: #D8E5FF;">
+          <v-row class="py-0 px-12">
+            <v-col class="px-6 d-flex align-center">
+              <v-icon>mdi-hand-pointing-right</v-icon>
+              <b class="pl-6">I AM A PERSON WITH APHASIA (PWA) / CAREGIVER</b>
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <v-stepper v-model="e1">
+          <v-stepper-header v-bind:class="{ hide: e1 === 1 }">
+            <template v-for="n in steps">
+              <v-stepper-step
+                :key="`${n}-step`"
+                :complete="e1 > n"
+                :step="n"
+                editable
+              >
+                Step {{ n }}
+              </v-stepper-step>
+
+              <v-divider v-if="n !== steps" :key="n" />
+            </template>
+          </v-stepper-header>
+          <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
+            <v-stepper-items>
+              <!-- FIRST PAGE -->
+              <v-stepper-content :step="1">
+                <div class="d-flex align-center flex-column">
+                  <RegistrationBanner :resourceType="resourceType" />
+                  <v-btn color="primary px-12" @click="e1 = 2">Start</v-btn>
+                </div>
+              </v-stepper-content>
+
+              <!-- SECOND PAGE -->
+              <v-stepper-content :step="2">
+                <div>
+                <v-form ref="registrationForm-part-1" v-model="valid1" @submit.prevent="">
+                  <v-container fluid>
+                    <v-row class="px-12">
+                      <v-col class="px-6">
+                        <span class="section-title">👋🏻 Let's get to know you better!</span>
+                        <p class="pt-3">We need this information to better match you with other peers in the community 😁</p>
+                      </v-col>
+                    </v-row>
+                    <v-row class="px-12">
+                      <v-col class="px-6">
+                        <NameInput v-model="pwa.general_info.data.name" label="*Full Name of PWA" :outlined="true"/>
+                      </v-col>
+                      <v-col class="px-6">
+                        <DateOfBirthInput v-model="pwa.general_info.data.dob" :outlined="true" label="*Date of Birth" required/>
+                      </v-col>
+                    </v-row>
+                    <v-row class="px-12">
+                      <v-col class="px-6">
+                        <GenderInput v-model="pwa.general_info.data.gender" :outlined="true" label="*Gender"/>
+                      </v-col>
+                      <v-col class="px-6">
+                        <ContactInput
+                          v-model="pwa.general_info.data.contact_num"
+                          label="Contact Number (or caregiver's contact number)"
+                          :outlined="true"
+                          hint="^ Please provide number of caregiver if PWA is not using his/her phone"
+                        />
+                      </v-col>
+                    </v-row>
+                    <v-row class="px-12">
+                      <v-col class="px-6">
+                        <EmailInput
+                          v-model="pwa.general_info.data.email"
+                          label="Email Address of PWA"
+                          :outlined="true"
+                        />
+                      </v-col>
+                      <v-col class="px-6">
+                        <AddressInput v-model="pwa.general_info.data.address" :outlined="true"/>
+                      </v-col>
+                    </v-row>
+                    <v-row class="px-12">
+                      <v-col class="px-6">
+                        <PWAPreferredCommInput
+                          v-model="pwa.comm_mode"
+                          label="*What is your preferred mode of communication"
+                          :required="true"
+                          :outlined="true"
+                          hint="^ We will be contacting you through this mode of communication"
+                        />
+                      </v-col>
+                      <v-col class="px-6">
+                        <BioInput
+                          v-model="pwa.general_info.data.bio"
+                          label="Hobbies / Interests"
+                          :outlined="true"/>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-form>
+                </div>
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-form>
+        </v-stepper>
+      </v-card>
+    </v-row>
+  </v-container>
+  <!-- <RegistrationBanner :resourceType="resourceType">
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
@@ -184,54 +298,56 @@
         </v-container>
       </v-form>
     </template>
-  </RegistrationBanner>
+  </RegistrationBanner> -->
 </template>
 <script>
 
-import NameInput from './../../components/input/NameInput.vue'
-import DateOfBirthInput from './../../components/input/DateOfBirthInput.vue'
-import GenderInput from './../../components/input/GenderInput.vue'
-import ContactInput from './../../components/input/ContactInput.vue'
-import EmailInput from './../../components/input/EmailInput.vue'
-import AddressInput from './../../components/input/AddressInput.vue'
-import PWAPreferredCommInput from './../../components/input/PWAPreferredCommInput'
-import BioInput from './../../components/input/BioInput.vue'
-import PWAProjectInterestInput from './../../components/input/PWAProjectInterestInput'
-import PWAStrokeDateRegistrationInput from './../../components/input/PWAStrokeDateRegistrationInput'
-import LanguageInput from './../../components/input/LanguageInput.vue'
-import WheelChairInput from './../../components/input/WheelChairInput.vue'
-import GeneralOptionalText from './../../components/input/GeneralOptionalText'
-import NOKRegistrationInput from './../../components/input/NOKRegistrationInput'
-import ChannelInput from './../../components/input/ChannelInput'
-import ConsentInput from './../../components/input/ConsentInput'
+// import NameInput from './../../components/input/NameInput.vue'
+// import DateOfBirthInput from './../../components/input/DateOfBirthInput.vue'
+// import GenderInput from './../../components/input/GenderInput.vue'
+// import ContactInput from './../../components/input/ContactInput.vue'
+// import EmailInput from './../../components/input/EmailInput.vue'
+// import AddressInput from './../../components/input/AddressInput.vue'
+// import PWAPreferredCommInput from './../../components/input/PWAPreferredCommInput'
+// import BioInput from './../../components/input/BioInput.vue'
+// import PWAProjectInterestInput from './../../components/input/PWAProjectInterestInput'
+// import PWAStrokeDateRegistrationInput from './../../components/input/PWAStrokeDateRegistrationInput'
+// import LanguageInput from './../../components/input/LanguageInput.vue'
+// import WheelChairInput from './../../components/input/WheelChairInput.vue'
+// import GeneralOptionalText from './../../components/input/GeneralOptionalText'
+// import NOKRegistrationInput from './../../components/input/NOKRegistrationInput'
+// import ChannelInput from './../../components/input/ChannelInput'
+// import ConsentInput from './../../components/input/ConsentInput'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
 import RegisterPWA from './../../graphql/pwa/RegisterPWA'
 import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
   components: {
-    NameInput,
-    DateOfBirthInput,
-    GenderInput,
-    ContactInput,
-    EmailInput,
-    AddressInput,
-    PWAPreferredCommInput,
-    BioInput,
-    PWAProjectInterestInput,
-    PWAStrokeDateRegistrationInput,
-    LanguageInput,
-    GeneralOptionalText,
-    ChannelInput,
-    ConsentInput,
-    RegistrationBanner,
-    WheelChairInput,
-    NOKRegistrationInput
+    // NameInput,
+    // DateOfBirthInput,
+    // GenderInput,
+    // ContactInput,
+    // EmailInput,
+    // AddressInput,
+    // PWAPreferredCommInput,
+    // BioInput,
+    // PWAProjectInterestInput,
+    // PWAStrokeDateRegistrationInput,
+    // LanguageInput,
+    // GeneralOptionalText,
+    // ChannelInput,
+    // ConsentInput,
+    RegistrationBanner
+    // WheelChairInput,
+    // NOKRegistrationInput
   },
   layout: 'none',
   middleware: 'clearLoginCache',
   data () {
     return {
+      e1: 1,
+      steps: 6,
       valid: true,
       isSubmitting: false,
       resourceType: 'pwas',
@@ -319,4 +435,7 @@ export default {
   color: black;
 }
 
+.hide {
+  display: none;
+}
 </style>
