@@ -1520,6 +1520,8 @@
     headers:
     - value: "false"
       name: production
+    - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
+      name: x-api-key
   - name: rename_project
     definition:
       enable_manual: false
