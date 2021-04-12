@@ -93,17 +93,20 @@ def send_all_staffs(name, table, entity_id):
 
 # Pre process existing objects of PWAs & Volunteers
 def pre_process_old(old,table):
+    if "project" in old and table == "pwas":
+        project = old.pop("project",None)
+        old["project_id"] = project['id']
     for k in old:
         if table == "volunteers" and k in ["project","ic"]:
             old.pop(k)
             break
-        elif table == "pwas" and k == "project":
-            proj = old.pop(k)
-            old["project_id"] = proj['id']
-            break
         if type(old[k]) is list:
             for ch in old[k]:
+                ch.pop("__typename",None)
                 pre_process_old(ch,table)
+        elif type(old[k]) is dict:
+            old[k].pop("__typename", None)
+            pre_process_old(old[k],table)
     return old
 # Pre process new objects of PWAs & Volunteers
 def pre_process_new(new):
@@ -201,6 +204,9 @@ def lambda_handler(event, context):
         old = updateData['old']
         new = updateData['new']
 
+        if ("archive_reason" in new and new["archive_reason"] == "") or "archive_reason" not in new:
+            new["archive_reason"] = None
+
         # Get table of entity
         if "role_description" in old:
             table = "staffs"
@@ -217,93 +223,102 @@ def lambda_handler(event, context):
         # Get message if entity is pwas/volunteers
         if table in ["pwas","volunteers"]:
             old = pre_process_old(old,table)
+            old.pop("__typename", None)
             new = pre_process_new(new)
+            old["general_info"].pop("date_joined",None)
             if "general_info" in updateData:
                 new["general_info"] = updateData["general_info"]
-            
+                
             # Get name/title of entity
             name = new["general_info"]["name"]
-                
-            
             updated = change_details(get_updated_fields(new,old))
-            message = f"{', '.join(updated)} of {name} has been updated."
-            
-            # Archive notifications
-            if "Archive Status" in updated and not new["is_active"]:
-                if table == "pwas":
-                    # Notify when pwa is archived
-                    name = "PWA " + name
-                    send_all_staffs(name,table,entity_id)
-                    
-                    # Notify befriender they will be removed
-                    message = f"Your {name} that is attached to you will be removed in 30 days."
-                    data = {"peep": entity_id}
-                    query = """
-                    query ($peep: Int!) {
-                      project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {title: {_eq: "Befrienders"}}}}) {
-                        staff_id
-                      }
-                    }
-                    """
-                    staffs = execute_query_with_variables(query,data)['data']['project_pwa_staffs']
-                    generate_notification(staffs, message, table, entity_id)
-                    
-                    # Notify PWA in project that they will be removed
-                    data = {"peep": entity_id}
-                    query = """
-                    query ($peep: Int!) {
-                      project_pwa(where: {_and: {project: {title: {_neq: "Befrienders"}}, pwa_id: {_eq: $peep}}}) {
-                        project {
-                          id
-                          owner_id
-                          title
-                        }
-                      }
-                    }
-                    """
-                    staffs = execute_query_with_variables(query,data)['data']['project_pwa']
-                    for staff in staffs:
-                        project = staff.pop("project")
-                        sendee = [{"id": project['owner_id']}]
-                        project_id = project['id']
-                        message = f"{name} will be removed from {project['title']} in 30 days."
-                        generate_notification(sendee, message, table, project_id)
-                elif table == "volunteers":
-                    # Notify when vol is archived
-                    name = "Volunteer " + name
-                    send_all_staffs(name,table,entity_id)
-                    
-                    # Notify vol in project that they will be removed
-                    data = {"peep": entity_id}
-                    query = """
-                    query ($peep: Int!) {
-                      project_vol(where: {vol_id: {_eq: $peep}}) {
-                        project {
-                          id
-                          owner_id
-                          title
-                        }
-                      }
-                    }
-                    """
-                    staffs = execute_query_with_variables(query,data)['data']['project_vol']
-                    for staff in staffs:
-                        project = staff.pop("project")
-                        sendee = [{"id": project['owner_id']}]
-                        project_id = project['id']
-                        message = f"{name} will be removed from {project['title']} in 30 days."
-                        generate_notification(sendee, message, table, project_id)
-
-        if table == "staffs":
-            
+        
+        elif table in ["staffs", "projects"]:            
             # Pre process & craft message
             old = pre_process_staff_project(old)
             updated = get_staff_project_updated_details(old, new)
-            name = new["name"]
-            message = f"{', '.join(updated)} of {name} has been updated."
             
-            # Archive notifications
-            if "Archive Status" in updated and not new["is_active"]:
+            name = new["name"] if "name" in new else None
+
+        # Stop function if no updates are required
+        if not updated:
+            result['status'] = "Success"
+            result['message'] = "No new notifications to add."
+            return {
+                "statusCode": statusCode,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": json.dumps(result)
+            }
+
+        # Archive notifications
+        if "Archive Status" in updated and not new["is_active"]:
+            if table == "pwas":
+                # Notify when pwa is archived
+                name = "PWA " + name
+                send_all_staffs(name,table,entity_id)
+                
+                # Notify befriender they will be removed
+                message = f"Your {name} that is attached to you will be removed in 30 days."
+                data = {"peep": entity_id}
+                query = """
+                query ($peep: Int!) {
+                  project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {voltypes: {_eq: Befriender}}}}) {
+                    staff_id
+                  }
+                }
+                """
+                staffs = execute_query_with_variables(query,data)['data']['project_pwa_staffs']
+                generate_notification(staffs, message, table, entity_id)
+                
+                # Notify PWA in project that they will be removed
+                data = {"peep": entity_id}
+                query = """
+                query ($peep: Int!) {
+                  project_pwa(where: {_and: {project: {voltypes: {_eq: Project_Volunteer}}, pwa_id: {_eq: $peep}}}) {
+                    project {
+                      id
+                      owner_id
+                      title
+                    }
+                  }
+                }
+                """
+                staffs = execute_query_with_variables(query,data)['data']['project_pwa']
+                for staff in staffs:
+                    project = staff.pop("project")
+                    sendee = [{"id": project['owner_id']}]
+                    project_id = project['id']
+                    message = f"{name} will be removed from {project['title']} in 30 days."
+                    generate_notification(sendee, message, table, project_id)
+            elif table == "volunteers":
+                # Notify when vol is archived
+                name = "Volunteer " + name
+                send_all_staffs(name,table,entity_id)
+                
+                # Notify vol in project that they will be removed
+                data = {"peep": entity_id}
+                query = """
+                query ($peep: Int!) {
+                  project_vol(where: {vol_id: {_eq: $peep}}) {
+                    project {
+                      id
+                      owner_id
+                      title
+                    }
+                  }
+                }
+                """
+                staffs = execute_query_with_variables(query,data)['data']['project_vol']
+                for staff in staffs:
+                    project = staff.pop("project")
+                    sendee = [{"id": project['owner_id']}]
+                    project_id = project['id']
+                    message = f"{name} will be removed from {project['title']} in 30 days."
+                    generate_notification(sendee, message, table, project_id)
+            
+            elif table == "staffs":
                 send_all_staffs(name,table,entity_id)
                 
                 # Notify for projects where staff was the IC
@@ -317,11 +332,11 @@ def lambda_handler(event, context):
                 """
                 data = {"staff": entity_id}
                 projects = execute_query_with_variables(query,data)['data']['projects']
-                table = "projects"
+                temp_table = "projects"
                 for project in projects:
                     title = project.pop("title")
                     message = f"Project {title} will not have an IC once {name} is removed in 30 days."
-                    generate_notification(staffs, message, table, project['id'])
+                    generate_notification(staffs, message, temp_table, project['id'])
                 
                 # Notify for projects where staff was in it
                 data = {"staff": entity_id}
@@ -342,7 +357,10 @@ def lambda_handler(event, context):
                     sendee = [{"id": project['owner_id']}]
                     project_id = project['id']
                     message = f"{name} will be removed from {project['title']} in 30 days."
-                    generate_notification(sendee, message, table, project_id)
+                    generate_notification(sendee, message, temp_table, project_id)
+
+        if table == "staffs":
+            message = f"{', '.join(updated)} of {name} has been updated."
         
             # Only send notifications if staff is not part of the core team
             if new['role'] in ["core_volunteer", "intern"]:
@@ -396,28 +414,27 @@ def lambda_handler(event, context):
                     message = f"{', '.join(updated)} of your profile has been updated by {name}."
                     generate_notification(sendee, message, table, entity_id, "UPDATE")
                     
-                
         elif table == "pwas":
             # Notify befrienders attached to PWA
+            message = f"{', '.join(updated)} of {name} has been updated."
             data = {"peep": entity_id}
             query = """
             query ($peep: Int!) {
-              project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {title: {_eq: "Befrienders"}}}}) {
+              project_pwa_staffs(where: {_and: {pwa_id: {_eq: $peep}, project: {voltypes: {_eq: Befriender}}}}) {
                 staff_id
               }
             }
             """
             staffs = execute_query_with_variables(query,data)['data']['project_pwa_staffs']
             generate_notification(staffs, message, table, entity_id,"UPDATE")
+
         elif table == "volunteers":
             # Notify vol supervisor
+            message = f"{', '.join(updated)} of {name} has been updated."
             staffs = old["vol_ic"]
             generate_notification(staffs, message, table, entity_id,"UPDATE")
+
         elif table == "projects":
-            old = pre_process_staff_project(old)
-            updated = get_staff_project_updated_details(old, new)
-            
-            
             owner = old["owner_id"]
             title = old["title"]
             # Notify change of project owner
