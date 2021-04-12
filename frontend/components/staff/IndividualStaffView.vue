@@ -176,9 +176,8 @@
                     />
                   </v-col>
                   <v-col class="py-0">
-                    <v-switch
-                      :input-value="data.staffs[0].is_speech_therapist"
-                      label="Speech Therapist?"
+                    <SpeechTherapistInput
+                      :value="data.staffs[0].is_speech_therapist"
                       readonly
                     />
                   </v-col>

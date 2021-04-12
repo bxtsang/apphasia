@@ -138,6 +138,11 @@
               v-model="generalInfo.consent"
             />
           </v-col>
+          <v-col>
+            <SpeechTherapistInput
+              v-model="volunteerDetails.is_speech_therapist"
+            />
+          </v-col>
         </v-row>
         <v-row>
           <v-col class="py-0">
