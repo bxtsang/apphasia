@@ -1516,8 +1516,10 @@
       num_retries: 0
       interval_sec: 10
       timeout_sec: 60
-    webhook: https://10uizqe86l.execute-api.ap-southeast-1.amazonaws.com/prod/notifydeleteprojectprod
+    webhook: https://api.apphasia.cf/notifydeleteprojectprod
     headers:
+    - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
+      name: x-api-key
     - value: "true"
       name: production
   - name: rename_project
