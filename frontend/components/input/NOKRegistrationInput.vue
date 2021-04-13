@@ -4,7 +4,7 @@
     <div v-for="(nok, index) in data" :key="index">
       <v-row class="mt-3 px-12" >
         <v-col cols="12" class="py-0 d-flex px-6">
-          <span class="font-weight-bold">({{ index + 1 }}) Caregiver Information</span>
+          <span class="font-weight-bold">({{ index + 1 }}) {{ isSpeechTherapist ? 'Speech Therapist' : 'Caregiver' }} Information</span>
           <v-spacer />
           <v-btn icon small @click="() => { removeNOK(index) }"><v-icon>mdi-close</v-icon></v-btn>
         </v-col>
@@ -13,14 +13,14 @@
         <v-col cols="6" class="py-0 pl-6">
           <v-text-field
             v-model="data[index].name"
-            label="Full Name of caregiver / next-of-kin"
+            :label="`Full Name of ${ isSpeechTherapist ? 'Speech Therapist' : 'caregiver / next-of-kin'}`"
             outlined
           />
         </v-col>
         <v-col cols="6" class="py-0 pr-6">
           <v-text-field
             v-model="data[index].contact_num"
-            label="*Contact Number of caregiver / next-of-kin"
+            :label="`*Contact Number of ${ isSpeechTherapist ? 'Speech Therapist' : 'caregiver / next-of-kin'}`"
             outlined
             :rules="[INPUT_VALIDATION.contact.valid]"
           />
@@ -30,13 +30,13 @@
         <v-col cols="6" class="py-0 pl-6">
           <v-text-field
             v-model="data[index].email"
-            label="*Email Address of caregiver / next-of-kin"
+            :label="`*Email Address of ${ isSpeechTherapist ? 'Speech Therapist' : 'caregiver / next-of-kin'}`"
             outlined
             :rules="[INPUT_VALIDATION.email.valid]"
           />
         </v-col>
       </v-row>
-      <v-row class="mt-3 px-12">
+      <v-row class="mt-3 px-12" v-if="!isSpeechTherapist">
         <v-col cols="12" class="py-0 px-6">
           <v-card class="card-input pa-6" outlined>
             <span class="input-label">What is your relationship with the PWA</span>
@@ -61,9 +61,9 @@
       </v-row>
     </div>
 
-    <v-row class="mt-3" v-if="data.length < 3">
+    <v-row class="mt-3" v-if="(data.length < 3 && !isSpeechTherapist) || (data.length < 1 && isSpeechTherapist)">
       <v-col cols="12" class="py-0 d-flex justify-center">
-        <v-btn color="warning" class="my-3" @click="addNOK">Add Caregiver</v-btn>
+        <v-btn color="warning" class="my-3" @click="addNOK">Add {{ isSpeechTherapist ? 'Speech Therapist' : 'Caregiver' }}</v-btn>
       </v-col>
     </v-row>
 
@@ -85,6 +85,10 @@ export default {
       default: false
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    isSpeechTherapist: {
       type: Boolean,
       default: false
     }

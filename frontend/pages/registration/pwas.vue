@@ -210,7 +210,12 @@
             <v-stepper-content :step="5">
               <v-form ref="registrationForm-part-4" v-model="validParts[3]" @submit.prevent="">
                 <v-container fluid>
-
+                  <v-row class="px-12">
+                      <v-col class="px-6">
+                        <span class="section-title">👥 Therapist Details</span>
+                      </v-col>
+                    </v-row>
+                    <NOKRegistrationInput isSpeechTherapist v-model="speech_therapist.data" />
                   <v-row>
                     <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(5)">Next</v-btn></v-col>
                   </v-row>
@@ -294,9 +299,21 @@ export default {
       isSubmitting: false,
       resourceType: 'pwas',
       registerSuccessful: false,
+      speech_therapist: {
+        data: [
+          {
+            contact_num: '',
+            email: '',
+            name: '',
+            relationship: 'Speech Therapist'
+          }
+        ]
+      },
       pwa: {
         general_info: {
-          data: {}
+          data: {
+            dob: '1980-01-01'
+          }
         },
         nok: {
           data: [
@@ -330,6 +347,7 @@ export default {
         newPwaData.languages.data = this.pwa.languages.data.map((item) => { return { language: item } })
         newPwaData.projects.data = this.pwa.projects.data.map((item) => { return { project_id: item } })
         newPwaData.stroke_date = `${this.pwa.stroke_date}-01`
+        newPwaData.nok.data = [...this.speech_therapist.data, ...newPwaData.nok.data]
         this.$apollo.mutate({
           mutation: RegisterPWA,
           variables: { pwa: newPwaData },
