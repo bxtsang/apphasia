@@ -7,7 +7,14 @@
   >
     <template v-slot:activator="{ on, attrs }">
       <div class="d-flex align-center">
-        <v-btn v-on="on" v-bind="attrs" fab icon small>
+        <v-btn
+          v-on="on"
+          v-bind="attrs"
+          fab
+          icon
+          small
+          class="blink-animation mr-3"
+        >
           <v-icon>mdi-calendar</v-icon>
         </v-btn>
         <v-text-field
@@ -102,3 +109,20 @@ export default {
 }
 
 </script>
+<style scoped>
+.blink-animation {
+  animation: 3s infinite blink;
+}
+
+@keyframes blink {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: lightgray;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+</style>

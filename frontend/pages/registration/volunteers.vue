@@ -1,5 +1,5 @@
 <template>
-  <RegistrationBanner :resourceType="resourceType">
+  <RegistrationBannerLayout :resourceType="resourceType">
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
@@ -108,7 +108,7 @@
         </v-container>
       </v-form>
     </template>
-  </RegistrationBanner>
+  </RegistrationBannerLayout>
 </template>
 <script>
 import AliasInput from './../../components/input/AliasInput.vue'
@@ -126,7 +126,7 @@ import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
 import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
-import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import RegistrationBannerLayout from './../../components/registration/RegistrationBannerLayout'
 import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
@@ -145,7 +145,7 @@ export default {
     ChannelInput,
     ConsentInput,
     MultiProfessionInput,
-    RegistrationBanner
+    RegistrationBannerLayout
   },
   layout: 'none',
   middleware: 'clearLoginCache',
