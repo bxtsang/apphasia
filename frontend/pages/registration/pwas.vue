@@ -26,7 +26,7 @@
                 :key="`${n}-step`"
                 :complete="currStep > n"
                 :step="n"
-                :rules="n == 1 ? [] : [() => validParts[n - 2]]"
+                :rules="n == 1 ? [] : [() => stepParts[n - 2]]"
                 editable
               >
                 {{ stepperTitle(n) }}
@@ -224,7 +224,7 @@
                 <v-container fluid>
                   <v-row class="px-12">
                     <v-col class="px-6">
-                      <span class="section-title">✏️ Lastly...</span>
+                      <span class="section-title">✏️ Your Consent</span>
                     </v-col>
                   </v-row>
                   <v-row class="px-12">
@@ -290,6 +290,7 @@ export default {
       currStep: 1,
       steps: 6,
       validParts: [true, true, true, true, true],
+      stepParts: [true, true, true, true, true],
       isSubmitting: false,
       resourceType: 'pwas',
       registerSuccessful: false,
@@ -365,7 +366,7 @@ export default {
         case 5:
           return 'Therapist Details'
         case 6:
-          return 'Lastly...'
+          return 'Your Consent'
         default:
           return 'Welcome'
       }
@@ -375,39 +376,49 @@ export default {
         case 2:
           if (this.$refs['registrationForm-part-1'].validate()) {
             this.currStep = 3
+            this.stepParts[0] = true
             return true
           } else {
             this.currStep = 2
+            this.stepParts[0] = false
             return false
           }
         case 3:
           if (this.$refs['registrationForm-part-2'].validate()) {
             this.currStep = 4
+            this.stepParts[1] = true
             return true
           } else {
             this.currStep = 3
+            this.stepParts[1] = false
             return false
           }
         case 4:
           if (this.$refs['registrationForm-part-3'].validate()) {
             this.currStep = 5
+            this.stepParts[2] = true
             return true
           } else {
             this.currStep = 4
+            this.stepParts[2] = false
             return false
           }
         case 5:
           if (this.$refs['registrationForm-part-4'].validate()) {
             this.currStep = 6
+            this.stepParts[3] = true
             return true
           } else {
             this.currStep = 5
+            this.stepParts[3] = false
             return false
           }
         case 6:
           if (this.$refs['registrationForm-part-4'].validate()) {
+            this.stepParts[4] = true
             return true
           } else {
+            this.stepParts[4] = false
             return false
           }
         default:
