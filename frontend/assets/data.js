@@ -32,7 +32,7 @@ export const INPUT_VALIDATION = {
     required: v => !!v || 'Role is required'
   },
   name: {
-    required: v => !!v || 'Fullname is required'
+    required: v => !!v || 'Full Name is required'
   },
   dob: {
     required: v => !!v || 'Date of Birth is required'
@@ -86,7 +86,12 @@ export const LIST_QUERY_PATHS = {
   pwas: require('./../graphql/pwa/GetAllPWA.graphql'),
   projects: require('./../graphql/project/GetAllProject.graphql'),
   events: require('./../graphql/event/GetAllEvent.graphql'),
-  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql')
+  timeline: require('./../graphql/dashboard/GetTimelineEvents.graphql'),
+  notification: {
+    unread: require('./../graphql/notifications/GetNotificationsOfStaffInitial.graphql'),
+    unreadSubscription: require('./../graphql/notifications/GetNotificationsOfStaff.graphql'),
+    read: require('./../graphql/notifications/GetReadNotificationsOfStaff.graphql')
+  }
 }
 
 export const TABLE_HEADERS = {
@@ -94,8 +99,8 @@ export const TABLE_HEADERS = {
     { text: 'Name', value: 'name', align: 'start' },
     { text: 'Date Joined', value: 'date_joined' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: 'projects_in', sortable: false },
+    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
@@ -103,17 +108,18 @@ export const TABLE_HEADERS = {
     { text: 'Gender', value: 'general_info.gender' },
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
+    { text: 'Programmes Interested  ', value: 'interested_projects', sortable: false },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
+    { text: 'Contact Number', value: 'general_info.contact_num' },
     { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
+    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Programmes Involved', value: 'projects', sortable: false },
     { text: 'NOK', value: 'nok', sortable: false },
-    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],

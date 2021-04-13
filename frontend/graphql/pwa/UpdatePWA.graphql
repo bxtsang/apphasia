@@ -1,4 +1,4 @@
-mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: pwas_insert_input!) {
+mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: pwas_insert_input!, $updateNotification: UpdateNotificationsInput!) {
   delete_pwas_by_pk(id: $id) {
     id
   }
@@ -51,10 +51,15 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
       notes
     }
   }
+  
+  UpdateNotifications (updateNotificationData: $updateNotification) {
+    status
+    message
+  }
 }
 
 # variables:
-#{
+# {
 #  "id": 3,
 #  "general_info": { #ONLY NEED INCLUDE THE FIELDS THAT ARE UPDATED
 #    "address": "10 Sirat Place"
@@ -70,25 +75,26 @@ mutation UpdatePWA($general_info: people_external_set_input!, $id: Int!, $pwa: p
 #    "hospital": "Tan Tock Seng",
 #    "is_active": true,
 #    "archive_reason": null,
-#    "languages": { "data": [
-#      {
+#    "languages": { "data": [{
 #        "language": "English"
-#      }
-#    ]},
+#      }]},
 #    "media_engagement_details": "Friday",
 #    "media_willingness": null,
-#    "nok": {"data": [
-#      {
+#    "nok": {"data": [{
 #        "contact_num": 96831363,
 #        "email": "nok1@aphasia.com",
 #        "name": "Wong Lai Lih",
 #        "relationship": "Mother"
-#      }
-#    ]},
-#    "projects": {"data": []},
+#      }]},
+#    "projects": {"data": [{"project_id": 1}]},
 #    "speech_therapist": "Evelyn",
 #    "stroke_date": "2020-01-01",
 #    "wheelchair": true,
 #    "id": 3
-#  }
-#}
+# },
+#   "updateNotification": {
+#     "old": {"JSON of existing PWA object": "Hi"},
+#     "new": {"JSON of pwa_insert_input": "Hi"},
+#     "general_info": {"JSON of people_external_set_input": "Hi"}
+#   }
+# }

@@ -14,6 +14,7 @@
             <NameInput
               v-model="pwaData.general_info.data.name"
               :required="true"
+              label="*Full Name"
             />
           </v-col>
         </v-row>
@@ -22,18 +23,21 @@
             <DateOfBirthInput
               v-model="pwaData.general_info.data.dob"
               :required="true"
+              label="*Date of Birth"
             />
           </v-col>
           <v-col cols="4" class="py-0">
             <ContactInput
               v-model="pwaData.general_info.data.contact_num"
               :required="true"
+              label="*Contact Number"
             />
           </v-col>
           <v-col cols="4" class="py-0">
             <GenderInput
               v-model="pwaData.general_info.data.gender"
               :required="true"
+              label="*Gender"
             />
           </v-col>
         </v-row>
@@ -64,6 +68,7 @@
             <WheelChairInput
               v-model="pwaData.wheelchair"
               :required="true"
+              label="*Wheelchair needed?"
             />
           </v-col>
         </v-row>
@@ -72,12 +77,14 @@
             <ProjectInput
               v-model="pwaData.projects.data"
               :required="true"
+              label="*Projects Involved"
             />
           </v-col>
           <v-col cols="6" class="py-0">
             <CommDiffInput
               v-model="pwaData.comm_diff.data"
               :required="true"
+              label="*Communication Difficulties"
             />
           </v-col>
         </v-row>
@@ -86,6 +93,7 @@
             <LanguageInput
               v-model="pwaData.languages.data"
               :required="true"
+              label="*Languages understand and/or speak"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -105,6 +113,7 @@
               v-model="pwaData.general_info.data.consent"
               :required="true"
               inputType="select"
+              label="*Agreeable to receive promotional materials?"
             />
           </v-col>
         </v-row>
@@ -115,9 +124,11 @@
             />
           </v-col>
           <v-col cols="6" class="py-0">
-            <GeneralOptionalText
+            <v-textarea
               v-model="pwaData.media_engagement_details"
-              label="Participated in any media project?"
+              label="Media Engagement Details (if any)"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>
@@ -139,9 +150,11 @@
             />
           </v-col>
           <v-col cols="6" class="py-0">
-            <GeneralOptionalText
+            <v-textarea
               v-model="pwaData.general_info.data.notes"
-              label="Notes"
+              label="Any additional info of the PWA?"
+              rows="1"
+              auto-grow
             />
           </v-col>
         </v-row>
@@ -173,7 +186,7 @@
         </v-row>
         <v-row>
           <DeleteResourceModal
-            v-if="$auth.user['custom:role'] === 'core_team' && pwa"
+            v-if="($auth.user['custom:role'] === 'core_team' || $auth.user['custom:role'] === 'admin') && pwa"
             :resource="pwa"
             :resourceType="'pwas'"
             @deleteSuccess="$emit('closeForm')"
@@ -188,50 +201,19 @@
   </v-card>
 </template>
 <script>
-import NameInput from './../input/NameInput'
-import DateOfBirthInput from './../input/DateOfBirthInput'
-import ContactInput from './../input/ContactInput'
-import GenderInput from './../input/GenderInput'
-import EmailInput from './../input/EmailInput'
-import AddressInput from './../input/AddressInput'
-import BioInput from './../input/BioInput'
-import WheelChairInput from './../input/WheelChairInput.vue'
-import ProjectInput from './../input/ProjectInput'
-import CommDiffInput from './../input/CommDiffInput'
-import LanguageInput from './../input/LanguageInput'
-import StrokeDateInput from './../input/StrokeDateInput'
-import ChannelInput from './../input/ChannelInput'
-import ConsentInput from './../input/ConsentInput'
-import MediaWillingnessInput from './../input/MediaWillingnessInput'
 import PWAContactStatusInput from './../input/PWAContactStatusInput'
-import GeneralOptionalText from './../input/GeneralOptionalText'
 import NOKInput from './../input/NOKInput'
 import PWAPreferredCommInput from './../input/PWAPreferredCommInput'
 import CreatePWA from './../../graphql/pwa/CreatePWA.graphql'
 import GetAllPWA from './../../graphql/pwa/GetAllPWA.graphql'
 import GetSinglePWA from './../../graphql/pwa/GetSinglePWA.graphql'
 import UpdatePWA from './../../graphql/pwa/UpdatePWA.graphql'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 const _ = require('lodash')
 
 export default {
   components: {
-    NameInput,
-    DateOfBirthInput,
-    ContactInput,
-    GenderInput,
-    EmailInput,
-    AddressInput,
-    BioInput,
-    WheelChairInput,
-    ProjectInput,
-    CommDiffInput,
-    LanguageInput,
-    StrokeDateInput,
-    ChannelInput,
-    ConsentInput,
-    MediaWillingnessInput,
     PWAContactStatusInput,
-    GeneralOptionalText,
     NOKInput,
     PWAPreferredCommInput
   },
@@ -306,6 +288,17 @@ export default {
             const data = store.readQuery({ query: GetAllPWA })
             data.pwas.push(newPWA)
             store.writeQuery({ query: GetAllPWA, data })
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'pwas',
+                  entity_id: newPWA.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -356,7 +349,14 @@ export default {
           variables: {
             id: this.pwa.id,
             general_info: constructedData.generalInfo.data,
-            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData }
+            pwa: { id: this.pwa.id, ...constructedData.updatedPwaData },
+            updateNotification: {
+              old: this.pwa,
+              new: {
+                id: this.pwa.id, ...constructedData.updatedPwaData, is_active: true, archive_reason: ''
+              },
+              general_info: constructedData.generalInfo.data
+            }
           },
           update: (store, { data: { insert_pwas_one: updatedPWA } }) => {
             store.writeQuery({ query: GetSinglePWA, data: { pwas_by_pk: updatedPWA }, variables: { id: this.pwa.id } })

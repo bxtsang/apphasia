@@ -1,4 +1,4 @@
-mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $volunteer:volunteers_insert_input!) {
+mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $volunteer:volunteers_insert_input!, $updateNotification: UpdateNotificationsInput!) {
   delete_volunteers_by_pk(id: $id) {
     id
   }
@@ -36,8 +36,13 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
         id
         title
       }
-      interested
-      approved
+    }
+    interested_projects {
+      project_id
+      project {
+        id
+        title
+      }
     }
     rejected_date
     status
@@ -56,22 +61,30 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
     vol_voltypes {
       voltype
     }
+  },
+  UpdateNotifications (updateNotificationData: $updateNotification){
+    status
+    message
   }
 }
 
-#{
+# {
 #  "volunteer": {
 #    "is_speech_therapist": false,
-#    "is_active": "true",
+#    "is_active": true,
 #    "archive_reason": null,
 #    "nickname": "bobster",
 #    "profession": "Student",
 #    "project_vols": {
 #      "data": {
-#        "project_id": 1,
-#        "interested": true
+#        "project_id": 1
 #      }
 #    },
+#   "interested_projects": {
+#     "data": [{
+#       "project_id": 1
+#     }]
+#   },
 #    "ws_place": "Singapore Management University",
 #    "id": 17
 #  },
@@ -87,5 +100,10 @@ mutation UpdateVol($id:Int!, $general_info:people_external_set_input!, $voluntee
 #    "name": "Bob",
 #    "notes": "He likes to poop"
 #  },
-#  "id": 17
-#}
+#  "id": 17,
+#   "updateNotification": {
+#     "old": {"JSON of old Vl Object":"Hi"},
+#     "new": {"JSON of volunteers_insert_input": "Hi"},
+#     "general_info": {"JSON of people_external_set_input": "Hi"}
+#   }
+# }

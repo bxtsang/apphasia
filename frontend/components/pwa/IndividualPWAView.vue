@@ -163,10 +163,10 @@
                     />
                   </v-col>
                   <v-col cols="6" class="py-0">
-                    <v-select
+                    <ConsentInput
                       :value="data.pwas_by_pk.general_info.consent"
-                      :items="[{ value: true, text: 'Yes' }, { value: false, text: 'No' }]"
-                      label="Consent"
+                      :required="true"
+                      input-type="select"
                       readonly
                     />
                   </v-col>
@@ -216,7 +216,7 @@
                     <v-textarea
                       :value="data.pwas_by_pk.general_info.notes"
                       auto-grow
-                      label="Notes"
+                      label="Any additional info of the PWA?"
                       rows="1"
                       readonly
                     />

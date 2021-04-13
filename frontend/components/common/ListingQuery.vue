@@ -64,8 +64,8 @@
               <v-row>
                 <v-text-field
                   v-model="search"
-                  label="Search"
-                  append-icon="mdi-magnify"
+                  label="Type to search"
+                  prepend-inner-icon="mdi-magnify"
                   solo
                   dense
                   class="mx-3"
@@ -81,7 +81,16 @@
           </template>
 
           <template v-slot:[`item.projects_in`]="{ item }">
-            {{ item.projects_in.map(project => project.project.title).toString().replace(',', ', ') }}
+            <v-chip
+              v-for="(project, index) in item.projects_in"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
           </template>
 
           <!-- Volunteer Specific Columns -->
@@ -89,8 +98,17 @@
             <VolunteerStatusChip :value="item.status" />
           </template>
 
-          <template v-slot:[`item.project_vols`]="{ item }">
-            {{ item.project_vols.map(project_vols => project_vols.project.title).toString().replace(',', ', ') }}
+          <template v-slot:[`item.interested_projects`]="{ item }">
+            <v-chip
+              v-for="(project, index) in item.interested_projects"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
           </template>
 
           <!-- PWA Specific Columns -->
@@ -99,7 +117,16 @@
           </template>
 
           <template v-slot:[`item.projects`]="{ item }">
-            {{ item.projects.map(project => project.project.title).toString().replace(',', ', ') }}
+            <v-chip
+              v-for="(project, index) in item.projects"
+              :key="index"
+              label
+              outlined
+              :color="project.project.colour"
+              class="mr-1 my-1"
+            >
+              {{ project.project.title }}
+            </v-chip>
           </template>
 
           <template v-slot:[`item.languages`]="{ item }">
@@ -218,6 +245,7 @@ export default {
   methods: {
     initItems (result) {
       this.items = result.data[this.resourceType]
+      console.log(result.data[this.resourceType])
     },
     rowClickHandler (item) {
       if (this.resourceType === 'events') {

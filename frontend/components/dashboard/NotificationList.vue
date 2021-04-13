@@ -1,50 +1,52 @@
 <template>
-  <v-card class="px-6 py-3">
-    <h1 class="title">Notifications</h1>
-    <div class="notification-wrapper">
-      <v-list>
-        <NotificationItem v-for="item in notifications" :notification="item" v-bind:key="item.id" />
-      </v-list>
-    </div>
-  </v-card>
+  <ApolloQuery
+    :query="LIST_QUERY_PATHS['notification']['unread']"
+    :variables="{
+      staff: $auth.user['custom:hasura_id']
+    }"
+    >
+     <ApolloSubscribeToMore
+      :document="LIST_QUERY_PATHS['notification']['unreadSubscription']"
+      :variables="{ staff: $auth.user['custom:hasura_id'] }"
+      :updateQuery="onNotificationAdded"
+    />
+    <template v-slot="{ result: { error, data }, isLoading }">
+      <!-- Loading -->
+      <div v-if="isLoading" class="d-flex justify-center">
+        <v-progress-circular
+          :size="50"
+          color="primary"
+          indeterminate
+          class="ma-6"
+        />
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="error">An error occurred</div>
+      <div v-else-if="data">
+        <v-list>
+          <NotificationItem v-for="item in data.notifications" :notification="item" v-bind:key="item.id" />
+          <v-list-item v-if="data.notifications && data.notifications.length === 0" class="d-flex justify-center">
+            No unread notifications
+          </v-list-item>
+        </v-list>
+      </div>
+
+    </template>
+  </ApolloQuery>
 </template>
 <script>
+import { LIST_QUERY_PATHS } from './../../assets/data.js'
 export default {
   data () {
     return {
-      notifications: [
-        {
-          id: 1,
-          type: 'update',
-          description: 'Chit Chat Event Updated',
-          user: 'User 1'
-        },
-        {
-          id: 2,
-          type: 'insert',
-          description: 'New Document Added',
-          user: 'User 2'
-        },
-        {
-          id: 3,
-          type: 'delete',
-          description: 'User XX has been archived',
-          user: 'User 3'
-        },
-        {
-          id: 4,
-          type: 'insert',
-          description: 'Befriender assigned to person 1',
-          user: 'User 1'
-        }
-      ]
+      LIST_QUERY_PATHS
+    }
+  },
+  methods: {
+    onNotificationAdded (previousResult, { subscriptionData }) {
+      return subscriptionData.data
     }
   }
 }
 </script>
-<style scoped>
-.notification-wrapper {
-  max-height: 325px;
-  overflow-y: auto;
-}
-</style>

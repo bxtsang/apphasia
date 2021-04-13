@@ -24,9 +24,16 @@ query GetAllVol {
       project {
         id
         title
+        colour
       }
-      interested
-      approved
+    }
+    interested_projects {
+      project_id
+      project {
+        id
+        title
+        colour
+      }
     }
     rejected_date
     status

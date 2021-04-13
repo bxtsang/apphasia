@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group v-if="inputType === 'radio'" v-model="data" :rules="validation">
+  <v-radio-group v-if="inputType === 'radio'" v-model="data" :rules="validation" label="Agreeable to receive promotional materials?">
     <v-radio
       v-for="role in CONSENT_OPTIONS"
       :key="role.value"
@@ -13,7 +13,7 @@
     v-model="data"
     :items="CONSENT_OPTIONS"
     :rules="validation"
-    label="Consent"
+    :label="label"
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
@@ -46,13 +46,17 @@ export default {
     inputType: {
       type: String,
       default: 'radio'
+    },
+    label: {
+      type: String,
+      default: 'Agreeable to receive promotional materials?'
     }
   },
 
   data () {
     return {
       CONSENT_OPTIONS: [
-        { text: this.inputType === 'radio' ? 'Yes, I wish to receive updates about Aphasia SG events and programmes!' : 'Yes', value: true },
+        { text: 'Yes', value: true },
         { text: 'No', value: false }
       ],
       data: this.value,

@@ -10,7 +10,7 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <NameInput v-model="volunteer.general_info.data.name" :outlined="true"/>
+              <NameInput v-model="volunteer.general_info.data.name" :outlined="true" label="*Full Name"/>
             </v-col>
             <v-col class="px-6">
               <AliasInput v-model="volunteer.nickname" :outlined="true"/>
@@ -18,7 +18,7 @@
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
-              <ContactInput v-model="volunteer.general_info.data.contact_num" :outlined="true"/>
+              <ContactInput v-model="volunteer.general_info.data.contact_num" :outlined="true" label="*Contact Number"/>
             </v-col>
             <v-col class="px-6 px-6">
               <EmailInput v-model="volunteer.general_info.data.email" :outlined="true"/>
@@ -29,7 +29,7 @@
               <DateOfBirthInput v-model="volunteer.general_info.data.dob" :outlined="true"/>
             </v-col>
             <v-col class="px-6">
-              <GenderInput v-model="volunteer.general_info.data.gender" :outlined="true"/>
+              <GenderInput v-model="volunteer.general_info.data.gender" :outlined="true" label="*Gender"/>
             </v-col>
           </v-row>
           <v-row class="px-12">
@@ -53,15 +53,15 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">How will you like to volunteer with us? (Tick all that applies)</span>
-                <VolunteerProjectInterestInput v-model="projectVols" />
+                <span class="input-label">* How will you like to volunteer with us? (Tick all that applies)</span>
+                <VolunteerProjectInterestInput v-model="interested_projects" />
               </v-card>
             </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What language(s) can you speak? (Tick all that applies)</span>
+                <span class="input-label">* What language(s) can you speak? (Tick all that applies)</span>
                 <LanguageInput v-model="languages" :placeholderOnly="true" />
               </v-card>
             </v-col>
@@ -69,7 +69,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">What is your profession?</span>
+                <span class="input-label">* What is your profession?</span>
                 <MultiProfessionInput v-model="profession" />
               </v-card>
             </v-col>
@@ -85,7 +85,7 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">Consent for Marketing Purposes</span>
+                <span class="input-label">Would you like to receive updates about Aphasia SG events and programmes?</span>
                 <ConsentInput v-model="volunteer.general_info.data.consent" />
               </v-card>
             </v-col>
@@ -94,7 +94,7 @@
             <v-col class="px-6">
               <v-card class="card-input dark pa-6" outlined>
                 <span class="input-label">Consent</span>
-                <p class="pt-3">By submitting this form, you agree to receive whatsapp messages and emails from the Aphasia SG. WhatsApp is a main mode of communication for timely dissemination of event info to participants and volunteers. Your privacy is very important to us and we do not share any information with 3rd party sites or affiliate companies. You have the option to opt-out at any time.</p>
+                <p class="pt-3">By submitting this form, you agree to receive whatsapp messages and emails from the Aphasia SG. WhatsApp is a main mode of communication for timely dissemination of event info to participants and volunteers. Your privacy is very important to us and we do not share any information with 3rd party sites or affiliate companies.</p>
               </v-card>
             </v-col>
           </v-row>
@@ -127,6 +127,7 @@ import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
 import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
 import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
   components: {
@@ -157,7 +158,7 @@ export default {
         general_info: {
           data: {}
         },
-        project_vols: {
+        interested_projects: {
           data: []
         },
         vol_languages: {
@@ -165,7 +166,7 @@ export default {
         }
       },
       profession: [],
-      projectVols: [],
+      interested_projects: [],
       languages: []
     }
   },
@@ -178,6 +179,19 @@ export default {
           mutation: RegisterVol,
           variables: {
             volunteer: this.volunteer
+          },
+          update: (store, { data: { insert_volunteers_one: newVol } }) => {
+            this.$apollo.mutate({
+              mutation: InsertNotifications,
+              variables: {
+                insertNotifications: {
+                  table: 'volunteers',
+                  entity_id: newVol.id
+                }
+              }
+            }).catch((error) => {
+              console.log(error)
+            })
           }
         }).then((data) => {
           this.isSubmitting = false
@@ -189,7 +203,7 @@ export default {
       }
     },
     transformData () {
-      this.volunteer.project_vols = { data: this.projectVols.map((item) => { return { project_id: item } }) }
+      this.volunteer.interested_projects = { data: this.interested_projects.map((item) => { return { project_id: item } }) }
       this.volunteer.vol_languages = { data: this.languages.map((item) => { return { language: item } }) }
       this.volunteer.profession = this.profession.join(',')
     }
