@@ -311,9 +311,7 @@ export default {
       },
       pwa: {
         general_info: {
-          data: {
-            dob: '1980-01-01'
-          }
+          data: {}
         },
         nok: {
           data: [
