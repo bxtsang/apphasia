@@ -46,18 +46,16 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <TimeInput
+                <TimePickerInput
                   v-model="eventData.start_time"
                   label="Start Time"
-                  required
-                />
+                  required />
               </v-col>
               <v-col class="py-0">
-                <TimeInput
+                <TimePickerInput
                   v-model="eventData.end_time"
                   label="End Time"
-                  required
-                />
+                  required />
               </v-col>
             </v-row>
             <v-row class="mt-3">
