@@ -115,7 +115,7 @@ export const TABLE_HEADERS = {
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
-    { text: 'Contact Number', value: 'general_info.contact_num' },
+    { text: 'Contact Number', value: 'general_info.contact_num', sortable: false },
     { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
     { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Programmes Involved', value: 'projects', sortable: false },
