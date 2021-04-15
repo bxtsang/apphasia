@@ -46,7 +46,7 @@ export const INPUT_VALIDATION = {
   },
   email: {
     required: v => !!v || 'E-mail is required',
-    valid: v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+    valid: v => (v !== '' ? /.+@.+\..+/.test(v) : true) || 'E-mail must be valid'
   },
   address: {
     required: v => !!v || 'Home Address is required'
