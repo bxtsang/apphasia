@@ -62,6 +62,8 @@ mutation CreateProject($project: projects_insert_input!) {
     is_active
     archive_reason
     upcoming_date
+    display_pwa_registration
+    display_vol_registration
   }
 }
 
