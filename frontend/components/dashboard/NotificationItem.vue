@@ -6,7 +6,7 @@
 
     <v-list-item-content>
       <v-list-item-title class="font-weight-bold pb-1">
-        <p :title="notification.message" class="pa-0 ma-0 d-flex align-center"><NuxtLink class="notification-link" :to="link">{{ notification.message }}<v-icon small>mdi-open-in-new</v-icon></NuxtLink></p>
+        <p :title="notification.message" class="pa-0 ma-0 d-flex align-center"><NuxtLink class="notification-link" :to="link">{{ notification.message }}</NuxtLink></p>
       </v-list-item-title>
       <v-list-item-subtitle>
         {{ $moment(notification.created_at.slice(0,10)).format('DD MMM YYYY') }}
