@@ -62,5 +62,7 @@ query getAllProjects {
     is_active
     archive_reason
     voltypes
+    display_pwa_registration
+    display_vol_registration
   }
 }
