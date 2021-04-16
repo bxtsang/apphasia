@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pl-6 py-3 mb-6" ref="timelineWidget">
+  <v-card class="pl-6 py-3 remain-height" ref="timelineWidget">
     <h1 class="title">Upcoming Events</h1>
     <ApolloQuery
       :query="LIST_QUERY_PATHS[resourceType]"
@@ -7,6 +7,7 @@
         fromDate: $moment().format('YYYY-MM-DD'),
         endDate: $moment().add(31, 'days').format('YYYY-MM-DD')
       }"
+      class="timeline-wrapper pr-6"
     >
       <template v-slot="{ result: { error, data }, isLoading }">
         <!-- Loading -->
@@ -22,7 +23,7 @@
       <div v-else-if="error">An error occurred</div>
 
       <!-- Result -->
-      <div v-else-if="data" class="timeline-wrapper pr-6">
+      <div v-else-if="data">
         <v-timeline :dense="componentWidth < 675">
           <v-timeline-item
             v-for="event in data.events"
@@ -42,6 +43,9 @@
                 </span>
                 {{ event.note }}
               </v-card-text>
+              <v-card-actions>
+                <v-btn text :color="`${event.project.colour}`" :to="`projects?id=${event.project.id}&tab=0&event=${event.id}`">View Event Details</v-btn>
+              </v-card-actions>
             </v-card>
           </v-timeline-item>
         </v-timeline>
@@ -73,10 +77,17 @@ export default {
 </script>
 <style scoped>
 .timeline-wrapper{
-  max-height: 50vh;
   overflow-y: auto;
 }
 .v-timeline-item__body > .item::before, .v-timeline-item__body > .item::after {
   display: none !important;
+}
+.v-card__actions{
+  background-color: #FFF;
+}
+.remain-height {
+  max-height: calc(100vh - 96px);
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 </style>
