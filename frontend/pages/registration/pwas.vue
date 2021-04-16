@@ -33,206 +33,206 @@
               </v-stepper-step>
             </template>
           </v-stepper-header>
-            <v-stepper-items>
-              <!-- FIRST PAGE -->
-              <v-stepper-content :step="1">
-                <div class="d-flex align-center flex-column">
-                  <RegistrationBanner :resourceType="resourceType" />
-                  <v-btn color="primary px-12" @click="currStep = 2">Start</v-btn>
-                </div>
-              </v-stepper-content>
+          <v-stepper-items>
+            <!-- FIRST PAGE -->
+            <v-stepper-content :step="1">
+              <div class="d-flex align-center flex-column">
+                <RegistrationBanner :resourceType="resourceType" />
+                <v-btn color="primary px-12" @click="currStep = 2">Start</v-btn>
+              </div>
+            </v-stepper-content>
 
-              <!-- SECOND PAGE -->
-              <v-stepper-content :step="2">
-                <v-form ref="registrationForm-part-1" v-model="validParts[0]" @submit.prevent="">
-                  <v-container fluid>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <span class="section-title">👋🏻 Let's get to know you better!</span>
-                        <p class="pt-3">We need this information to better match you with other peers in the community 😁</p>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <NameInput v-model="pwa.general_info.data.name" label="*Full Name of PWA" :outlined="true"/>
-                      </v-col>
-                      <v-col class="px-6">
-                        <DateOfBirthInput v-model="pwa.general_info.data.dob" :outlined="true" label="*Date of Birth" required/>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <GenderInput v-model="pwa.general_info.data.gender" :outlined="true" label="*Gender"/>
-                      </v-col>
-                      <v-col class="px-6">
-                        <ContactInput
-                          v-model="pwa.general_info.data.contact_num"
-                          label="Contact Number (or caregiver's contact number)"
-                          :outlined="true"
-                          hint="^ Please provide number of caregiver if PWA is not using his/her phone"
-                        />
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <EmailInput
-                          v-model="pwa.general_info.data.email"
-                          label="Email Address of PWA"
-                          :outlined="true"
-                        />
-                      </v-col>
-                      <v-col class="px-6">
-                        <AddressInput v-model="pwa.general_info.data.address" :outlined="true"/>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <PWAPreferredCommInput
-                          v-model="pwa.comm_mode"
-                          label="*What is your preferred mode of communication"
-                          :required="true"
-                          :outlined="true"
-                          hint="^ We will be contacting you through this mode of communication"
-                        />
-                      </v-col>
-                      <v-col class="px-6">
-                        <BioInput
-                          v-model="pwa.general_info.data.bio"
-                          label="Hobbies / Interests"
-                          :outlined="true"/>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(2)">Next</v-btn></v-col>
-                    </v-row>
-                  </v-container>
-                </v-form>
-              </v-stepper-content>
-
-              <!-- THIRD PAGE -->
-              <v-stepper-content :step="3">
-                <v-form ref="registrationForm-part-2" v-model="validParts[1]" @submit.prevent="">
-                  <v-container fluid>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <span class="section-title">👉🏻 More information about you</span>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">* Which activity will you like to attend(Can select more than one)</span>
-                          <PWAProjectInterestInput
-                            v-model="pwa.projects.data"
-                            :required="true"
-                          />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">* When did your stroke / brain injury happen?</span>
-                          <PWAStrokeDateRegistrationInput
-                            v-model="pwa.stroke_date"
-                            :required="true"
-                          />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">* What are your communication difficulties? (Can select more than one)</span>
-                          <CommDiffInput v-model="pwa.comm_diff.data" :placeholderOnly="true" :required="true" />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">* What language(s) can you speak or understand? (Can select more than one)</span>
-                          <LanguageInput v-model="pwa.languages.data" :placeholderOnly="true" />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">* Do you need a wheelchair?</span>
-                          <WheelChairInput
-                            v-model="pwa.wheelchair"
-                            :required="true"
-                            type="radio"
-                          />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <v-card class="card-input pa-6" outlined>
-                          <span class="input-label">Which hospital were you discharged from?</span>
-                          <GeneralOptionalText
-                            v-model="pwa.hospital"
-                            label="Name of hospital"
-                            :placeholderOnly="true"
-                          />
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                    <v-row>
-                      <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(3)">Next</v-btn></v-col>
-                    </v-row>
-                  </v-container>
-                </v-form>
-              </v-stepper-content>
-
-              <!-- FOURTH PAGE -->
-              <v-stepper-content :step="4">
-                <v-form ref="registrationForm-part-3" v-model="validParts[2]" @submit.prevent="">
-                  <v-container fluid>
-                    <v-row class="px-12">
-                      <v-col class="px-6">
-                        <span class="section-title">👥 Caregiver or Next-of-Kin Details</span>
-                        <p class="pt-3">You can include more caregiver / next-of-kin details (up to three)</p>
-                      </v-col>
-                    </v-row>
-                    <NOKRegistrationInput v-model="pwa.nok.data" />
-                    <v-row>
-                      <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(4)">Next</v-btn></v-col>
-                    </v-row>
-                  </v-container>
-                </v-form>
-              </v-stepper-content>
-            </v-stepper-items>
-
-            <!-- FIFTH PAGE -->
-            <v-stepper-content :step="5">
-              <v-form ref="registrationForm-part-4" v-model="validParts[3]" @submit.prevent="">
+            <!-- SECOND PAGE -->
+            <v-stepper-content :step="2">
+              <v-form ref="registrationForm-part-1" v-model="validParts[0]" @submit.prevent="">
                 <v-container fluid>
                   <v-row class="px-12">
-                      <v-col class="px-6">
-                        <span class="section-title">👥 Therapist Details</span>
-                      </v-col>
-                    </v-row>
-                    <NOKRegistrationInput isSpeechTherapist v-model="speech_therapist.data" />
+                    <v-col class="px-6">
+                      <span class="section-title">👋🏻 Let's get to know you better!</span>
+                      <p class="pt-3">We need this information to better match you with other peers in the community 😁</p>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <NameInput v-model="pwa.general_info.data.name" label="*Full Name of PWA" :outlined="true"/>
+                    </v-col>
+                    <v-col class="px-6">
+                      <DateOfBirthInput v-model="pwa.general_info.data.dob" :outlined="true" label="*Date of Birth" required/>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <GenderInput v-model="pwa.general_info.data.gender" :outlined="true" label="*Gender"/>
+                    </v-col>
+                    <v-col class="px-6">
+                      <ContactInput
+                        v-model="pwa.general_info.data.contact_num"
+                        label="Contact Number (or caregiver's contact number)"
+                        :outlined="true"
+                        hint="^ Please provide number of caregiver if PWA is not using his/her phone"
+                      />
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <EmailInput
+                        v-model="pwa.general_info.data.email"
+                        label="Email Address of PWA"
+                        :outlined="true"
+                      />
+                    </v-col>
+                    <v-col class="px-6">
+                      <AddressInput v-model="pwa.general_info.data.address" :outlined="true"/>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <PWAPreferredCommInput
+                        v-model="pwa.comm_mode"
+                        label="*What is your preferred mode of communication"
+                        :required="true"
+                        :outlined="true"
+                        hint="^ We will be contacting you through this mode of communication"
+                      />
+                    </v-col>
+                    <v-col class="px-6">
+                      <BioInput
+                        v-model="pwa.general_info.data.bio"
+                        label="Hobbies / Interests"
+                        :outlined="true"/>
+                    </v-col>
+                  </v-row>
                   <v-row>
-                    <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(5)">Next</v-btn></v-col>
+                    <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(2)">Next</v-btn></v-col>
                   </v-row>
                 </v-container>
               </v-form>
             </v-stepper-content>
 
-            <!-- FIFTH PAGE -->
-            <v-stepper-content :step="6">
-              <v-form ref="registrationForm-part-5" v-model="validParts[4]" @submit.prevent="() => submitForm(registerSuccessful)">
+            <!-- THIRD PAGE -->
+            <v-stepper-content :step="3">
+              <v-form ref="registrationForm-part-2" v-model="validParts[1]" @submit.prevent="">
                 <v-container fluid>
                   <v-row class="px-12">
                     <v-col class="px-6">
-                      <span class="section-title">✏️ Your Consent</span>
+                      <span class="section-title">👉🏻 More information about you</span>
                     </v-col>
                   </v-row>
                   <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">* Which activity will you like to attend(Can select more than one)</span>
+                        <PWAProjectInterestInput
+                          v-model="pwa.projects.data"
+                          :required="true"
+                        />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">* When did your stroke / brain injury happen?</span>
+                        <PWAStrokeDateRegistrationInput
+                          v-model="pwa.stroke_date"
+                          :required="true"
+                        />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">* What are your communication difficulties? (Can select more than one)</span>
+                        <CommDiffInput v-model="pwa.comm_diff.data" :placeholderOnly="true" :required="true" />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">* What language(s) can you speak or understand? (Can select more than one)</span>
+                        <LanguageInput v-model="pwa.languages.data" :placeholderOnly="true" />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">* Do you need a wheelchair?</span>
+                        <WheelChairInput
+                          v-model="pwa.wheelchair"
+                          :required="true"
+                          type="radio"
+                        />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <v-card class="card-input pa-6" outlined>
+                        <span class="input-label">Which hospital were you discharged from?</span>
+                        <GeneralOptionalText
+                          v-model="pwa.hospital"
+                          label="Name of hospital"
+                          :placeholderOnly="true"
+                        />
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(3)">Next</v-btn></v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
+            </v-stepper-content>
+
+            <!-- FOURTH PAGE -->
+            <v-stepper-content :step="4">
+              <v-form ref="registrationForm-part-3" v-model="validParts[2]" @submit.prevent="">
+                <v-container fluid>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <span class="section-title">👥 Caregiver or Next-of-Kin Details</span>
+                      <p class="pt-3">You can include more caregiver / next-of-kin details (up to three)</p>
+                    </v-col>
+                  </v-row>
+                  <NOKRegistrationInput v-model="pwa.nok.data" />
+                  <v-row>
+                    <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(4)">Next</v-btn></v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
+            </v-stepper-content>
+          </v-stepper-items>
+
+          <!-- FIFTH PAGE -->
+          <v-stepper-content :step="5">
+            <v-form ref="registrationForm-part-4" v-model="validParts[3]" @submit.prevent="">
+              <v-container fluid>
+                <v-row class="px-12">
+                  <v-col class="px-6">
+                    <span class="section-title">👥 Therapist Details</span>
+                  </v-col>
+                </v-row>
+                <NOKRegistrationInput isSpeechTherapist v-model="speech_therapist.data" />
+                <v-row>
+                  <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(5)">Next</v-btn></v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-stepper-content>
+
+          <!-- FIFTH PAGE -->
+          <v-stepper-content :step="6">
+            <v-form ref="registrationForm-part-5" v-model="validParts[4]" @submit.prevent="() => submitForm(registerSuccessful)">
+              <v-container fluid>
+                <v-row class="px-12">
+                  <v-col class="px-6">
+                    <span class="section-title">✏️ Your Consent</span>
+                  </v-col>
+                </v-row>
+                <v-row class="px-12">
                   <v-col class="px-6">
                     <v-card class="card-input pa-6" outlined>
                       <span class="input-label">How did you hear about Aphasia SG?</span>
@@ -256,16 +256,16 @@
                     </v-card>
                   </v-col>
                 </v-row>
-                  <v-row>
-                    <v-col class="d-flex justify-center">
-                      <v-btn color="primary" class="px-12" type="submit" :loading="isSubmitting">
-                        submit
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-form>
-            </v-stepper-content>
+                <v-row>
+                  <v-col class="d-flex justify-center">
+                    <v-btn color="primary" class="px-12" type="submit" :loading="isSubmitting">
+                      submit
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-form>
+          </v-stepper-content>
         </v-stepper>
       </v-card>
     </v-row>
