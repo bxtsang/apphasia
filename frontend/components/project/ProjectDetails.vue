@@ -34,7 +34,23 @@
               readonly
               auto-grow
               rows="1"
-              />
+            />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col class="py-0">
+            <RegistrationAvailabilityInput
+              resource-type="PWAs"
+              :value="project.display_pwa_registration"
+              readonly
+            />
+          </v-col>
+          <v-col class="py-0">
+            <RegistrationAvailabilityInput
+              resource-type="Volunteers"
+              :value="project.display_vol_registration"
+              readonly
+            />
           </v-col>
         </v-row>
         <v-row>

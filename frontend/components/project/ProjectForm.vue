@@ -30,13 +30,13 @@
               <v-col class="py-0">
                 <RegistrationAvailabilityInput
                   v-model="projectData.display_pwa_registration"
-                  resource-type="PWA"
+                  resource-type="PWAs"
                 />
               </v-col>
               <v-col class="py-0">
                 <RegistrationAvailabilityInput
                   v-model="projectData.display_vol_registration"
-                  resource-type="Volunteer"
+                  resource-type="Volunteers"
                 />
               </v-col>
             </v-row>

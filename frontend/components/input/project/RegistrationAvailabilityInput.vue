@@ -2,6 +2,7 @@
   <v-switch
     v-model="data"
     :label="`Available for ${resourceType}: ${allowed}`"
+    :readonly="readonly"
   />
 </template>
 
@@ -17,6 +18,10 @@ export default {
     resourceType: {
       type: String,
       default: null
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
 
