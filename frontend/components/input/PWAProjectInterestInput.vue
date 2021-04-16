@@ -61,7 +61,7 @@ export default {
     projects: {
       query () {
         return gql`query getProjects {
-          projects {
+          projects (where: {display_pwa_registration:{_eq: true}}) {
             id
             title
           }
