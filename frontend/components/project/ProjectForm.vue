@@ -213,7 +213,9 @@ export default {
               description: this.projectData.description,
               owner_id: this.projectData.owner_id,
               voltypes: this.projectData.voltypes,
-              colour: this.projectData.colour
+              colour: this.projectData.colour,
+              display_pwa_registration: this.projectData.display_pwa_registration,
+              display_vol_registration: this.projectData.display_vol_registration
             },
             updateNotification: {
               old: this.project,
