@@ -6,7 +6,7 @@
 
     <v-list-item-content>
       <v-list-item-title class="font-weight-bold pb-1">
-        <p :title="notification.message"><NuxtLink class="black--text notification-link" :to="link">{{ notification.message }}</NuxtLink></p>
+        <p :title="notification.message" class="pa-0 ma-0 d-flex align-center"><NuxtLink class="notification-link" :to="link">{{ notification.message }}</NuxtLink></p>
       </v-list-item-title>
       <v-list-item-subtitle>
         {{ $moment(notification.created_at.slice(0,10)).format('DD MMM YYYY') }}
@@ -31,6 +31,12 @@
               <v-icon>{{ notification.is_read ? 'mdi-eye-off' : 'mdi-eye'}}</v-icon>
             </v-list-item-avatar>
             <v-list-item-title>Mark as {{ notification.is_read ? 'Unread' : 'Read'}}</v-list-item-title>
+          </v-list-item>
+          <v-list-item link :to="link">
+            <v-list-item-avatar>
+              <v-icon>mdi-open-in-new</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Go to Resource</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -86,7 +92,7 @@ export default {
       }
     },
     link () {
-      return `/${this.notification.type}?id=${this.notification.entity_id}`
+      return `/${this.notification.type}?id=${this.notification.entity_id}${this.notification.type === 'projects' ? '&tab=1' : ''}`
     }
   },
   methods: {
@@ -115,6 +121,7 @@ export default {
 </script>
 <style scoped>
 .notification-link{
+  color: initial;
   text-decoration: none;
 }
 .notification-link:hover {
