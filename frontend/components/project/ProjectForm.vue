@@ -26,6 +26,20 @@
                 <ProjectColorInput v-model="projectData.colour" label="*Project Colour"/>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col class="py-0">
+                <RegistrationAvailabilityInput
+                  v-model="projectData.display_pwa_registration"
+                  resource-type="PWA"
+                />
+              </v-col>
+              <v-col class="py-0">
+                <RegistrationAvailabilityInput
+                  v-model="projectData.display_vol_registration"
+                  resource-type="Volunteer"
+                />
+              </v-col>
+            </v-row>
             <v-row class="mt-8">
               <v-col cols="12" class="py-0">
                 <span class="font-weight-bold">People Involved</span>
@@ -117,7 +131,9 @@ export default {
         volunteers: { data: this.project ? this.project.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.project ? this.project.pwas.map(item => item.pwa.general_info.id) : [] },
         owner_id: this.project ? this.project.owner.id : -1,
-        voltypes: this.project ? this.project.voltypes : 'Project_Volunteer'
+        voltypes: this.project ? this.project.voltypes : 'Project_Volunteer',
+        display_pwa_registration: this.project ? this.project.display_pwa_registration : false,
+        display_vol_registration: this.project ? this.project.display_vol_registration : false
       }
     }
   },
