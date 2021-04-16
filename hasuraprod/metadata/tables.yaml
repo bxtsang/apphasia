@@ -1478,6 +1478,8 @@
     permission:
       columns:
       - description
+      - display_pwa_registration
+      - display_vol_registration
       - id
       - title
       filter: {}
