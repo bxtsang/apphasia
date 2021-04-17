@@ -1,11 +1,13 @@
 <template>
   <v-container class="pb-12">
     <v-row>
-      <v-col>
+      <v-col class="d-flex justify-center">
+        <div class="fixed-size">
         <v-img src="/asg.png" max-width="400" contain/>
+        </div>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="d-flex justify-center">
       <SuccessView v-if="registerSuccessful" />
       <v-card v-else max-width="1200" width="100%">
 
@@ -393,6 +395,7 @@ export default {
           if (this.$refs['registrationForm-part-1'].validate()) {
             this.currStep = 3
             this.stepParts[0] = true
+            window.scrollTo(0, 0)
             return true
           } else {
             this.currStep = 2
@@ -403,6 +406,7 @@ export default {
           if (this.$refs['registrationForm-part-2'].validate()) {
             this.currStep = 4
             this.stepParts[1] = true
+            window.scrollTo(0, 0)
             return true
           } else {
             this.currStep = 3
@@ -413,6 +417,7 @@ export default {
           if (this.$refs['registrationForm-part-3'].validate()) {
             this.currStep = 5
             this.stepParts[2] = true
+            window.scrollTo(0, 0)
             return true
           } else {
             this.currStep = 4
@@ -423,6 +428,7 @@ export default {
           if (this.$refs['registrationForm-part-4'].validate()) {
             this.currStep = 6
             this.stepParts[3] = true
+            window.scrollTo(0, 0)
             return true
           } else {
             this.currStep = 5
@@ -432,6 +438,7 @@ export default {
         case 6:
           if (this.$refs['registrationForm-part-4'].validate()) {
             this.stepParts[4] = true
+            window.scrollTo(0, 0)
             return true
           } else {
             this.stepParts[4] = false
@@ -439,6 +446,7 @@ export default {
           }
         default:
           this.currStep = 2
+          window.scrollTo(0, 0)
           break
       }
     }
@@ -470,5 +478,9 @@ export default {
 }
 .v-stepper__header {
   flex-wrap: nowrap;
+}
+.fixed-size{
+  width: 100%;
+  max-width: 1200px;
 }
 </style>
