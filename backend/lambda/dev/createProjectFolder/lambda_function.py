@@ -13,9 +13,6 @@ client_ssm = boto3.client('ssm')
 client_secret = boto3.client('secretsmanager')
 result = {}
 folder_error = ""
-permission_errors = ""
-hasura_error = ""
-update_drive_error = ""
 
 def get_parameter(parameter):
     response = client_ssm.get_parameter(
@@ -42,27 +39,6 @@ def create_folder(new_folder):
         folder_error = str(e)
         print(str(e))
         return ""
-
-def add_permission(emails, file_id):
-    try:
-        result['message'] = "file permissions added for "
-        for email in emails:
-            file_metadata = {
-                "role": "writer",
-                "type": "user",
-                "emailAddress": email
-            }
-            SERVICE.permissions().create(fileId=file_id, body = file_metadata).execute()
-            result['message'] += email + ", "
-        result['status'] = "success"
-        statusCode = 200
-        return True
-
-    except Exception as e:
-        permission_errors = str(e)
-        print(str(e))
-        return False
-
 
 def get_secret(secret_name):
 
@@ -103,41 +79,6 @@ def update_drive_id(file_id, project_id):
 
     return success
 
-def get_emails(projectId):
-    emails = []
-    HASURA_URI = "https://aphasia-hasura-dev.herokuapp.com/v1/graphql"
-    HASURA_ADMIN_SECRET = get_secret("HASURA_ADMIN_SECRET")
-    HASURA_HEADERS = { "Content-Type": "application/json", "x-hasura-admin-secret": HASURA_ADMIN_SECRET }
-    success = True
-    query = f"""{{
-            projects (where: {{id: {{_eq: {projectId}}}}}){{
-                staffs {{
-                staff {{
-                    email
-                }}
-                }}
-            }}
-            }}"""
-
-    try:
-        r = requests.post(HASURA_URI, json = {'query' : query}, headers = HASURA_HEADERS)
-
-        if r.status_code != 200:
-            hasura_error = r.text
-            print(r.text)
-            success = False
-        else:
-            print(r.text)
-            emails = [staff['staff']['email'] for staff in json.loads(r.text)['data']['projects'][0]['staffs']]
-
-    except Exception as e:
-        hasura_error = e
-        print(str(e))
-        success = False
-
-    return success if success == False else emails
-
-
 def lambda_handler(event, context):
     print("event:", event)
     statusCode = 500
@@ -163,27 +104,6 @@ def lambda_handler(event, context):
             },
             "body": json.dumps(result)
         }
-    
-    
-    emails = get_emails(project_id)
-    
-    if (not emails):
-        statusCode = 400 
-        result['status'] = "error"
-        result['message'] = "failed to query for project emails"
-        result['error'] = hasura_error
-        return {
-            "statusCode": statusCode,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps(result)
-        }
-
-    result['status'] = "success"
-    result['message'] = "successfully created project folder"
-    add_permission(emails, file_id)
 
     return {
         "statusCode": statusCode,
