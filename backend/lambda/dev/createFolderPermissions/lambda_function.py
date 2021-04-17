@@ -10,69 +10,130 @@ SCOPES = ["https://www.googleapis.com/auth/drive"]
 SERVICE = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 client = boto3.client('ssm')
 result = {}
+client_ssm = boto3.client('ssm')
+client_secret = boto3.client('secretsmanager')
+result = {}
+error_list = []
 
-def add_permission(emails, file_id):
-    try:
-        result['message'] = "file permissions added for "
-        for email in emails:
-            file_metadata = {
+def get_secret(secret_name):
+
+    response = client_secret.get_secret_value(
+        SecretId = secret_name
+    )
+
+
+    return json.loads(response['SecretString'])[secret_name]
+
+def add_permission(email, file_id):
+    file_metadata = {
                 "role": "writer",
                 "type": "user",
                 "emailAddress": email
             }
-            SERVICE.permissions().create(fileId=file_id, body = file_metadata).execute()
-            result['message'] += email + ", "
-        result['status'] = "success"
-        statusCode = 200
+
+    try:
+        SERVICE.permissions().create(fileId=file_id, body = file_metadata).execute()
         return True
 
     except Exception as e:
-        permission_errors = str(e)
+        error_list.append(str(e))
         print(str(e))
         return False
 
+def get_google_drive_id (project_id):
+    HASURA_URI = "https://aphasia-hasura-dev.herokuapp.com/v1/graphql"
+    HASURA_ADMIN_SECRET = get_secret("HASURA_ADMIN_SECRET")
+    HASURA_HEADERS = { "Content-Type": "application/json", "x-hasura-admin-secret": HASURA_ADMIN_SECRET }
+    success = True
+    google_drive_id = ""
+
+    query = f"""
+        {{
+        projects_by_pk(id: {project_id}) {{
+            id
+            google_drive_id
+        }}  
+        }}
+    """
+
+    try:
+        r = requests.post(HASURA_URI, json = {'query' : query}, headers = HASURA_HEADERS)
+
+        if r.status_code != 200:
+            error_list.append(r.text)
+            print(r.text)
+            success = False
+        else:
+            google_drive_id = json.loads(r.text)['data']['projects_by_pk']['google_drive_id']
+            print(r.text)
+
+    except Exception as e:
+        error_list.append(str(e))
+        print(str(e))
+        success = False
+
+    return google_drive_id if success else success
+
+def get_email(staff_id):
+    HASURA_URI = "https://aphasia-hasura-dev.herokuapp.com/v1/graphql"
+    HASURA_ADMIN_SECRET = get_secret("HASURA_ADMIN_SECRET")
+    HASURA_HEADERS = { "Content-Type": "application/json", "x-hasura-admin-secret": HASURA_ADMIN_SECRET }
+    success = True
+    email = ""
+
+    query = f"""
+    {{
+        staffs_by_pk(id: {staff_id}) {{
+            email
+        }}
+    }}
+    """
+    try:
+        r = requests.post(HASURA_URI, json = {'query' : query}, headers = HASURA_HEADERS)
+
+        if r.status_code != 200:
+            error_list.append(r.text)
+            print(r.text)
+            success = False
+        else:
+            email = json.loads(r.text)['data']['staffs_by_pk']['email']
+            print(r.text)
+
+    except Exception as e:
+        error_list.append(str(e))
+        print(str(e))
+        success = False
+
+    return email if success else success
 
 def lambda_handler(event, context):
     print("event:", event)
     result = {}
     statusCode = 500
+    google_drive_id = ""
+    email = ""
 
-    file_id = json.loads(event['body'])['file_id']
-    emails = json.loads(event['body'])['emails']
+    project_id = json.loads(event['body'])['event']['data']['new']['project_id']
+    staff_id = json.loads(event['body'])['event']['data']['new']['staff_id']
+    google_drive_id = get_google_drive_id(project_id)
+    email = get_email(staff_id)
 
-    if (len(emails) <= 0):
-        result['status'] = "error"
-        result['message'] = "email list cannot be empty!"
-        statusCode = 400
-
-        return {
-            "statusCode": statusCode,
-            "headers": {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            "body": json.dumps(result)
-         }
-     
     try:
-        result['message'] = "file permissions added for "
-        for email in emails:
-            file_metadata = {
-                "role": "writer",
-                "type": "user",
-                "emailAddress": email
-            }
-            SERVICE.permissions().create(fileId=file_id, body = file_metadata).execute()
-            result['message'] += email + ", "
-        result['status'] = "success"
-        statusCode = 200
-
+        if email == "" or google_drive_id == "" or not add_permission(email, google_drive_id):
+            statusCode = 400
+            result['status'] = "error"
+            result['message'] = f"Failed to add permissions for staff id {staff_id}"
+            result['error'] = str(error_list)
+        else:
+            statusCode = 200
+            result['status'] = "success"
+            result['message'] = f"Successfully added staff id {staff_id} as an editor for google drive folder for project id {project_id}"
+    
     except Exception as e:
-        result['status'] = "error"
-        result['message'] = "failed to add file permission for all users"
-        result['error'] = str(e)
-        print("error", str(e))
         statusCode = 400
+        result['status'] = "error"
+        result['message'] = f"Failed to add permissions for staff id {staff_id}"
+        result['error'] = str(e)
 
     return {
         "statusCode": statusCode,
