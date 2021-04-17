@@ -17,19 +17,18 @@
         >
           <v-icon>mdi-calendar</v-icon>
         </v-btn>
-        <v-text-field
+        <v-select
           v-model="month"
           :rules="validationMonth"
           label="Month"
-          type="number"
+          :items="monthOptions"
         />
         <div class="px-3">/</div>
         <v-text-field
           v-model="year"
           :rules="validationYear"
           label="Year"
-          type="number"
-          min='1900'
+          min="1900"
           :max="new Date().getFullYear()"
         />
       </div>
@@ -72,6 +71,56 @@ export default {
       data: this.value,
       month: '',
       year: '',
+      monthOptions: [
+        {
+          text: 'January',
+          value: '01'
+        },
+        {
+          text: 'February',
+          value: '02'
+        },
+        {
+          text: 'March',
+          value: '03'
+        },
+        {
+          text: 'April',
+          value: '04'
+        },
+        {
+          text: 'May',
+          value: '05'
+        },
+        {
+          text: 'June',
+          value: '06'
+        },
+        {
+          text: 'July',
+          value: '07'
+        },
+        {
+          text: 'August',
+          value: '08'
+        },
+        {
+          text: 'September',
+          value: '09'
+        },
+        {
+          text: 'October',
+          value: '10'
+        },
+        {
+          text: 'November',
+          value: '11'
+        },
+        {
+          text: 'December',
+          value: '12'
+        }
+      ],
       validationMonth: [v => (v > 0 && v < 13) || 'Valid month is required'],
       validationYear: [v => (v > 1900 && v <= new Date().getFullYear()) || 'Valid year is required']
     }
