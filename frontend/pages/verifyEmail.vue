@@ -9,15 +9,17 @@
         verified you will be able to reset your password!
       </v-card-text>
       <v-card-text class="d-flex justify-center">
-        <OtpInput
-          input-classes="otp-input"
-          :num-inputs="6"
-          separator="-"
-          :is-input-num="true"
-          :should-auto-focus="true"
-          @on-complete="handleOnComplete"
-          @on-change="handleOnChange"
-        />
+        <div class="otp-wrapper">
+          <OtpInput
+            input-classes="otp-input"
+            :num-inputs="6"
+            separator=""
+            :is-input-num="true"
+            :should-auto-focus="true"
+            @on-complete="handleOnComplete"
+            @on-change="handleOnChange"
+          />
+        </div>
       </v-card-text>
       <v-card-text>
         <v-btn elevation="2" rounded color="secondary" @click="sendCode">
@@ -174,15 +176,24 @@ export default {
 </script>
 <style>
 .otp-input {
-  width: 40px;
-  height: 40px;
-  padding: 5px;
-  margin: 0 10px;
+  width: 54px;
+  height: 58px;
+  padding: 10px;
+  margin: 0px;
   font-size: 20px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid #a8adb7;
   text-align: center;
   font-family: 'Roboto', sans-serif;
+  border-right: none;
+}
+.otp-wrapper>div>div:first-child>.otp-input{
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.otp-wrapper>div>div:last-child>.otp-input{
+  border-right: 1px solid #a8adb7;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 .error {
   border: 1px solid red !important;
