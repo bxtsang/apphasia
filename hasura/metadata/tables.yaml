@@ -967,6 +967,16 @@
       interval_sec: 10
       timeout_sec: 60
     webhook: https://98dipbq5y7.execute-api.ap-southeast-1.amazonaws.com/dev
+  - name: remove_folder_permissions
+    definition:
+      enable_manual: false
+      delete:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://jwkj5dstu6.execute-api.ap-southeast-1.amazonaws.com/dev
 - table:
     schema: public
     name: project_task_staffs
