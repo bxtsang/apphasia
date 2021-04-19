@@ -41,7 +41,7 @@ export default {
     return {
       data: this.value ? this.value.split(':')[0] : '',
       data2: this.value ? this.value.split(':')[1] : '',
-      hourItems: Array.from({ length: 25 }, (v, k) => `${k}`),
+      hourItems: Array.from({ length: 24 }, (v, k) => `${k}`.length === 1 ? `0${k}` : `${k}`),
       minuteItems: Array.from({ length: 13 }, (v, k) => `${k * 5}`.length === 1 ? `0${k * 5}` : `${k * 5}`),
       validation: [v => !!v || 'Required']
     }
@@ -64,9 +64,11 @@ export default {
       }
     },
     value: {
+      immediate: true,
       handler (newValue, oldValue) {
         if (this.value) {
-          this.data = this.value.split(':')[0]
+          this.data = this.value.split(':')[0].length === 1 ? `0${this.value.split(':')[0]}` : this.value.split(':')[0]
+          console.log(this.data)
           this.data2 = this.value.split(':')[1]
         }
       }
