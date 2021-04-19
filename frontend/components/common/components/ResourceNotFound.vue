@@ -6,7 +6,7 @@
     </div>
     <h3 class="mt-4">The resource might have been deleted or removed</h3>
     <NuxtLink to="/">
-      Home page
+      Back to Dashboard
     </NuxtLink>
   </div>
 </template>
