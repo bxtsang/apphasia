@@ -104,6 +104,11 @@
                         :outlined="true"/>
                     </v-col>
                   </v-row>
+                  <v-row class="px-12">
+                    <v-col class="px-6">
+                      <ChannelInput v-model="pwa.general_info.data.channel" outlined/>
+                    </v-col>
+                  </v-row>
                   <v-row>
                     <v-col class="d-flex justify-center"><v-btn color="primary px-12" @click="stepperClick(2)">Next</v-btn></v-col>
                   </v-row>
@@ -231,14 +236,6 @@
                 <v-row class="px-12">
                   <v-col class="px-6">
                     <span class="section-title">✏️ Your Consent</span>
-                  </v-col>
-                </v-row>
-                <v-row class="px-12">
-                  <v-col class="px-6">
-                    <v-card class="card-input pa-6" outlined>
-                      <span class="input-label">How did you hear about Aphasia SG?</span>
-                      <ChannelInput v-model="pwa.general_info.data.channel" :placeholderOnly="true" />
-                    </v-card>
                   </v-col>
                 </v-row>
                 <v-row class="px-12">
