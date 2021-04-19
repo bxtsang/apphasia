@@ -85,7 +85,7 @@ export default {
 
   methods: {
     addNOK () {
-      if (this.data.length < 3) {
+      if (this.data.length < 4) {
         this.data.push({
           contact_num: '',
           email: '',
