@@ -14,7 +14,7 @@
 
       <!-- Error -->
       <div v-else-if="error">
-        An error occurred
+        <ResourceNotFound />
       </div>
 
       <div v-else-if="data && data.events_by_pk">
@@ -160,6 +160,9 @@
             </v-col>
           </v-row>
         </v-container>
+      </div>
+      <div v-else>
+        <ResourceNotFound />
       </div>
     </template>
   </ApolloQuery>
