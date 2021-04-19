@@ -68,7 +68,6 @@ export default {
       handler (newValue, oldValue) {
         if (this.value) {
           this.data = this.value.split(':')[0].length === 1 ? `0${this.value.split(':')[0]}` : this.value.split(':')[0]
-          console.log(this.data)
           this.data2 = this.value.split(':')[1]
         }
       }
