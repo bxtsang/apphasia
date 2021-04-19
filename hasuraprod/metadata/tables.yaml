@@ -1574,7 +1574,7 @@
       timeout_sec: 60
     webhook: https://api.apphasia.cf/notifydeleteprojectprod
     headers:
-    - value: "false"
+    - value: "true"
       name: production
     - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
       name: x-api-key
