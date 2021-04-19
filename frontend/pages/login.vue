@@ -2,37 +2,56 @@
   <div>
     <v-card class="pa-6">
       <v-img src="/asg.png" max-width="350" />
-      <v-subheader class="justify-center font-weight-bold">
-        Welcome Back!
-      </v-subheader>
-      <v-form ref="form" v-model="valid" @submit.prevent="login">
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="Email"
-          required
-          data-cy="cy-login-email-input"
-        />
-        <v-text-field
-          v-model="password"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showPassword ? 'text' : 'password'"
-          :rules="passwordRules"
-          label="Password"
-          required
-          @click:append="showPassword = !showPassword"
-          data-cy="cy-login-password-input"
-        />
-        <v-btn
-          block
-          color="primary"
-          class="my-3"
-          type="submit"
-          :loading="isLoggingIn"
-          data-cy="cy-login-submit-input">
-          Login
-        </v-btn>
-      </v-form>
+        <div v-if="!flipped">
+          <v-subheader class="justify-center font-weight-bold">
+            Welcome Back!
+          </v-subheader>
+          <v-form ref="form" v-model="valid" @submit.prevent="login">
+            <v-text-field
+              v-model="email"
+              :rules="emailRules"
+              label="Email"
+              required
+              data-cy="cy-login-email-input"
+            />
+            <v-text-field
+              v-model="password"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="showPassword ? 'text' : 'password'"
+              :rules="passwordRules"
+              label="Password"
+              required
+              @click:append="showPassword = !showPassword"
+              data-cy="cy-login-password-input"
+            />
+            <v-btn
+              block
+              color="primary"
+              class="my-3"
+              type="submit"
+              :loading="isLoggingIn"
+              data-cy="cy-login-submit-input">
+              Login
+            </v-btn>
+            <p class="tiny-link primary--text" @click="flipped = !flipped">Forget Password</p>
+          </v-form>
+        </div>
+        <div v-else>
+          <v-subheader class="justify-center font-weight-bold">
+            Forgot your password?
+          </v-subheader>
+          <v-form ref="formForgot" v-model="validForgot" @submit.prevent="forgotPassword">
+            <v-text-field
+                v-model="emailForgot"
+                :rules="emailRules"
+                label="Email"
+                required
+                data-cy="cy-login-email-forgot-input"
+              />
+            <v-btn block color="primary" class="my-3">Reset Password</v-btn>
+          </v-form>
+          <p class="tiny-link primary--text" @click="flipped = !flipped">Sign In</p>
+        </div>
     </v-card>
   </div>
 </template>
@@ -41,9 +60,12 @@ export default {
   layout: 'none',
   data () {
     return {
+      flipped: false,
       isLoggingIn: false,
       valid: true,
+      validForgot: true,
       email: '',
+      emailForgot: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
@@ -82,10 +104,18 @@ export default {
           this.isLoggingIn = false
         }
       }
+    },
+    forgotPassword () {
+      return true
     }
   }
 }
 </script>
 <style scoped>
-
+.tiny-link {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: center;
+}
 </style>
