@@ -6,7 +6,7 @@
         <v-col cols="12" class="py-0 d-flex px-6">
           <span class="font-weight-bold">({{ index + 1 }}) {{ isSpeechTherapist ? 'Speech Therapist' : 'Caregiver' }} Information</span>
           <v-spacer />
-          <v-btn icon small @click="() => { removeNOK(index) }"><v-icon>mdi-close</v-icon></v-btn>
+          <v-btn color="error" depressed fab small @click="() => { removeNOK(index) }"><v-icon>mdi-close</v-icon></v-btn>
         </v-col>
       </v-row>
       <v-row class="mt-3 px-12">
@@ -30,7 +30,7 @@
         <v-col cols="6" class="py-0 pl-6">
           <v-text-field
             v-model="data[index].email"
-            :label="`*Email Address of ${ isSpeechTherapist ? 'Speech Therapist' : 'caregiver / next-of-kin'}`"
+            :label="`${ isSpeechTherapist ? 'Email Address of Speech Therapist' : '*Email Address of  caregiver / next-of-kin'}`"
             outlined
             :rules="[INPUT_VALIDATION.email.valid]"
           />
