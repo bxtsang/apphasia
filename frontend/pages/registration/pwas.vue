@@ -3,7 +3,7 @@
     <v-row>
       <v-col class="d-flex justify-center">
         <div class="fixed-size">
-        <v-img src="/asg.png" max-width="400" contain/>
+          <v-img src="/asg.png" max-width="400" contain/>
         </div>
       </v-col>
     </v-row>
@@ -188,7 +188,6 @@
                 </v-container>
               </v-form>
             </v-stepper-content>
-
             <!-- FOURTH PAGE -->
             <v-stepper-content :step="4">
               <v-form ref="registrationForm-part-3" v-model="validParts[2]" @submit.prevent="">
@@ -225,7 +224,7 @@
             </v-form>
           </v-stepper-content>
 
-          <!-- FIFTH PAGE -->
+          <!-- SIXTH PAGE -->
           <v-stepper-content :step="6">
             <v-form ref="registrationForm-part-5" v-model="validParts[4]" @submit.prevent="() => submitForm(registerSuccessful)">
               <v-container fluid>
@@ -313,7 +312,9 @@ export default {
       },
       pwa: {
         general_info: {
-          data: {}
+          data: {
+            dob: '1980-01-01'
+          }
         },
         nok: {
           data: [
