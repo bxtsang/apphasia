@@ -1,14 +1,14 @@
-- name: createRecurringEvents
-  webhook: https://api.apphasia.cf/createrecurringeventscron
-  schedule: 0 0 1 * *
+- name: deleteArchiveEntities
+  webhook: https://api.apphasia.cf/deletearchiveentities
+  schedule: 0 4 * * 5
   include_in_metadata: true
   payload: {}
   headers:
   - value: Z9prKXQtE94HG0x9WyQTZ4wZYN7Hozp563lqIRin
     name: x-api-key
-- name: deleteArchiveEntities
-  webhook: https://api.apphasia.cf/deletearchiveentities
-  schedule: 0 4 * * 5
+- name: createRecurringEvents
+  webhook: https://api.apphasia.cf/createrecurringeventscron
+  schedule: 0 0 1 */6 *
   include_in_metadata: true
   payload: {}
   headers:
