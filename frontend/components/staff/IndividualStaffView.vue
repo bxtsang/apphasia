@@ -17,7 +17,7 @@
 
             <!-- Error -->
             <div v-else-if="error">
-              An error occurred
+              <ResourceNotFound />
             </div>
 
             <!-- Result -->
@@ -211,7 +211,7 @@
             </div>
 
             <div v-else>
-              Staff Not Found
+              <ResourceNotFound />
             </div>
           </template>
         </ApolloQuery>
