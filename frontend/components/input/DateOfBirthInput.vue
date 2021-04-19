@@ -4,6 +4,7 @@
     offset-y
     :close-on-content-click="false"
     min-width="auto"
+    v-model="menu"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
@@ -56,6 +57,7 @@ export default {
 
   data () {
     return {
+      menu: false,
       data: this.value,
       validation: [...(this.required ? [INPUT_VALIDATION.dob.required] : [])]
     }
@@ -72,6 +74,9 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
+    },
+    menu (val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   }
 }

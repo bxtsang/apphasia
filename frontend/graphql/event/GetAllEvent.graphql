@@ -8,6 +8,7 @@ query GetAllEvents($project_id: Int!) {
     note
     project_id
     project {
+      id
       title
     }
     recurring {

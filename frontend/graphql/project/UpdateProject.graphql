@@ -61,6 +61,8 @@ mutation UpdateProject($id: Int!, $project: projects_set_input!, $staffs_to_add:
     is_active
     archive_reason
     upcoming_date
+    display_pwa_registration
+    display_vol_registration
   }
   
   UpdateNotifications (updateNotificationData: $updateNotification) {
