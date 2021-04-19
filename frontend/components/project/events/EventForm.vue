@@ -30,17 +30,11 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col class="py-0">
+              <v-col class="py-0" cols="6">
                 <DateInput
                   label="Start Date"
                   v-model="eventData.start_date"
                   required
-                />
-              </v-col>
-              <v-col class="py-0">
-                <DateInput
-                  label="End Date"
-                  v-model="eventData.recurringData.end_date"
                 />
               </v-col>
             </v-row>
@@ -69,6 +63,12 @@
                   v-model="eventData.recurringData.frequency"
                   label="Repeat"
                   required
+                />
+              </v-col>
+              <v-col class="py-0" v-if="eventData.recurringData.frequency !== 'None'">
+                <DateInput
+                  label="End Date"
+                  v-model="eventData.recurringData.end_date"
                 />
               </v-col>
             </v-row>
