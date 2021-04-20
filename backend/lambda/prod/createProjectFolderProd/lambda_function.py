@@ -181,9 +181,16 @@ def lambda_handler(event, context):
             "body": json.dumps(result)
         }
 
-    result['status'] = "success"
-    result['message'] = "successfully created project folder"
-    add_permission(emails, file_id)
+
+    if add_permission(emails, file_id):
+        statusCode = 200
+        result['status'] = "success"
+        result['message'] += f"for project id {project_id}"
+    else:
+        statusCode = 400
+        result['status'] = "error"
+        result['message'] = "failed to add permissions for project folder"
+        result['error'] = permission_errors
 
     return {
         "statusCode": statusCode,
