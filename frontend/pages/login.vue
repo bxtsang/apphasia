@@ -51,10 +51,10 @@
                 />
               <v-btn block color="primary" class="my-3" type="submit" :loading="isRequestingReset">Request for Reset</v-btn>
             </v-form>
-            <p class="tiny-link primary--text" @click="flipped = !flipped">Sign In</p>
+            <p class="tiny-link primary--text" @click="flipped = !flipped">Return to Login</p>
           </div>
           <div v-else>
-            <v-subheader class="justify-center font-weight-bold" style="max-width:350px">
+            <v-subheader class="justify-center font-weight-bold text-center" style="max-width:350px">
               A reset code has been sent to your email. Complete the password reset by keying in the reset code and your new password
             </v-subheader>
             <v-form ref="formReset" v-model="validReset" @submit.prevent="resetPassword">
