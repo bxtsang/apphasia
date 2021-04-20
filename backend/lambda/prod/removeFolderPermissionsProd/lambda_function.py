@@ -16,6 +16,14 @@ client_secret = boto3.client('secretsmanager')
 result = {}
 error_list = []
 
+def get_parameter(parameter):
+    response = client_ssm.get_parameter(
+    Name=parameter,
+    WithDecryption=False
+    )
+
+    return response['Parameter']['Value']
+
 def get_secret(secret_name):
 
     response = client_secret.get_secret_value(
