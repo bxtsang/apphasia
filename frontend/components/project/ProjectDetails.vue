@@ -121,11 +121,6 @@
           </v-col>
         </v-row>
       </v-col>
-
-      <!-- right col -->
-      <v-col lg="6" cols="12">
-        Task Component
-      </v-col>
     </v-row>
     <v-row>
       <v-col>
