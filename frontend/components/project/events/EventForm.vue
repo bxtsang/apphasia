@@ -1,13 +1,16 @@
 <template>
-  <v-card class="pa-8">
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+  <v-card>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ event ? 'Edit Event' : 'Add Event'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="$emit('closeForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
-        <v-row>
-          <v-col class="py-0">
-            <span v-if="event" class="section-title">Edit Event</span>
-            <span v-else class="section-title">Add Event</span>
-          </v-col>
-        </v-row>
         <v-row>
           <v-col class="py-0">
             <v-row class="mt-3">
@@ -125,22 +128,25 @@
                 />
               </v-col>
             </v-row>
-            <v-row>
-              <div class="my-3 ml-3">
-                <DeleteResourceModal
-                  v-if="$auth.user['custom:role'] === 'core_team' && event"
-                  :resource="event"
-                  :resourceType="'events'"
-                  @deleteSuccess="$emit('closeForm')"
-                />
-              </div>
-              <v-spacer/>
-              <EditConfirmation v-if="event" :event="event" :newEventData="eventData" @editEvent="editEvent" :loading="isSubmitting"/>
-              <v-btn v-else color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
-                Add
-              </v-btn>
-            </v-row>
           </v-col>
+        </v-row>
+      </v-container>
+      <v-container>
+        <v-row>
+          <div>
+            <DeleteResourceModal
+              v-if="$auth.user['custom:role'] === 'core_team' && event"
+              :resource="event"
+              :resourceType="'events'"
+              @deleteSuccess="$emit('closeForm')"
+            />
+          </div>
+          <v-spacer/>
+          <EditConfirmation v-if="event" :event="event" :newEventData="eventData" @editEvent="editEvent" :loading="isSubmitting"/>
+          <v-btn v-else color="primary" type="submit" :loading="isSubmitting">
+            Add
+          </v-btn>
+          <v-btn class="ml-1" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>
         </v-row>
       </v-container>
     </v-form>
