@@ -44,6 +44,9 @@
             <v-col class="px-6">
               <BioInput v-model="volunteer.general_info.data.bio" :outlined="true"/>
             </v-col>
+            <v-col class="px-6">
+              <ChannelInput v-model="volunteer.general_info.data.channel" outlined/>
+            </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
@@ -71,14 +74,6 @@
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">* What is your profession?</span>
                 <MultiProfessionInput v-model="profession" />
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row class="px-12">
-            <v-col class="px-6">
-              <v-card class="card-input pa-6" outlined>
-                <span class="input-label">How did you hear about Aphasia SG?</span>
-                <ChannelInput v-model="volunteer.general_info.data.channel" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>

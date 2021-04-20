@@ -2,7 +2,8 @@ actions:
 - name: CreateCognitoUser
   definition:
     kind: synchronous
-    handler: https://jvuzedyfme.execute-api.ap-southeast-1.amazonaws.com/test/
+    handler: https://api.apphasia.cf/createuser
+    forward_client_headers: true
   permissions:
   - role: core_team
 - name: DeleteCognitoUser
@@ -41,7 +42,8 @@ actions:
 - name: UpdateCognitoUser
   definition:
     kind: synchronous
-    handler: https://2tnogbimkc.execute-api.ap-southeast-1.amazonaws.com/dev
+    handler: https://api.apphasia.cf/updateuser
+    forward_client_headers: true
   permissions:
   - role: core_team
 - name: UpdateEventOrRecurring
