@@ -2,6 +2,7 @@
   <v-dialog
     v-model="isOpen"
     :width="800"
+    persistent
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
