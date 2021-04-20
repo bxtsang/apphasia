@@ -1,7 +1,15 @@
 <template>
-  <v-card class="pa-8">
-    <span class="section-title">Edit Volunteer</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+  <v-card>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ volunteer ? 'Edit Volunteer' : 'Add Volunteer'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="$emit('closeForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col cols="12" class="py-0">
@@ -176,9 +184,10 @@
             @deleteSuccess="$emit('closeForm')"
           />
           <v-spacer />
-          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+          <v-btn color="primary" type="submit" :loading="isSubmitting">
             Save
           </v-btn>
+          <v-btn class="ml-1" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>
         </v-row>
       </v-container>
     </v-form>
