@@ -56,7 +56,7 @@ export default {
       default: {
         httpEndpoint: 'https://hasura.apphasia.cf/v1/graphql',
         tokenName: 'apollo-token',
-        wsEndpoint: 'ws://hasura.apphasia.cf/v1/graphql',
+        wsEndpoint: 'wss://hasura.apphasia.cf/v1/graphql',
         websocketsOnly: true
       }
     }
