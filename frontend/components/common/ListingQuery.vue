@@ -69,6 +69,7 @@
                   solo
                   dense
                   class="mx-3"
+                  data-cy="cy-listing-search-input"
                 />
               </v-row>
             </v-container>

@@ -10,6 +10,7 @@
         color="primary"
         v-bind="attrs"
         v-on="on"
+        data-cy="cy-edit-button"
       >
         <v-icon left>
           mdi-pencil

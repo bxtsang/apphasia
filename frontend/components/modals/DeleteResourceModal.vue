@@ -8,6 +8,7 @@
         color="error"
         v-bind="attrs"
         v-on="on"
+        data-cy="cy-delete-button"
       >
         Delete
       </v-btn>
@@ -37,6 +38,7 @@
           color="error"
           :loading="isLoading"
           type="submit"
+          data-cy="cy-confirm-delete-button"
         >
           Confirm
         </v-btn>
