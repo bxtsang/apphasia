@@ -14,7 +14,7 @@
 
       <!-- Error -->
       <div v-else-if="error">
-        An error occurred
+        <ResourceNotFound />
       </div>
 
       <div v-else-if="data && data.events_by_pk">
@@ -67,13 +67,6 @@
                 readonly
               />
             </v-col>
-            <v-col cols="6" class="py-0">
-              <v-text-field
-                label="End Date"
-                :value="data.events_by_pk.recurring && data.events_by_pk.recurring.end_date ? data.events_by_pk.recurring.end_date : '-'"
-                readonly
-              />
-            </v-col>
           </v-row>
           <v-row>
             <v-col cols="6" class="py-0">
@@ -102,6 +95,13 @@
                 label="Repeat"
                 :value="data.events_by_pk.recurring ? data.events_by_pk.recurring.frequency : 'None'"
                 :items="[data.events_by_pk.recurring ? data.events_by_pk.recurring.frequency : 'None']"
+                readonly
+              />
+            </v-col>
+            <v-col cols="6" class="py-0" v-if="data.events_by_pk.recurring">
+              <v-text-field
+                label="End Date"
+                :value="data.events_by_pk.recurring && data.events_by_pk.recurring.end_date ? data.events_by_pk.recurring.end_date : '-'"
                 readonly
               />
             </v-col>
@@ -160,6 +160,9 @@
             </v-col>
           </v-row>
         </v-container>
+      </div>
+      <div v-else>
+        <ResourceNotFound />
       </div>
     </template>
   </ApolloQuery>

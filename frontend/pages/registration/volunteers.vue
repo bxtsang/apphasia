@@ -1,5 +1,5 @@
 <template>
-  <RegistrationBanner :resourceType="resourceType">
+  <RegistrationBannerLayout :resourceType="resourceType">
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
@@ -44,6 +44,9 @@
             <v-col class="px-6">
               <BioInput v-model="volunteer.general_info.data.bio" :outlined="true"/>
             </v-col>
+            <v-col class="px-6">
+              <ChannelInput v-model="volunteer.general_info.data.channel" outlined/>
+            </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
@@ -77,14 +80,6 @@
           <v-row class="px-12">
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
-                <span class="input-label">How did you hear about Aphasia SG?</span>
-                <ChannelInput v-model="volunteer.general_info.data.channel" :placeholderOnly="true" />
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row class="px-12">
-            <v-col class="px-6">
-              <v-card class="card-input pa-6" outlined>
                 <span class="input-label">Would you like to receive updates about Aphasia SG events and programmes?</span>
                 <ConsentInput v-model="volunteer.general_info.data.consent" />
               </v-card>
@@ -108,7 +103,7 @@
         </v-container>
       </v-form>
     </template>
-  </RegistrationBanner>
+  </RegistrationBannerLayout>
 </template>
 <script>
 import AliasInput from './../../components/input/AliasInput.vue'
@@ -126,7 +121,7 @@ import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
 import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
-import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import RegistrationBannerLayout from './../../components/registration/RegistrationBannerLayout'
 import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
@@ -145,7 +140,7 @@ export default {
     ChannelInput,
     ConsentInput,
     MultiProfessionInput,
-    RegistrationBanner
+    RegistrationBannerLayout
   },
   layout: 'none',
   middleware: 'clearLoginCache',

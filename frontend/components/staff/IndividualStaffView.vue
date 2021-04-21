@@ -17,7 +17,7 @@
 
             <!-- Error -->
             <div v-else-if="error">
-              An error occurred
+              <ResourceNotFound />
             </div>
 
             <!-- Result -->
@@ -176,9 +176,8 @@
                     />
                   </v-col>
                   <v-col class="py-0">
-                    <v-switch
-                      :input-value="data.staffs[0].is_speech_therapist"
-                      label="Speech Therapist?"
+                    <SpeechTherapistInput
+                      :value="data.staffs[0].is_speech_therapist"
                       readonly
                     />
                   </v-col>
@@ -212,7 +211,7 @@
             </div>
 
             <div v-else>
-              Staff Not Found
+              <ResourceNotFound />
             </div>
           </template>
         </ApolloQuery>

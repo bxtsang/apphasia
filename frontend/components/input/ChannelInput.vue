@@ -7,6 +7,7 @@
     :rules="validation"
     :required="required"
     :readonly="readonly"
+    :outlined="outlined"
   />
 </template>
 
@@ -29,6 +30,10 @@ export default {
       default: false
     },
     placeholderOnly: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
       type: Boolean,
       default: false
     }

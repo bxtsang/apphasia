@@ -13,6 +13,7 @@
     "e2e:silent": "cypress run"
   },
   "dependencies": {
+    "@bachdgvn/vue-otp-input": "^1.0.8",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
@@ -23,7 +24,6 @@
     "nuxt": "^2.14.6",
     "vue-file-selector": "^0.6.0",
     "vue-google-api": "^0.2.0",
-    "vue-verification-code-input": "^1.0.0",
     "xlsx": "^0.16.9"
   },
   "devDependencies": {

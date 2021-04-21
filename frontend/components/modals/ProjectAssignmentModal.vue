@@ -13,15 +13,18 @@
         </v-icon>
       </v-btn>
     </template>
-    <v-card class="pa-8">
-      <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+    <v-card>
+      <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ assignment ? 'Edit Assignment' : 'Add Assignment'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="isOpen = false">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+      <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
         <v-container class="pa-0">
-          <v-row>
-            <v-col class="py-0">
-              <span v-if="assignment" class="section-title">Edit Assignment</span>
-              <span v-else class="section-title">Add Assignment</span>
-            </v-col>
-          </v-row>
           <v-row>
             <v-col class="py-0">
               <v-radio-group v-model="assignmentData.role" row>
@@ -58,11 +61,14 @@
               />
             </v-col>
           </v-row>
-          <v-row v-if="assignmentData.id !== -1 && assignmentData.pwas.length > 0">
+        </v-container>
+        <v-container>
+          <v-row>
             <v-spacer />
-            <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
+            <v-btn v-if="assignmentData.id !== -1 && assignmentData.pwas.length > 0" color="primary" type="submit" :loading="isSubmitting">
               {{ assignment ? 'Save' : 'Add' }}
             </v-btn>
+            <v-btn class="ml-1" dark color="grey" @click="isOpen = false">Cancel</v-btn>
           </v-row>
         </v-container>
       </v-form>

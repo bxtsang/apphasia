@@ -85,7 +85,7 @@
         <v-row v-if="foldersInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
-            <v-container class="d-flex flex-wrap pa-0" fluid>
+            <v-container class="d-flex flex-wrap pa-0 px-3" fluid>
               <Resource
                 v-for="folder in foldersInCurrentDirectory"
                 :key="folder.id"
@@ -228,8 +228,12 @@ export default {
     async signInFunction () {
       await this.googleAuth.signIn()
       const user = this.googleAuth.currentUser.get()
-      if (!user.uc == null) {
+      console.log(user)
+      if (user != null) {
+        console.log('user is not null after signing in')
         this.upload()
+      } else {
+        console.log('user is null')
       }
     },
     signOutFunction () {
@@ -263,15 +267,17 @@ export default {
       }
     },
     async upload () {
+      console.log('uploading file')
       const vm = this
       const f = document.getElementById('files')
       if (this.googleAuth === undefined || this.googleAuth == null) {
+        console.log('auth instance not initialized')
         this.signInFunction()
-        return
       }
       const user = this.googleAuth.currentUser.get()
       // Checks if user has a google log in session in the web app
-      if (user.uc == null) {
+      if (user == null) {
+        console.log('user not signed in')
         this.signInFunction()
       } else {
         const parentId = this.currentFolder.id // parent Id of folder to upload file in
@@ -300,6 +306,7 @@ export default {
       }
     },
     uploadHelper (file, parentId) {
+      console.log('upload helper called')
       const nuxtObject = this.$nuxt
       return new Promise(function (resolve, reject) {
         try {

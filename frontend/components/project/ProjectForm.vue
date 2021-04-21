@@ -1,8 +1,15 @@
 <template>
-  <v-card class="pa-8">
-    <span v-if="project" class="section-title">Edit Project</span>
-    <span v-else class="section-title">Add Project</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+  <v-card>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ project ? 'Edit Project' : 'Add Project'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="$emit('closeForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col class="py-0">
@@ -24,6 +31,20 @@
             <v-row>
               <v-col class="py-0">
                 <ProjectColorInput v-model="projectData.colour" label="*Project Colour"/>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="py-0">
+                <RegistrationAvailabilityInput
+                  v-model="projectData.display_pwa_registration"
+                  resource-type="PWAs"
+                />
+              </v-col>
+              <v-col class="py-0">
+                <RegistrationAvailabilityInput
+                  v-model="projectData.display_vol_registration"
+                  resource-type="Volunteers"
+                />
               </v-col>
             </v-row>
             <v-row class="mt-8">
@@ -74,8 +95,8 @@
                 />
               </v-col>
             </v-row>
-            <v-row>
-              <div class="my-3 ml-3">
+            <v-row class="mt-4">
+              <div class="ml-3">
                 <DeleteResourceModal
                   v-if="$auth.user['custom:role'] === 'core_team' && project"
                   :resource="project"
@@ -84,9 +105,10 @@
                 />
               </div>
               <v-spacer/>
-              <v-btn color="primary" class="my-3 mr-3" type="submit" :loading="isSubmitting">
+              <v-btn color="primary" class="mr-1" type="submit" :loading="isSubmitting">
                 {{ project ? 'Save' : 'Add' }}
               </v-btn>
+              <v-btn class="ml-1 mr-3" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>
             </v-row>
           </v-col>
         </v-row>
@@ -117,7 +139,9 @@ export default {
         volunteers: { data: this.project ? this.project.volunteers.map(item => item.volunteer.general_info.id) : [] },
         pwas: { data: this.project ? this.project.pwas.map(item => item.pwa.general_info.id) : [] },
         owner_id: this.project ? this.project.owner.id : -1,
-        voltypes: this.project ? this.project.voltypes : 'Project_Volunteer'
+        voltypes: this.project ? this.project.voltypes : 'Project_Volunteer',
+        display_pwa_registration: this.project ? this.project.display_pwa_registration : false,
+        display_vol_registration: this.project ? this.project.display_vol_registration : false
       }
     }
   },
@@ -197,7 +221,9 @@ export default {
               description: this.projectData.description,
               owner_id: this.projectData.owner_id,
               voltypes: this.projectData.voltypes,
-              colour: this.projectData.colour
+              colour: this.projectData.colour,
+              display_pwa_registration: this.projectData.display_pwa_registration,
+              display_vol_registration: this.projectData.display_vol_registration
             },
             updateNotification: {
               old: this.project,

@@ -17,7 +17,7 @@
 
             <!-- Error -->
             <div v-else-if="error">
-              An error occurred
+              <ResourceNotFound />
             </div>
 
             <!-- Display on success -->
@@ -163,12 +163,6 @@
                     />
                   </v-col>
                   <v-col cols="6" class="py-0">
-                    <v-select
-                      :value="data.pwas_by_pk.general_info.consent"
-                      :items="[{ value: true, text: 'Yes' }, { value: false, text: 'No' }]"
-                      label="Agreeable to receive "
-                      readonly
-                    />
                     <ConsentInput
                       :value="data.pwas_by_pk.general_info.consent"
                       :required="true"
@@ -293,6 +287,10 @@
                   </v-col>
                 </v-row>
               </v-container>
+            </div>
+
+            <div v-else>
+              <ResourceNotFound />
             </div>
           </template>
         </ApolloQuery>

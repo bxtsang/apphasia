@@ -1,8 +1,15 @@
 <template>
-  <v-card class="pa-8">
-    <span v-if="pwa" class="section-title">Edit PWA</span>
-    <span v-else class="section-title">Add PWA</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+  <v-card>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ pwa ? 'Edit PWA' : 'Add PWA'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="$emit('closeForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row class="mt-3">
           <v-col cols="12" class="py-0">
@@ -177,7 +184,7 @@
             />
           </v-col>
         </v-row>
-        <v-row class="mt-8">
+        <v-row class="mt-8 mb-4">
           <v-col class="py-0">
             <NOKInput
               v-model="pwaData.nok.data"
@@ -192,9 +199,10 @@
             @deleteSuccess="$emit('closeForm')"
           />
           <v-spacer />
-          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+          <v-btn color="primary" type="submit" :loading="isSubmitting">
             {{ pwa ? 'Save' : 'Add' }}
           </v-btn>
+          <v-btn class="ml-1" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>
         </v-row>
       </v-container>
     </v-form>
