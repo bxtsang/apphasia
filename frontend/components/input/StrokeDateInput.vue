@@ -23,6 +23,7 @@
       ref="picker"
       v-model="data"
       :max="new Date().toISOString().substr(0, 10)"
+      data-cy="cy-form-stroke-date-picker"
     />
   </v-menu>
 </template>

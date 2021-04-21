@@ -118,6 +118,7 @@
           <v-col cols="6" class="py-0">
             <ChannelInput
               v-model="pwaData.general_info.data.channel"
+              data-cy="cy-form-channel-input"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -126,6 +127,7 @@
               :required="true"
               inputType="select"
               label="*Agreeable to receive promotional materials?"
+              data-cy="cy-form-consent-input"
             />
           </v-col>
         </v-row>
@@ -133,6 +135,7 @@
           <v-col cols="6" class="py-0">
             <MediaWillingnessInput
               v-model="pwaData.media_willingness"
+              data-cy="cy-form-media-input"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -141,6 +144,7 @@
               label="Media Engagement Details (if any)"
               rows="1"
               auto-grow
+              data-cy="cy-form-media-engagement-input"
             />
           </v-col>
         </v-row>
@@ -148,6 +152,7 @@
           <v-col cols="6" class="py-0">
             <PWAContactStatusInput
               v-model="pwaData.contact_status"
+              data-cy="cy-form-status-input"
             />
           </v-col>
           <v-col v-if="contactedButNoResponse" cols="6" class="py-0">
@@ -159,6 +164,7 @@
           <v-col cols="6" class="py-0">
             <PWAPreferredCommInput
               v-model="pwaData.comm_mode"
+              data-cy="cy-form-comm-mode-input"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -204,7 +210,7 @@
             @deleteSuccess="$emit('closeForm')"
           />
           <v-spacer />
-          <v-btn color="primary" type="submit" :loading="isSubmitting">
+          <v-btn color="primary" type="submit" :loading="isSubmitting" data-cy="cy-form-submit-pwa-input">
             {{ pwa ? 'Save' : 'Add' }}
           </v-btn>
           <v-btn class="ml-1" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>

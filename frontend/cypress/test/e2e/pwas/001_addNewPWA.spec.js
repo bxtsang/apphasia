@@ -16,10 +16,12 @@ describe('Login to Apphasia', () =>  {
   it('Add New PWA', () => {
     cy.get('[data-cy=cy-add-resource-btn]').click()
     cy.get('[data-cy=cy-form-name-input]').type(PWA_001.name)
+
     cy.get('[data-cy=cy-form-dob-input]').click()
-    cy.get('.v-date-picker-years li').contains(PWA_001.dob.split('-')[0]).click()
-    cy.get('.v-date-picker-table--month button').contains(PWA_001.dob.split('-')[1]).click()
-    cy.get('.v-date-picker-table--date button').contains(PWA_001.dob.split('-')[2]).click()
+    cy.get('[data-cy=cy-form-dob-picker] .v-date-picker-years li').contains(PWA_001.dob.split('-')[0]).click()
+    cy.get('[data-cy=cy-form-dob-picker] .v-date-picker-table--month button').contains(PWA_001.dob.split('-')[1]).click()
+    cy.get('[data-cy=cy-form-dob-picker] .v-date-picker-table--date button').contains(PWA_001.dob.split('-')[2]).click()
+
     cy.get('[data-cy=cy-form-contact-input]').type(PWA_001.contact)
     cy.get('[data-cy=cy-form-gender-input]').click()
     cy.get('[data-cy=cy-form-gender-input] .v-input__control .v-input__slot')
@@ -54,8 +56,46 @@ describe('Login to Apphasia', () =>  {
     .then(input => {
       PWA_001.languages.map(language => cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(language).click())
     })
-    // cy.get('[data-cy=cy-form-dob-input]').type(PWA_001.dob)
-    // cy.get('[data-cy=cy-form-dob-input]').type(PWA_001.dob)
-  })
+    
+    cy.get('[data-cy=cy-form-stroke-date-input]').click()
+    cy.get('[data-cy=cy-form-stroke-date-picker] .v-date-picker-years li').contains(PWA_001.stroke_date.split('-')[0]).click()
+    cy.get('[data-cy=cy-form-stroke-date-picker] .v-date-picker-table--month button').contains(PWA_001.stroke_date.split('-')[1]).click()
+    cy.get('[data-cy=cy-form-stroke-date-picker] .v-date-picker-table--date button').contains(PWA_001.stroke_date.split('-')[2]).click()
+  
+    cy.get('[data-cy=cy-form-channel-input]').click()
+    cy.get('[data-cy=cy-form-channel-input] .v-input__control .v-input__slot')
+    .then(input => {
+      cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(PWA_001.channel).click()
+    })
 
+    cy.get('[data-cy=cy-form-consent-input]').click()
+    cy.get('[data-cy=cy-form-consent-input] .v-input__control .v-input__slot')
+    .then(input => {
+      cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(PWA_001.consent).click()
+    })
+
+    cy.get('[data-cy=cy-form-media-input]').click()
+    cy.get('[data-cy=cy-form-media-input] .v-input__control .v-input__slot')
+    .then(input => {
+      cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(PWA_001.media).click()
+    })
+
+    cy.get('[data-cy=cy-form-media-engagement-input]').type(PWA_001.media_engagement)
+    
+    cy.get('[data-cy=cy-form-status-input]').click()
+    cy.get('[data-cy=cy-form-status-input] .v-input__control .v-input__slot')
+    .then(input => {
+      cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(PWA_001.status).click()
+    })
+
+    cy.get('[data-cy=cy-form-comm-mode-input]').click()
+    cy.get('[data-cy=cy-form-comm-mode-input] .v-input__control .v-input__slot')
+    .then(input => {
+      cy.get(`#${input.attr('aria-owns')} .v-list-item`).contains(PWA_001.comm_mode).click()
+    })
+    
+    cy.get('[data-cy=cy-form-submit-pwa-input]').click()
+
+    cy.get('[data-cy=cy-notification-snackbar]').contains('PWA successfully created')
+  })
 })
