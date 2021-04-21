@@ -6,6 +6,7 @@
     :required="required"
     :readonly="readonly"
     :outlined="outlined"
+    data-cy="cy-form-bio-input"
   />
 </template>
 

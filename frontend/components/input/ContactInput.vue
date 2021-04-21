@@ -8,6 +8,7 @@
     :outlined="outlined"
     :hint="hint"
     :persistent-hint="hint ? true : false"
+    data-cy="cy-form-contact-input"
   />
 </template>
 

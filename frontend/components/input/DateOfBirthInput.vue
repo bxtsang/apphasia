@@ -11,11 +11,12 @@
         v-model="data"
         :label="label"
         v-bind="attrs"
-        readonly
         :rules="validation"
         :required="required"
         v-on="on"
         :outlined="outlined"
+        readonly
+        data-cy="cy-form-dob-input"
       />
     </template>
     <v-date-picker

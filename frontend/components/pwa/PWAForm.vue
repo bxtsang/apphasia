@@ -45,6 +45,7 @@
               v-model="pwaData.general_info.data.gender"
               :required="true"
               label="*Gender"
+              data-cy="cy-form-gender-input"
             />
           </v-col>
         </v-row>
@@ -76,6 +77,7 @@
               v-model="pwaData.wheelchair"
               :required="true"
               label="*Wheelchair needed?"
+              data-cy="cy-form-wheelchair-input"
             />
           </v-col>
         </v-row>
@@ -85,6 +87,7 @@
               v-model="pwaData.projects.data"
               :required="true"
               label="*Projects Involved"
+              data-cy="cy-form-projects-input"
             />
           </v-col>
           <v-col cols="6" class="py-0">
@@ -92,6 +95,7 @@
               v-model="pwaData.comm_diff.data"
               :required="true"
               label="*Communication Difficulties"
+              data-cy="cy-form-comm-diff-input"
             />
           </v-col>
         </v-row>
@@ -101,6 +105,7 @@
               v-model="pwaData.languages.data"
               :required="true"
               label="*Languages understand and/or speak"
+              data-cy="cy-form-language-input"
             />
           </v-col>
           <v-col cols="6" class="py-0">

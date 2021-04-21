@@ -7,6 +7,7 @@
     :readonly="readonly"
     :outlined="outlined"
     :disabled="disabled"
+    data-cy="cy-form-email-input"
   />
 </template>
 

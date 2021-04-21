@@ -1,3 +1,21 @@
 export const PWA_001 = {
-  "name": "George Heng"
+  name: 'George Heng',
+  dob: '1984-May-22',
+  contact: '94832123',
+  gender: 'M',
+  email: 'gHeng@gmail.com',
+  address: '20 Chestnut Drive',
+  bio: 'likes to eat',
+  wheelchair: 'No',
+  projects_involved: ['Befrienders'],
+  comm_diff: ['Writing', 'Using numbers'],
+  languages: ['English', 'Malay'],
+  stroke_date: '2001-03-17',
+  how_hear: '',
+  agree_promo: '',
+  agree_media: '',
+  media_engagement: '',
+  status: '',
+  pref_mode: 'Whatsapp',
+  additional_info: '',
 }
