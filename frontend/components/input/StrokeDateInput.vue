@@ -4,6 +4,7 @@
     offset-y
     :close-on-content-click="false"
     min-width="auto"
+    v-model="menu"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
@@ -15,6 +16,7 @@
         :required="required"
         v-on="on"
         :outlined="outlined"
+        data-cy="cy-form-stroke-date-input"
       />
     </template>
     <v-date-picker
@@ -51,6 +53,7 @@ export default {
 
   data () {
     return {
+      menu: false,
       data: this.value,
       validation: []
     }
@@ -67,6 +70,9 @@ export default {
       handler (newValue, oldValue) {
         this.data = this.value
       }
+    },
+    menu (val) {
+      val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   }
 }
