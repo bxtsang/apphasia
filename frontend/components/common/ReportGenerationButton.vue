@@ -1,13 +1,11 @@
 <template>
-  <v-btn
-    :loading="isLoading"
-    color="amber darken-1"
-    dark
-    :class="className"
-    @click="downloadReport"
-  >
-    Generate Report
-  </v-btn>
+    <v-btn
+      :loading="isLoading"
+      color="amber darken-1"
+      dark
+      :class="className"
+      @click="downloadReport"
+    >Generate Report</v-btn>
 </template>
 <script>
 import { utils, writeFile } from 'xlsx'
@@ -25,7 +23,6 @@ export default {
   },
   data () {
     return {
-      accessToken: '',
       isLoading: false,
       generationLink: 'https://api.apphasia.cf/reportgeneration'
     }

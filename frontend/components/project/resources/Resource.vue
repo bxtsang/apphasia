@@ -3,7 +3,7 @@
     <!-- Item Card Folder-->
     <v-card
       v-if="resourceType === 'folder'"
-      class="d-flex align-center clickable"
+      class="ma-2 d-flex align-center clickable"
       outlined
       width="270"
       @contextmenu="show"
@@ -123,14 +123,6 @@ export default {
         action: this.downloadResource
       })
     }
-
-    if (this.resource.webViewLink) {
-      this.RIGHT_CLICK_OPTIONS.push({
-        title: 'Open in drive',
-        icon: 'mdi-google-drive',
-        action: this.openInDrive
-      })
-    }
   },
   methods: {
     show (e) {
@@ -145,9 +137,6 @@ export default {
     },
     downloadResource () {
       window.location.href = this.resource.webContentLink
-    },
-    openInDrive () {
-      window.open(this.resource.webViewLink, '_blank')
     },
     deleteResource () {
       this.$emit('deleteResource')

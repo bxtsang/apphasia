@@ -16,14 +16,19 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: ['@/assets/main.css'],
+  css: [
+    '@/assets/main.css'
+  ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: [
+  ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -61,17 +66,16 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      home: '/'
+      home: '/',
     },
     strategies: {
       cognito: {
-        tokenType: 'Bearer',
+        tokenType: "Bearer",
         globalToken: true,
         tokenRequired: true,
-        tokenName: 'Authorization',
+        tokenName: "Authorization",
         autoFetchUser: true,
-        userPoolId:
-          process.env.COGNITO_USER_POOL_ID || 'ap-southeast-1_0wc22ewSD',
+        userPoolId: process.env.COGNITO_USER_POOL_ID || 'ap-southeast-1_0wc22ewSD',
         clientId: process.env.COGNITO_CLIENT_ID || '7mi9isulls8458et869mca42sp',
         refreshInterval: 5 * 60 * 1000, // Set to 0 to disable the browser interval
         fetchUserCallback: false // Can be used to put more information into the user object
@@ -95,13 +99,14 @@ export default {
           error: colors.red,
           warning: colors.amber,
           background: '#FBFCFD'
-        }
-      }
-    }
+        },
+      },
+    },
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+  },
 
   env: {
     BASE_API_URL: process.env.BASE_API_URL || 'http://localhost:8000'
