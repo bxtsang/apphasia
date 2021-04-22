@@ -20,17 +20,17 @@
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNameInput v-model="projectData.title" label="*Project Name" />
+                <ProjectNameInput v-model="projectData.title" label="*Project Name"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectNotesInput v-model="projectData.description" label="*Project Notes" />
+                <ProjectNotesInput v-model="projectData.description" label="*Project Notes"/>
               </v-col>
             </v-row>
             <v-row>
               <v-col class="py-0">
-                <ProjectColorInput v-model="projectData.colour" label="*Project Colour" />
+                <ProjectColorInput v-model="projectData.colour" label="*Project Colour"/>
               </v-col>
             </v-row>
             <v-row>
@@ -76,7 +76,7 @@
                 />
               </v-col>
             </v-row>
-            <v-row v-if="projectData.voltypes !== ''" class="mt-3">
+            <v-row class="mt-3" v-if="projectData.voltypes !== ''">
               <v-col class="py-0">
                 <ProjectPersonMultiSelector
                   v-model="projectData.volunteers.data"
@@ -100,7 +100,7 @@
                 <DeleteResourceModal
                   v-if="$auth.user['custom:role'] === 'core_team' && project"
                   :resource="project"
-                  :resource-type="'projects'"
+                  :resourceType="'projects'"
                   @deleteSuccess="$emit('closeForm')"
                 />
               </div>
@@ -129,7 +129,6 @@ export default {
   },
   data () {
     return {
-      accessToken: '',
       valid: true,
       isSubmitting: false,
       projectData: {
@@ -155,17 +154,6 @@ export default {
       }
     }
   },
-  watch: {
-    'projectData.voltypes': {
-      handler (newValue, oldValue) {
-        this.projectData.volunteers.data = []
-      }
-    }
-  },
-  mounted () {
-    const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
-    this.accessToken = accessToken
-  },
   methods: {
     submitProject () {
       if (this.$refs.form.validate()) {
@@ -180,6 +168,7 @@ export default {
           variables: { project: newProjectData },
           update: (store, { data: { insert_projects_one: newProject } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
+            this.createGDriveFolder(newProjectData.title)
             this.$apollo.mutate({
               mutation: InsertNotifications,
               variables: {
@@ -301,6 +290,28 @@ export default {
         }
       }
       return { added, removed }
+    },
+    createGDriveFolder (folderName) {
+      const postHeader = {
+        'Content-Type': 'application/json'
+      }
+      const postBody = {
+        new_folder: folderName
+      }
+      this.$axios.post(
+        'https://67sbpripz3.execute-api.ap-southeast-1.amazonaws.com/dev',
+        JSON.stringify(postBody),
+        { postHeader }
+      ).then((res) => {
+        console.log(res)
+      })
+    }
+  },
+  watch: {
+    'projectData.voltypes': {
+      handler (newValue, oldValue) {
+        this.projectData.volunteers.data = []
+      }
     }
   }
 }

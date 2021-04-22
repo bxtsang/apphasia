@@ -1,13 +1,11 @@
 <template>
-  <v-btn
-    :loading="isLoading"
-    color="amber darken-1"
-    dark
-    :class="className"
-    @click="downloadReport"
-  >
-    Generate Report
-  </v-btn>
+    <v-btn
+      :loading="isLoading"
+      color="amber darken-1"
+      dark
+      :class="className"
+      @click="downloadReport"
+    >Generate Report</v-btn>
 </template>
 <script>
 import { utils, writeFile } from 'xlsx'
@@ -25,21 +23,15 @@ export default {
   },
   data () {
     return {
-      accessToken: '',
       isLoading: false,
-      generationLink: 'https://api.apphasia.cf/reportgeneration'
+      generationLink: 'https://cj00d9qd80.execute-api.ap-southeast-1.amazonaws.com/dev'
     }
-  },
-  mounted () {
-    const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
-    this.accessToken = accessToken
   },
   methods: {
     async downloadReport () {
       this.isLoading = true
       const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
+        'Content-Type': 'application/json'
       }
       const postBody = {
         resources: this.resourceType

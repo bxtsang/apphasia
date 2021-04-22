@@ -85,7 +85,7 @@
         <v-row v-if="foldersInCurrentDirectory.length > 0">
           <v-col class="pt-0">
             <v-subheader>Folders</v-subheader>
-            <v-container class="d-flex flex-wrap px-2" fluid>
+            <v-container class="d-flex flex-wrap pa-0 px-3" fluid>
               <Resource
                 v-for="folder in foldersInCurrentDirectory"
                 :key="folder.id"
@@ -150,7 +150,6 @@ export default {
   },
   data () {
     return {
-      accessToken: '',
       paths: [],
       parent: [],
       currentFolder: '',
@@ -195,8 +194,6 @@ export default {
     }
   },
   mounted () {
-    const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
-    this.accessToken = accessToken
     // loads the google api script
     const script = document.createElement('script')
     script.onload = this.handleClientLoad
@@ -295,14 +292,14 @@ export default {
               await this.uploadHelper(file, parentId)
             }
           } catch (e) {
-            vm.error('')
+            vm.error()
             console.log(e)
           } finally {
             vm.refreshWithDelay(parentId)
             f.value = null
           }
         } else {
-          vm.error('')
+          vm.error()
           f.value = null
           vm.loading = false
         }
@@ -373,15 +370,10 @@ export default {
     async getProjectFolder () {
       this.loading = true
       const projectTitle = this.project.title
-      const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
-      }
       try {
         const rootFolder = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
-          {},
-          { postHeader }
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          {}
         )
         if (rootFolder.data.status === 'success') {
           const projFolder = rootFolder.data.files.find((obj) => {
@@ -398,10 +390,10 @@ export default {
           }
         } else {
           console.log('error')
-          this.error('')
+          this.error()
         }
       } catch (e) {
-        this.error('')
+        this.error()
         console.log(e)
       }
       console.log('real: ' + this.folderExist)
@@ -409,34 +401,24 @@ export default {
     },
     async getChildrenFolder (folderId) {
       this.loading = true
-      const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
-      }
       try {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
-          { parent_folder: folderId },
-          { postHeader }
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: folderId }
         )
         this.children = childrenFiles.data.files
       } catch (e) {
-        this.error('')
+        this.error()
         console.log(e)
       }
       this.loading = false
     },
     refreshWithDelay (newParentId) {
       this.loading = true
-      const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
-      }
       setTimeout(async () => {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
-          { parent_folder: newParentId },
-          { postHeader }
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
         )
         this.children = childrenFiles.data.files
         this.loading = false
@@ -444,20 +426,15 @@ export default {
     },
     async refresh (newParentId) {
       this.loading = true
-      const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
-      }
       try {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
-          { parent_folder: newParentId },
-          { postHeader }
+          'https://hr0qbwodlg.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { parent_folder: newParentId }
         )
         this.children = childrenFiles.data.files
       } catch (e) {
         console.log(e)
-        this.error('')
+        this.error()
       }
 
       this.loading = false
@@ -492,19 +469,14 @@ export default {
     async deleteResource (fileId) {
       this.loading = true
       const vm = this
-      const postHeader = {
-        'Content-Type': 'application/json',
-        Authorization: this.accessToken
-      }
       try {
         const rootFolder = await this.$axios.post(
-          'https://api.apphasia.cf/deletefile',
-          { file_id: fileId },
-          { postHeader }
+          'https://schwn3irr1.execute-api.ap-southeast-1.amazonaws.com/dev',
+          { file_id: fileId }
         )
         if (rootFolder.data.status !== 'success') {
           console.log('error')
-          vm.error('')
+          vm.error()
         } else {
           vm.refreshWithDelay(vm.currentFolder.id)
         }
@@ -521,13 +493,13 @@ export default {
               response &&
               (response.error !== null || response.error !== undefined)
             ) {
-              vm.error('')
+              vm.error()
             }
             vm.refreshWithDelay(vm.currentFolder.id)
           })
         } catch (e2) {
           console.log(e2)
-          vm.error('')
+          vm.error()
         }
         console.log(e)
       }
@@ -546,24 +518,21 @@ export default {
             response &&
             (response.error !== null || response.error !== undefined)
           ) {
-            vm.error('Only file owner can delete! Please refer to google drive.')
+            vm.error()
           }
           vm.refreshWithDelay(vm.currentFolder.id)
         })
       } catch (e) {
-        vm.error('')
+        vm.error()
         console.log(e)
       }
     },
     openFile (link) {
       window.open(link)
     },
-    error (message) {
-      if (message === '') {
-        message = 'Something went wrong, please try again.'
-      }
+    error () {
       this.$store.commit('notification/newNotification', [
-        message,
+        'Something went wrong, please try again.',
         'error'
       ])
     }
