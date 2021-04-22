@@ -3,7 +3,7 @@
     <!-- Item Card Folder-->
     <v-card
       v-if="resourceType === 'folder'"
-      class="d-flex align-center clickable"
+      class="ma-2 d-flex align-center clickable"
       outlined
       width="270"
       @contextmenu="show"
