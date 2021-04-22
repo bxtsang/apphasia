@@ -9,6 +9,7 @@
       </v-btn>
     </template>
     <StaffForm v-if="resourceType === 'staffs'" @closeForm="isOpen = false" />
+    <VolunteerForm v-if="resourceType === 'volunteers'" @closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" @closeForm="isOpen = false" />
     <VolunteerForm v-if="resourceType === 'volunteers'" @closeForm="isOpen = false" />
     <ProjectForm v-if="resourceType === 'projects'" @closeForm="isOpen = false" />

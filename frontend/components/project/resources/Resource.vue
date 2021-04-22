@@ -18,7 +18,7 @@
     <!-- Item Card File-->
     <v-card
       v-else
-      class="ma-2 d-flex flex-column justify-space-between align-center clickable"
+      class="ma-2 pt-2 d-flex flex-column justify-space-between align-center clickable"
       outlined
       height="220"
       width="270"
@@ -123,6 +123,14 @@ export default {
         action: this.downloadResource
       })
     }
+
+    if (this.resource.webViewLink) {
+      this.RIGHT_CLICK_OPTIONS.push({
+        title: 'Open in drive',
+        icon: 'mdi-google-drive',
+        action: this.openInDrive
+      })
+    }
   },
   methods: {
     show (e) {
@@ -137,6 +145,9 @@ export default {
     },
     downloadResource () {
       window.location.href = this.resource.webContentLink
+    },
+    openInDrive () {
+      window.open(this.resource.webViewLink, '_blank')
     },
     deleteResource () {
       this.$emit('deleteResource')
