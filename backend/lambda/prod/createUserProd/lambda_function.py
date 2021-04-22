@@ -17,6 +17,17 @@ def get_parameter(parameter):
 
     return response['Parameter']['Value']
 
+def get_secret():
+    secret_name = "HASURA_ADMIN_SECRET"
+
+    response = client_secret.get_secret_value(
+        SecretId = secret_name
+    )
+
+
+    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']
+
+
 def lambda_handler(event, context):
     print(event)
     result = {}
@@ -108,15 +119,3 @@ def lambda_handler(event, context):
         },
         "body": json.dumps(result)
     }
-
-
-
-def get_secret():
-    secret_name = "HASURA_ADMIN_SECRET"
-
-    response = client_secret.get_secret_value(
-        SecretId = secret_name
-    )
-
-
-    return json.loads(response['SecretString'])['HASURA_ADMIN_SECRET']

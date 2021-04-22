@@ -75,24 +75,15 @@ export default {
         access_token: this.accessToken
       }
       const postHeader = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken
       }
       this.loading = true
-      await this.$axios
-        .post(
-          'https://3swx2qnvu9.execute-api.ap-southeast-1.amazonaws.com/dev',
-          JSON.stringify(postBody),
-          { postHeader }
-        )
-        .then((resp) => {
-          console.log(resp)
-          if (resp.data.status === 'success') {
-            this.codeSent()
-          } else if (resp.data.status === 'failed') {
-            this.reject()
-          }
-        })
-        .catch((error) => {
+      await this.$axios.post('https://api.apphasia.cf/sendemail', JSON.stringify(postBody), { postHeader }).then((resp) => {
+        console.log(resp)
+        if (resp.data.status === 'success') {
+          this.codeSent()
+        } else if (resp.data.status === 'failed') {
           this.reject()
           console.log(error)
         })
@@ -108,26 +99,17 @@ export default {
         email: this.email
       }
       const postHeader = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken
       }
       this.loading = true
-      await this.$axios
-        .post(
-          'https://65vbyychn5.execute-api.ap-southeast-1.amazonaws.com/dev',
-          JSON.stringify(postBody),
-          { postHeader }
-        )
-        .then((resp) => {
-          console.log(resp)
-          if (resp.data.status === 'success') {
-            this.$store.$auth.$state.user.email_verified = 'true'
-            this.emailVerified()
-            this.$router.push('/')
-          } else if (resp.data.status === 'failed') {
-            this.reject()
-          }
-        })
-        .catch((error) => {
+      await this.$axios.post('https://api.apphasia.cf/verifyemail', JSON.stringify(postBody), { postHeader }).then((resp) => {
+        console.log(resp)
+        if (resp.data.status === 'success') {
+          this.$store.$auth.$state.user.email_verified = 'true'
+          this.emailVerified()
+          this.$router.push('/')
+        } else if (resp.data.status === 'failed') {
           this.reject()
           console.log(error)
         })
@@ -186,11 +168,11 @@ export default {
   font-family: 'Roboto', sans-serif;
   border-right: none;
 }
-.otp-wrapper>div>div:first-child>.otp-input{
+.otp-wrapper > div > div:first-child > .otp-input {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 }
-.otp-wrapper>div>div:last-child>.otp-input{
+.otp-wrapper > div > div:last-child > .otp-input {
   border-right: 1px solid #a8adb7;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;

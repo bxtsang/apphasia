@@ -158,7 +158,7 @@ export default {
         }
         this.$axios
           .post(
-            'https://ixfilc5lh5.execute-api.ap-southeast-1.amazonaws.com/dev',
+            'https://api.apphasia.cf/resetpassword',
             JSON.stringify(postBody),
             { postHeader }
           )
@@ -195,7 +195,7 @@ export default {
         }
         this.$axios
           .post(
-            'https://1x65rfme11.execute-api.ap-southeast-1.amazonaws.com/dev',
+            'https://api.apphasia.cf/setpassword',
             JSON.stringify(postBody),
             { postHeader }
           )
