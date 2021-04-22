@@ -168,7 +168,6 @@ export default {
           variables: { project: newProjectData },
           update: (store, { data: { insert_projects_one: newProject } }) => {
             this.$apollo.vm.$apolloProvider.defaultClient.resetStore()
-            this.createGDriveFolder(newProjectData.title)
             this.$apollo.mutate({
               mutation: InsertNotifications,
               variables: {
@@ -290,21 +289,6 @@ export default {
         }
       }
       return { added, removed }
-    },
-    createGDriveFolder (folderName) {
-      const postHeader = {
-        'Content-Type': 'application/json'
-      }
-      const postBody = {
-        new_folder: folderName
-      }
-      this.$axios.post(
-        'https://67sbpripz3.execute-api.ap-southeast-1.amazonaws.com/dev',
-        JSON.stringify(postBody),
-        { postHeader }
-      ).then((res) => {
-        console.log(res)
-      })
     }
   },
   watch: {
