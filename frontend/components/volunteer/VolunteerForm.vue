@@ -237,7 +237,7 @@ export default {
 
   watch: {
     languages: {
-      immediate: !!this.volunteer,
+      immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_languages = {
           data: newValue.map((item) => { return { language: item } })
@@ -245,7 +245,7 @@ export default {
       }
     },
     voltypes: {
-      immediate: !!this.volunteer,
+      immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_voltypes = {
           data: newValue.map((item) => { return { voltype: item } })
@@ -253,7 +253,7 @@ export default {
       }
     },
     volIc: {
-      immediate: !!this.volunteer,
+      immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.vol_ic = {
           data: newValue.map((item) => { return { staff_id: item } })
@@ -261,7 +261,7 @@ export default {
       }
     },
     project_vols: {
-      immediate: !!this.volunteer,
+      immediate: true,
       handler (newValue, oldValue) {
         this.volunteerDetails.project_vols = {
           data: newValue.map((item) => { return { project_id: item } })

@@ -54,12 +54,6 @@ export default {
       ]
     }
   },
-  mounted () {
-    // Set append icon to be non selectable via tab
-    for (const button of document.querySelectorAll('[aria-label="append icon"]')) {
-      button.setAttribute('tabindex', '-1')
-    }
-  },
   methods: {
     changePassword () {
       if (this.$refs.passwordform.validate()) {
@@ -73,12 +67,11 @@ export default {
           previous_password: this.password.current
         }
         const postHeader = {
-          'Content-Type': 'application/json',
-          Authorization: accessToken
+          'Content-Type': 'application/json'
         }
         this.$axios
           .post(
-            'https://api.apphasia.cf/changepassword',
+            'https://jqi5g2tgj2.execute-api.ap-southeast-1.amazonaws.com/dev',
             JSON.stringify(postBody),
             { postHeader }
           )
@@ -100,6 +93,12 @@ export default {
             this.$refs.passwordform.reset()
           })
       }
+    }
+  },
+  mounted () {
+    // Set append icon to be non selectable via tab
+    for (const button of document.querySelectorAll('[aria-label="append icon"]')) {
+      button.setAttribute('tabindex', '-1')
     }
   }
 }
