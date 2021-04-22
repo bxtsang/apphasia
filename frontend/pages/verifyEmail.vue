@@ -79,11 +79,19 @@ export default {
         Authorization: this.accessToken
       }
       this.loading = true
-      await this.$axios.post('https://api.apphasia.cf/sendemail', JSON.stringify(postBody), { postHeader }).then((resp) => {
-        console.log(resp)
-        if (resp.data.status === 'success') {
-          this.codeSent()
-        } else if (resp.data.status === 'failed') {
+      await this.$axios
+        .post('https://api.apphasia.cf/sendemail', JSON.stringify(postBody), {
+          postHeader
+        })
+        .then((resp) => {
+          console.log(resp)
+          if (resp.data.status === 'success') {
+            this.codeSent()
+          } else if (resp.data.status === 'failed') {
+            this.reject()
+          }
+        })
+        .catch((error) => {
           this.reject()
           console.log(error)
         })
@@ -103,13 +111,21 @@ export default {
         Authorization: this.accessToken
       }
       this.loading = true
-      await this.$axios.post('https://api.apphasia.cf/verifyemail', JSON.stringify(postBody), { postHeader }).then((resp) => {
-        console.log(resp)
-        if (resp.data.status === 'success') {
-          this.$store.$auth.$state.user.email_verified = 'true'
-          this.emailVerified()
-          this.$router.push('/')
-        } else if (resp.data.status === 'failed') {
+      await this.$axios
+        .post('https://api.apphasia.cf/verifyemail', JSON.stringify(postBody), {
+          postHeader
+        })
+        .then((resp) => {
+          console.log(resp)
+          if (resp.data.status === 'success') {
+            this.$store.$auth.$state.user.email_verified = 'true'
+            this.emailVerified()
+            this.$router.push('/')
+          } else if (resp.data.status === 'failed') {
+            this.reject()
+          }
+        })
+        .catch((error) => {
           this.reject()
           console.log(error)
         })
