@@ -62,6 +62,8 @@ mutation CreateProject($project: projects_insert_input!) {
     is_active
     archive_reason
     upcoming_date
+    display_pwa_registration
+    display_vol_registration
   }
 }
 
@@ -76,7 +78,7 @@ mutation CreateProject($project: projects_insert_input!) {
 #       {"pwa_id": 3}
 #     ]},
 #     "volunteers": {"data": [
-#       {"vol_id": 76}
+#       {"vol_id": 76, "approved": true }
 #     ]},
 #     "staffs": {"data": [
 #       {"staff_id": 1}

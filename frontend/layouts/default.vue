@@ -117,11 +117,6 @@ export default {
           icon: 'mdi-cog',
           title: 'Settings',
           to: '/settings'
-        },
-        {
-          icon: 'mdi-bell',
-          title: 'Notifications',
-          to: '/notifications'
         }
       ]
     }

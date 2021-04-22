@@ -1,7 +1,7 @@
 mutation (
     $address: String!,
     $bio: String,
-    $contact_num: Int!,
+    $contact_num: String!,
     $date_joined: date!,
     $dob: date!,
     $email: String!,

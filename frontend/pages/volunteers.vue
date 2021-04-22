@@ -4,7 +4,7 @@
     <v-container v-else class="pa-0" fluid>
       <v-row>
         <v-col>
-          <AddResourceModal :resourceType="resourceType" />
+          <AddResourceModal :resource-type="resourceType" />
           <ReportGenerationButton :resourceType="resourceType"/>
         </v-col>
       </v-row>
@@ -17,11 +17,12 @@
   </div>
 </template>
 <script>
+import AddResourceModal from './../components/modals/AddResourceModal'
 import IndividualVolunteerView from './../components/volunteer/IndividualVolunteerView'
 import ListingQuery from './../components/common/ListingQuery'
 
 export default {
-  components: { ListingQuery, IndividualVolunteerView },
+  components: { ListingQuery, IndividualVolunteerView, AddResourceModal },
   data () {
     return {
       volunteerId: this.$route.query.id,

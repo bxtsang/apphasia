@@ -1,5 +1,5 @@
 <template>
-  <RegistrationBanner :resourceType="resourceType">
+  <RegistrationBannerLayout :resourceType="resourceType">
     <template slot-scope="{ registerSuccessful }">
       <v-form ref="registrationForm" v-model="valid" @submit.prevent="() => submitForm(registerSuccessful)">
         <v-container>
@@ -44,6 +44,9 @@
             <v-col class="px-6">
               <BioInput v-model="volunteer.general_info.data.bio" :outlined="true"/>
             </v-col>
+            <v-col class="px-6">
+              <ChannelInput v-model="volunteer.general_info.data.channel" outlined/>
+            </v-col>
           </v-row>
           <v-row class="px-12">
             <v-col class="px-6">
@@ -54,7 +57,7 @@
             <v-col class="px-6">
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">* How will you like to volunteer with us? (Tick all that applies)</span>
-                <VolunteerProjectInterestInput v-model="projectVols" />
+                <VolunteerProjectInterestInput v-model="interested_projects" />
               </v-card>
             </v-col>
           </v-row>
@@ -71,14 +74,6 @@
               <v-card class="card-input pa-6" outlined>
                 <span class="input-label">* What is your profession?</span>
                 <MultiProfessionInput v-model="profession" />
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row class="px-12">
-            <v-col class="px-6">
-              <v-card class="card-input pa-6" outlined>
-                <span class="input-label">How did you hear about Aphasia SG?</span>
-                <ChannelInput v-model="volunteer.general_info.data.channel" :placeholderOnly="true" />
               </v-card>
             </v-col>
           </v-row>
@@ -108,7 +103,7 @@
         </v-container>
       </v-form>
     </template>
-  </RegistrationBanner>
+  </RegistrationBannerLayout>
 </template>
 <script>
 import AliasInput from './../../components/input/AliasInput.vue'
@@ -126,7 +121,7 @@ import ChannelInput from './../../components/input/ChannelInput'
 import ConsentInput from './../../components/input/ConsentInput'
 import MultiProfessionInput from './../../components/input/MultiProfessionInput'
 import RegisterVol from './../../graphql/volunteer/RegisterVol.graphql'
-import RegistrationBanner from './../../components/registration/RegistrationBanner'
+import RegistrationBannerLayout from './../../components/registration/RegistrationBannerLayout'
 import InsertNotifications from './../../graphql/notifications/InsertNotifications.graphql'
 
 export default {
@@ -145,7 +140,7 @@ export default {
     ChannelInput,
     ConsentInput,
     MultiProfessionInput,
-    RegistrationBanner
+    RegistrationBannerLayout
   },
   layout: 'none',
   middleware: 'clearLoginCache',
@@ -158,7 +153,7 @@ export default {
         general_info: {
           data: {}
         },
-        project_vols: {
+        interested_projects: {
           data: []
         },
         vol_languages: {
@@ -166,7 +161,7 @@ export default {
         }
       },
       profession: [],
-      projectVols: [],
+      interested_projects: [],
       languages: []
     }
   },
@@ -203,7 +198,7 @@ export default {
       }
     },
     transformData () {
-      this.volunteer.project_vols = { data: this.projectVols.map((item) => { return { project_id: item } }) }
+      this.volunteer.interested_projects = { data: this.interested_projects.map((item) => { return { project_id: item } }) }
       this.volunteer.vol_languages = { data: this.languages.map((item) => { return { language: item } }) }
       this.volunteer.profession = this.profession.join(',')
     }

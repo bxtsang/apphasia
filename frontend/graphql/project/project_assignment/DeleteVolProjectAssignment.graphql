@@ -69,6 +69,8 @@ mutation DeleteVolProjectAssignment(
         voltypes
         is_active
         archive_reason
+        display_pwa_registration
+        display_vol_registration
       }
     }
   }

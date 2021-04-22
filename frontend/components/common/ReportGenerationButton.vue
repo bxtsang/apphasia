@@ -131,7 +131,7 @@ export default {
       }
       pwaArray = [...pwaArray, ..._.zip(...pwaRowArray)]
       const pwaWorksheet = utils.aoa_to_sheet(pwaArray)
-      utils.book_append_sheet(workbook, pwaWorksheet, `${type} Analytics`)
+      utils.book_append_sheet(workbook, pwaWorksheet, `${type} Profile`)
 
       writeFile(workbook, `${type}_report_${new Date().toString().substring(4, 15)}.xlsx`)
     }

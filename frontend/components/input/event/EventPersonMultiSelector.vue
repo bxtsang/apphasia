@@ -7,6 +7,8 @@
     item-text="name"
     item-value="id"
     multiple
+    :searchInput.sync="searchInput"
+    @change="searchInput=''"
   />
 </template>
 <script>
@@ -15,7 +17,8 @@ import gql from 'graphql-tag'
 export default {
   data () {
     return {
-      data: this.value
+      data: this.value,
+      searchInput: ''
     }
   },
   props: {

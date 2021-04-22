@@ -1,8 +1,15 @@
 <template>
-  <v-card class="pa-8">
-    <span v-if="staff" class="section-title">Edit Staff</span>
-    <span v-else class="section-title">Add Staff</span>
-    <v-form ref="form" v-model="valid" class="mt-6" @submit.prevent="formSubmitMethod">
+  <v-card>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title>
+        {{ staff ? 'Edit Staff' : 'Add Staff'}}
+      </v-toolbar-title>
+      <v-spacer />
+      <v-btn icon dark @click="$emit('closeForm')">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <v-form ref="form" v-model="valid" class="pa-8" @submit.prevent="formSubmitMethod">
       <v-container class="pa-0">
         <v-row>
           <v-col col="12" class="py-0">
@@ -145,9 +152,10 @@
           <ArchiveResourceDialog v-if="staff && staff.is_active" :resource="staff" resource-type="staffs" />
           <RestoreResourceDialog v-else-if="staff && !staff.is_active" :resource="staff" resource-type="staffs" />
           <v-spacer />
-          <v-btn color="primary" class="my-3" type="submit" :loading="isSubmitting">
+          <v-btn color="primary" type="submit" :loading="isSubmitting">
             {{ staff ? 'Save' : 'Add' }}
           </v-btn>
+          <v-btn class="ml-1" dark color="grey" @click="$emit('closeForm')">Cancel</v-btn>
         </v-row>
       </v-container>
     </v-form>

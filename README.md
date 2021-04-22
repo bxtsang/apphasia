@@ -1,13 +1,12 @@
 # aphasiaSG
 An integrated system for the business processes of Aphasia SG
 
-
 ## Frontend
 
 ### Run Application Locally
 ```batch
 cd frontend
-npm install
+npm i
 npm run dev
 ```
 

@@ -11,6 +11,7 @@ query getUpcomingEvents($fromDate: date, $endDate: date){
     id
     date
     project {
+        id
         title
         colour
     }

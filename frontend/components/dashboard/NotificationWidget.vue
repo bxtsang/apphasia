@@ -1,5 +1,5 @@
 <template>
-  <v-card class="px-6 py-3">
+  <v-card class="px-6 py-3 remain-height">
     <div class="d-flex justify-space-between align-center">
       <h1 class="title">Notifications</h1>
       <v-btn v-if="tab === notificationTabOptions.indexOf('unread')" color="primary" @click="markAllRead" :loading="isLoading">Mark all as read</v-btn>
@@ -12,17 +12,19 @@
         {{ option }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="option in notificationTabOptions"
-        :key="option"
-      >
-        <div class="notification-wrapper">
-          <NotificationList v-if="option === 'unread'"/>
-          <ReadNotificationList v-if="option === 'read'"/>
-        </div>
-      </v-tab-item>
-    </v-tabs-items>
+    <div class="notification-wrapper">
+      <v-tabs-items v-model="tab">
+        <v-tab-item
+          v-for="option in notificationTabOptions"
+          :key="option"
+        >
+          <div>
+            <NotificationList v-if="option === 'unread'"/>
+            <ReadNotificationList v-if="option === 'read'"/>
+          </div>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
   </v-card>
 </template>
 <script>
@@ -60,7 +62,11 @@ export default {
 </script>
 <style scoped>
 .notification-wrapper {
-  max-height: 325px;
   overflow-y: auto;
+}
+.remain-height {
+  max-height: calc(100vh - 96px);
+  display: grid;
+  grid-template-rows: auto auto 1fr;
 }
 </style>

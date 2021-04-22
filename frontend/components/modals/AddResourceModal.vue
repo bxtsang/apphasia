@@ -11,6 +11,7 @@
     <StaffForm v-if="resourceType === 'staffs'" @closeForm="isOpen = false" />
     <VolunteerForm v-if="resourceType === 'volunteers'" @closeForm="isOpen = false" />
     <PWAForm v-if="resourceType === 'pwas'" @closeForm="isOpen = false" />
+    <VolunteerForm v-if="resourceType === 'volunteers'" @closeForm="isOpen = false" />
     <ProjectForm v-if="resourceType === 'projects'" @closeForm="isOpen = false" />
     <EventForm v-if="resourceType === 'events'" @closeForm="isOpen = false" />
   </v-dialog>
@@ -19,9 +20,10 @@
 import StaffForm from './../staff/StaffForm'
 import PWAForm from './../pwa/PWAForm'
 import ProjectForm from './../project/ProjectForm'
+import VolunteerForm from './../volunteer/VolunteerForm'
 
 export default {
-  components: { StaffForm, PWAForm, ProjectForm },
+  components: { StaffForm, PWAForm, ProjectForm, VolunteerForm },
   props: {
     text: Boolean,
     resourceType: {

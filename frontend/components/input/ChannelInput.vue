@@ -7,6 +7,7 @@
     :rules="validation"
     :required="required"
     :readonly="readonly"
+    :outlined="outlined"
   />
 </template>
 
@@ -18,7 +19,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: ''
+      default: null
     },
     required: {
       type: Boolean,
@@ -29,6 +30,10 @@ export default {
       default: false
     },
     placeholderOnly: {
+      type: Boolean,
+      default: false
+    },
+    outlined: {
       type: Boolean,
       default: false
     }

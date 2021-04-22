@@ -7,6 +7,8 @@
     item-text="value"
     item-value="value"
     :rules="validation"
+    :searchInput.sync="searchInput"
+    @change="searchInput=''"
   >
     <template v-slot:selection="data">
       <v-chip
@@ -54,7 +56,8 @@ export default {
         { value: 'deep-orange' },
         { value: 'brown' },
         { value: 'blue-grey' }
-      ]
+      ],
+      searchInput: ''
     }
   },
   props: {

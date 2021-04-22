@@ -46,7 +46,7 @@ export const INPUT_VALIDATION = {
   },
   email: {
     required: v => !!v || 'E-mail is required',
-    valid: v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+    valid: v => (v !== '' ? /.+@.+\..+/.test(v) : true) || 'E-mail must be valid'
   },
   address: {
     required: v => !!v || 'Home Address is required'
@@ -99,8 +99,8 @@ export const TABLE_HEADERS = {
     { text: 'Name', value: 'name', align: 'start' },
     { text: 'Date Joined', value: 'date_joined' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Projects Involved', value: 'projects_in', sortable: false },
+    { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   volunteers: [
@@ -108,17 +108,18 @@ export const TABLE_HEADERS = {
     { text: 'Gender', value: 'general_info.gender' },
     { text: 'Date of Birth', value: 'general_info.dob' },
     { text: 'Profession', value: 'profession' },
-    { text: 'Programmes Interested  ', value: 'project_vols', sortable: false },
+    { text: 'Programmes Interested  ', value: 'interested_projects', sortable: false },
     { text: 'Speech Therapist', value: 'is_speech_therapist' },
     { text: 'Status', value: 'status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
   pwas: [
     { text: 'Name', value: 'general_info.name', align: 'start' },
+    { text: 'Contact Number', value: 'general_info.contact_num', sortable: false },
     { text: 'Communication Difficulties', value: 'comm_diff', sortable: false },
+    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Programmes Involved', value: 'projects', sortable: false },
     { text: 'NOK', value: 'nok', sortable: false },
-    { text: 'Languages understand/speak', value: 'languages', sortable: false },
     { text: 'Status', value: 'contact_status' },
     { text: '', value: 'actions', sortable: false, align: 'end' }
   ],
