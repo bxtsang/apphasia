@@ -67,11 +67,12 @@ export default {
           previous_password: this.password.current
         }
         const postHeader = {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: accessToken
         }
         this.$axios
           .post(
-            'https://jqi5g2tgj2.execute-api.ap-southeast-1.amazonaws.com/dev',
+            'https://api.apphasia.cf/changepassword',
             JSON.stringify(postBody),
             { postHeader }
           )

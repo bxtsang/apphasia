@@ -24,14 +24,19 @@ export default {
   data () {
     return {
       isLoading: false,
-      generationLink: 'https://cj00d9qd80.execute-api.ap-southeast-1.amazonaws.com/dev'
+      generationLink: 'https://api.apphasia.cf/reportgeneration'
     }
+  },
+  mounted () {
+    const accessToken = localStorage.getItem(`auth.CognitoIdentityServiceProvider.${this.$auth.strategies.cognito.options.clientId}.${this.$auth.user.sub}.accessToken`)
+    this.accessToken = accessToken
   },
   methods: {
     async downloadReport () {
       this.isLoading = true
       const postHeader = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: this.accessToken
       }
       const postBody = {
         resources: this.resourceType

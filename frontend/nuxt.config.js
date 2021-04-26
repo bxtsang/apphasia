@@ -54,9 +54,9 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'https://aphasia-hasura-dev.herokuapp.com/v1/graphql',
+        httpEndpoint: 'https://hasura.apphasia.cf/v1/graphql',
         tokenName: 'apollo-token',
-        wsEndpoint: 'wss://aphasia-hasura-dev.herokuapp.com/v1/graphql',
+        wsEndpoint: 'wss://hasura.apphasia.cf/v1/graphql',
         websocketsOnly: true
       }
     }
