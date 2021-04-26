@@ -141,6 +141,9 @@ export default {
     deleteResource () {
       this.$emit('deleteResource')
     },
+    openInDrive () {
+      window.open(this.resource.webViewLink, '_blank')
+    },
     changeDirectory () {
       this.$emit('changeDirectory')
     }
