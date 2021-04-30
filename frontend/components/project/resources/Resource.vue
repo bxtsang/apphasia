@@ -123,6 +123,14 @@ export default {
         action: this.downloadResource
       })
     }
+
+    if (this.resource.webViewLink) {
+      this.RIGHT_CLICK_OPTIONS.push({
+        title: 'Open in drive',
+        icon: 'mdi-google-drive',
+        action: this.openInDrive
+      })
+    }
   },
   methods: {
     show (e) {
@@ -140,6 +148,9 @@ export default {
     },
     deleteResource () {
       this.$emit('deleteResource')
+    },
+    openInDrive () {
+      window.open(this.resource.webViewLink, '_blank')
     },
     changeDirectory () {
       this.$emit('changeDirectory')
