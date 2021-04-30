@@ -51,12 +51,10 @@ def lambda_handler(event, context):
                     'Name': 'custom:role',
                     'Value': role
                 },
-            ],
-            ValidationData=[
                 {
                     'Name': 'custom:hasura_id',
                     'Value': str(user_id)
-                },
+                }
             ]
         )
 
