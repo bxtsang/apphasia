@@ -72,7 +72,7 @@ export default {
         }
         this.$axios
           .post(
-            'https://api.apphasia.cf/changepassword',
+            'https://api.apphasia.com/changepassword',
             JSON.stringify(postBody),
             { postHeader }
           )

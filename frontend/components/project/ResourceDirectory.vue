@@ -214,9 +214,9 @@ export default {
       try {
         window.gapi.client
           .init({
-            apiKey: 'AIzaSyC8i6kIbnt-puBewWgMhiOKxW8V_nNf0xY', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
+            apiKey: 'AIzaSyB0RlaIlThK1a5WkfxD88dpaGOvBtLA3sw', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
             clientId:
-              '398518899210-p6bec3lrgqpob9dhj04kjivhdo9kplc2.apps.googleusercontent.com',
+              '554005561828-60objiga0uf3e8r62agh1emhjh5go35h.apps.googleusercontent.com',
             scope: 'https://www.googleapis.com/auth/drive',
             discoveryDocs: [discoveryUrl]
           })
@@ -379,7 +379,7 @@ export default {
       }
       try {
         const rootFolder = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
+          'https://api.apphasia.com/listfiles',
           {},
           { postHeader }
         )
@@ -415,7 +415,7 @@ export default {
       }
       try {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
+          'https://api.apphasia.com/listfiles',
           { parent_folder: folderId },
           { postHeader }
         )
@@ -434,7 +434,7 @@ export default {
       }
       setTimeout(async () => {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
+          'https://api.apphasia.com/listfiles',
           { parent_folder: newParentId },
           { postHeader }
         )
@@ -450,7 +450,7 @@ export default {
       }
       try {
         const childrenFiles = await this.$axios.post(
-          'https://api.apphasia.cf/listfiles',
+          'https://api.apphasia.com/listfiles',
           { parent_folder: newParentId },
           { postHeader }
         )
@@ -498,7 +498,7 @@ export default {
       }
       try {
         const rootFolder = await this.$axios.post(
-          'https://api.apphasia.cf/deletefile',
+          'https://api.apphasia.com/deletefile',
           { file_id: fileId },
           { postHeader }
         )

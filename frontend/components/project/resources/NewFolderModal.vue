@@ -61,7 +61,7 @@ export default {
         }
         // CALL API HERE
         try {
-          const response = await this.$axios.post('https://api.apphasia.cf/createfolder', { new_folder: this.folderName, parent_folder: this.parentId }, { postHeader })
+          const response = await this.$axios.post('https://api.apphasia.com/createfolder', { new_folder: this.folderName, parent_folder: this.parentId }, { postHeader })
           if (response.data.status !== 'success') {
           // call error snackbar
             console.log('error')

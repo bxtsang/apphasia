@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       isLoading: false,
-      generationLink: 'https://api.apphasia.cf/reportgeneration'
+      generationLink: 'https://api.apphasia.com/reportgeneration'
     }
   },
   mounted () {
