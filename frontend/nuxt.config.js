@@ -54,9 +54,9 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'https://hasura.apphasia.cf/v1/graphql',
+        httpEndpoint: 'https://hasura.apphasia.com/v1/graphql',
         tokenName: 'apollo-token',
-        wsEndpoint: 'wss://hasura.apphasia.cf/v1/graphql',
+        wsEndpoint: 'wss://hasura.apphasia.com/v1/graphql',
         websocketsOnly: true
       }
     }
@@ -66,14 +66,14 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      home: '/',
+      home: '/'
     },
     strategies: {
       cognito: {
-        tokenType: "Bearer",
+        tokenType: 'Bearer',
         globalToken: true,
         tokenRequired: true,
-        tokenName: "Authorization",
+        tokenName: 'Authorization',
         autoFetchUser: true,
         userPoolId: process.env.COGNITO_USER_POOL_ID || 'ap-southeast-1_0wc22ewSD',
         clientId: process.env.COGNITO_CLIENT_ID || '7mi9isulls8458et869mca42sp',
@@ -99,9 +99,9 @@ export default {
           error: colors.red,
           warning: colors.amber,
           background: '#FBFCFD'
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

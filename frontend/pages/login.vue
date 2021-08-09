@@ -158,7 +158,7 @@ export default {
         }
         this.$axios
           .post(
-            'https://api.apphasia.cf/resetpassword',
+            'https://api.apphasia.com/resetpassword',
             JSON.stringify(postBody),
             { postHeader }
           )
@@ -195,7 +195,7 @@ export default {
         }
         this.$axios
           .post(
-            'https://api.apphasia.cf/setpassword',
+            'https://api.apphasia.com/setpassword',
             JSON.stringify(postBody),
             { postHeader }
           )

@@ -80,7 +80,7 @@ export default {
       }
       this.loading = true
       await this.$axios
-        .post('https://api.apphasia.cf/sendemail', JSON.stringify(postBody), {
+        .post('https://api.apphasia.com/sendemail', JSON.stringify(postBody), {
           postHeader
         })
         .then((resp) => {
@@ -112,7 +112,7 @@ export default {
       }
       this.loading = true
       await this.$axios
-        .post('https://api.apphasia.cf/verifyemail', JSON.stringify(postBody), {
+        .post('https://api.apphasia.com/verifyemail', JSON.stringify(postBody), {
           postHeader
         })
         .then((resp) => {
