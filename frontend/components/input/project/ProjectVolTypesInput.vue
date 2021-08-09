@@ -55,13 +55,13 @@ export default {
     vol_voltypes: {
       query () {
         return gql`query getVolTypes{
-          vol_voltypes {
-            voltype
+          voltypes {
+            type
           }
         }`
       },
-      update: data => data.vol_voltypes.map((item) => {
-        return { value: item.voltype, text: VOLUNTEER_TYPES[item.voltype] }
+      update: data => data.voltypes.map((item) => {
+        return { value: item.type, text: VOLUNTEER_TYPES[item.type] }
       })
     }
   }
