@@ -101,7 +101,7 @@ export default {
           }
         }`
       },
-      variables () { return { voltype: this.voltype } },
+      variables () { return { voltype: this.voltype || 'Project_Volunteer' } },
       update: data => data.volunteers.map((item) => {
         return { id: item.id, name: item.general_info.name }
       })
