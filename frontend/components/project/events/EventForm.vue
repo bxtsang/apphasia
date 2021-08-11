@@ -205,8 +205,10 @@ export default {
         this.isSubmitting = true
         const _ = require('lodash')
         const newEventData = _.cloneDeep(this.eventData)
-        newEventData.pwas.data = newEventData.pwas.data.map((item) => { return { pwa_id: item } })
-        newEventData.volunteers.data = newEventData.volunteers.data.map((item) => { return { vol_id: item } })
+        const tempProjectId = newEventData.project_id
+        newEventData.project_id = parseInt(tempProjectId)
+        newEventData.pwas.data = newEventData.pwas.data.map((item) => { return { pwa_id: parseInt(item) } })
+        newEventData.volunteers.data = newEventData.volunteers.data.map((item) => { return { vol_id: parseInt(item) } })
         this.$apollo.mutate({
           mutation: InsertEventOrRecurring,
           variables: { newEventData },
@@ -216,7 +218,7 @@ export default {
         }).then((data) => {
           this.isSubmitting = false
           this.eventData = {
-            project_id: this.$route.query.id,
+            project_id: parseInt(this.$route.query.id),
             name: '',
             note: '',
             start_date: '',

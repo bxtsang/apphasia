@@ -42,12 +42,13 @@ def remove_permission(email, file_id):
 
     try:
         permission_list = SERVICE.permissions().list(fileId=file_id, fields="permissions(id, emailAddress)").execute()['permissions']
-        for permission in permission_list:
-            if permission['emailAddress'] == email:
-                print("permission found:", permission)
-                permission_id = permission['id']
-                SERVICE.permissions().delete(fileId=file_id, permissionId=permission_id).execute()
-                return True
+        if permission_list:
+            for permission in permission_list:
+                if permission['emailAddress'] == email:
+                    print("permission found:", permission)
+                    permission_id = permission['id']
+                    SERVICE.permissions().delete(fileId=file_id, permissionId=permission_id).execute()
+                    return True
         return False
 
     except Exception as e:
