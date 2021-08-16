@@ -98,7 +98,7 @@
             <v-row class="mt-4">
               <div class="ml-3">
                 <DeleteResourceModal
-                  v-if="$auth.user['custom:role'] === 'core_team' && project"
+                  v-if="['core_team','admin'].includes($auth.user['custom:role']) && project"
                   :resource="project"
                   :resourceType="'projects'"
                   @deleteSuccess="$emit('closeForm')"
