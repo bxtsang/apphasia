@@ -214,7 +214,7 @@ export default {
       try {
         window.gapi.client
           .init({
-            apiKey: 'AIzaSyB0RlaIlThK1a5WkfxD88dpaGOvBtLA3sw', // apiKey can be configured to only allow certain websites to call it, so should be fine exposing it.
+            apiKey: 'AIzaSyB0RlaIlThK1a5WkfxD88dpaGOvBtLA3sw',
             clientId:
               '554005561828-60objiga0uf3e8r62agh1emhjh5go35h.apps.googleusercontent.com',
             scope: 'https://www.googleapis.com/auth/drive',
@@ -231,7 +231,7 @@ export default {
     async signInFunction () {
       await this.googleAuth.signIn()
       const user = this.googleAuth.currentUser.get()
-      console.log(user)
+      console.log('user ' + user)
       if (user != null) {
         console.log('user is not null after signing in')
         this.upload()
@@ -274,12 +274,11 @@ export default {
       const vm = this
       const f = document.getElementById('files')
       if (this.googleAuth === undefined || this.googleAuth == null) {
-        console.log('auth instance not initialized')
         this.signInFunction()
       }
       const user = this.googleAuth.currentUser.get()
       // Checks if user has a google log in session in the web app
-      if (user == null) {
+      if (!user.isSignedIn()) {
         console.log('user not signed in')
         this.signInFunction()
       } else {
