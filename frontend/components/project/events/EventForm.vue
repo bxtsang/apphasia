@@ -135,7 +135,7 @@
         <v-row>
           <div>
             <DeleteResourceModal
-              v-if="$auth.user['custom:role'] === 'core_team' && event"
+              v-if="['core_team','admin'].includes($auth.user['custom:role']) && event"
               :resource="event"
               :resourceType="'events'"
               @deleteSuccess="$emit('closeForm')"
